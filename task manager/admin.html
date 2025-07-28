@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <style>
     * {
         box-sizing: border-box;
@@ -401,6 +402,8 @@
         flex-direction: column;
         gap: 1em;
         height: 100%;
+        max-height: calc(100vh - 100px);
+        overflow: auto;
     }
     .task-manager .admin-dashboard .task-item{ 
         padding: 1em 2em;
@@ -545,9 +548,10 @@
     </div>
     
     <script defer>
+        let $ = jQuery.noConflict();
         // db
     // db
-    let appAPI = "https://script.google.com/macros/s/AKfycbw9LCCqfdF-P4IUdxxsi0tHu4C8nyuS7fhqq2eUkJ3y5ynn7gWq9D6v3zOxkY4foORn/exec"
+    let appAPI = "https://script.google.com/macros/s/AKfycbzAqNEAW_TVqOEIexAQg4zEqhhLIKLuQY2f62av3cETi1l0SuAyax1-SZkHX9Knqgy6Zg/exec"
     let gsId = "1iwiJVuFW2exmR12H0a9uP4-Y4vlBNAbpDlfD3_CNVKk"
     let readAll = `${appAPI}?action=readall&gsid=${gsId}`
     

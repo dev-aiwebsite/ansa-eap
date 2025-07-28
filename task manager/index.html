@@ -1,3 +1,369 @@
-<script>
-    window.location.href = '/user.html'
-</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tacker | UserDashboard</title>
+    <link rel="stylesheet" href="user-style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="task-manager">
+        <dialog class="loader">
+            <div>
+                <span class="loader-text">Loading...</span>
+            </div>
+        </dialog>
+
+        <dialog class="taskUpdate-dialog taskFormDialog">
+            <button class="dialog-close-btn">×</button>
+            <form action="" class="taskUpdate-form" id="taskUpdate-form">
+                <span class="form-title">Update Task Details</span>
+                <div class="form-item flex-col">
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Task Name</span>
+                    <input type="text" name="update-name" required>
+                </div>
+
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Task Category</span>
+                    <select name="update-category" id="" required>
+                        <option value="Quick action">Quick action</option>
+                        <option value="Landing page">Landing page</option>
+                        <option value="Web app">Web app</option>
+                        <option value="Social graphics">Social graphics</option>
+                        <option value="Web app updates">Web app updates</option>
+                        <option value="Website updates">Website updates</option>
+                        <option value="Tech support">Tech support</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Queue Position</span>
+                    <select name="queue-position" id="" required>
+                    </select>
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Have you uploaded relevant materials to your Google drive?</span>
+                    <label for="update-file-uploaded-yes"><input type="radio" name="update-include-files"
+                            id="update-file-uploaded-yes" value="yes"> Yes</label>
+                    <label for="update-file-uploaded-na"><input type="radio" name="update-include-files"
+                            id="update-file-uploaded-na" value="na"> N/A</label>
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Additional Instruction</span>
+                    <textarea name="update-additional-instruction" id="" cols="30" rows="10"></textarea>
+                </div>
+                <button class="taskUpdate-submit-btn w-full text-base btn btn-primary" type="submit">Submit
+                    Request</button>
+            </form>
+        </dialog>
+        <div class="col1">
+            <dialog class="login-dialog">
+                <form action="" id="login-form" method="dialog">
+                    <h2>Sign in</h2>
+                    <span class="form-title">Enter your registered email address or unique code</span>
+                    <div class="form-item flex-col gap-16px center-center mt-20px">
+                        <input class="w-full rounded-xs login-email-input" type="text"
+                            placeholder="Enter email address or unique code here..." required>
+                        <button class="btn btn-primary login-submit-btn text-base" type="submit">Sign In</button>
+                    </div>
+                </form>
+            </dialog>
+            <div class="client-dashboard flex-col disabled">
+                <div class="flex-row client-name-wrapper">
+                    <div style="display: grid;grid-auto-flow:column;grid-gap:10px;">
+                        <h1 class="client-name">-----------</h1><button class="link logout-btn">logout</button>
+                    </div>
+                </div>
+                <div class="main-content-wrapper flex flex-row">
+                    <div class="summary center-center tab border-round" data-tab="support">
+                        <div class="tab-btn-container">
+                            <button class="tab-btn btn active" data-tab-btn="active-support">Active Support</button>
+                            <button class="tab-btn btn" data-tab-btn="passive-support">Passive Support</button>
+                        </div>
+                        <div class="tab-content-container">
+                            <div class="col-2 flex-col active" data-tab-content="active-support">
+                                <div class="flex-row">
+                                    <div class="col-1">
+                                        <table class="request-status-table">
+                                            <thead>
+                                                <th>
+                                                    <h3>Request Status</h3>
+                                                </th>
+                                                <th><span class="currentDate">--</span></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <circle cx="12" cy="12" r="11" fill="#FF0000"
+                                                                stroke="#F7F7F7" stroke-width="2" />
+                                                        </svg>
+                                                        Processing:
+                                                    </td>
+                                                    <td>
+                                                        <span class="active-count">--</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <svg width="1em" height="1em" viewBox="0 0 20 20" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M10 18C14.4 18 18 14.4 18 10C18 5.6 14.4 2 10 2C5.6 2 2 5.6 2 10C2 14.4 5.6 18 10 18ZM10 0C15.5 0 20 4.5 20 10C20 15.5 15.5 20 10 20C4.5 20 0 15.5 0 10C0 4.5 4.5 0 10 0ZM10.5 5V11H5V9.5H9V5H10.5Z"
+                                                                fill="#562DFB" />
+                                                        </svg> Pending:
+                                                    </td>
+                                                    <td>
+                                                        <span class="pending-count">--</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <svg width="1em" height="1em" viewBox="0 0 26 20" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M9.09202 20L0 10.5198L2.27301 8.14969L9.09202 15.2599L23.727 0L26 2.37006L17.546 11.185L9.09202 20Z"
+                                                                fill="#006400" />
+                                                        </svg>
+                                                        Completed:
+                                                    </td>
+                                                    <td>
+                                                        <span class="completed-count">--</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="consent"><strong>Timelines:</strong></p>
+                                    <table class="timelines-table">
+                                        <tr>
+                                            <td><span class="consent">Landing page</span></td>
+                                            <td><span class="consent">1 week</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="consent">Web app</span></td>
+                                            <td><span class="consent">1–3 months</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="consent">Social graphics</span></td>
+                                            <td><span class="consent">2 days</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="consent">Web app updates</span></td>
+                                            <td><span class="consent">1–6 hours</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="consent">Website updates</span></td>
+                                            <td><span class="consent">1–2 hours</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span class="consent">Tech support</span></td>
+                                            <td><span class="consent">1–3 hours</span></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <p class="mt-20px consent">* These are the standard timeline per request type. The
+                                    timeline maybe adjusted based on the current priority.</p>
+                            </div>
+
+                            <div class="col-2" data-tab-content="passive-support">
+                                <ul class="support-list">
+                                    <li>Customer support</li>
+                                    <li>Website maintenance</li>
+                                    <li>Uptime website monitoring</li>
+                                    <li>Stripe support</li>
+                                    <li>SEO health checks</li>
+                                    <li>Google Analytics Perf review</li>
+                                    <li>Presentation support</li>
+                                    <li>Website visual test</li>
+                                    <li>Technical standby support</li>
+                                    <li>Voucher app support</li>
+                                    <li>Kajabi support</li>
+                                    <li>KM Web app support</li>
+                                    <li>V-Score support</li>
+                                    <li>Domain support</li>
+                                </ul>
+
+                                <p class="mt-20px consent">* These are the tasks we perform daily when there are no
+                                    active requests.</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="task-status-container flex-col">
+                        <div class="flex-row items-center">
+                            <h4 class="ml-2em">Task Queue</h4>
+                            <button data-app-btn="new_task" class="text-base btn-primary btn text-lg ml-auto"
+                                target="_blank">
+                                <span>Create New Task</span>
+                            </button>
+                        </div>
+                        <div class="scrollable-table">
+                            <table class="task-list">
+                                <thead>
+                                    <th>
+                                        <span>Title</span>
+                                    </th>
+                                    <th>
+                                        <span>Type</span>
+                                    </th>
+                                    <th>
+                                        <span>Requestor</span>
+                                    </th>
+                                    <th>
+                                        <span>Received On</span>
+                                    </th>
+                                    <th>
+                                        <span>Due In</span>
+                                    </th>
+                                    <th>
+                                        <span>Priority</span>
+                                    </th>
+                                    <th>
+                                        <span></span>
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="task-title">----------</td>
+                                        <td class="queue-position">Queue Position: <span
+                                                class="queue-position-count">--</span></td>
+                                        <td class="task-action"><button type="button"
+                                                class="task-edit-btn">----------</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="task-title">----------</td>
+                                        <td class="queue-position">Queue Position: <span
+                                                class="queue-position-count">--</span></td>
+                                        <td class="task-action"><button type="button"
+                                                class="task-edit-btn">----------</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="task-title">----------</td>
+                                        <td class="queue-position">Queue Position: <span
+                                                class="queue-position-count">--</span></td>
+                                        <td class="task-action"><button type="button"
+                                                class="task-edit-btn">----------</button></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="task-action"><button type="button"
+                                                class="add-order-btn btn-primary">Add
+                                                Task</button></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <dialog class="taskOrder-dialog taskFormDialog">
+            <button class="dialog-close-btn">×</button>
+            <form action="" class="taskOrder-form disabled" id="taskOrder-form">
+                <span class="form-title">Task Order Details</span>
+                <div class="form-item flex-col">
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Task Name</span>
+                    <input class="form-control" type="text" name="order-name" required>
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Task Category</span>
+                    <select class="form-control" name="order-category" id="" required>
+                        <!-- <option value="Blog upload">Blog upload</option>
+                        <option value="Create new page">Create new page</option>
+                        <option value="Edit page">Edit existing page</option>
+                        <option value="Other">Other</option> -->
+
+                        <option value="Quick action">Quick action</option>
+                        <option selected value="Landing page">Landing page</option>
+                        <option value="Web app">Web app</option>
+                        <option value="Social graphics">Social graphics</option>
+                        <option value="Web app updates">Web app updates</option>
+                        <option value="Website updates">Website updates</option>
+                        <option value="Tech support">Tech support</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Queue Position</span>
+                    <select class="form-control" name="queue-position" id="" required>
+                    </select>
+                </div>
+                <div class="form-item flex-col">
+                    <a class="upload-file-btn btn" href="#" class="btn" target="_blank">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1.6em" height="1.6em"
+                            viewBox="0 0 48 48">
+                            <path fill="#1e88e5"
+                                d="M38.59,39c-0.535,0.93-0.298,1.68-1.195,2.197C36.498,41.715,35.465,42,34.39,42H13.61 c-1.074,0-2.106-0.285-3.004-0.802C9.708,40.681,9.945,39.93,9.41,39l7.67-9h13.84L38.59,39z">
+                            </path>
+                            <path fill="#fbc02d"
+                                d="M27.463,6.999c1.073-0.002,2.104-0.716,3.001-0.198c0.897,0.519,1.66,1.27,2.197,2.201l10.39,17.996 c0.537,0.93,0.807,1.967,0.808,3.002c0.001,1.037-1.267,2.073-1.806,3.001l-11.127-3.005l-6.924-11.993L27.463,6.999z">
+                            </path>
+                            <path fill="#e53935"
+                                d="M43.86,30c0,1.04-0.27,2.07-0.81,3l-3.67,6.35c-0.53,0.78-1.21,1.4-1.99,1.85L30.92,30H43.86z">
+                            </path>
+                            <path fill="#4caf50"
+                                d="M5.947,33.001c-0.538-0.928-1.806-1.964-1.806-3c0.001-1.036,0.27-2.073,0.808-3.004l10.39-17.996 c0.537-0.93,1.3-1.682,2.196-2.2c0.897-0.519,1.929,0.195,3.002,0.197l3.459,11.009l-6.922,11.989L5.947,33.001z">
+                            </path>
+                            <path fill="#1565c0"
+                                d="M17.08,30l-6.47,11.2c-0.78-0.45-1.46-1.07-1.99-1.85L4.95,33c-0.54-0.93-0.81-1.96-0.81-3H17.08z">
+                            </path>
+                            <path fill="#2e7d32"
+                                d="M30.46,6.8L24,18L17.53,6.8c0.78-0.45,1.66-0.73,2.6-0.79L27.46,6C28.54,6,29.57,6.28,30.46,6.8z">
+                            </path>
+                        </svg>
+                        <span>Upload Files Here</span>
+                    </a>
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Have you uploaded relevant materials to your Google drive?</span>
+                    <label for="order-file-uploaded-yes"><input type="radio" name="order-include-files"
+                            id="order-file-uploaded-yes" value="yes"> Yes</label>
+                    <label for="order-file-uploaded-na"><input type="radio" name="order-include-files"
+                            id="order-file-uploaded-na" value="na"> N/A</label>
+                </div>
+                <div class="form-item flex-col">
+                    <span class="form-item-title">Additional Instruction</span>
+                    <textarea class="form-control" name="order-additional-instruction" id="" cols="30"
+                        rows="10"></textarea>
+                </div>
+                <button class="taskOrder-submit-btn w-full text-base btn btn-primary" type="submit">Submit
+                    Request</button>
+            </form>
+        </dialog>
+
+    </div>
+    <!-- Include dummy data -->
+    <!-- <script src="/tempData.js"></script> -->
+    <script src="user-script.js"></script>
+
+</body>
+
+</html>
