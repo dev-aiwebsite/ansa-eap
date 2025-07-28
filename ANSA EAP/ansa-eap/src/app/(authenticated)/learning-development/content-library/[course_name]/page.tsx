@@ -1,9 +1,9 @@
 "use client";
 import { useParams } from "next/navigation";
-import { coursesData } from "../page";
 import { slugifyName } from "@/lib/helper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import { coursesData } from "@/app/demo/demoData";
 
 const CourseSinglePage = () => {
   const params = useParams();

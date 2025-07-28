@@ -1,6 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-import bcrypt from 'bcrypt';
+// import bcrypt from 'bcrypt';
 import { authConfig } from "./authConfig";
 import { getUserByEmail } from "./serverActions/crudUsers";
 import { ExtendedSession, ExtendedUser } from "./next-auth";

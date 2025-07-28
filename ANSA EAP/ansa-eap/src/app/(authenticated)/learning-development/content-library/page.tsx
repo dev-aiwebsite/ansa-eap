@@ -1,118 +1,10 @@
 "use client";
 import { BookOpen, Check, Clock } from "lucide-react";
-import {
-  IconBookMarkOrange,
-  IconIdeaHead,
-  IconPouringCup,
-  IconRulerPencil,
-} from "@/icons";
-import { JSX } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { slugifyName } from "@/lib/helper";
-
-type TypeCoursesData = {
-  id: string;
-  name: string;
-  author: string;
-  author_image: string;
-  experience: string;
-  icon: JSX.Element;
-  lessons_count: string;
-  total_time: string;
-  status: string;
-};
-
-export const coursesData: TypeCoursesData[] = [
-  {
-    id: "7WkBEQxkp8",
-    name: "Good to Great in Private Practice",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconBookMarkOrange />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxkp7",
-    name: "Common Conditions",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconRulerPencil />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxkp9",
-    name: "Practice GrowthRx",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconPouringCup />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxkp1",
-    name: "Mental Health 101",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconIdeaHead />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxka8",
-    name: "Good to Great in Private Practice",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconBookMarkOrange />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxkb7",
-    name: "Common Conditions",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconRulerPencil />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxkc9",
-    name: "Practice GrowthRx",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconPouringCup />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-  {
-    id: "7WkBEQxkd1",
-    name: "Mental Health 101",
-    author: "Jade Scott",
-    author_image: "",
-    experience: "5 years",
-    icon: <IconIdeaHead />,
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "complete",
-  },
-];
+import { coursesData, TypeCoursesData } from "@/app/demo/demoData";
+import { iconMap } from "@/lib/icon-map";
 
 const ContentLibraryPage = () => {
   return (
@@ -133,11 +25,12 @@ export default ContentLibraryPage;
 
 function Card({ item }: { item: TypeCoursesData }) {
     const slug = slugifyName(item.name)
-    
+    const IconComponent = iconMap[item.icon];
+
   return (
     <Link href={"/learning-development/content-library/" + slug}>
     <div className="card flex flex-col overflow-hidden relative gap-4">
-      <div className="rounded-full text-2xl">{item.icon}</div>
+      <div className="rounded-full text-2xl">  {IconComponent && <IconComponent />}</div>
       <h3 className="text-lg font-medium">{item.name}</h3>
       <div className="mt-auto space-y-2">
         <div className="flex flex-row gap-2 items-center">

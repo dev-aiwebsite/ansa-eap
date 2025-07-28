@@ -1,8 +1,8 @@
 "use client";
 import { useParams } from 'next/navigation';
-import { practionersData } from '../page';
 import { slugifyName } from '@/lib/helper';
 import Image from 'next/image';
+import { practionersData } from '@/app/demo/demoData';
 
 const PractionerSingle = () => {
   const params = useParams();

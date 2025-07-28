@@ -1,13 +1,13 @@
 "use client";
 import { useParams } from 'next/navigation';
-import { practionersData } from '../page';
 import { slugifyName } from '@/lib/helper';
 import Image from 'next/image';
+import { webinarsData } from '@/app/demo/demoData';
 
 const PractionerSingle = () => {
   const params = useParams();
   const practioner_name = params.practioner_name;
-  const practionerData = practionersData.filter(i => slugifyName(i.name) == practioner_name)[0]
+  const practionerData = webinarsData.filter(i => slugifyName(i.name) == practioner_name)[0]
 
   
   return (

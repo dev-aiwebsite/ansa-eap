@@ -8,7 +8,7 @@ import { useAppServiceContext } from "@/context/appServiceContext";
 const MoodWidget = () => {
     const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined)
     const {dailyCheckIns} = useAppServiceContext()
-
+console.log(dateFilter)
 
     const chartData:TypeChartData = {
         x: {
