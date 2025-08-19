@@ -7,3 +7,10 @@ export function slugifyName(name: string): string {
       .replace(/--+/g, '-');            // collapse multiple hyphens
   }
   
+  export function unslugifyName(slug: string): string {
+    return slug
+      .replace(/-/g, ' ')           // replace hyphens with spaces
+      .replace(/\b\w/g, (c) => c.toUpperCase()) // optional: capitalize first letters
+      .trim();
+  }
+  

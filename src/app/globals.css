@@ -186,7 +186,12 @@
     @apply md:min-w-[340px] md:w-[25vw] md:max-w-[500px]  rounded-3xl p-6 bg-card text-card-foreground bg-white h-full;
   }
 
-  
+  .form-control {
+    @apply !bg-white;
+  }
+  .form-item-label {
+    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
+  }
 }
 button {
   padding-inline: 1rem;

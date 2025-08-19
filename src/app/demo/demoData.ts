@@ -1,4 +1,5 @@
 import { iconMap } from "@/lib/icon-map";
+import { Webinar } from "@/serverActions/crudWebinars";
 
 export type TypeCoursesData = {
   id: string;
@@ -103,107 +104,116 @@ export const coursesData: TypeCoursesData[] = [
   },
 ];
 
-export type TypeWebinar = {
-  id: string
-  name: string
-  author: string
-  tag: string
-  video: string
-  thumbnail: string,
-  description: string
-}
 
-export const webinarsData: TypeWebinar[] = [
+export const webinarsData: Webinar[] = [
   {
     id: "7WkBEQxkp8",
-    name: "Breaking the Stigma: Understanding Mental Health",
+    title: "Breaking the Stigma: Understanding Mental Health",
     author: "Dr. Sarah Johnson",
-    tag: "Mental Health",
+    tags: "Mental Health",
     video: "/assets/videos/webinar1.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "An engaging talk focused on reducing stigma around mental health and promoting open conversations.",
+      updated_at: "",
+      created_at: "",
   },
   {
     id: "5f12muiL8h",
-    name: "Cognitive Behavioral Therapy Explained",
+    title: "Cognitive Behavioral Therapy Explained",
     author: "Prof. James Lee",
-    tag: "Therapy",
+    tags: "Therapy",
     video: "/assets/videos/webinar2.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "Learn the basics of CBT and how it can be applied to treat common psychological issues.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "wCiLvHDjmY",
-    name: "Workplace Wellness Strategies",
+    title: "Workplace Wellness Strategies",
     author: "Emily Carter",
-    tag: "Workplace",
+    tags: "Workplace",
     video: "/assets/videos/webinar3.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "Practical approaches for fostering well-being and productivity in professional environments.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "LsUN7u1c0j",
-    name: "Parenting in the Digital Age",
+    title: "Parenting in the Digital Age",
     author: "Michael Thompson",
-    tag: "Family",
+    tags: "Family",
     video: "/assets/videos/webinar4.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "A guide for parents to support their children in balancing technology use and healthy habits.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "pQl97z4Kf9",
-    name: "Mindfulness for Stress Reduction",
+    title: "Mindfulness for Stress Reduction",
     author: "Dr. Anna Patel",
-    tag: "Mindfulness",
+    tags: "Mindfulness",
     video: "/assets/videos/webinar5.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "Discover practical mindfulness techniques to reduce stress and improve emotional well-being.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "jIqBUQHlp5",
-    name: "Nutrition and Mental Health",
+    title: "Nutrition and Mental Health",
     author: "David Kim, RDN",
-    tag: "Health",
+    tags: "Health",
     video: "/assets/videos/webinar6.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "Explore the connection between diet and mental wellness, with evidence-based nutrition tips.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "D3l69bD53s",
-    name: "Supporting Adolescents Through Change",
+    title: "Supporting Adolescents Through Change",
     author: "Laura Garcia",
-    tag: "Adolescents",
+    tags: "Adolescents",
     video: "/assets/videos/webinar7.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "Insights into adolescent psychology and strategies for guiding teens through transitions.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "gqAq30XhpA",
-    name: "The Future of Teletherapy",
+    title: "The Future of Teletherapy",
     author: "Dr. Robert Wilson",
-    tag: "Technology",
+    tags: "Technology",
     video: "/assets/videos/webinar8.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "An overview of how teletherapy is shaping the future of mental health services.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
   {
     id: "7p2v1Ur_OE",
-    name: "Building Resilience in Challenging Times",
+    title: "Building Resilience in Challenging Times",
     author: "Sophia Martinez",
-    tag: "Resilience",
+    tags: "Resilience",
     video: "/assets/videos/webinar9.mp4",
     thumbnail: "/assets/images/webinar.jpg",
     description:
       "Tools and strategies to develop resilience and adaptability in uncertain situations.",
-  },
+    updated_at: "",
+      created_at: "",
+    },
 ]
 
   

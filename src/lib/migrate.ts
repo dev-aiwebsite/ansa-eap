@@ -44,6 +44,26 @@ const createDailyActivitiesTable = `
 `;
 
 
+const createWebinarsTable = `
+  CREATE TABLE IF NOT EXISTS webinars (
+    id TEXT PRIMARY KEY, -- nanoid
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    tags TEXT, -- could also be TEXT[] if you want multiple tags
+    video TEXT, -- optional (e.g. video URL)
+    thumbnail TEXT, -- optional (image URL)
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+  );
+`;
+
+const createTagsTable = `
+CREATE TABLE tags (
+  id TEXT PRIMARY KEY,      -- nanoid
+  name TEXT UNIQUE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);`;
 
 try {
     console.log("🚀 Starting migration...");
@@ -58,6 +78,8 @@ try {
     await pool.query(createUsersTable);
     await pool.query(createDailyActivitiesTable);
     await pool.query(createDailyCheckInsTable);
+    await pool.query(createWebinarsTable);
+    await pool.query(createTagsTable);
 
     console.log("✅ Tables created successfully.");
 
