@@ -48,6 +48,7 @@ const createWebinarsTable = `
   CREATE TABLE IF NOT EXISTS webinars (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,  
     author TEXT NOT NULL,
     tags TEXT, -- could also be TEXT[] if you want multiple tags
     video TEXT, -- optional (e.g. video URL)
@@ -61,6 +62,7 @@ const createBlogsTable = `
   CREATE TABLE IF NOT EXISTS blogs (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,  
     author TEXT NOT NULL,
     tags TEXT, -- could also be TEXT[] if you want multiple tags
     video TEXT, -- optional (e.g. video URL)
@@ -74,6 +76,7 @@ const createYogasTable = `
   CREATE TABLE IF NOT EXISTS yogas (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,  
     author TEXT NOT NULL,
     tags TEXT, -- could also be TEXT[] if you want multiple tags
     video TEXT, -- optional (e.g. video URL)

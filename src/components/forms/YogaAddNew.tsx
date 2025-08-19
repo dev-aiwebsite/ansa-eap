@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createYoga, Yoga } from "@/serverActions/crudYogas";
+import { slugifyName } from "@/lib/helper";
 
 
 export default function YogaAddNew() {
@@ -17,9 +18,9 @@ export default function YogaAddNew() {
 
   const onSubmit = async (data: Yoga) => {
     console.log("Form data:", data);
-
+    const slug = slugifyName(data.title)
       try {
-        const result = await createYoga(data)
+        const result = await createYoga({ ...data, slug })
         console.log(result)
         reset();
         

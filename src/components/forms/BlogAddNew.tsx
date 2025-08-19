@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createBlog, Blog } from "@/serverActions/crudBlogs";
+import { slugifyName } from "@/lib/helper";
 
 
 export default function BlogAddNew() {
@@ -17,9 +18,10 @@ export default function BlogAddNew() {
 
   const onSubmit = async (data: Blog) => {
     console.log("Form data:", data);
-
+    const slug = slugifyName(data.title)
+    
       try {
-        const result = await createBlog(data)
+        const result = await createBlog({ ...data, slug })
         console.log(result)
         reset();
         

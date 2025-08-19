@@ -7,11 +7,12 @@ import { getWebinarByTitle, Webinar } from "@/serverActions/crudWebinars";
 
 const WebinarSingle = () => {
   const params = useParams();
-  const webinarTitle = params.webinar_title;
+  const slug = params.webinar_title as string;
+  const webinarTitle = unslugifyName( slug )
   const [data,setData] = useState<Webinar | null>(null)
 
   useEffect(()=>{
-    getWebinarByTitle( unslugifyName( String(webinarTitle) ) )
+    getWebinarByTitle( webinarTitle )
     .then(res => {
       if(res.success && res.data){
         setData(res.data)
@@ -34,6 +35,7 @@ const WebinarSingle = () => {
         className="aspect-[16/9] video-shadow"
         src=""
         title={data.title}
+        thumbnail={data.thumbnail}
       ></Video>
       <div className="p-4">
         <h1 className="mt-6 text-xl font-medium">{data.title}</h1>

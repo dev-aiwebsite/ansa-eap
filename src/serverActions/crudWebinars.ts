@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 export type Webinar = {
   id: string;
   title: string;
+  slug: string;
   author: string;
   tags: string;
   video?: string;
@@ -25,8 +26,8 @@ export async function createWebinar(data: Omit<Webinar, "id" | "created_at" | "u
   try {
     const id = nanoid();
     const query = `
-      INSERT INTO webinars (id, title, author, tags, video, thumbnail, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO webinars (id, title, slug, author, tags, video, thumbnail, description)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
     const values = [id, data.title, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
@@ -66,6 +67,24 @@ export async function getWebinarById(id: string): Promise<Result<Webinar>> {
 export async function getWebinarByTitle(title: string): Promise<Result<Webinar>> {
     try {
       const result = await pool.query(`SELECT * FROM webinars WHERE title = $1`, [title]);
+  
+      if (!result.rows[0]) return { success: false, message: "Webinar not found" };
+  
+      return {
+        success: true,
+        message: "Webinar fetched successfully",
+        data: result.rows[0] as Webinar
+      };
+    } catch (error: unknown) {
+      let message = "An unknown error occurred";
+      if (error instanceof Error) message = error.message;
+  
+      return { success: false, message };
+    }
+  }
+export async function getWebinarBySlug(slug: string): Promise<Result<Webinar>> {
+    try {
+      const result = await pool.query(`SELECT * FROM webinars WHERE slug = $1`, [slug]);
   
       if (!result.rows[0]) return { success: false, message: "Webinar not found" };
   

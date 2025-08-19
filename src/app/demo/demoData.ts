@@ -109,6 +109,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "7WkBEQxkp8",
     title: "Breaking the Stigma: Understanding Mental Health",
+    slug: "",
     author: "Dr. Sarah Johnson",
     tags: "Mental Health",
     video: "/assets/videos/webinar1.mp4",
@@ -121,6 +122,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "5f12muiL8h",
     title: "Cognitive Behavioral Therapy Explained",
+    slug: "",
     author: "Prof. James Lee",
     tags: "Therapy",
     video: "/assets/videos/webinar2.mp4",
@@ -133,6 +135,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "wCiLvHDjmY",
     title: "Workplace Wellness Strategies",
+    slug: "",
     author: "Emily Carter",
     tags: "Workplace",
     video: "/assets/videos/webinar3.mp4",
@@ -145,6 +148,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "LsUN7u1c0j",
     title: "Parenting in the Digital Age",
+    slug: "",
     author: "Michael Thompson",
     tags: "Family",
     video: "/assets/videos/webinar4.mp4",
@@ -157,6 +161,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "pQl97z4Kf9",
     title: "Mindfulness for Stress Reduction",
+    slug: "",
     author: "Dr. Anna Patel",
     tags: "Mindfulness",
     video: "/assets/videos/webinar5.mp4",
@@ -169,6 +174,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "jIqBUQHlp5",
     title: "Nutrition and Mental Health",
+    slug: "",
     author: "David Kim, RDN",
     tags: "Health",
     video: "/assets/videos/webinar6.mp4",
@@ -181,6 +187,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "D3l69bD53s",
     title: "Supporting Adolescents Through Change",
+    slug: "",
     author: "Laura Garcia",
     tags: "Adolescents",
     video: "/assets/videos/webinar7.mp4",
@@ -193,6 +200,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "gqAq30XhpA",
     title: "The Future of Teletherapy",
+    slug: "",
     author: "Dr. Robert Wilson",
     tags: "Technology",
     video: "/assets/videos/webinar8.mp4",
@@ -205,6 +213,7 @@ export const webinarsData: Webinar[] = [
   {
     id: "7p2v1Ur_OE",
     title: "Building Resilience in Challenging Times",
+    slug: "",
     author: "Sophia Martinez",
     tags: "Resilience",
     video: "/assets/videos/webinar9.mp4",

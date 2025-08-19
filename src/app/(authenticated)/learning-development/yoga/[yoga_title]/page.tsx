@@ -1,17 +1,16 @@
 "use client";
 import { useParams } from "next/navigation";
-import { unslugifyName } from "@/lib/helper";
 import Video from "@/components/ui/video";
 import { useEffect, useState } from "react";
-import { getYogaByTitle, Yoga } from "@/serverActions/crudYogas";
+import { getYogaBySlug, Yoga } from "@/serverActions/crudYogas";
 
 const YogaSingle = () => {
   const params = useParams();
-  const yogaTitle = params.Yoga_title;
+  const slug = params.yoga_title as string;
   const [data,setData] = useState<Yoga | null>(null)
 
   useEffect(()=>{
-    getYogaByTitle( unslugifyName( String(yogaTitle) ) )
+    getYogaBySlug( slug )
     .then(res => {
       if(res.success && res.data){
         setData(res.data)
@@ -20,9 +19,7 @@ const YogaSingle = () => {
       }
     })
     
-
-
-  },[yogaTitle])
+  },[slug])
 
   return (
     <div className="flex gap-6 h-full">
@@ -34,6 +31,7 @@ const YogaSingle = () => {
         className="aspect-[16/9] video-shadow"
         src=""
         title={data.title}
+        thumbnail={data.thumbnail}
       ></Video>
       <div className="p-4">
         <h1 className="mt-6 text-xl font-medium">{data.title}</h1>

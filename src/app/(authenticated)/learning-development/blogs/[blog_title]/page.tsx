@@ -7,11 +7,12 @@ import { getBlogByTitle, Blog } from "@/serverActions/crudBlogs";
 
 const BlogSingle = () => {
   const params = useParams();
-  const blogTitle = params.Blog_title;
+  const slug = params.blog_title as string;
+  const blogTitle = unslugifyName( slug )
   const [data,setData] = useState<Blog | null>(null)
 
   useEffect(()=>{
-    getBlogByTitle( unslugifyName( String(blogTitle) ) )
+    getBlogByTitle( blogTitle )
     .then(res => {
       if(res.success && res.data){
         setData(res.data)
@@ -34,6 +35,7 @@ const BlogSingle = () => {
         className="aspect-[16/9] video-shadow"
         src=""
         title={data.title}
+        thumbnail={data.thumbnail}
       ></Video>
       <div className="p-4">
         <h1 className="mt-6 text-xl font-medium">{data.title}</h1>

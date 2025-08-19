@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 export type Blog = {
   id: string;
   title: string;
+  slug: string;
   author: string;
   tags: string;
   video?: string;
@@ -25,8 +26,8 @@ export async function createBlog(data: Omit<Blog, "id" | "created_at" | "updated
   try {
     const id = nanoid();
     const query = `
-      INSERT INTO Blogs (id, title, author, tags, video, thumbnail, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO blogs (id, title, slug, author, tags, video, thumbnail, description)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
     const values = [id, data.title, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
@@ -42,8 +43,8 @@ export async function createBlog(data: Omit<Blog, "id" | "created_at" | "updated
 // READ ALL
 export async function getBlogs(): Promise<Result<Blog[]>> {
   try {
-    const result = await pool.query(`SELECT * FROM Blogs ORDER BY created_at DESC`);
-    return { success: true, message: "Blogs fetched successfully", data: result.rows as Blog[] };
+    const result = await pool.query(`SELECT * FROM blogs ORDER BY created_at DESC`);
+    return { success: true, message: "blogs fetched successfully", data: result.rows as Blog[] };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
@@ -54,7 +55,7 @@ export async function getBlogs(): Promise<Result<Blog[]>> {
 // READ ONE
 export async function getBlogById(id: string): Promise<Result<Blog>> {
   try {
-    const result = await pool.query(`SELECT * FROM Blogs WHERE id = $1`, [id]);
+    const result = await pool.query(`SELECT * FROM blogs WHERE id = $1`, [id]);
     if (!result.rows[0]) return { success: false, message: "Blog not found" };
     return { success: true, message: "Blog fetched successfully", data: result.rows[0] as Blog };
   } catch (error: unknown) {
@@ -65,7 +66,25 @@ export async function getBlogById(id: string): Promise<Result<Blog>> {
 }
 export async function getBlogByTitle(title: string): Promise<Result<Blog>> {
     try {
-      const result = await pool.query(`SELECT * FROM Blogs WHERE title = $1`, [title]);
+      const result = await pool.query(`SELECT * FROM blogs WHERE title = $1`, [title]);
+  
+      if (!result.rows[0]) return { success: false, message: "Blog not found" };
+  
+      return {
+        success: true,
+        message: "Blog fetched successfully",
+        data: result.rows[0] as Blog
+      };
+    } catch (error: unknown) {
+      let message = "An unknown error occurred";
+      if (error instanceof Error) message = error.message;
+  
+      return { success: false, message };
+    }
+  }
+export async function getBlogBySlug(slug: string): Promise<Result<Blog>> {
+    try {
+      const result = await pool.query(`SELECT * FROM blogs WHERE slug = $1`, [slug]);
   
       if (!result.rows[0]) return { success: false, message: "Blog not found" };
   
@@ -97,7 +116,7 @@ export async function updateBlog(id: string, data: Partial<Omit<Blog, "id" | "cr
     values.push(id);
 
     const query = `
-      UPDATE Blogs
+      UPDATE blogs
       SET ${fields.join(", ")}, updated_at = NOW()
       WHERE id = $${i}
       RETURNING *;
@@ -116,7 +135,7 @@ export async function updateBlog(id: string, data: Partial<Omit<Blog, "id" | "cr
 // DELETE
 export async function deleteBlog(id: string): Promise<Result<Blog>> {
   try {
-    const result = await pool.query(`DELETE FROM Blogs WHERE id = $1 RETURNING *`, [id]);
+    const result = await pool.query(`DELETE FROM blogs WHERE id = $1 RETURNING *`, [id]);
     if (!result.rows[0]) return { success: false, message: "Blog not found" };
     return { success: true, message: "Blog deleted successfully", data: result.rows[0] as Blog };
   } catch (error: unknown) {

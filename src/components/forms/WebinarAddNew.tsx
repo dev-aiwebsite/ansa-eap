@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createWebinar, Webinar } from "@/serverActions/crudWebinars";
+import { slugifyName } from "@/lib/helper";
 
 
 export default function WebinarAddNew() {
@@ -17,9 +18,10 @@ export default function WebinarAddNew() {
 
   const onSubmit = async (data: Webinar) => {
     console.log("Form data:", data);
+    const slug = slugifyName(data.title)
 
       try {
-        const result = await createWebinar(data)
+        const result = await createWebinar({ ...data, slug })
         console.log(result)
         reset();
         
