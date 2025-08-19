@@ -45,7 +45,7 @@ function Card({ item }: { item: Yoga }) {
       <div className="flex">
         <div className="flex flex-row items-center gap-2">
           <Clock width="1em" className="text-app-purple-300 text-base" />
-          <span className="text-muted-foreground">1 - 2 hours</span>
+          <span className="text-muted-foreground">{item.duration_hours}:{item.duration_minutes}</span>
         </div>
         <Button className="ml-auto" variant="outline" href={`/learning-development/yoga/${item.slug}`}>
           Watch

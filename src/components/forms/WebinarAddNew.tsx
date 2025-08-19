@@ -77,6 +77,27 @@ export default function WebinarAddNew() {
           </div>
 
           <div className="form-item">
+        <label className="form-item-label">Duration</label>
+        <div className="flex gap-2">
+          <Input
+            type="number"
+            min={0}
+            {...register("duration_hours", { valueAsNumber: true })}
+            placeholder="Hours"
+            className="form-control w-30"
+          />
+          <Input
+            type="number"
+            min={0}
+            max={59}
+            {...register("duration_minutes", { valueAsNumber: true })}
+            placeholder="Minutes"
+            className="form-control w-30"
+          />
+        </div>
+      </div>
+
+          <div className="form-item">
             <label className="form-item-label">Description</label>
             <Textarea placeholder="Write description" {...register("description")} />
           </div>

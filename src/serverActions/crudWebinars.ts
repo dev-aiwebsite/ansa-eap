@@ -10,6 +10,8 @@ export type Webinar = {
   tags: string;
   video?: string;
   thumbnail?: string;
+  duration_hours: number;
+  duration_minutes: number;
   description?: string;
   created_at: string;
   updated_at: string;
@@ -26,11 +28,23 @@ export async function createWebinar(data: Omit<Webinar, "id" | "created_at" | "u
   try {
     const id = nanoid();
     const query = `
-      INSERT INTO webinars (id, title, slug, author, tags, video, thumbnail, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO webinars
+     (id, title, slug, author, tags, video, thumbnail, description, duration_hours, duration_minutes)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING *;
     `;
-    const values = [id, data.title, data.slug, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
+    const values = [
+      id,
+      data.title,
+      data.slug,
+      data.author,
+      data.tags,
+      data.video ?? null,
+      data.thumbnail ?? null,
+      data.description ?? null,
+      data.duration_hours,
+      data.duration_minutes
+    ];
     const result = await pool.query(query, values);
     return { success: true, message: "Webinar created successfully", data: result.rows[0] as Webinar };
   } catch (error: unknown) {
@@ -65,41 +79,41 @@ export async function getWebinarById(id: string): Promise<Result<Webinar>> {
   }
 }
 export async function getWebinarByTitle(title: string): Promise<Result<Webinar>> {
-    try {
-      const result = await pool.query(`SELECT * FROM webinars WHERE title = $1`, [title]);
-  
-      if (!result.rows[0]) return { success: false, message: "Webinar not found" };
-  
-      return {
-        success: true,
-        message: "Webinar fetched successfully",
-        data: result.rows[0] as Webinar
-      };
-    } catch (error: unknown) {
-      let message = "An unknown error occurred";
-      if (error instanceof Error) message = error.message;
-  
-      return { success: false, message };
-    }
+  try {
+    const result = await pool.query(`SELECT * FROM webinars WHERE title = $1`, [title]);
+
+    if (!result.rows[0]) return { success: false, message: "Webinar not found" };
+
+    return {
+      success: true,
+      message: "Webinar fetched successfully",
+      data: result.rows[0] as Webinar
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+
+    return { success: false, message };
   }
+}
 export async function getWebinarBySlug(slug: string): Promise<Result<Webinar>> {
-    try {
-      const result = await pool.query(`SELECT * FROM webinars WHERE slug = $1`, [slug]);
-  
-      if (!result.rows[0]) return { success: false, message: "Webinar not found" };
-  
-      return {
-        success: true,
-        message: "Webinar fetched successfully",
-        data: result.rows[0] as Webinar
-      };
-    } catch (error: unknown) {
-      let message = "An unknown error occurred";
-      if (error instanceof Error) message = error.message;
-  
-      return { success: false, message };
-    }
+  try {
+    const result = await pool.query(`SELECT * FROM webinars WHERE slug = $1`, [slug]);
+
+    if (!result.rows[0]) return { success: false, message: "Webinar not found" };
+
+    return {
+      success: true,
+      message: "Webinar fetched successfully",
+      data: result.rows[0] as Webinar
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+
+    return { success: false, message };
   }
+}
 
 // UPDATE
 export async function updateWebinar(id: string, data: Partial<Omit<Webinar, "id" | "created_at">>): Promise<Result<Webinar>> {
