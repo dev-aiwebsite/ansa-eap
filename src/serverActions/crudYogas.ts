@@ -30,7 +30,7 @@ export async function createYoga(data: Omit<Yoga, "id" | "created_at" | "updated
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
-    const values = [id, data.title, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
+    const values = [id, data.title, data.slug, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
     const result = await pool.query(query, values);
     return { success: true, message: "Yoga created successfully", data: result.rows[0] as Yoga };
   } catch (error: unknown) {

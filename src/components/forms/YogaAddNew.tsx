@@ -21,7 +21,7 @@ export default function YogaAddNew() {
     const slug = slugifyName(data.title)
       try {
         const result = await createYoga({ ...data, slug })
-        console.log(result)
+        console.log(result, 'query result')
         reset();
         
       } catch (error) {

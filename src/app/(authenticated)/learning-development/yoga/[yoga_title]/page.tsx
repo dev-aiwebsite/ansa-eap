@@ -24,12 +24,14 @@ const YogaSingle = () => {
   return (
     <div className="flex gap-6 h-full">
   
-  <div className="card flex-1">
+  <div className="card flex-1 overflow-hidden">
+    <div className="rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
+
   {data ? (
     <>
       <Video
         className="aspect-[16/9] video-shadow"
-        src=""
+        src={data.video}
         title={data.title}
         thumbnail={data.thumbnail}
       ></Video>
@@ -70,7 +72,7 @@ const YogaSingle = () => {
     </div>
   )}
 </div>
-
+</div>
   
 
 

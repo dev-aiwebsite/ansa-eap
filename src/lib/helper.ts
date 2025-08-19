@@ -14,3 +14,8 @@ export function slugifyName(name: string): string {
       .trim();
   }
   
+
+  export function truncateText(text: string, maxChars: number, ending = '…'): string {
+    if (text.length <= maxChars) return text;
+    return text.slice(0, maxChars).trimEnd() + ending;
+  }

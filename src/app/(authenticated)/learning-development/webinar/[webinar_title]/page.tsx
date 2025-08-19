@@ -1,18 +1,16 @@
 "use client";
 import { useParams } from "next/navigation";
-import { unslugifyName } from "@/lib/helper";
 import Video from "@/components/ui/video";
 import { useEffect, useState } from "react";
-import { getWebinarByTitle, Webinar } from "@/serverActions/crudWebinars";
+import { getWebinarBySlug, Webinar } from "@/serverActions/crudWebinars";
 
 const WebinarSingle = () => {
   const params = useParams();
   const slug = params.webinar_title as string;
-  const webinarTitle = unslugifyName( slug )
   const [data,setData] = useState<Webinar | null>(null)
 
   useEffect(()=>{
-    getWebinarByTitle( webinarTitle )
+    getWebinarBySlug( slug )
     .then(res => {
       if(res.success && res.data){
         setData(res.data)
@@ -23,17 +21,19 @@ const WebinarSingle = () => {
     
 
 
-  },[webinarTitle])
+  },[slug])
 
   return (
     <div className="flex gap-6 h-full">
   
-  <div className="card flex-1">
+    
+  <div className="card flex-1 overflow-hidden">
+    <div className="rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
   {data ? (
     <>
       <Video
         className="aspect-[16/9] video-shadow"
-        src=""
+        src={data.video}
         title={data.title}
         thumbnail={data.thumbnail}
       ></Video>
@@ -74,7 +74,7 @@ const WebinarSingle = () => {
     </div>
   )}
 </div>
-
+</div>
   
 
 
