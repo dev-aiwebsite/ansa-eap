@@ -57,6 +57,32 @@ const createWebinarsTable = `
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
   );
 `;
+const createBlogsTable = `
+  CREATE TABLE IF NOT EXISTS blogs (
+    id TEXT PRIMARY KEY, -- nanoid
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    tags TEXT, -- could also be TEXT[] if you want multiple tags
+    video TEXT, -- optional (e.g. video URL)
+    thumbnail TEXT, -- optional (image URL)
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+  );
+`;
+const createYogasTable = `
+  CREATE TABLE IF NOT EXISTS yogas (
+    id TEXT PRIMARY KEY, -- nanoid
+    title TEXT NOT NULL,
+    author TEXT NOT NULL,
+    tags TEXT, -- could also be TEXT[] if you want multiple tags
+    video TEXT, -- optional (e.g. video URL)
+    thumbnail TEXT, -- optional (image URL)
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+  );
+`;
 
 const createTagsTable = `
 CREATE TABLE tags (
@@ -80,6 +106,8 @@ try {
     await pool.query(createDailyCheckInsTable);
     await pool.query(createWebinarsTable);
     await pool.query(createTagsTable);
+    await pool.query(createBlogsTable);
+    await pool.query(createYogasTable);
 
     console.log("✅ Tables created successfully.");
 

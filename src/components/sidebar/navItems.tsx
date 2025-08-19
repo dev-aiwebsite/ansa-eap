@@ -45,6 +45,14 @@ export const navItems: NavItemsType[] = [
         title: "Webinar",
         link: "/learning-development/webinar",
       },
+      {
+        title: "Yoga",
+        link: "/learning-development/yoga",
+      },
+      {
+        title: "Blogs",
+        link: "/learning-development/blogs",
+      },
     ],
   },
 ];
