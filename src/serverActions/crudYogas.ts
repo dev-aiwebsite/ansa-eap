@@ -10,6 +10,8 @@ export type Yoga = {
   tags: string;
   video?: string;
   thumbnail?: string;
+  duration_hours: number;
+  duration_minutes: number;
   description?: string;
   created_at: string;
   updated_at: string;
@@ -26,11 +28,23 @@ export async function createYoga(data: Omit<Yoga, "id" | "created_at" | "updated
   try {
     const id = nanoid();
     const query = `
-      INSERT INTO yogas (id, title, slug, author, tags, video, thumbnail, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO yogas
+     (id, title, slug, author, tags, video, thumbnail, description, duration_hours, duration_minutes)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING *;
     `;
-    const values = [id, data.title, data.slug, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
+    const values = [
+      id,
+      data.title,
+      data.slug,
+      data.author,
+      data.tags,
+      data.video ?? null,
+      data.thumbnail ?? null,
+      data.description ?? null,
+      data.duration_hours,
+      data.duration_minutes
+    ];
     const result = await pool.query(query, values);
     return { success: true, message: "Yoga created successfully", data: result.rows[0] as Yoga };
   } catch (error: unknown) {
@@ -65,41 +79,41 @@ export async function getYogaById(id: string): Promise<Result<Yoga>> {
   }
 }
 export async function getYogaByTitle(title: string): Promise<Result<Yoga>> {
-    try {
-      const result = await pool.query(`SELECT * FROM yogas WHERE title = $1`, [title]);
-  
-      if (!result.rows[0]) return { success: false, message: "Yoga not found" };
-  
-      return {
-        success: true,
-        message: "Yoga fetched successfully",
-        data: result.rows[0] as Yoga
-      };
-    } catch (error: unknown) {
-      let message = "An unknown error occurred";
-      if (error instanceof Error) message = error.message;
-  
-      return { success: false, message };
-    }
+  try {
+    const result = await pool.query(`SELECT * FROM yogas WHERE title = $1`, [title]);
+
+    if (!result.rows[0]) return { success: false, message: "Yoga not found" };
+
+    return {
+      success: true,
+      message: "Yoga fetched successfully",
+      data: result.rows[0] as Yoga
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+
+    return { success: false, message };
   }
-  export async function getYogaBySlug(slug: string): Promise<Result<Yoga>> {
-    try {
-      const result = await pool.query(`SELECT * FROM yogas WHERE slug = $1`, [slug]);
-  
-      if (!result.rows[0]) return { success: false, message: "Yoga not found" };
-  
-      return {
-        success: true,
-        message: "Yoga fetched successfully",
-        data: result.rows[0] as Yoga
-      };
-    } catch (error: unknown) {
-      let message = "An unknown error occurred";
-      if (error instanceof Error) message = error.message;
-  
-      return { success: false, message };
-    }
+}
+export async function getYogaBySlug(slug: string): Promise<Result<Yoga>> {
+  try {
+    const result = await pool.query(`SELECT * FROM yogas WHERE slug = $1`, [slug]);
+
+    if (!result.rows[0]) return { success: false, message: "Yoga not found" };
+
+    return {
+      success: true,
+      message: "Yoga fetched successfully",
+      data: result.rows[0] as Yoga
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+
+    return { success: false, message };
   }
+}
 
 // UPDATE
 export async function updateYoga(id: string, data: Partial<Omit<Yoga, "id" | "created_at">>): Promise<Result<Yoga>> {

@@ -114,6 +114,8 @@ export const webinarsData: Webinar[] = [
     tags: "Mental Health",
     video: "/assets/videos/webinar1.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "An engaging talk focused on reducing stigma around mental health and promoting open conversations.",
       updated_at: "",
@@ -127,6 +129,8 @@ export const webinarsData: Webinar[] = [
     tags: "Therapy",
     video: "/assets/videos/webinar2.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "Learn the basics of CBT and how it can be applied to treat common psychological issues.",
     updated_at: "",
@@ -140,6 +144,8 @@ export const webinarsData: Webinar[] = [
     tags: "Workplace",
     video: "/assets/videos/webinar3.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "Practical approaches for fostering well-being and productivity in professional environments.",
     updated_at: "",
@@ -153,6 +159,8 @@ export const webinarsData: Webinar[] = [
     tags: "Family",
     video: "/assets/videos/webinar4.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "A guide for parents to support their children in balancing technology use and healthy habits.",
     updated_at: "",
@@ -166,6 +174,8 @@ export const webinarsData: Webinar[] = [
     tags: "Mindfulness",
     video: "/assets/videos/webinar5.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "Discover practical mindfulness techniques to reduce stress and improve emotional well-being.",
     updated_at: "",
@@ -179,6 +189,8 @@ export const webinarsData: Webinar[] = [
     tags: "Health",
     video: "/assets/videos/webinar6.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "Explore the connection between diet and mental wellness, with evidence-based nutrition tips.",
     updated_at: "",
@@ -192,6 +204,8 @@ export const webinarsData: Webinar[] = [
     tags: "Adolescents",
     video: "/assets/videos/webinar7.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "Insights into adolescent psychology and strategies for guiding teens through transitions.",
     updated_at: "",
@@ -205,6 +219,8 @@ export const webinarsData: Webinar[] = [
     tags: "Technology",
     video: "/assets/videos/webinar8.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "An overview of how teletherapy is shaping the future of mental health services.",
     updated_at: "",
@@ -218,6 +234,8 @@ export const webinarsData: Webinar[] = [
     tags: "Resilience",
     video: "/assets/videos/webinar9.mp4",
     thumbnail: "/assets/images/webinar.jpg",
+    duration_hours: 0,
+    duration_minutes: 0,
     description:
       "Tools and strategies to develop resilience and adaptability in uncertain situations.",
     updated_at: "",

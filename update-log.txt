@@ -1,0 +1,13 @@
+ALTER TABLE yogas
+ADD COLUMN duration_hours INTEGER DEFAULT 0,
+ADD COLUMN duration_minutes INTEGER DEFAULT 0;
+
+ALTER TABLE blogs
+ADD COLUMN duration_hours INTEGER DEFAULT 0,
+ADD COLUMN duration_minutes INTEGER DEFAULT 0;
+
+ALTER TABLE webinars
+ADD COLUMN duration_hours INTEGER DEFAULT 0,
+ADD COLUMN duration_minutes INTEGER DEFAULT 0;
+
+

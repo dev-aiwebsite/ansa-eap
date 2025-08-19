@@ -50,7 +50,7 @@ const BlogSingle = () => {
         </div>
         <div className="mt-10">
           <p className="font-medium text-sm">Description</p>
-          <p className="text-sm mt-2 text-muted-foreground">{data.description}</p>
+          <p className="text-sm mt-2 text-muted-foreground whitespace-pre-wrap">{data.description}</p>
         </div>
       </div>
     </>

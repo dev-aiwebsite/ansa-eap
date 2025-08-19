@@ -10,6 +10,8 @@ export type Blog = {
   tags: string;
   video?: string;
   thumbnail?: string;
+  duration_hours: number;
+  duration_minutes: number;
   description?: string;
   created_at: string;
   updated_at: string;
@@ -26,11 +28,23 @@ export async function createBlog(data: Omit<Blog, "id" | "created_at" | "updated
   try {
     const id = nanoid();
     const query = `
-      INSERT INTO blogs (id, title, slug, author, tags, video, thumbnail, description)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO blogs
+      (id, title, slug, author, tags, video, thumbnail, description, duration_hours, duration_minutes)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING *;
     `;
-    const values = [id, data.title, data.slug, data.author, data.tags, data.video ?? null, data.thumbnail ?? null, data.description ?? null];
+    const values = [
+      id,
+      data.title,
+      data.slug,
+      data.author,
+      data.tags,
+      data.video ?? null,
+      data.thumbnail ?? null,
+      data.description ?? null,
+      data.duration_hours,
+      data.duration_minutes
+    ];
     const result = await pool.query(query, values);
     return { success: true, message: "Blog created successfully", data: result.rows[0] as Blog };
   } catch (error: unknown) {

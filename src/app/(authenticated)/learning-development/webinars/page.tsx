@@ -9,7 +9,7 @@ const WebinarPage = async () => {
 
   return (
     <div>
-      <Button href="/learning-development/webinar/new" className="flex ml-auto"> <Plus /> Add New</Button>
+      <Button href="/learning-development/webinars/new" className="flex ml-auto"> <Plus /> Add New</Button>
     <div className="grid">
       <div>
         <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-y-10 w-full-sidebar">
@@ -44,9 +44,9 @@ function Card({ item }: { item: Webinar }) {
       <div className="flex">
         <div className="flex flex-row items-center gap-2">
           <Clock width="1em" className="text-app-purple-300 text-base" />
-          <span className="text-muted-foreground">1 - 2 hours</span>
+          <span className="text-muted-foreground">{item.duration_hours}:{item.duration_minutes}</span>
         </div>
-        <Button className="ml-auto" variant="outline" href={`/learning-development/webinar/${item.slug}`}>
+        <Button className="ml-auto" variant="outline" href={`/learning-development/webinars/${item.slug}`}>
           Watch
         </Button>
       </div>
