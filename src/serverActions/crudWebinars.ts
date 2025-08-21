@@ -9,6 +9,7 @@ export type Webinar = {
   author: string;
   tags: string;
   video?: string;
+  audio?: string;
   thumbnail?: string;
   duration_hours: number;
   duration_minutes: number;
@@ -29,7 +30,7 @@ export async function createWebinar(data: Omit<Webinar, "id" | "created_at" | "u
     const id = nanoid();
     const query = `
       INSERT INTO webinars
-     (id, title, slug, author, tags, video, thumbnail, description, duration_hours, duration_minutes)
+     (id, title, slug, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       RETURNING *;
     `;
@@ -40,6 +41,7 @@ export async function createWebinar(data: Omit<Webinar, "id" | "created_at" | "u
       data.author,
       data.tags,
       data.video ?? null,
+      data.audio ?? null,
       data.thumbnail ?? null,
       data.description ?? null,
       data.duration_hours,

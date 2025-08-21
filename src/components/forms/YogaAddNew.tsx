@@ -9,7 +9,7 @@ import { slugifyName } from "@/lib/helper";
 import { usePathname } from "next/navigation";
 
 export default function YogaAddNew() {
-  const pathName = usePathname()
+  const pathName = usePathname();
   const {
     register,
     handleSubmit,
@@ -19,7 +19,7 @@ export default function YogaAddNew() {
 
   const onSubmit = async (data: Yoga) => {
     console.log("Form data:", data);
-    const slug = `${pathName.slice(0,-3)}${slugifyName(data.title)}`
+    const slug = `${pathName.slice(0, -3)}${slugifyName(data.title)}`;
     try {
       const result = await createYoga({ ...data, slug });
       console.log(result, "query result");
@@ -68,6 +68,10 @@ export default function YogaAddNew() {
         <label className="form-item-label">Video link</label>
         <Input placeholder="Video link" {...register("video")} />
       </div>
+      <div className="form-item">
+        <label className="form-item-label">Audio link</label>
+        <Input placeholder="Audio link" {...register("audio")} />
+      </div>
 
       <div className="form-item">
         <label className="form-item-label">Thumbnail</label>
@@ -77,21 +81,34 @@ export default function YogaAddNew() {
       <div className="form-item">
         <label className="form-item-label">Duration</label>
         <div className="flex gap-2">
-          <Input
-            type="number"
-            min={0}
-            {...register("duration_hours", { valueAsNumber: true })}
-            placeholder="Hours"
-            className="form-control w-30"
-          />
-          <Input
-            type="number"
-            min={0}
-            max={59}
-            {...register("duration_minutes", { valueAsNumber: true })}
-            placeholder="Minutes"
-            className="form-control w-30"
-          />
+          <div>
+            <label htmlFor="" className="label-inset">
+              Hours
+            </label>
+            <Input
+              type="number"
+              min={0}
+              defaultValue={0}
+              {...register("duration_hours", { valueAsNumber: true })}
+              placeholder="00"
+              className="form-control w-30"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="" className="label-inset">
+              Minutes
+            </label>
+            <Input
+              type="number"
+              min={0}
+              max={59}
+              defaultValue={0}
+              {...register("duration_minutes", { valueAsNumber: true })}
+              placeholder="00"
+              className="form-control w-30"
+            />
+          </div>
         </div>
       </div>
 

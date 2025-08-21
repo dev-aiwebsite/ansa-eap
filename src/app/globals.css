@@ -192,6 +192,11 @@
   .form-item-label {
     @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
   }
+  
+  .label-inset {
+    @apply ml-[1ch] text-xs translate-y-1/2 block bg-white p-[2px] w-fit;
+  }
+
 }
 button {
   padding-inline: 1rem;
