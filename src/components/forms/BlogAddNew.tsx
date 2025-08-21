@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createBlog, Blog } from "@/serverActions/crudBlogs";
 import { slugifyName } from "@/lib/helper";
+import { usePathname } from "next/navigation";
 
 
 export default function BlogAddNew() {
+  const pathName = usePathname()
   const {
     register,
     handleSubmit,
@@ -18,7 +20,7 @@ export default function BlogAddNew() {
 
   const onSubmit = async (data: Blog) => {
     console.log("Form data:", data);
-    const slug = slugifyName(data.title)
+    const slug = `${pathName.slice(0,-3)}${slugifyName(data.title)}`
     
       try {
         const result = await createBlog({ ...data, slug })

@@ -6,8 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createYoga, Yoga } from "@/serverActions/crudYogas";
 import { slugifyName } from "@/lib/helper";
+import { usePathname } from "next/navigation";
 
 export default function YogaAddNew() {
+  const pathName = usePathname()
   const {
     register,
     handleSubmit,
@@ -17,7 +19,7 @@ export default function YogaAddNew() {
 
   const onSubmit = async (data: Yoga) => {
     console.log("Form data:", data);
-    const slug = slugifyName(data.title);
+    const slug = `${pathName.slice(0,-3)}${slugifyName(data.title)}`
     try {
       const result = await createYoga({ ...data, slug });
       console.log(result, "query result");

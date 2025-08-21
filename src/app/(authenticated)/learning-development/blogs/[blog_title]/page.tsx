@@ -1,16 +1,15 @@
 "use client";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Video from "@/components/ui/video";
 import { useEffect, useState } from "react";
 import { Blog, getBlogBySlug } from "@/serverActions/crudBlogs";
 
 const BlogSingle = () => {
-  const params = useParams();
-  const slug = params.blog_title as string;
+  const pathName = usePathname()
   const [data,setData] = useState<Blog | null>(null)
 
   useEffect(()=>{
-    getBlogBySlug( slug )
+    getBlogBySlug( pathName )
     .then(res => {
       if(res.success && res.data){
         setData(res.data)
@@ -19,9 +18,7 @@ const BlogSingle = () => {
       }
     })
     
-
-
-  },[slug])
+  },[pathName])
 
   return (
     <div className="flex gap-6 h-full">

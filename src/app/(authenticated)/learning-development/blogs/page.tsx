@@ -47,7 +47,7 @@ function Card({ item }: { item: Blog }) {
           <Clock width="1em" className="text-app-purple-300 text-base" />
           <span className="text-muted-foreground">1 - 2 hours</span>
         </div>
-        <Button className="ml-auto" variant="outline" href={`/learning-development/blogs/${item.slug}`}>
+        <Button className="ml-auto" variant="outline" href={item.slug}>
           Watch
         </Button>
       </div>
