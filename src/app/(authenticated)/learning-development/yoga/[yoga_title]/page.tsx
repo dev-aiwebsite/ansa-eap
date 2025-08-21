@@ -1,16 +1,15 @@
 "use client";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Video from "@/components/ui/video";
 import { useEffect, useState } from "react";
 import { getYogaBySlug, Yoga } from "@/serverActions/crudYogas";
 
 const YogaSingle = () => {
-  const params = useParams();
-  const slug = params.yoga_title as string;
+  const pathName = usePathname()
   const [data,setData] = useState<Yoga | null>(null)
 
   useEffect(()=>{
-    getYogaBySlug( slug )
+    getYogaBySlug( pathName )
     .then(res => {
       if(res.success && res.data){
         setData(res.data)
@@ -19,7 +18,7 @@ const YogaSingle = () => {
       }
     })
     
-  },[slug])
+  },[pathName])
 
   return (
     <div className="flex gap-6 h-full">

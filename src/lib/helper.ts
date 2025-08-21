@@ -19,3 +19,10 @@ export function slugifyName(name: string): string {
     if (text.length <= maxChars) return text;
     return text.slice(0, maxChars).trimEnd() + ending;
   }
+
+  export function formatDuration(hours: number, minutes: number): string {
+    const h = hours > 0 ? `${hours}h` : "";
+    const m = minutes > 0 ? `${minutes}m` : "";
+    return `${h} ${m}`.trim() || "0m";
+  }
+  
