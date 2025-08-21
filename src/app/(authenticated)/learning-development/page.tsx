@@ -12,7 +12,7 @@ export type LearningDevelopment = {
   link: string;
 };
 
-export const coursesData: LearningDevelopment[] = [
+const coursesData: LearningDevelopment[] = [
   {
     name: "Video Contents",
     icon: "IconBookMarkOrange",
