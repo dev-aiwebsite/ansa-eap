@@ -1,16 +1,17 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { createWebinar, Webinar } from "@/serverActions/crudWebinars";
 import { slugifyName } from "@/lib/helper";
 import { usePathname } from "next/navigation";
+import { TiptapEditor } from "../ui/tiptap-editor";
 
 export default function WebinarAddNew() {
   const pathName = usePathname();
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -112,12 +113,14 @@ export default function WebinarAddNew() {
           </div>
         </div>
       </div>
-
       <div className="form-item">
         <label className="form-item-label">Description</label>
-        <Textarea
-          placeholder="Write description"
-          {...register("description")}
+        <Controller
+          name="description"
+          control={control} // from useForm
+          render={({ field }) => (
+            <TiptapEditor value={field.value ?? ""} onChange={field.onChange} />
+          )}
         />
       </div>
 
