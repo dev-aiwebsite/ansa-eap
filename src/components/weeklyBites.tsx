@@ -4,55 +4,140 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Heart } from "lucide-react";
 import ImageWithFallback from "./ui/imageWithFallback";
 import { getBlogs } from "@/serverActions/crudBlogs";
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { formatDuration } from "@/lib/helper";
+import { getWebinars } from "@/serverActions/crudWebinars";
+import Link from "next/link";
 
 
 
 const WeeklyBites = () => {
   const [blogData, setBlogData] = useState<WeeklyBitesData[]>([])
+  const [clipsData, setClipsData] = useState<WeeklyBitesData[]>([])
+  const [newsData, setNewsData] = useState<WeeklyBitesData[]>([])
+  const [activeTab, setActiveTab] = useState("blogs")
 
-  useEffect(()=>{
-    if(!blogData.length){
-      getBlogs()
-      .then(res => {
-        if(res.success){
-          const resData = res.data
-          console.log(res, 'res')
-          if(resData){
-            const forBlogData:WeeklyBitesData[] = resData.map(i => {
-              return {
-                id: i.id,
-                image: i.thumbnail,
-                title: i.title,
-                author: i.author,
-                likes: 0,
-                duration: formatDuration(0, 5),
-                action: "read",
-                link: i.slug,
+function getBlogData(){
+  if(!blogData.length){
+    getBlogs()
+    .then(res => {
+      if(res.success){
+        const resData = res.data
+        console.log(res, 'res')
+        if(resData){
+          const forBlogData:WeeklyBitesData[] = resData
+          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0,4)
+          .map(i => {
+            return {
+              id: i.id,
+              image: i.thumbnail,
+              title: i.title,
+              author: i.author,
+              likes: 0,
+              duration: formatDuration(0, 5),
+              action: "read",
+              link: i.slug,
 
-              }
-            })
-            setBlogData(forBlogData)
-          }
+            }
+          })
+          setBlogData(forBlogData)
         }
-      })
-    }
-  },[])
+      }
+    })
+  }
+}
+function getClipsData(){
+  if(!clipsData.length){
+    getWebinars()
+    .then(res => {
+      if(res.success){
+        const resData = res.data
+        console.log(res, 'res')
+        if(resData){
+          const formattedData:WeeklyBitesData[] = resData
+          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0,4)
+          .map(i => {
+            return {
+              id: i.id,
+              image: i.thumbnail,
+              title: i.title,
+              author: i.author,
+              likes: 0,
+              duration: formatDuration(0, 5),
+              action: "read",
+              link: i.slug,
 
-  console.log(blogData, 'blogData')
+            }
+          })
+          setClipsData(formattedData)
+        }
+      }
+    })
+  }
+}
+function getNewsData(){
+  if(!newsData.length){
+    getBlogs()
+    .then(res => {
+      if(res.success){
+        const resData = res.data
+        console.log(res, 'res')
+        if(resData){
+          const forBlogData:WeeklyBitesData[] = resData
+          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+          .slice(0,4)
+          .map(i => {
+            return {
+              id: i.id,
+              image: i.thumbnail,
+              title: i.title,
+              author: i.author,
+              likes: 0,
+              duration: formatDuration(0, 5),
+              action: "read",
+              link: i.slug,
+
+            }
+          })
+          setNewsData(forBlogData)
+        }
+      }
+    })
+  }
+}
+
+useEffect(()=>{
+  switch (activeTab) {
+    case "blogs":
+      getBlogData();
+      break;
+    case "clips":
+      getClipsData();
+      break;
+    case "news":
+      getNewsData()
+      break;
+    default:
+      break;
+  }
+},[activeTab])
+
+
+
   return (
     <div>
-      <Tabs defaultValue="blogs" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-between items-center mb-4">
           <h3 className="card-title">Weekly Bites</h3>
           <TabsList className="bg-transparent rounded-md p-1">
-            <TabsTrigger
-              value="all"
+            <Link
+            href="/learning-development"
               className="data-[state=active]:text-primary data-[state=active]:font-bold !py-1 !px-2 !ring-0 !shadow-none"
             >
-              All
-            </TabsTrigger>
+              See All
+            </Link>
             <TabsTrigger
               value="clips"
               className="data-[state=active]:text-primary data-[state=active]:font-bold !py-1 !px-2 !ring-0 !shadow-none"
@@ -79,13 +164,21 @@ const WeeklyBites = () => {
 
 
         </TabsContent>
-        <TabsContent value="clips">Clips content</TabsContent>
+        <TabsContent value="clips">
+        { (blogData.length) && 
+            <WeeklyBitesTable data={clipsData}/>
+          }
+        </TabsContent>
         <TabsContent value="blogs">
           { (blogData.length) && 
             <WeeklyBitesTable data={blogData}/>
           }
         </TabsContent>
-        <TabsContent value="news">Allied Health News</TabsContent>
+        <TabsContent value="news">
+            { (blogData.length) && 
+            <WeeklyBitesTable data={newsData}/>
+          }
+        </TabsContent>
       </Tabs>
     </div>
   );
@@ -112,12 +205,12 @@ function WeeklyBitesTable ({data}:{data:WeeklyBitesData[]}) {
     { data.map(item => (
              <tr key={item.id} className="text-xs rounded-lg border border-muted">
              <td>
-               <ImageWithFallback width={60} height={60} alt={item.title} src={item.image}/>
+               <ImageWithFallback className="max-h-[32px] rounded" width={50} height={32} alt={item.title} src={item.image}/>
              </td>
              <td className="align-middle">
                  <div>
                      <p>{item.title}</p>
-                     <p className="text-xs text-muted-foreground">By {item.author}</p>
+                     <p className="text-xs text-muted-foreground">{item.author}</p>
                  </div>
              </td>
              <td className="align-middle">
