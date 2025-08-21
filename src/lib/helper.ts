@@ -26,3 +26,7 @@ export function slugifyName(name: string): string {
     return `${h} ${m}`.trim() || "0m";
   }
   
+  export const stripHtml = (html: string) => {
+    return html.replace(/<[^>]*>/g, ""); // remove all tags
+  }
+  
