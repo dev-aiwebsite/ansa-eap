@@ -38,11 +38,7 @@ export const navItems: NavItemsType[] = [
     icon: <IconDocument width="1.3rem" />,
     subitems: [
       {
-        title: "Content Library",
-        link: "/learning-development/content-library",
-      },
-      {
-        title: "Webinars",
+        title: "Video Contents",
         link: "/learning-development/webinars",
       },
       {
@@ -50,7 +46,7 @@ export const navItems: NavItemsType[] = [
         link: "/learning-development/yoga",
       },
       {
-        title: "Blogs",
+        title: "3 minute read",
         link: "/learning-development/blogs",
       },
     ],
