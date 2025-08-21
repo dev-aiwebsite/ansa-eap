@@ -2,7 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["ansahealth.com.au"], // allow external images
+    domains:[
+      "ansahealth.com.au",
+      "ucarecdn.com"
+    ], // allow external images
   },
 };
 

@@ -31,7 +31,7 @@ export async function createWebinar(data: Omit<Webinar, "id" | "created_at" | "u
     const query = `
       INSERT INTO webinars
      (id, title, slug, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
       RETURNING *;
     `;
     const values = [
