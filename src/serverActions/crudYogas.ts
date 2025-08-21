@@ -9,6 +9,7 @@ export type Yoga = {
   author: string;
   tags: string;
   video?: string;
+  audio?: string;
   thumbnail?: string;
   duration_hours: number;
   duration_minutes: number;
@@ -29,8 +30,8 @@ export async function createYoga(data: Omit<Yoga, "id" | "created_at" | "updated
     const id = nanoid();
     const query = `
       INSERT INTO yogas
-     (id, title, slug, author, tags, video, thumbnail, description, duration_hours, duration_minutes)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+     (id, title, slug, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
       RETURNING *;
     `;
     const values = [
@@ -40,6 +41,7 @@ export async function createYoga(data: Omit<Yoga, "id" | "created_at" | "updated
       data.author,
       data.tags,
       data.video ?? null,
+      data.audio ?? null,
       data.thumbnail ?? null,
       data.description ?? null,
       data.duration_hours,

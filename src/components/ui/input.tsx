@@ -1,9 +1,14 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+type InputProps = React.ComponentProps<"input"> & {
+  label?: string;
+};
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+function Input({ label, className, type = "text", ...props }: InputProps) {
   return (
+    <>
+    {label && <label htmlFor={props.id}>{label}</label>}
     <input
       type={type}
       data-slot="input"
@@ -15,6 +20,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       )}
       {...props}
     />
+    </>
   )
 }
 

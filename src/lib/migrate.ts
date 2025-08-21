@@ -1,8 +1,8 @@
 import pool from "./db";
 
-async function migrate(){
+async function migrate() {
 
-    const resetDatabase = `
+  const resetDatabase = `
     DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;
     GRANT ALL ON SCHEMA public TO ansaadmin;
@@ -21,7 +21,7 @@ async function migrate(){
   );
 `;
 
-const createDailyActivitiesTable = `
+  const createDailyActivitiesTable = `
   CREATE TABLE daily_activities (
   id TEXT PRIMARY KEY, -- nanoid
   user_id TEXT REFERENCES users(id) ON DELETE CASCADE,
@@ -33,7 +33,7 @@ const createDailyActivitiesTable = `
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );`
 
- const createDailyCheckInsTable = `
+  const createDailyCheckInsTable = `
   CREATE TABLE IF NOT EXISTS daily_check_ins (
     id TEXT PRIMARY KEY, -- nanoid
     user_id TEXT REFERENCES users(id) ON DELETE CASCADE,
@@ -44,57 +44,66 @@ const createDailyActivitiesTable = `
 `;
 
 
-const createWebinarsTable = `
+  const createWebinarsTable = `
   CREATE TABLE IF NOT EXISTS webinars (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
     slug TEXT UNIQUE NOT NULL,  
     author TEXT NOT NULL,
-    tags TEXT, -- could also be TEXT[] if you want multiple tags
-    video TEXT, -- optional (e.g. video URL)
-    thumbnail TEXT, -- optional (image URL)
+    tags TEXT, -- could also be TEXT[] if you want multiple tags,
+    video TEXT, -- optional (e.g. video URL),
+    audio TEXT, -- optional (e.g. video URL),
+    thumbnail TEXT, -- optional (image URL),
     description TEXT,
+      duration_hours INTEGER DEFAULT 0,
+    duration_minutes INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
   );
 `;
-const createBlogsTable = `
+  const createBlogsTable = `
   CREATE TABLE IF NOT EXISTS blogs (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
     slug TEXT UNIQUE NOT NULL,  
     author TEXT NOT NULL,
-    tags TEXT, -- could also be TEXT[] if you want multiple tags
-    video TEXT, -- optional (e.g. video URL)
-    thumbnail TEXT, -- optional (image URL)
+    tags TEXT, -- could also be TEXT[] if you want multiple tags,
+    video TEXT, -- optional (e.g. video URL),
+    audio TEXT, -- optional (e.g. video URL),
+    thumbnail TEXT, -- optional (image URL),
     description TEXT,
+      duration_hours INTEGER DEFAULT 0,
+    duration_minutes INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
   );
 `;
-const createYogasTable = `
+  const createYogasTable = `
   CREATE TABLE IF NOT EXISTS yogas (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
     slug TEXT UNIQUE NOT NULL,  
     author TEXT NOT NULL,
     tags TEXT, -- could also be TEXT[] if you want multiple tags
-    video TEXT, -- optional (e.g. video URL)
+    video TEXT, -- optional (e.g. video URL),
+    audio TEXT, -- optional (e.g. video URL),
     thumbnail TEXT, -- optional (image URL)
     description TEXT,
+    duration_hours INTEGER DEFAULT 0,
+    duration_minutes INTEGER DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
   );
 `;
 
-const createTagsTable = `
+  const createTagsTable = `
 CREATE TABLE tags (
   id TEXT PRIMARY KEY,      -- nanoid
   name TEXT UNIQUE NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );`;
 
-try {
+  try {
     console.log("🚀 Starting migration...");
 
     // Uncomment this line if you want to reset the database
@@ -102,7 +111,7 @@ try {
     console.log("✅ Database schema reset (if uncommented).");
 
     console.log("✅ Dropping existing triggers if they exist...");
-   
+
     console.log("✅ Creating tables...");
     await pool.query(createUsersTable);
     await pool.query(createDailyActivitiesTable);
