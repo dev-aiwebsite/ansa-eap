@@ -38,6 +38,10 @@ export const navItems: NavItemsType[] = [
     icon: <IconDocument width="1.3rem" />,
     subitems: [
       {
+        title: "Allied Health News",
+        link: "/learning-development/allied-health-news",
+      },
+      {
         title: "Video Contents",
         link: "/learning-development/webinars",
       },

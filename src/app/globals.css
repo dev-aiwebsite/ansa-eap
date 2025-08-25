@@ -213,11 +213,10 @@
     @apply border-l-4 border-l-primary pl-4 text-sm bg-primary/5 p-4 rounded;
   }
 
-}
-button {
-  padding-inline: 1rem;
-    padding-block: 1rem;
-    cursor: pointer !important;
+  button {
+    @apply p-4 !cursor-pointer;
+  }
+
 }
 body {
   background: 
@@ -299,4 +298,8 @@ body :has(.focused) * {
 
 .mx-h-webkit-fill {
   max-height: -webkit-fill-available;
+}
+
+.audio-player-overlay {
+  background: linear-gradient(180deg, #000d 0%, transparent 80%, #000d 100%);
 }

@@ -1,4 +1,4 @@
-import { truncateText, stripHtml } from "@/lib/helper";
+import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -34,9 +34,11 @@ const PostCard = ({ item, actionText = "read" }: { item: PostCard, actionText?: 
 
       <p className="text-base font-medium">{item.title}</p>
 
-      <p className="text-muted-foreground text-xs">
-        {item.description && truncateText(stripHtml(item.description), 200)}
+      <p className="text-body line-clamp-3 text-muted-foreground text-xs whitespace-pre-wrap">
+        {item.description &&
+          truncateText(htmlToPlainText(item.description), 200)}
       </p>
+
 
       <div className="flex mt-auto">
         <div className="flex flex-row items-center gap-2">
