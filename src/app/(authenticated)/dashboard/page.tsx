@@ -12,8 +12,8 @@ const DashboardPage = () => {
       <div className="flex flex-row h-full gap-6">
         <div className="flex-1 gap-6 flex flex-col flex-nowrap overflow-auto">
           <WillFocused>
-            {({ isFocused }) => (
-              <DailyCheckIn isFocused={isFocused}/>
+            {({ isFocused, focusOnChange }) => (
+              <DailyCheckIn isFocused={isFocused} focusOnChange={focusOnChange} />
             )}
           </WillFocused>
           <div className="flex flex-row flex-wrap basis-full min-h-[290px] max-h-fit gap-6">

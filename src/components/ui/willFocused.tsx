@@ -42,6 +42,7 @@ const WillFocused = ({ children }: WillFocusedProps) => {
   }, []);
 
   const focusOnChange = (value: boolean) => {
+    console.log(value, 'focus on change willfocused.tsx')
     setIsFocused(value);
 
     if (!value) {

@@ -45,7 +45,11 @@ const questions = [
   }
 ];
 
-export default function DailyCheckIn({isFocused = false}:{isFocused?:boolean}) {
+type DailyCheckInProps = {
+  isFocused: boolean;
+  focusOnChange: (value: boolean) => void; // <-- the setter function type
+};
+export default function DailyCheckIn({isFocused = false, focusOnChange}:DailyCheckInProps) {
 
 
   const {saveDailyCheckIns, currentUser} = useAppServiceContext()
@@ -84,14 +88,18 @@ export default function DailyCheckIn({isFocused = false}:{isFocused?:boolean}) {
    .catch(err => console.log(err))
 
   };
-console.log(step)
+
+  function removeFocused(){
+    console.log('remove focuse dailycheckin')
+    focusOnChange(false)
+  }
   return (
     <div className="w-full flex flex-row">
       <div className="md:min-w-[300px] pr-10">
         <h1 className="text-3xl">Hi {currentUser?.first_name},</h1>
         <p className="text-lg mb-4">{questions[step].question}</p>
         {isFocused &&
-          <Button size="sm" className="!ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white" variant="outline" >Do it later</Button>
+          <Button onClick={removeFocused} size="sm" className="!ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white" variant="outline" >Do it later</Button>
         }
       </div>
 
