@@ -30,3 +30,37 @@ export function slugifyName(name: string): string {
     return html.replace(/<[^>]*>/g, ""); // remove all tags
   }
   
+  export const decodeHtmlEntities = (text: string) => {
+    return text.replace(/&nbsp;/g, " ")
+               .replace(/&amp;/g, "&")
+               .replace(/&quot;/g, '"')
+               .replace(/&#39;/g, "'")
+               .replace(/&lt;/g, "<")
+               .replace(/&gt;/g, ">");
+  }
+  
+
+  export const htmlToPlainText = (html: string): string => {
+    return html
+      // Convert block-level tags to line breaks
+      .replace(/<\/(h1|h2|h3|h4|h5|h6|p|div|blockquote)>/gi, "\n")
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/li>/gi, "\n")
+      // Remove all other tags
+      .replace(/<[^>]+>/g, "")
+      // Decode common entities
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&#160;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      // Collapse multiple line breaks/spaces
+      .replace(/\n{2,}/g, "\n")
+      .trim();
+  }
+  
+  
+
+  

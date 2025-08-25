@@ -45,7 +45,7 @@ const questions = [
   }
 ];
 
-export default function DailyCheckIn() {
+export default function DailyCheckIn({isFocused = false}:{isFocused?:boolean}) {
 
 
   const {saveDailyCheckIns, currentUser} = useAppServiceContext()
@@ -90,6 +90,9 @@ console.log(step)
       <div className="md:min-w-[300px] pr-10">
         <h1 className="text-3xl">Hi {currentUser?.first_name},</h1>
         <p className="text-lg mb-4">{questions[step].question}</p>
+        {isFocused &&
+          <Button size="sm" className="!ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white" variant="outline" >Do it later</Button>
+        }
       </div>
 
       <div className="w-full">
