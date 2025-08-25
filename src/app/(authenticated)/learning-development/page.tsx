@@ -1,7 +1,11 @@
 "use client";
+import PostCard, { Post } from "@/components/post/postCard";
+import PostCardSkeleton from "@/components/post/postCardSkeleton";
 import { iconMap } from "@/lib/icon-map";
-import { BookOpen, Clock } from "lucide-react";
-import Link from "next/link";
+import { getBlogs } from "@/serverActions/crudBlogs";
+import { getWebinars } from "@/serverActions/crudWebinars";
+import { getYogas } from "@/serverActions/crudYogas";
+import { useEffect, useState } from "react";
 
 export type LearningDevelopment = {
   name: string;
@@ -11,86 +15,151 @@ export type LearningDevelopment = {
   status: string;
   link: string;
 };
-
-const coursesData: LearningDevelopment[] = [
-  {
-    name: "Video Contents",
-    icon: "IconBookMarkOrange",
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "completed",
-    link: "/learning-development/webinars"
-  },
-  {
-    name: "Yoga",
-    icon: "IconRulerPencil",
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "completed",
-    link: "/learning-development/yoga"
-  },
-  {
-    name: "3 minute read",
-    icon: "IconPouringCup",
-    lessons_count: "15",
-    total_time: "40 Hours",
-    status: "completed",
-    link: "/learning-development/blogs"
-  },
- 
-  
+type PostCategory = "healthNews" | "yoga" | "video" | "threeMinute";
+type Section = {
+  id: string;       // DOM id for scroll
+  title: string;    // UI label
+  key: PostCategory // which posts to use
+};
+const sections: Section[] = [
+  { id: "healthNews", title: "Allied Health News", key: "healthNews" },
+  { id: "yoga", title: "Yoga", key: "yoga" },
+  { id: "video", title: "Videos", key: "video" },
+  { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute" },
 ];
 
+
+
 const ContentLibraryPage = () => {
+  const [activeSection, setActiveSection] = useState<string>("");
+  const [posts, setPosts] = useState<Record<PostCategory, Post[]>>({
+    healthNews: [],
+    yoga: [],
+    video: [],
+    threeMinute: [],
+  });
+  
+  useEffect(() => {
+    getYogas().then((res) => {
+      if (res.success && res.data) {
+        setPosts((prev) => ({ ...prev, yoga: res.data as Post[] }));
+      }
+    });
+  
+    getWebinars().then((res) => {
+      if (res.success && res.data) {
+        setPosts((prev) => ({
+          ...prev,
+          video: res.data as Post[]
+        }));
+      }
+    });
+  
+    getBlogs().then((res) => {
+      if (res.success && res.data) {
+        setPosts((prev) => ({ ...prev, threeMinute: res.data as Post[] }));
+      }
+    });
+  }, []);
+
+  
+  useEffect(() => {
+    const scrollContainer = document.querySelector(
+      ".scrollContainer"
+    ) as HTMLElement | null;
+    const scrollContainerOffsetTop = scrollContainer?.offsetTop ?? 0
+  
+    if (!scrollContainer) return;
+  
+    const handleScroll = () => {
+      const scrollPos = scrollContainer.scrollTop + scrollContainerOffsetTop
+      let current = sections[0].id;
+  
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
+        if (!el) continue;
+  
+        // offsetTop is relative to container, not window
+        const elTop = el.offsetTop;
+        if (elTop <= scrollPos) {
+          current = section.id;
+        }
+      }
+  
+      if (current !== activeSection) {
+        setActiveSection(current);
+      }
+    };
+  
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+  
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, [activeSection]);
+  
+    
+  
+  
+  
+
+  // Smooth scroll when clicking tab
+  const handleClick = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <div className="grid">
-      <div>
-        <div className="grid grid-cols-4 flex-wrap gap-5 gap-y-10 w-full-sidebar">
-          {coursesData.slice(0, 8).map((item) => (
-            <Card key={item.link} item={item} />
+    <div className="card flex-1 px-0 h-full bg-transparent overflow-hidden">
+      <div className="w-full-sidebar snap-y snap-proximity scrollContainer pb-[300px] rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
+        {/* Sticky Tabs */}
+        <div className="stickyNav card sticky top-0 bg-white px-6 py-4 flex space-x-6 z-[999999]">
+          {sections.map((s) => (
+            <button
+              key={s.id}
+              onClick={() => handleClick(s.id)}
+              className={`p-0 transition-colors ${
+                activeSection === s.id ? "text-primary font-semibold" : "text-gray-500"
+              }`}
+            >
+              {s.title}
+            </button>
           ))}
         </div>
+
+        {/* Sections */}
+        {sections.map((s) => (
+          <SectionEl key={s.id} title={s.title} id={s.id} data={posts[s.key]}/>
+
+        ))} 
       </div>
-      <div></div>
     </div>
   );
 };
 
 export default ContentLibraryPage;
 
-function Card({ item }: { item: LearningDevelopment }) {
-    const IconComponent = iconMap[item.icon];
 
-  return (
-    <Link href={item.link}>
-    <div className="card flex flex-col overflow-hidden relative gap-4">
-      <div className="rounded-full text-2xl">  {IconComponent && <IconComponent />}</div>
-      <h3 className="text-lg font-medium">{item.name}</h3>
-      <div className="mt-auto space-y-2">
-        <div className="flex flex-row gap-5 items-center">
-          <div className="flex flex-row items-center gap-2 text-xs text-app-purple-300">
-            <BookOpen width="1.2em" className="text-inherit" />
-            <span className="text-muted-foreground">{item.lessons_count}</span>
-          </div>
-          <div className="flex flex-row items-center gap-2 text-xs text-app-purple-300">
-            <Clock width="1.2em" className="text-inherit" />
-            <span className="text-muted-foreground">{item.total_time}</span>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-row items-center gap-2 text-xs text-muted-foreground">
-        {/* <div className="bg-green-400 aspect-square w-fit rounded-full p-[3px] text-[10px]">
-          <Check
-            className="text-white"
-            strokeWidth={3}
-            height="1em"
-            width="1em"
-          />
-        </div> */}
-        <span>4 / 20</span>
-        <span className="capitalize">{item.status}</span>
-      </div>
-    </div>
-    </Link>
-  );
+function SectionEl({id,title,data}:{id:string,title:string,data:Post[]}){
+  return <section id={id} className="snap-start py-4 px-6 relative mb-14">
+  <h2 className="section-title mb-8">{title}</h2>
+  <div className="w-full-sidebar flex w-full overflow-auto space-x-6">
+  {data && data.length > 0 ? (
+data.map((item) => (
+<PostCard
+className="w-[300px] inline-flex"
+key={item.id + "health-news"}
+item={item}
+actionText="watch"
+/>
+))
+) : (
+Array.from({ length: 4 }).map((_, i) => (
+<PostCardSkeleton key={i} className="w-[300px] inline-flex" />
+))
+)}
+
+  </div>
+</section>
 }

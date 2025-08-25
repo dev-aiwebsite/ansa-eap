@@ -2,6 +2,7 @@ import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { Clock } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 export type Post = {
   id: string;
@@ -19,9 +20,9 @@ export type Post = {
   updated_at: string;
 };
 type PostCard = Post
-const PostCard = ({ item, actionText = "read" }: { item: PostCard, actionText?: "read" | "watch" }) => {
+const PostCard = ({ item, actionText = "read", className }: { item: PostCard, actionText?: "read" | "watch", className?: string; }) => {
   return (
-    <div className="card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm">
+    <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
       {item.thumbnail && (
         <Image
           className="rounded-sm w-full h-[167px] object-cover object-top"

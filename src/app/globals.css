@@ -197,10 +197,10 @@
     @apply ml-[1ch] text-xs translate-y-1/2 block bg-white p-[2px] w-fit;
   }
 
-  h1 {
+  h1, .h1 {
     @apply text-3xl font-bold;
   }
-  h1 {
+  h2, .h2 {
     @apply text-2xl font-bold;
   }
   .prose ul {
@@ -302,4 +302,8 @@ body :has(.focused) * {
 
 .audio-player-overlay {
   background: linear-gradient(180deg, #000d 0%, transparent 80%, #000d 100%);
+}
+
+.overflow-auto {
+  scroll-behavior: smooth;
 }
