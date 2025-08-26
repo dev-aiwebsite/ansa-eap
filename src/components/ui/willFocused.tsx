@@ -3,58 +3,58 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 type WillFocusedProps = {
+  initialState?: boolean;
   children: (props: {
     isFocused: boolean;
     focusOnChange: (value: boolean) => void;
   }) => ReactNode;
 };
 
-const WillFocused = ({ children }: WillFocusedProps) => {
+const WillFocused = ({ children, initialState = false }: WillFocusedProps) => {
+  
   const ref = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
+    setFocused(initialState)
     function handlePointerDown(e: PointerEvent) {
       const target = e.target as HTMLElement | null;
       const inside = target?.closest(".will-focused") === ref.current;
 
       if (!inside) {
-        // clicked outside → lose focus
-        setIsFocused(false);
-
-        // remove overflow-visible after 500ms
-        setTimeout(() => {
-          document
-            .querySelectorAll(".overflow-auto.overflow-visible")
-            .forEach((el) => el.classList.remove("overflow-visible"));
-        }, 500);
+        setFocused(false)
       } else {
         // clicked inside → focus
-        document
-        .querySelectorAll(".overflow-auto")
-        .forEach((el) => el.classList.add("overflow-visible"));
-        setIsFocused(true);
+        setFocused(true)
       }
     }
 
     document.addEventListener("pointerdown", handlePointerDown);
     return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, []);
+  }, [initialState]);
 
   const focusOnChange = (value: boolean) => {
-    console.log(value, 'focus on change willfocused.tsx')
-    setIsFocused(value);
+    setFocused(value)
+  };
 
-    if (!value) {
-      // if programmatically unfocusing, also cleanup after 500ms
+
+  function setFocused(state:boolean){
+    if(state){
+      document
+      .querySelectorAll(".overflow-auto")
+      .forEach((el) => el.classList.add("overflow-visible"));
+      setIsFocused(true);
+    } else {
+      setIsFocused(false);
+
       setTimeout(() => {
         document
           .querySelectorAll(".overflow-auto.overflow-visible")
           .forEach((el) => el.classList.remove("overflow-visible"));
       }, 500);
     }
-  };
-
+  
+  }
   return (
     <div
       ref={ref}
