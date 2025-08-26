@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import Sidebar from "@/components/sidebar/sidebar";
 import MainHeader from "@/components/ui/mainHeader";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
+import { PostServiceProvider } from "@/context/postServiceContext";
 import { ExtendedSession } from "@/next-auth";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
 import { getDailyCheckIns } from "@/serverActions/crudDailyCheckIns";
@@ -33,6 +34,8 @@ if(!userId) return
   
   return (
     <AppServiceContextProvider data={data}>
+      <PostServiceProvider>
+      
     <main className="flex flex-row flex-nowrap h-screen w-screen p-4 space-x-6">
             <div>
                 <Sidebar/>
@@ -44,6 +47,7 @@ if(!userId) return
               </div>
             </div>
         </main>
+        </PostServiceProvider>
         </AppServiceContextProvider>
   );
 }
