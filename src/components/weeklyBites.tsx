@@ -19,14 +19,14 @@ const WeeklyBites = () => {
   .slice(0,4)
   .map(i => {
     return {
-      id: i.id,
-      image: i.thumbnail,
-      title: i.title,
-      author: i.author,
+      id: i.id ?? "",
+      image: i.thumbnail ?? "",
+      title: i.title ?? "",
+      author: i.author ?? "",
       likes: 0,
       duration: formatDuration(0, 5),
-      action: "read",
-      link: i.slug,
+      action: "read" as "watch" | "read",
+      link: i.slug ?? "",
     }
   })
   
@@ -34,14 +34,14 @@ const WeeklyBites = () => {
   .slice(0,4)
   .map(i => {
     return {
-      id: i.id,
-      image: i.thumbnail,
-      title: i.title,
-      author: i.author,
+      id: i.id ?? "",
+      image: i.thumbnail ?? "",
+      title: i.title ?? "",
+      author: i.author ?? "",
       likes: 0,
       duration: formatDuration(0, 5),
-      action: "read",
-      link: i.slug,
+      action: "read" as "watch" | "read",
+      link: i.slug ?? "",
     }
   })
 
@@ -49,14 +49,14 @@ const WeeklyBites = () => {
   .slice(0,4)
   .map(i => {
     return {
-      id: i.id,
-      image: i.thumbnail,
-      title: i.title,
-      author: i.author,
+      id: i.id ?? "",
+      image: i.thumbnail ?? "",
+      title: i.title ?? "",
+      author: i.author ?? "",
       likes: 0,
       duration: formatDuration(0, 5),
-      action: "read",
-      link: i.slug,
+      action: "read" as "watch" | "read",
+      link: i.slug ?? "",
     }
   })
 
@@ -95,17 +95,17 @@ const WeeklyBites = () => {
         </div>
 
         <TabsContent value="clips">
-        { (blogData.length) && 
+        { (clipsData.length > 0) && 
             <WeeklyBitesTable data={clipsData}/>
           }
         </TabsContent>
         <TabsContent value="blogs">
-          { (blogData.length) && 
+          { (blogData.length > 0) && 
             <WeeklyBitesTable data={blogData}/>
           }
         </TabsContent>
         <TabsContent value="news">
-            { (blogData.length) && 
+            { (newsData.length > 0) && 
             <WeeklyBitesTable data={newsData}/>
           }
         </TabsContent>
