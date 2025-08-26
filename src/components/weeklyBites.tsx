@@ -1,129 +1,64 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Heart } from "lucide-react";
-import ImageWithFallback from "./ui/imageWithFallback";
-import { getBlogs } from "@/serverActions/crudBlogs";
-import {  useEffect, useState } from "react";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { formatDuration } from "@/lib/helper";
-import { getWebinars } from "@/serverActions/crudWebinars";
+import { Heart } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import ImageWithFallback from "./ui/imageWithFallback";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 
 
 const WeeklyBites = () => {
-  const [blogData, setBlogData] = useState<WeeklyBitesData[]>([])
-  const [clipsData, setClipsData] = useState<WeeklyBitesData[]>([])
-  const [newsData, setNewsData] = useState<WeeklyBitesData[]>([])
+
   const [activeTab, setActiveTab] = useState("blogs")
+  const {healthNewsPosts,blogs,videoContents} = usePostServiceContext()
 
-function getBlogData(){
-  if(!blogData.length){
-    getBlogs()
-    .then(res => {
-      if(res.success){
-        const resData = res.data
-        console.log(res, 'res')
-        if(resData){
-          const forBlogData:WeeklyBitesData[] = resData
-          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-          .slice(0,4)
-          .map(i => {
-            return {
-              id: i.id,
-              image: i.thumbnail,
-              title: i.title,
-              author: i.author,
-              likes: 0,
-              duration: formatDuration(0, 5),
-              action: "read",
-              link: i.slug,
+  const blogData = blogs.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
+  .slice(0,4)
+  .map(i => {
+    return {
+      id: i.id,
+      image: i.thumbnail,
+      title: i.title,
+      author: i.author,
+      likes: 0,
+      duration: formatDuration(0, 5),
+      action: "read",
+      link: i.slug,
+    }
+  })
+  
+  const clipsData = videoContents.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
+  .slice(0,4)
+  .map(i => {
+    return {
+      id: i.id,
+      image: i.thumbnail,
+      title: i.title,
+      author: i.author,
+      likes: 0,
+      duration: formatDuration(0, 5),
+      action: "read",
+      link: i.slug,
+    }
+  })
 
-            }
-          })
-          setBlogData(forBlogData)
-        }
-      }
-    })
-  }
-}
-function getClipsData(){
-  if(!clipsData.length){
-    getWebinars()
-    .then(res => {
-      if(res.success){
-        const resData = res.data
-        console.log(res, 'res')
-        if(resData){
-          const formattedData:WeeklyBitesData[] = resData
-          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-          .slice(0,4)
-          .map(i => {
-            return {
-              id: i.id,
-              image: i.thumbnail,
-              title: i.title,
-              author: i.author,
-              likes: 0,
-              duration: formatDuration(0, 5),
-              action: "read",
-              link: i.slug,
-
-            }
-          })
-          setClipsData(formattedData)
-        }
-      }
-    })
-  }
-}
-function getNewsData(){
-  if(!newsData.length){
-    getBlogs()
-    .then(res => {
-      if(res.success){
-        const resData = res.data
-        console.log(res, 'res')
-        if(resData){
-          const forBlogData:WeeklyBitesData[] = resData
-          .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-          .slice(0,4)
-          .map(i => {
-            return {
-              id: i.id,
-              image: i.thumbnail,
-              title: i.title,
-              author: i.author,
-              likes: 0,
-              duration: formatDuration(0, 5),
-              action: "read",
-              link: i.slug,
-
-            }
-          })
-          setNewsData(forBlogData)
-        }
-      }
-    })
-  }
-}
-
-useEffect(()=>{
-  switch (activeTab) {
-    case "blogs":
-      getBlogData();
-      break;
-    case "clips":
-      getClipsData();
-      break;
-    case "news":
-      getNewsData()
-      break;
-    default:
-      break;
-  }
-},[activeTab])
-
+  const newsData = healthNewsPosts.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
+  .slice(0,4)
+  .map(i => {
+    return {
+      id: i.id,
+      image: i.thumbnail,
+      title: i.title,
+      author: i.author,
+      likes: 0,
+      duration: formatDuration(0, 5),
+      action: "read",
+      link: i.slug,
+    }
+  })
 
 
   return (
@@ -159,11 +94,6 @@ useEffect(()=>{
           </TabsList>
         </div>
 
-        <TabsContent value="all">
-          
-
-
-        </TabsContent>
         <TabsContent value="clips">
         { (blogData.length) && 
             <WeeklyBitesTable data={clipsData}/>
