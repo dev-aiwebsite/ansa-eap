@@ -1,22 +1,13 @@
 "use client";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Blog, getBlogBySlug } from "@/serverActions/crudBlogs";
 import PostSingle from "@/components/post/singlePost";
+import { usePostServiceContext } from "@/context/postServiceContext";
+import { usePathname } from "next/navigation";
 
 const BlogSingle = () => {
   const pathName = usePathname();
-  const [data, setData] = useState<Blog | null>(null);
+  const {blogs} = usePostServiceContext()
 
-  useEffect(() => {
-    getBlogBySlug(pathName).then((res) => {
-      if (res.success && res.data) {
-        setData(res.data);
-      } else {
-        console.log(res);
-      }
-    });
-  }, [pathName]);
+  const data = blogs.find(b => b.slug == pathName) ?? null
 
   return (
     <div className="flex gap-6 h-full">

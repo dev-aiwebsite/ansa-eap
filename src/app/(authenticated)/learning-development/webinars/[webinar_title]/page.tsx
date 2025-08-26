@@ -1,22 +1,12 @@
 "use client";
 import PostSingle from "@/components/post/singlePost";
-import { getWebinarBySlug, Webinar } from "@/serverActions/crudWebinars";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const WebinarSingle = () => {
   const pathName = usePathname();
-  const [data, setData] = useState<Webinar | null>(null);
-
-  useEffect(() => {
-    getWebinarBySlug(pathName).then((res) => {
-      if (res.success && res.data) {
-        setData(res.data);
-      } else {
-        console.log(res);
-      }
-    });
-  }, [pathName]);
+  const {videoContents} = usePostServiceContext()
+  const data = videoContents.find(b => b.slug == pathName) ?? null
 
   return (
     <div className="flex gap-6 h-full">

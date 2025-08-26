@@ -1,106 +1,70 @@
 "use client";
-import PostCard, { Post } from "@/components/post/postCard";
-import PostCardSkeleton from "@/components/post/postCardSkeleton";
-import { iconMap } from "@/lib/icon-map";
-import { getBlogs } from "@/serverActions/crudBlogs";
-import { getWebinars } from "@/serverActions/crudWebinars";
-import { getYogas } from "@/serverActions/crudYogas";
+import { Post } from "@/components/post/postCard";
+import PostCards from "@/components/post/postCards";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { useEffect, useState } from "react";
 
-export type LearningDevelopment = {
-  name: string;
-  icon: keyof typeof iconMap;
-  lessons_count: string;
-  total_time: string;
-  status: string;
-  link: string;
-};
 type PostCategory = "healthNews" | "yoga" | "video" | "threeMinute";
 type Section = {
-  id: string;       // DOM id for scroll
-  title: string;    // UI label
-  key: PostCategory // which posts to use
+  id: string; // DOM id for scroll
+  title: string; // UI label
+  key: PostCategory; // which posts to use
+  actionText: "watch" | "read";
 };
 const sections: Section[] = [
-  { id: "healthNews", title: "Allied Health News", key: "healthNews" },
-  { id: "yoga", title: "Yoga", key: "yoga" },
-  { id: "video", title: "Videos", key: "video" },
-  { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute" },
+  { id: "healthNews", title: "Allied Health News", key: "healthNews", "actionText": "read" },
+  { id: "yoga", title: "Yoga", key: "yoga", "actionText": "watch" },
+  { id: "video", title: "Videos", key: "video", "actionText": "watch" },
+  { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute", "actionText": "read" },
 ];
-
-
 
 const ContentLibraryPage = () => {
   const [activeSection, setActiveSection] = useState<string>("");
-  const [posts, setPosts] = useState<Record<PostCategory, Post[]>>({
-    healthNews: [],
-    yoga: [],
-    video: [],
-    threeMinute: [],
-  });
-  
-  useEffect(() => {
-    getYogas().then((res) => {
-      if (res.success && res.data) {
-        setPosts((prev) => ({ ...prev, yoga: res.data as Post[] }));
-      }
-    });
-  
-    getWebinars().then((res) => {
-      if (res.success && res.data) {
-        setPosts((prev) => ({
-          ...prev,
-          video: res.data as Post[]
-        }));
-      }
-    });
-  
-    getBlogs().then((res) => {
-      if (res.success && res.data) {
-        setPosts((prev) => ({ ...prev, threeMinute: res.data as Post[] }));
-      }
-    });
-  }, []);
 
-  
+  // 👇 Use context instead of fetching here
+  const { healthNewsPosts, yogas, videoContents, blogs } = usePostServiceContext();
+
+  // Map context data into the sections object shape
+  const posts: Record<PostCategory, Partial<Post>[]> = {
+    healthNews: healthNewsPosts ?? [],
+    yoga: yogas ?? [],
+    video: videoContents ?? [],
+    threeMinute: blogs ?? [],
+  };
+
+  // --- ScrollSpy ---
   useEffect(() => {
     const scrollContainer = document.querySelector(
       ".scrollContainer"
     ) as HTMLElement | null;
-    const scrollContainerOffsetTop = scrollContainer?.offsetTop ?? 0
-  
+    const scrollContainerOffsetTop = scrollContainer?.offsetTop ?? 0;
+
     if (!scrollContainer) return;
-  
+
     const handleScroll = () => {
-      const scrollPos = scrollContainer.scrollTop + scrollContainerOffsetTop
+      const scrollPos = scrollContainer.scrollTop + scrollContainerOffsetTop;
       let current = sections[0].id;
-  
+
       for (const section of sections) {
         const el = document.getElementById(section.id);
         if (!el) continue;
-  
-        // offsetTop is relative to container, not window
+
         const elTop = el.offsetTop;
         if (elTop <= scrollPos) {
           current = section.id;
         }
       }
-  
+
       if (current !== activeSection) {
         setActiveSection(current);
       }
     };
-  
+
     scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-  
+
     return () => scrollContainer.removeEventListener("scroll", handleScroll);
   }, [activeSection]);
-  
-    
-  
-  
-  
 
   // Smooth scroll when clicking tab
   const handleClick = (id: string) => {
@@ -120,7 +84,9 @@ const ContentLibraryPage = () => {
               key={s.id}
               onClick={() => handleClick(s.id)}
               className={`p-0 transition-colors ${
-                activeSection === s.id ? "text-primary font-semibold" : "text-gray-500"
+                activeSection === s.id
+                  ? "text-primary font-semibold"
+                  : "text-gray-500"
               }`}
             >
               {s.title}
@@ -130,9 +96,8 @@ const ContentLibraryPage = () => {
 
         {/* Sections */}
         {sections.map((s) => (
-          <SectionEl key={s.id} title={s.title} id={s.id} data={posts[s.key]}/>
-
-        ))} 
+          <SectionEl actionText={s.actionText} key={s.id} title={s.title} id={s.id} data={posts[s.key]} />
+        ))}
       </div>
     </div>
   );
@@ -140,26 +105,27 @@ const ContentLibraryPage = () => {
 
 export default ContentLibraryPage;
 
-
-function SectionEl({id,title,data}:{id:string,title:string,data:Post[]}){
-  return <section id={id} className="snap-start py-4 px-6 relative mb-14">
-  <h2 className="section-title mb-8">{title}</h2>
-  <div className="w-full-sidebar flex w-full overflow-auto space-x-6">
-  {data && data.length > 0 ? (
-data.map((item) => (
-<PostCard
-className="w-[300px] inline-flex"
-key={item.id + "health-news"}
-item={item}
-actionText="watch"
-/>
-))
-) : (
-Array.from({ length: 4 }).map((_, i) => (
-<PostCardSkeleton key={i} className="w-[300px] inline-flex" />
-))
-)}
-
-  </div>
-</section>
+function SectionEl({
+  id,
+  title,
+  data,
+  actionText,
+}: {
+  id: string;
+  title: string;
+  data: Partial<Post>[];
+  actionText: "watch" | "read";
+}) {
+  return (
+    <section id={id} className="snap-start py-4 px-6 relative mb-14">
+      <h3 className="section-title mb-8">{title}</h3>
+      <div className="w-full-sidebar flex w-full overflow-auto space-x-6">
+        <PostCards
+        className="max-w-[280px]"
+        data={data}
+        id_prefix={id}
+        actionText={actionText}/>
+      </div>
+    </section>
+  );
 }

@@ -1,10 +1,11 @@
-import PostCard from "@/components/post/postCard";
+"use client"
+import PostCards from "@/components/post/postCards";
 import { Button } from "@/components/ui/button";
-import { getBlogs } from "@/serverActions/crudBlogs";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { Plus } from "lucide-react";
 
-const BlogPage = async () => {
-  const { data } = await getBlogs();
+const BlogPage = () => {
+  const {blogs:data} = usePostServiceContext()
 
   return (
     <div>
@@ -15,9 +16,11 @@ const BlogPage = async () => {
       <div className="grid">
         <div>
           <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-y-10 w-full-sidebar">
-            {data && data.map((item) => 
-              <PostCard key={item.id} item={item} />
-            )}
+            <PostCards
+            id_prefix="blog"
+            data={data ?? []}
+            actionText="read"
+            />
           </div>
         </div>
         <div></div>

@@ -1,10 +1,11 @@
-import PostCard from "@/components/post/postCard";
+"use client";
+import PostCards from "@/components/post/postCards";
 import { Button } from "@/components/ui/button";
-import { getYogas } from "@/serverActions/crudYogas";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { Plus } from "lucide-react";
 
-const YogaPage = async () => {
-  const { data } = await getYogas();
+const YogaPage = () => {
+  const { yogas: data } = usePostServiceContext();
 
   return (
     <div>
@@ -15,9 +16,7 @@ const YogaPage = async () => {
       <div className="grid">
         <div>
           <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-y-10 w-full-sidebar">
-            {data && data.map((item) => 
-              <PostCard key={item.id} item={item} actionText="watch" />
-            )}
+            <PostCards id_prefix="yoga" data={data ?? []} actionText="watch" />
           </div>
         </div>
         <div></div>

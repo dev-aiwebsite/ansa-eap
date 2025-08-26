@@ -1,22 +1,12 @@
 "use client";
 import PostSingle from "@/components/post/singlePost";
-import { getYogaBySlug, Yoga } from "@/serverActions/crudYogas";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const YogaSingle = () => {
   const pathName = usePathname();
-  const [data, setData] = useState<Yoga | null>(null);
-
-  useEffect(() => {
-    getYogaBySlug(pathName).then((res) => {
-      if (res.success && res.data) {
-        setData(res.data);
-      } else {
-        console.log(res);
-      }
-    });
-  }, [pathName]);
+  const {yogas} = usePostServiceContext()
+  const data = yogas.find(b => b.slug == pathName) ?? null
 
   return (
     <div className="flex gap-6 h-full">
