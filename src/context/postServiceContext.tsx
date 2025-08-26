@@ -1,5 +1,6 @@
 "use client";
 import { Post } from "@/components/post/postCard";
+import { slugifyName } from "@/lib/helper";
 import { getBlogs } from "@/serverActions/crudBlogs";
 import { getWebinars } from "@/serverActions/crudWebinars";
 import { getYogas } from "@/serverActions/crudYogas";
@@ -45,7 +46,8 @@ export function PostServiceProvider({ children, data }: AppServiceContextProvide
     if(!healthNewsPosts.length){
       getNews()
       .then(res => {
-        setHealthNewsPosts(res)
+        const formattedSlug = res.map(i => ({...i, slug: `/learning-development/health-news/${slugifyName(i.title)}`}))
+        setHealthNewsPosts(formattedSlug)
       })
     }
 
