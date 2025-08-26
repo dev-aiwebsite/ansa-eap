@@ -4,7 +4,7 @@ import { Post } from "./postCard";
 import Audio from "@/components/ui/audio";
 
 type PostSingle = {
-  data: Post | null;
+  data: Partial<Post> | null;
 };
 
 const PostSingle = ({ data }: PostSingle) => {
@@ -25,7 +25,7 @@ const PostSingle = ({ data }: PostSingle) => {
               <Video
                 className="aspect-[16/9] video-shadow"
                 src={data.video}
-                title={data.title}
+                title={data.title ?? ""}
                 thumbnail={data.thumbnail}
               ></Video>
             )}
@@ -44,7 +44,7 @@ const PostSingle = ({ data }: PostSingle) => {
               <div className="mt-10">
                 <p className="font-medium text-sm">Description</p>
                 <div
-                  className="prose text-sm mt-2 text-muted-foreground max-w-none"
+                  className="prose text-sm mt-2 text-muted-foreground max-w-none whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{ __html: data.description ?? "" }}
                 />
               </div>

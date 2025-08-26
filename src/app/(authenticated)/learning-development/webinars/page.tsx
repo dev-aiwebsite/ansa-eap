@@ -1,11 +1,11 @@
-import PostCard from "@/components/post/postCard";
+"use client";
+import PostCards from "@/components/post/postCards";
 import { Button } from "@/components/ui/button";
-import { getWebinars } from "@/serverActions/crudWebinars";
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { Plus } from "lucide-react";
 
-const WebinarPage = async () => {
-  const { data } = await getWebinars();
-
+const WebinarPage = () => {
+  const { videoContents: data } = usePostServiceContext();
 
   return (
     <div>
@@ -16,9 +16,11 @@ const WebinarPage = async () => {
       <div className="grid">
         <div>
           <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-y-10 w-full-sidebar">
-            {data && data.map((item) => 
-              <PostCard key={item.id} item={item} actionText="watch"/>
-            )}
+            <PostCards
+              id_prefix="video-content"
+              data={data ?? []}
+              actionText="watch"
+            />
           </div>
         </div>
         <div></div>

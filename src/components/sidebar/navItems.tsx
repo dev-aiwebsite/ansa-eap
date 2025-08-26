@@ -39,7 +39,7 @@ export const navItems: NavItemsType[] = [
     subitems: [
       {
         title: "Allied Health News",
-        link: "/learning-development/allied-health-news",
+        link: "/learning-development/health-news",
       },
       {
         title: "Video Contents",

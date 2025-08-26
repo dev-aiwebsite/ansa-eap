@@ -20,10 +20,10 @@ export type Post = {
   updated_at: string;
 };
 type PostCard = Post
-const PostCard = ({ item, actionText = "read", className }: { item: PostCard, actionText?: "read" | "watch", className?: string; }) => {
+const PostCard = ({ item, actionText = "read", className }: { item: Partial<PostCard>, actionText?: "read" | "watch", className?: string; }) => {
   return (
     <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
-      {item.thumbnail && (
+      {(item.thumbnail && item.title) && (
         <Image
           className="rounded-sm w-full h-[167px] object-cover object-top"
           width={200}
