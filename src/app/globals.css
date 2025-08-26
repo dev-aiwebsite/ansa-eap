@@ -75,7 +75,7 @@
   --accent: oklch(0.93 0.03 161.68);
   --accent-foreground: oklch(0.2 0.01 161.68);
 
-  --muted: oklch(0.89 0 0);
+  --muted: oklch(0.98 0 0);
   --muted-foreground: oklch(0.67 0.02 276.27);
 
   --destructive: oklch(0.577 0.245 27.325);
@@ -166,7 +166,7 @@
     @apply rounded-3xl p-6 bg-card text-card-foreground;
   }
   .card-title {
-    @apply text-lg;
+    @apply text-lg font-medium;
   }
   .btn-thin {
     @apply !px-4 !py-2;
@@ -198,13 +198,13 @@
   }
 
   h1, .h1 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-medium;
   }
   h2, .h2 {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-medium;
   }
   h3, .h3 {
-    @apply text-xl font-bold;
+    @apply text-xl font-medium;
   }
   .prose ul {
     @apply list-disc pl-8;
