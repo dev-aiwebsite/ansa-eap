@@ -12,7 +12,7 @@ const Practioners = () => {
   return (
     <div className="grid">
       <div>
-        <div className="flex-wrap gap-5 gap-y-10 w-full-sidebar">
+        <div className="grid md:grid-cols-2 xl:grid-cols-3 flex-wrap gap-5 gap-y-10 w-full-sidebar">
           {practionersData.slice(0, 6).map((item) => (
             <PractitionerCard key={item.id} item={item} />
           ))}
@@ -68,7 +68,7 @@ function PractitionerCard({
       </div>
       <div className="grid mr-[-20px] mt-auto">
         <Image
-          className="mt-auto object-cover"
+          className="mt-auto object-cover rounded-tl-3xl w-[200px] h-[125px] object-top bg-gray-100"
           width={300}
           height={100}
           src={item.image}
