@@ -9,25 +9,25 @@ const PostCardSkeleton = ({ className }: { className?: string }) => {
       )}
     >
       {/* Thumbnail */}
-      <div className="rounded-sm w-full h-[167px] bg-muted" />
+      <div className="rounded-sm w-full h-[167px] bg-zinc-200" />
 
       {/* Title */}
-      <div className="h-5 w-3/4 bg-muted rounded" />
+      <div className="h-5 w-3/4 bg-zinc-200 rounded" />
 
       {/* Description */}
       <div className="space-y-2">
-        <div className="h-3 w-full bg-muted rounded" />
-        <div className="h-3 w-5/6 bg-muted rounded" />
-        <div className="h-3 w-2/3 bg-muted rounded" />
+        <div className="h-3 w-full bg-zinc-200 rounded" />
+        <div className="h-3 w-5/6 bg-zinc-200 rounded" />
+        <div className="h-3 w-2/3 bg-zinc-200 rounded" />
       </div>
 
       {/* Footer */}
       <div className="flex mt-auto items-center">
         <div className="flex flex-row items-center gap-2">
-          <div className="h-4 w-4 bg-muted rounded-full" />
-          <div className="h-3 w-10 bg-muted rounded" />
+          <div className="h-4 w-4 bg-zinc-200 rounded-full" />
+          <div className="h-3 w-10 bg-zinc-200 rounded" />
         </div>
-        <div className="ml-auto h-8 w-16 bg-muted rounded" />
+        <div className="ml-auto h-8 w-16 bg-zinc-200 rounded" />
       </div>
     </div>
   );

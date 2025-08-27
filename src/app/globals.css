@@ -43,6 +43,7 @@
   --radius-xl: calc(var(--radius) + 4px);
   --spacing-header: var(--header-h);
   --spacing-sidebar: var(--sidebar-w);
+  --spacing-sidebar-right: var(--sidebar-right-w);
   --color-app-red-400: #b92f60;
   --color-app-red-200: #e84484;
   --color-app-blue-400: #066d9b;
@@ -50,6 +51,17 @@
   --color-app-yellow-400: #ffcc4d;
   --color-app-purple-300: #9ba1ff;
   --color-app-purple-400: #2d32a4;
+--text-shadow-medium: 
+    0.2px 0px currentColor,
+    0px 0.2px currentColor,
+    -0.2px 0px currentColor,
+    0px -0.2px currentColor;
+    --text-shadow-bold: 
+    0.25px 0px currentColor,
+    0px 0.25px currentColor,
+    -0.25px 0px currentColor,
+    0px -0.25px currentColor;
+
 
 
 }
@@ -64,6 +76,7 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --header-h: 80px;
   --sidebar-w: 240px;
+  --sidebar-right-w: 500px;
 
   /* ✅ Updated brand primary color */
   --primary: oklch(0.74 0.13 161.68);
@@ -75,7 +88,7 @@
   --accent: oklch(0.93 0.03 161.68);
   --accent-foreground: oklch(0.2 0.01 161.68);
 
-  --muted: oklch(0.89 0 0);
+  --muted: oklch(0.98 0 0);
   --muted-foreground: oklch(0.67 0.02 276.27);
 
   --destructive: oklch(0.577 0.245 27.325);
@@ -166,7 +179,7 @@
     @apply rounded-3xl p-6 bg-card text-card-foreground;
   }
   .card-title {
-    @apply text-lg;
+    @apply text-lg font-medium;
   }
   .btn-thin {
     @apply !px-4 !py-2;
@@ -182,8 +195,8 @@
   .meta-container {
     @apply flex items-center text-xs text-muted-foreground divide-x divide-gray-300;
   }
-  .right-sidebar {
-    @apply md:min-w-[340px] md:w-[25vw] md:max-w-[500px]  rounded-3xl p-6 bg-card text-card-foreground bg-white h-full;
+  .sidebar-right {
+    @apply w-sidebar-right  rounded-3xl p-6 bg-card text-card-foreground bg-white h-full;
   }
 
   .form-control {
@@ -198,13 +211,13 @@
   }
 
   h1, .h1 {
-    @apply text-3xl font-bold;
+    @apply text-3xl font-medium;
   }
   h2, .h2 {
-    @apply text-2xl font-bold;
+    @apply text-2xl font-medium;
   }
   h3, .h3 {
-    @apply text-xl font-bold;
+    @apply text-xl font-medium;
   }
   .prose ul {
     @apply list-disc pl-8;
@@ -219,8 +232,20 @@
   button {
     @apply p-4 !cursor-pointer;
   }
+  .calendar td {
+    @apply !h-auto !w-[2.5em] !rounded-full p-0 flex items-center justify-center;
+  }
+  .calendar tr {
+    @apply !justify-evenly;
+  }
+
+  .text-bold {
+    @apply text-shadow-[1px_0px] text-shadow-[-1px_0px] text-shadow-[0px_1px] text-shadow-[0px_-1px];
+  }
 
 }
+
+
 body {
   background: 
   radial-gradient(circle at top left,     #D6FCF9 0%, transparent 50%),
@@ -310,3 +335,14 @@ body :has(.focused) * {
 .overflow-auto {
   scroll-behavior: smooth;
 }
+
+/* Hide scrollbar but still allow scrolling */
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+

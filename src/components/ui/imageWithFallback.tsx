@@ -7,6 +7,7 @@ type Props = {
   width?: number;
   height?: number;
   className?: string;
+  iconSize?: number;
 };
 
 export default function ImageWithFallback({
@@ -15,6 +16,7 @@ export default function ImageWithFallback({
   width = 300,
   height = 200,
   className = "rounded-md object-cover",
+  iconSize = 40
 }: Props) {
   if (!src) {
     return (
@@ -22,7 +24,7 @@ export default function ImageWithFallback({
         className={`flex items-center justify-center bg-gray-100 text-gray-400 ${className}`}
         style={{ width, height }}
       >
-        <ImageIcon size={40} />
+        <ImageIcon size={iconSize} />
       </div>
     );
   }

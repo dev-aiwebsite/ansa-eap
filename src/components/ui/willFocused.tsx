@@ -9,7 +9,8 @@ type WillFocusedProps = {
   }) => ReactNode;
 };
 
-const WillFocused = ({ children }: WillFocusedProps) => {
+const WillFocused = ({ children}: WillFocusedProps) => {
+  
   const ref = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -19,21 +20,10 @@ const WillFocused = ({ children }: WillFocusedProps) => {
       const inside = target?.closest(".will-focused") === ref.current;
 
       if (!inside) {
-        // clicked outside → lose focus
-        setIsFocused(false);
-
-        // remove overflow-visible after 500ms
-        setTimeout(() => {
-          document
-            .querySelectorAll(".overflow-auto.overflow-visible")
-            .forEach((el) => el.classList.remove("overflow-visible"));
-        }, 500);
+        setFocused(false)
       } else {
         // clicked inside → focus
-        document
-        .querySelectorAll(".overflow-auto")
-        .forEach((el) => el.classList.add("overflow-visible"));
-        setIsFocused(true);
+        setFocused(true)
       }
     }
 
@@ -42,19 +32,28 @@ const WillFocused = ({ children }: WillFocusedProps) => {
   }, []);
 
   const focusOnChange = (value: boolean) => {
-    console.log(value, 'focus on change willfocused.tsx')
-    setIsFocused(value);
+    setFocused(value)
+    console.log('Willfocuse component', value)
+  };
 
-    if (!value) {
-      // if programmatically unfocusing, also cleanup after 500ms
+
+  function setFocused(state:boolean){
+    if(state){
+      document
+      .querySelectorAll(".overflow-auto")
+      .forEach((el) => el.classList.add("overflow-visible"));
+      setIsFocused(true);
+    } else {
+      setIsFocused(false);
+
       setTimeout(() => {
         document
           .querySelectorAll(".overflow-auto.overflow-visible")
           .forEach((el) => el.classList.remove("overflow-visible"));
       }, 500);
     }
-  };
-
+  
+  }
   return (
     <div
       ref={ref}

@@ -53,19 +53,19 @@ const PostSingle = ({ data }: PostSingle) => {
         ) : (
           // Loading skeleton
           <div className="animate-pulse p-4 space-y-4">
-            <div className="bg-gray-300 rounded aspect-[16/9] w-full"></div>
+            <div className="bg-zinc-200 rounded aspect-[16/9] w-full"></div>
             <div className="space-y-2 mt-4">
-              <div className="h-6 bg-gray-300 rounded w-1/2"></div>
-              <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+              <div className="h-6 bg-zinc-200 rounded w-1/2"></div>
+              <div className="h-4 bg-zinc-200 rounded w-1/3"></div>
               <div className="flex gap-2">
-                <div className="h-5 w-10 bg-gray-300 rounded"></div>
-                <div className="h-5 w-12 bg-gray-300 rounded"></div>
+                <div className="h-5 w-10 bg-zinc-200 rounded"></div>
+                <div className="h-5 w-12 bg-zinc-200 rounded"></div>
               </div>
             </div>
             <div className="space-y-2 mt-6">
-              <div className="h-4 bg-gray-300 rounded w-full"></div>
-              <div className="h-4 bg-gray-300 rounded w-5/6"></div>
-              <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+              <div className="h-4 bg-zinc-200 rounded w-full"></div>
+              <div className="h-4 bg-zinc-200 rounded w-5/6"></div>
+              <div className="h-4 bg-zinc-200 rounded w-2/3"></div>
             </div>
           </div>
         )}
