@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { slugifyName } from "@/lib/helper";
+import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
 import { practionersData } from "@/app/demo/demoData";
 
 
@@ -12,9 +12,9 @@ const Practioners = () => {
   return (
     <div className="grid">
       <div>
-        <div className="grid grid-cols-3 flex-wrap gap-5 gap-y-10 w-full-sidebar">
+        <div className="flex-wrap gap-5 gap-y-10 w-full-sidebar">
           {practionersData.slice(0, 6).map((item) => (
-            <Card key={item.id} item={item} />
+            <PractitionerCard key={item.id} item={item} />
           ))}
         </div>
       </div>
@@ -25,7 +25,7 @@ const Practioners = () => {
 
 export default Practioners;
 
-function Card({
+function PractitionerCard({
   item,
 }: {
   item: {
@@ -48,7 +48,8 @@ function Card({
           </span>
         </div>
         <p>{item.experience} experience</p>
-        <p className="text-xs">{item.description}</p>
+        <p className="text-xs">{item.description &&
+                  truncateText(htmlToPlainText(item.description), 100)}</p>
         <div className="flex">
           <div className="flex flex-row items-center gap-2">
             <Button

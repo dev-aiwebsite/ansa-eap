@@ -31,33 +31,10 @@ const PractionerSingle = () => {
             </p>
             <p>{practionerData.experience}</p>
           </div>
-          <div className="space-y-4 mt-10">
-            <p>{practionerData.description}</p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi
-              sint, consequatur nemo neque dolor et laboriosam hic veritatis
-              sed, quidem, obcaecati consectetur ipsam pariatur sit facilis a
-              dolorum quod!
-            </p>
-            <p>
-              Repellat sequi quis quod deserunt in facilis. Aliquam non
-              accusantium consectetur laboriosam, debitis deserunt optio quo
-              dolor quam laborum ullam sed voluptates necessitatibus rerum
-              minus, odit dolorum soluta eos.
-            </p>
-            <p>
-              Voluptas vero non eaque incidunt velit sapiente facilis animi,
-              error voluptatum ab odit tempora excepturi accusantium repudiandae
-              ex? Alias assumenda voluptate quasi sunt, qui a accusantium quas
-              maiores ad.
-            </p>
-            <p>
-              Cum voluptatum iste ex architecto debitis, asperiores maxime
-              expedita accusantium incidunt ea nemo voluptate est animi corrupti
-              tenetur nobis assumenda quasi autem atque omnis magni ducimus?
-              Ipsam, minima atque.
-            </p>
-          </div>
+          <div
+              className="prose text-sm mt-2 text-muted-foreground max-w-none whitespace-pre-line"
+              dangerouslySetInnerHTML={{ __html: practionerData.description ?? "" }}
+            />
         </>
       </Container>
 
