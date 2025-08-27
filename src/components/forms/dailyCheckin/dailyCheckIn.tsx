@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 const questions = [
   {
     id: "dcq1",
@@ -52,6 +52,7 @@ export default function DailyCheckIn({
   isFocused = false,
   focusOnChange,
 }: DailyCheckInProps) {
+  const didInitRef = useRef(false);
   const { saveDailyCheckIns, currentUser, dailyCheckIns } =
     useAppServiceContext();
   const [step, setStep] = useState(0);
@@ -91,11 +92,15 @@ export default function DailyCheckIn({
   };
 
   function removeFocused() {
-    console.log("remove focuse dailycheckin");
+    
     focusOnChange(false);
   }
 
   useEffect(() => {
+    
+    if (didInitRef.current) return; 
+    didInitRef.current = true;
+
     if (!entryToday.length) {
       focusOnChange(true);
     }
