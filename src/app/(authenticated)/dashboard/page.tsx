@@ -8,7 +8,6 @@ import WeeklyBites from "@/components/weeklyBites";
 import FeaturedWidget from "@/components/widgets/FeaturedWidget";
 import MoodWidget from "@/components/widgets/MoodWidget";
 import { Ellipsis } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 const DashboardPage = () => {
