@@ -25,7 +25,7 @@ function getFirstDayOfMonth(year: number, monthIndex: number) {
   return new Date(year, monthIndex, 1).getDay();
 }
 
-function generateMonth(year: number, monthIndex: number) {
+export function generateMonth(year: number, monthIndex: number) {
   const daysInMonth = getDaysInMonth(year, monthIndex);
   const firstDay = getFirstDayOfMonth(year, monthIndex);
 

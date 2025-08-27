@@ -19,13 +19,13 @@ type AppServiceContextType = {
   currentUser: User | null;
   setCurrentUser: Dispatch<SetStateAction<User | null>>;
 
-  users: User[];
+  users: User[] | [];
   setUsers: Dispatch<SetStateAction<User[]>>;
 
-  dailyActivities: DailyActivity[];
+  dailyActivities: DailyActivity[] | [];
   saveDailyActivities: (activity: DailyActivity) => Promise<{ success: boolean; message: string; }>;
 
-  dailyCheckIns: DailyCheckIn[];
+  dailyCheckIns: DailyCheckIn[] | [];
   saveDailyCheckIns: (checkIn: DailyCheckinQA) => Promise<{ success: boolean; message: string; } | undefined>;
 };
 
@@ -49,10 +49,10 @@ export function AppServiceContextProvider({
     data?.currentUser || null
   );
   const [users, setUsers] = useState<User[]>(data?.users || []);
-  const [dailyActivities, setDailyActivities] = useState<DailyActivity[]>(
+  const [dailyActivities, setDailyActivities] = useState<DailyActivity[] | []>(
     data?.dailyActivities || []
   );
-  const [dailyCheckIns, setDailyCheckIns] = useState<DailyCheckIn[]>(
+  const [dailyCheckIns, setDailyCheckIns] = useState<DailyCheckIn[] | []>(
     data?.dailyCheckIns || []
   );
 

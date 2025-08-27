@@ -43,6 +43,7 @@
   --radius-xl: calc(var(--radius) + 4px);
   --spacing-header: var(--header-h);
   --spacing-sidebar: var(--sidebar-w);
+  --spacing-sidebar-right: var(--sidebar-right-w);
   --color-app-red-400: #b92f60;
   --color-app-red-200: #e84484;
   --color-app-blue-400: #066d9b;
@@ -64,6 +65,7 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --header-h: 80px;
   --sidebar-w: 240px;
+  --sidebar-right-w: 500px;
 
   /* ✅ Updated brand primary color */
   --primary: oklch(0.74 0.13 161.68);
@@ -182,8 +184,8 @@
   .meta-container {
     @apply flex items-center text-xs text-muted-foreground divide-x divide-gray-300;
   }
-  .right-sidebar {
-    @apply md:min-w-[340px] md:w-[25vw] md:max-w-[500px]  rounded-3xl p-6 bg-card text-card-foreground bg-white h-full;
+  .sidebar-right {
+    @apply w-sidebar-right  rounded-3xl p-6 bg-card text-card-foreground bg-white h-full;
   }
 
   .form-control {
@@ -218,6 +220,12 @@
 
   button {
     @apply p-4 !cursor-pointer;
+  }
+  .calendar td {
+    @apply !h-auto !w-[2.5em] !rounded-full p-0 flex items-center justify-center;
+  }
+  .calendar tr {
+    @apply !justify-evenly;
   }
 
 }

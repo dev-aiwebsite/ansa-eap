@@ -3,20 +3,18 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 type WillFocusedProps = {
-  initialState?: boolean;
   children: (props: {
     isFocused: boolean;
     focusOnChange: (value: boolean) => void;
   }) => ReactNode;
 };
 
-const WillFocused = ({ children, initialState = false }: WillFocusedProps) => {
+const WillFocused = ({ children}: WillFocusedProps) => {
   
   const ref = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    setFocused(initialState)
     function handlePointerDown(e: PointerEvent) {
       const target = e.target as HTMLElement | null;
       const inside = target?.closest(".will-focused") === ref.current;
@@ -31,10 +29,11 @@ const WillFocused = ({ children, initialState = false }: WillFocusedProps) => {
 
     document.addEventListener("pointerdown", handlePointerDown);
     return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, [initialState]);
+  }, []);
 
   const focusOnChange = (value: boolean) => {
     setFocused(value)
+    console.log('Willfocuse component', value)
   };
 
 
