@@ -51,6 +51,17 @@
   --color-app-yellow-400: #ffcc4d;
   --color-app-purple-300: #9ba1ff;
   --color-app-purple-400: #2d32a4;
+--text-shadow-medium: 
+    0.2px 0px currentColor,
+    0px 0.2px currentColor,
+    -0.2px 0px currentColor,
+    0px -0.2px currentColor;
+    --text-shadow-bold: 
+    0.25px 0px currentColor,
+    0px 0.25px currentColor,
+    -0.25px 0px currentColor,
+    0px -0.25px currentColor;
+
 
 
 }
@@ -228,7 +239,13 @@
     @apply !justify-evenly;
   }
 
+  .text-bold {
+    @apply text-shadow-[1px_0px] text-shadow-[-1px_0px] text-shadow-[0px_1px] text-shadow-[0px_-1px];
+  }
+
 }
+
+
 body {
   background: 
   radial-gradient(circle at top left,     #D6FCF9 0%, transparent 50%),
@@ -328,3 +345,4 @@ body :has(.focused) * {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
 }
+

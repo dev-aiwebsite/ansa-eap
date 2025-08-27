@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import ImageWithFallback from "./ui/imageWithFallback";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
 
 
 
@@ -69,25 +70,25 @@ const WeeklyBites = () => {
           <TabsList className="bg-transparent rounded-md p-1">
             <Link
             href="/learning-development"
-              className="data-[state=active]:text-primary data-[state=active]:font-bold !py-1 !px-2 !ring-0 !shadow-none"
+              className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
               See All
             </Link>
             <TabsTrigger
               value="clips"
-              className="data-[state=active]:text-primary data-[state=active]:font-bold !py-1 !px-2 !ring-0 !shadow-none"
+              className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
               Clips
             </TabsTrigger>
             <TabsTrigger
               value="blogs"
-              className="data-[state=active]:text-primary data-[state=active]:font-bold !py-1 !px-2 !ring-0 !shadow-none"
+              className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
               Blogs
             </TabsTrigger>
             <TabsTrigger
               value="news"
-              className="data-[state=active]:text-primary data-[state=active]:font-bold !py-1 !px-2 !ring-0 !shadow-none"
+              className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
               Allied Health News
             </TabsTrigger>
@@ -95,20 +96,29 @@ const WeeklyBites = () => {
         </div>
 
         <TabsContent value="clips">
-        { (clipsData.length > 0) && 
-            <WeeklyBitesTable data={clipsData}/>
-          }
-        </TabsContent>
-        <TabsContent value="blogs">
-          { (blogData.length > 0) && 
-            <WeeklyBitesTable data={blogData}/>
-          }
-        </TabsContent>
-        <TabsContent value="news">
-            { (newsData.length > 0) && 
-            <WeeklyBitesTable data={newsData}/>
-          }
-        </TabsContent>
+  {clipsData.length > 0 ? (
+    <WeeklyBitesTable data={clipsData} />
+  ) : (
+    <WeeklyBitesTableSkeleton rows={5} />
+  )}
+</TabsContent>
+
+<TabsContent value="blogs">
+  {blogData.length > 0 ? (
+    <WeeklyBitesTable data={blogData} />
+  ) : (
+    <WeeklyBitesTableSkeleton rows={5} />
+  )}
+</TabsContent>
+
+<TabsContent value="news">
+  {newsData.length > 0 ? (
+    <WeeklyBitesTable data={newsData} />
+  ) : (
+    <WeeklyBitesTableSkeleton rows={5} />
+  )}
+</TabsContent>
+
       </Tabs>
     </div>
   );
@@ -134,28 +144,28 @@ function WeeklyBitesTable ({data}:{data:WeeklyBitesData[]}) {
   <tbody>
     { data.map(item => (
              <tr key={item.id} className="text-xs rounded-lg border border-muted">
-             <td>
-               <ImageWithFallback className="max-h-[32px] rounded" width={50} height={32} alt={item.title} src={item.image}/>
-             </td>
-             <td className="align-middle">
+              <td className="w-[80px]">
+                <ImageWithFallback className="max-h-[32px] rounded" width={50} height={32} alt={item.title} src={item.image}/>
+              </td>
+             <td className="align-middle text-start">
                  <div>
                      <p>{item.title}</p>
                      <p className="text-xs text-muted-foreground">{item.author}</p>
                  </div>
              </td>
-             <td className="align-middle">
+             <td className="align-middle w-[100px]">
                  
                  <span className="capitalize">{item.duration} {item.action}</span>
                  
              </td>
-             <td className="align-middle">
+             <td className="align-middle w-[80px]">
                  <div className="flex flex-row gap-2 items-center">
                      <Heart className="w-[1em] h-[1em] fill-red-400 text-red-400"/>
                      <span>{item.likes ?? 0}</span>
    
                  </div>
              </td>
-             <td className="align-middle w-[80px]">
+             <td className="align-middle w-[100px]">
                      <Button href={item.link} className="h-fit rounded-lg w-full !px-2 !py-1 text-[1em]" variant="outline">
                          {item.action}
                      </Button>
