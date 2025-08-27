@@ -1,4 +1,5 @@
 "use client";
+import PostSidebar from "@/components/post/postSidebar";
 import PostSingle from "@/components/post/singlePost";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { usePathname } from "next/navigation";
@@ -11,8 +12,8 @@ const WebinarSingle = () => {
   return (
     <div className="flex gap-6 h-full">
       <PostSingle data={data} />
-
-      <div className="right-sidebar"></div>
+      <PostSidebar currentPost={data} currentCategory="7p2v1Ur_O1"/>
+      
     </div>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 import { Post } from "@/components/post/postCard";
+import PostSidebar from "@/components/post/postSidebar";
 import PostSingle from "@/components/post/singlePost";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { slugifyName } from "@/lib/helper";
@@ -26,7 +27,7 @@ console.log(healthNewsPosts, 'healthNewsPosts')
   return (
     <div className="flex gap-6 h-full">
       <PostSingle data={data}/>
-      <div className="right-sidebar"></div>
+      <PostSidebar currentPost={data} currentCategory="7p2v1Ur_O4"/>
     </div>
   );
 };

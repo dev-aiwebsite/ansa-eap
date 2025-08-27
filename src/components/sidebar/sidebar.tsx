@@ -15,7 +15,7 @@ const Sidebar = () => {
       </div>
       <NavItems />
       <div className="mt-auto p-6">
-        <Button variant="default" className="w-full shadow-btn">
+        <Button href="/critical-response" variant="default" className="w-full shadow-btn">
           <span>Critical Response</span>
         </Button>
       </div>

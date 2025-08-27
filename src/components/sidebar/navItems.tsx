@@ -42,16 +42,26 @@ export const navItems: NavItemsType[] = [
         link: "/learning-development/health-news",
       },
       {
-        title: "Video Contents",
+        title: "Video",
         link: "/learning-development/webinars",
+      },
+      {
+        title: "Audio",
+        link: "#",
+        // link: "/learning-development/audio",
       },
       {
         title: "Yoga",
         link: "/learning-development/yoga",
       },
       {
-        title: "3 minute read",
+        title: "Quick Reads",
         link: "/learning-development/blogs",
+      },
+      {
+        title: "Short Clips",
+        link: "#",
+        // link: "/learning-development/shorts",
       },
     ],
   },

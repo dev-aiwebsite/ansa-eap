@@ -258,38 +258,82 @@ export const webinarsData: Webinar[] = [
   export const practionersData = [
     {
         "id": "7WkBEQxkp8",
-        "name": "Liam",
-        "position": "Junior Therapist",
+        "name": "Naomee Golluccio",
+        "position": "PSYCHOLOGIST",
         "experience": "5 years",
-        "image": "/assets/images/img3.png",
-        "description": "Focused on holistic and evidence-based treatments.",
+        "image": "https://images.squarespace-cdn.com/content/v1/6761fb2601d29e0694e0ad44/10f744dc-ddf1-40d6-96d8-16c51833733f/Untitled+%28800+x+600+px%29+%2812%29.jpg?format=2500w",
+        "description": `
+  <p>
+    Naomee is a registered general psychologist with several years of experience working across a variety of settings, including private practice, forensic environments, and multidisciplinary teams. She is currently completing further postgraduate studies in clinical psychology to enhance her capacity to support clients with more complex and diverse needs.
+  </p>
+  <p>
+    Her current focus is on supporting children, adolescents, and their families. She is passionate about taking a strengths-based approach that focuses on helping young people build resilience, improve emotional regulation, and develop the skills they need to navigate challenges with confidence. She supports clients with a range of concerns, including anxiety, behavioural difficulties, and social skill development, and works collaboratively with families, schools, and other systems to promote consistency and positive change.
+  </p>
+  <p>
+    Her practice is grounded in a client-centred philosophy, where therapy is tailored to the goals, values, and developmental stage of each individual. She draws from a range of evidence-based therapeutic models, including Cognitive Behavioural Therapy (CBT), Acceptance and Commitment Therapy (ACT), and Schema Therapy, all while grounded in a trauma informed approach. Her aim is to create a warm and supportive space where clients feel heard, empowered, and equipped with practical tools for long-term wellbeing.
+  </p>
+  <p>
+    Naomee is currently completing a Master of Clinical Psychology (Post Registration) to obtain clinical endorsement with the Psychology Board of Australia.
+  </p>
+`,
         "booking_link": ""
     },
     {
         "id": "5f12muiL8h",
-        "name": "Jane",
-        "position": "Junior Counselor",
+        "name": "Johanna Greville",
+        "position": "SOCIAL WORKER & KINESIOLOGIST",
         "experience": "8 years",
-        "image": "/assets/images/img3.png",
-        "description": "Focused on holistic and evidence-based treatments.",
+        "image": "https://images.squarespace-cdn.com/content/v1/6761fb2601d29e0694e0ad44/4f0e874a-4f17-4adc-82ae-4227cac54784/Untitled+%28800+x+600+px%29+%286%29.jpg?format=2500w",
+        "description": `<p>
+    Johanna is a qualified and registered Social Worker with the Australian Association of Social Workers, as well as a trained Kinesiologist, who specialises in working with neurodiverse children and their families. With extensive experience in both therapeutic and behavioural support, Johanna is passionate about creating inclusive, supportive environments where neurodivergent children feel safe, understood, and empowered.
+  </p>
+  <p>
+    She has worked across a range of settings, supporting children with autism, ADHD, and other neurodevelopmental differences, and brings a strong understanding of the unique challenges they may face. Using practical, strength-based strategies, Johanna helps families build connection, improve regulation, and support emotional development in a way that honours each child’s individual needs.
+  </p>
+  <p>
+    Her holistic, trauma-informed approach integrates nervous system regulation, behavioural insight, and kinesiology to support both emotional and physical wellbeing. Johanna’s warm, grounded presence helps children and families feel seen and supported at every stage of their journey.
+  </p>
+  <p>
+    <strong>Appropriate referrals include:</strong> Anxiety, depression, stress, trauma, behavioural challenges, family violence, and neurodiversity (including autism and ADHD).
+  </p>`,
         "booking_link": ""
     },
     {
         "id": "wCiLvHDjmY",
-        "name": "Isabella",
-        "position": "Junior Therapist",
+        "name": "Chelsea Huynh",
+        "position": "PROVISIONAL PSYCHOLOGIST",
         "experience": "13 years",
-        "image": "/assets/images/img3.png",
-        "description": "Experienced with adolescents and family therapy.",
+        "image": "https://images.squarespace-cdn.com/content/v1/6761fb2601d29e0694e0ad44/bbadedc7-ff67-4cf8-b9dc-3da111c565dc/Chelsea+Huynh?format=2500w",
+        "description": ` <p>
+    Chelsea is a provisional psychologist with experience supporting clients across a wide age range, from primary school-aged children to mature adults. She is adaptable and culturally sensitive, ensuring her approach is tailored to meet the diverse needs and presentations of her clients.
+  </p>
+  <p>
+    Chelsea specialises in working with children experiencing challenges such as emotional regulation difficulties, anxiety, attention-deficit/hyperactivity disorder (ADHD), autism spectrum disorder (ASD), family relationship issues, and trauma. Additionally, she supports adults navigating concerns like anxiety, depression, trauma, life transitions, and interpersonal difficulties.
+  </p>
+  <p>
+    Chelsea is deeply committed to improving access to mental health services and values working with a diverse client base to increase awareness of the support available. Her friendly and compassionate demeanour fosters a safe and welcoming environment where clients feel comfortable discussing their mental health and working toward enhanced well-being.
+  </p>
+  <p>
+    <strong>Appropriate referrals include:</strong> Concerns related to emotional regulation, anxiety, ADHD, ASD, family relationship issues, trauma, depression, life transitions, and interpersonal challenges.
+  </p>`,
         "booking_link": ""
     },
     {
         "id": "LsUN7u1c0j",
-        "name": "Ava",
-        "position": "Junior Psychologist",
+        "name": "Yvie Montfort",
+        "position": "SOCIAL WORKER",
         "experience": "5 years",
-        "image": "/assets/images/img3.png",
-        "description": "Passionate about mental wellness and helping others thrive.",
+        "image": "https://images.squarespace-cdn.com/content/v1/6761fb2601d29e0694e0ad44/03205627-2b1a-4aa8-8b66-9574fb963b54/Yvie+Montfort?format=2500w",
+        "description": `  <p>Yvie is a skilled social worker providing comprehensive therapeutic services to individuals seeking enhanced well-being. Her practice is informed by extensive experience within diverse community settings. She utilises a holistic approach that is grounded in systems theory, which allows her to work with individuals and understand the many interconnected systems that influence their lives.
+ </p>
+  <p>Yvie's clinical approach is firmly established in trauma-informed principles and integrates therapeutic modalities and theories, including Internal Family Systems (IFS) Therapy, Narrative Therapy, and Polyvagal Theory. This synthesis facilitates a nuanced exploration of internal systems, empowers clients to reconstruct their personal narratives, and promotes effective nervous system regulation.
+ </p>
+  <p>Yvie’s goal is to create a safe and supportive space where individuals can connect with their authentic selves, release old patterns, and build a more fulfilling life. She has a core belief that everyone has the capacity for healing and growth. 
+ </p>
+  <p><strong>Appropriate referrals include:</strong></p>
+<p>
+Anxiety, depression, stress, trauma, pregnancy and parenthood, interpersonal relationship difficulties, life transitions.
+</p>`,
         "booking_link": ""
     },
     {
@@ -337,4 +381,43 @@ export const webinarsData: Webinar[] = [
         "description": "Focused on holistic and evidence-based treatments.",
         "booking_link": ""
     }
+  ]
+
+
+  export type Categories = {
+    id: string;
+    label: string;
+    created_at: string;
+  }
+  export const categories = [
+    {
+      id: "7p2v1Ur_O1",
+      label: "video",
+      created_at: ""
+    },
+    {
+      id: "7p2v1Ur_O2",
+      label: "audio",
+      created_at: ""
+    },
+    {
+      id: "7p2v1Ur_O3",
+      label: "short clips",
+      created_at: ""
+    },
+    {
+      id: "7p2v1Ur_O4",
+      label: "allied health news",
+      created_at: ""
+    },
+    {
+      id: "7p2v1Ur_O5",
+      label: "yoga",
+      created_at: ""
+    },
+    {
+      id: "7p2v1Ur_O6",
+      label: "quick reads",
+      created_at: ""
+    },
   ]

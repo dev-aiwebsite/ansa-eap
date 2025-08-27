@@ -23,6 +23,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.wellbeing.com.au", // ✅ allow wellbeing.com.au + subdomains
       },
+      {
+        protocol: "https",
+        hostname: "**.squarespace-cdn.com", // ✅ allow wellbeing.com.au + subdomains
+      },
     ],
   },
 };
