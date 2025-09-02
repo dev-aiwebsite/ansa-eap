@@ -1,29 +1,29 @@
 "use client";
-import { Post } from "@/components/post/postCard";
 import PostSidebar from "@/components/post/postSidebar";
 import PostSingle from "@/components/post/singlePost";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { slugifyName } from "@/lib/helper";
+import { Post } from "@/serverActions/crudPosts";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const HealthNewsSingle = () => {
   const {news_title} = useParams()
   const [data, setData] = useState<Partial<Post> | null>(null)
-  const {healthNewsPosts} = usePostServiceContext()
+  const {healthNews} = usePostServiceContext()
   
     useEffect(()=>{
       if(!news_title) return
-      if(healthNewsPosts.length){
+      if(healthNews.length){
         console.log('has healthnewsposts')
-        const item = healthNewsPosts.find(i => slugifyName(i?.title ?? "") == news_title)
+        const item = healthNews.find(i => slugifyName(i?.title ?? "") == news_title)
         setData(item ?? null)  
       
       }
-    },[news_title, healthNewsPosts])
+    },[news_title, healthNews])
     
 
-console.log(healthNewsPosts, 'healthNewsPosts')
+console.log(healthNews, 'healthNews')
   return (
     <div className="flex gap-6 h-full">
       <PostSingle data={data}/>

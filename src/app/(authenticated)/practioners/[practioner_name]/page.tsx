@@ -15,7 +15,7 @@ const PractionerSingle = () => {
 
   return (
     <div className="flex gap-6 h-full">
-      <Container className="card max-w-[400px]">
+      <Container className="card">
         <>
           <div className="flex flex-col items-center p-4">
             <Image

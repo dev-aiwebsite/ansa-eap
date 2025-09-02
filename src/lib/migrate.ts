@@ -44,45 +44,12 @@ async function migrate() {
 `;
 
 
-  const createWebinarsTable = `
-  CREATE TABLE IF NOT EXISTS webinars (
+  const createPostsTable = `
+  CREATE TABLE IF NOT EXISTS posts (
     id TEXT PRIMARY KEY, -- nanoid
     title TEXT NOT NULL,
     slug TEXT UNIQUE NOT NULL,  
-    author TEXT NOT NULL,
-    tags TEXT, -- could also be TEXT[] if you want multiple tags,
-    video TEXT, -- optional (e.g. video URL),
-    audio TEXT, -- optional (e.g. video URL),
-    thumbnail TEXT, -- optional (image URL),
-    description TEXT,
-      duration_hours INTEGER DEFAULT 0,
-    duration_minutes INTEGER DEFAULT 0,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
-  );
-`;
-  const createBlogsTable = `
-  CREATE TABLE IF NOT EXISTS blogs (
-    id TEXT PRIMARY KEY, -- nanoid
-    title TEXT NOT NULL,
-    slug TEXT UNIQUE NOT NULL,  
-    author TEXT NOT NULL,
-    tags TEXT, -- could also be TEXT[] if you want multiple tags,
-    video TEXT, -- optional (e.g. video URL),
-    audio TEXT, -- optional (e.g. video URL),
-    thumbnail TEXT, -- optional (image URL),
-    description TEXT,
-      duration_hours INTEGER DEFAULT 0,
-    duration_minutes INTEGER DEFAULT 0,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
-  );
-`;
-  const createYogasTable = `
-  CREATE TABLE IF NOT EXISTS yogas (
-    id TEXT PRIMARY KEY, -- nanoid
-    title TEXT NOT NULL,
-    slug TEXT UNIQUE NOT NULL,  
+    category TEXT NOT NULL,  
     author TEXT NOT NULL,
     tags TEXT, -- could also be TEXT[] if you want multiple tags
     video TEXT, -- optional (e.g. video URL),
@@ -116,10 +83,9 @@ CREATE TABLE tags (
     await pool.query(createUsersTable);
     await pool.query(createDailyActivitiesTable);
     await pool.query(createDailyCheckInsTable);
-    await pool.query(createWebinarsTable);
+    await pool.query(createPostsTable);
     await pool.query(createTagsTable);
-    await pool.query(createBlogsTable);
-    await pool.query(createYogasTable);
+ 
 
     console.log("✅ Tables created successfully.");
 

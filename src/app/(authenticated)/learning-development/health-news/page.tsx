@@ -4,7 +4,7 @@ import { usePostServiceContext } from "@/context/postServiceContext";
 import { slugifyName } from "@/lib/helper";
 
 const NewsPage = () => {
-  const {healthNewsPosts:data} = usePostServiceContext()
+  const {healthNews:data} = usePostServiceContext()
 
 
   return (

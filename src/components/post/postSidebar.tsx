@@ -8,20 +8,14 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "../ui/imageWithFallback";
 import { Post } from "./postCard";
+import { cn } from "@/lib/utils";
 
 type PostSidebarProps = {
     currentPost: Partial<Post> | null;
     currentCategory: string;
 }
 const PostSidebar = ({currentPost, currentCategory}:PostSidebarProps) => {
-  const { yogas, healthNewsPosts, blogs, videoContents } = usePostServiceContext();
-
-  const latestPosts = [
-    {...yogas.at(-1), category:"7p2v1Ur_O5" },
-    {...healthNewsPosts.at(-1), category: "7p2v1Ur_O4"},
-    {...blogs.at(-1), category: "7p2v1Ur_O6"},
-    {...videoContents.at(-1), category: "7p2v1Ur_O1"}
-  ];
+  const {latestPosts } = usePostServiceContext();
 
 console.log(currentPost, 'postData')
 console.log(currentCategory, 'currentCategory')
@@ -61,7 +55,7 @@ console.log(currentCategory, 'currentCategory')
           <h4 className="card-title mb-2">Recent Posts</h4>
           <div>
             {(latestPosts.length > 0) &&
-              latestPosts.map((i) => <PostItem key={i.id} item={i} />)}
+              latestPosts.map((i,index) => <PostItem key={(i?.id && i?.category) ? i.id + i.category + index : index } item={i} />)}
           </div>
         </div>
       </div>
@@ -71,16 +65,16 @@ console.log(currentCategory, 'currentCategory')
 
 export default PostSidebar;
 
-function PostItem({ item }: { item: Partial<Post> & { category: string } }) {
+export function PostItem({ item, className }: { item: Partial<Post> & { category?: string }, className?:string }) {
   return (
     <Link
-      className="space-x-4 rounded-xl p-2 bg-muted flex flex-row justify-between items-center"
-      href="#"
+      className={cn("space-x-4 rounded-xl text-base p-2 bg-muted flex flex-row justify-between items-center", className)}
+      href={item.slug ?? "#"}
     >
       <div className="h-full w-fit">
         <ImageWithFallback
           iconSize={30}
-          className="object-contain w-auto !bg-gray-200 aspect-square rounded overflow-hidden"
+          className="w-[3em] h-[3em] object-contain w-auto !bg-gray-200 aspect-square rounded overflow-hidden"
           width={40}
           height={40}
           alt={""}
@@ -88,10 +82,10 @@ function PostItem({ item }: { item: Partial<Post> & { category: string } }) {
         />
       </div>
       <div className="flex-1">
-        <p className="font-medium text-muted-foreground text-sm">
+        <p className="font-medium text-muted-foreground text-[.0.875em]">
           {item.title}
         </p>
-        <p className="capitalize text-muted-foreground text-xs">{categories.find( i => i.id == item.category)?.label}</p>
+        <p className="capitalize text-muted-foreground text-[0.75em]">{categories.find( i => i.id == item.category)?.label}</p>
       </div>
     </Link>
   );

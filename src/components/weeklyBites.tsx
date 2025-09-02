@@ -14,7 +14,7 @@ import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
 const WeeklyBites = () => {
 
   const [activeTab, setActiveTab] = useState("blogs")
-  const {healthNewsPosts,blogs,videoContents} = usePostServiceContext()
+  const {healthNews,blogs,videoContents} = usePostServiceContext()
 
   const blogData = blogs.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
   .slice(0,4)
@@ -46,7 +46,7 @@ const WeeklyBites = () => {
     }
   })
 
-  const newsData = healthNewsPosts.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
+  const newsData = healthNews.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
   .slice(0,4)
   .map(i => {
     return {

@@ -1,9 +1,6 @@
 "use client";
-import { Post } from "@/components/post/postCard";
 import { slugifyName } from "@/lib/helper";
-import { getBlogs } from "@/serverActions/crudBlogs";
-import { getWebinars } from "@/serverActions/crudWebinars";
-import { getYogas } from "@/serverActions/crudYogas";
+import { getPosts, Post } from "@/serverActions/crudPosts";
 import { getNews } from "@/serverActions/RssNewsWellBeing";
 import {
   createContext,
@@ -11,20 +8,22 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
-type PartialPost = Partial<Post>[];
+type PartialPost = (Partial<Post> & { category?: string })[];
 
 type PostServiceContextType = {
-  healthNewsPosts: PartialPost;
-  setHealthNewsPosts: Dispatch<SetStateAction<PartialPost>>;
+  allPosts: PartialPost;
+  setAllPosts: Dispatch<SetStateAction<PartialPost>>;
+  latestPosts: PartialPost;
+  healthNews: PartialPost;
+  setHealthNews: Dispatch<SetStateAction<PartialPost>>;
   videoContents: PartialPost;
-  setVideoContents: Dispatch<SetStateAction<PartialPost>>;
   yogas: PartialPost;
-  setYogas: Dispatch<SetStateAction<PartialPost>>;
   blogs: PartialPost;
-  setBlogs: Dispatch<SetStateAction<PartialPost>>;
+  addPosts: (posts: PartialPost) => void;
 };
 
 type AppServiceContextProviderProps = {
@@ -35,65 +34,74 @@ type AppServiceContextProviderProps = {
 const PostServiceContext = createContext<PostServiceContextType | null>(null);
 
 export function PostServiceProvider({ children, data }: AppServiceContextProviderProps) {
-  const [healthNewsPosts, setHealthNewsPosts] = useState<PartialPost>(data ?? []);
-  const [videoContents, setVideoContents] = useState<PartialPost>(data ?? []);
-  const [yogas, setYogas] = useState<PartialPost>(data ?? []);
-  const [blogs, setBlogs] = useState<PartialPost>(data ?? []);
+  const [allPosts, setAllPosts] = useState<PartialPost>([]);
+  const [healthNews, setHealthNews] = useState<PartialPost>(data ?? []);
 
-
-  useEffect(()=> {
-
-    if(!healthNewsPosts.length){
-      getNews()
-      .then(res => {
-        const formattedSlug = res.map(i => ({...i, slug: `/learning-development/health-news/${slugifyName(i.title)}`}))
-        setHealthNewsPosts(formattedSlug)
-      })
+  useEffect(() => {
+    if (!healthNews.length) {
+      getNews().then((res) => {
+        const formattedSlug = res.map((i) => ({
+          ...i,
+          slug: `/learning-development/health-news/${slugifyName(i.title)}`,
+        }));
+        setHealthNews(formattedSlug);
+      });
     }
 
-    if(!videoContents.length){
-      getWebinars()
-      .then(r => {
-        const data= r.data
-        if(data){
-          setVideoContents(data)
+    if (!allPosts.length) {
+      getPosts().then((r) => {
+        const data = r.data;
+        if (data) {
+          setAllPosts(data);
         }
-      })
+      });
     }
+  }, []);
 
-    if(!yogas.length){
-      getYogas()
-      .then(r => {
-        const data= r.data
-        if(data){
-          setYogas(data)
-        }
-      })
-    }
+  const blogs = useMemo<PartialPost>(
+    () => allPosts.filter((p) => p.category === "7p2v1Ur_O6"),
+    [allPosts]
+  );
 
-    if(!blogs.length){
-      getBlogs()
-      .then(r => {
-        const data= r.data
-        if(data){
-          setBlogs(data)
-        }
-      })
-    }
+  const yogas = useMemo<PartialPost>(
+    () => allPosts.filter((p) => p.category === "7p2v1Ur_O5"),
+    [allPosts]
+  );
 
-  },[])
+  const videoContents = useMemo<PartialPost>(
+    () => allPosts.filter((p) => p.category === "7p2v1Ur_O1"),
+    [allPosts]
+  );
+
+  const latestPosts = useMemo<PartialPost>(() => {
+    return [
+      yogas.at(-1) ?? null,
+      healthNews.at(-1) ?? null,
+      blogs.at(-1) ?? null,
+      videoContents.at(-1) ?? null,
+    ].filter(Boolean) as PartialPost;
+  }, [allPosts, healthNews, blogs, yogas, videoContents]);
+
+  const addPosts = (posts: PartialPost) => {
+    setAllPosts((prev) => {
+      const existingIds = new Set(prev.map((p) => p.id));
+      const deduped = posts.filter((p) => !existingIds.has(p.id));
+      return [...prev, ...deduped];
+    });
+  };
 
   return (
     <PostServiceContext.Provider
       value={{
-        healthNewsPosts,
-        setHealthNewsPosts,
+        allPosts,
+        setAllPosts,
+        latestPosts,
+        healthNews,
+        setHealthNews,
         videoContents,
-        setVideoContents,
         yogas,
-        setYogas,
         blogs,
-        setBlogs,
+        addPosts,
       }}
     >
       {children}

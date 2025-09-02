@@ -1,7 +1,5 @@
-"use client";
-import { Search } from "lucide-react";
-import { Button } from "./button";
 import PageTitle from "./pageTitle";
+import { GlobalSearch } from "@/components/ui/globalSearch";
 
 const MainHeader = () => {
   return (
@@ -10,13 +8,7 @@ const MainHeader = () => {
         <PageTitle />
       </h1>
       <div>
-        <Button
-          className="rounded-full bg-white aspect-square !p-5 text-primary"
-          size="icon"
-          variant="secondary"
-        >
-          <Search />
-        </Button>
+        <GlobalSearch />
       </div>
     </div>
   );
