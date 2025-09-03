@@ -1,8 +1,9 @@
-import PostCard from "./postCard";
+import { Post } from "@/serverActions/crudPosts";
 import PostCardSkeleton from "./postCardSkeleton";
+import PostCard from "./postCard";
 
 type PostCards = {
-    data: Partial<PostCard>[],
+    data: Partial<Post>[],
     id_prefix: string;
     actionText: "read" | "watch";
     className?: string; 

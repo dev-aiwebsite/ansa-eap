@@ -7,13 +7,12 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import {
-  User,
-  DailyActivity,
-  DailyCheckIn,
-} from "@/types"; // adjust path if needed
+import { User, DailyActivity, DailyCheckIn } from "@/types"; // adjust path if needed
 import { updateDailyActivity } from "@/serverActions/crudDailyActivities";
-import { createDailyCheckIn, DailyCheckinQA } from "@/serverActions/crudDailyCheckIns";
+import {
+  createDailyCheckIn,
+  DailyCheckinQA,
+} from "@/serverActions/crudDailyCheckIns";
 
 type AppServiceContextType = {
   currentUser: User | null;
@@ -23,10 +22,17 @@ type AppServiceContextType = {
   setUsers: Dispatch<SetStateAction<User[]>>;
 
   dailyActivities: DailyActivity[] | [];
-  saveDailyActivities: (activity: DailyActivity) => Promise<{ success: boolean; message: string; }>;
+  saveDailyActivities: (
+    activity: DailyActivity
+  ) => Promise<{ success: boolean; message: string }>;
 
   dailyCheckIns: DailyCheckIn[] | [];
-  saveDailyCheckIns: (checkIn: DailyCheckinQA) => Promise<{ success: boolean; message: string; } | undefined>;
+  saveDailyCheckIns: (
+    checkIn: DailyCheckinQA
+  ) => Promise<{ success: boolean; message: string } | undefined>;
+
+  globalSearchOpen:boolean;
+  setGlobalSearchOpen:Dispatch<SetStateAction<boolean>>;
 };
 
 type AppServiceContextProviderProps = {
@@ -56,37 +62,38 @@ export function AppServiceContextProvider({
     data?.dailyCheckIns || []
   );
 
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
 
   const saveDailyActivities = async (activity: DailyActivity) => {
     const result = {
       success: false,
-      message: ""
-    }
-    if(!currentUser){
-      result.message = "No Current User"
-      return result
+      message: "",
+    };
+    if (!currentUser) {
+      result.message = "No Current User";
+      return result;
     }
     try {
-      const res = await updateDailyActivity(currentUser?.id, activity)
+      const res = await updateDailyActivity(currentUser?.id, activity);
 
       if (!res.ok) throw new Error("Failed to save activity");
 
       const saved = await res.json();
       setDailyActivities((prev) => [...prev, saved]);
-      result.success = true
+      result.success = true;
     } catch (err) {
       result.message = err instanceof Error ? err.message : "Unknown error";
       console.error("Error saving activity:", err);
     }
 
-    return result
+    return result;
   };
 
-  const saveDailyCheckIns = async (checkIn:  DailyCheckinQA) => {
+  const saveDailyCheckIns = async (checkIn: DailyCheckinQA) => {
     const result = {
       success: false,
-      message: ""
-    }
+      message: "",
+    };
 
     // if(!currentUser){
     //   result.message = "No Current User"
@@ -95,23 +102,24 @@ export function AppServiceContextProvider({
 
     const data = {
       user_id: currentUser?.id ?? "1kj23lk1j2",
-      responses: checkIn
-    }
+      responses: checkIn,
+    };
     try {
-      const res = await createDailyCheckIn(data)
+      const res = await createDailyCheckIn(data);
       setDailyCheckIns((prev) => [...prev, res]);
-      result.success = true
-      return result
+      result.success = true;
+      return result;
     } catch (err) {
       result.message = err instanceof Error ? err.message : "Unknown error";
       console.error("Error saving daily check ins:", err);
     }
   };
 
-
   return (
     <appServiceContext.Provider
       value={{
+        globalSearchOpen,
+        setGlobalSearchOpen,
         currentUser,
         setCurrentUser,
         users,

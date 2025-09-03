@@ -1,6 +1,6 @@
 "use client";
 
-import { CreditCard, Search, Settings, User } from "lucide-react";
+import { Search } from "lucide-react";
 
 import {
   CommandDialog,
@@ -10,22 +10,26 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
+import { useAppServiceContext } from "@/context/appServiceContext";
 import { usePostServiceContext } from "@/context/postServiceContext";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PostItem } from "../post/postSidebar";
+import { navItems } from "../sidebar/navItems";
 import { Button } from "./button";
 
 export function GlobalSearch() {
-  const [open, setOpen] = useState(false);
-  const {latestPosts } = usePostServiceContext();
+  const {globalSearchOpen, setGlobalSearchOpen} = useAppServiceContext()
+  const { allPosts, latestPosts } = usePostServiceContext();
+  const [search, setSearch] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if ((e.key === "k" || e.key === "f") && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((open) => !open);
+        setGlobalSearchOpen((globalSearchOpen) => !globalSearchOpen);
       }
     };
 
@@ -34,7 +38,22 @@ export function GlobalSearch() {
   }, []);
 
   function showSearchDialog() {
-    setOpen(true);
+    setGlobalSearchOpen(true);
+  }
+
+  const filteredPost = allPosts.filter((item) => {
+    const itemString = JSON.stringify(item).toLowerCase();
+    const terms = search.toLowerCase().split(/\s+/).filter(Boolean); // split on spaces, ignore empty
+
+    // All terms must be present in the item string
+    return terms.every((term) => itemString.includes(term));
+  });
+  
+
+  function handleOnSelect(slug?: string) {
+    if (!slug) return;
+    setGlobalSearchOpen(false);
+    router.push(slug);
   }
 
   return (
@@ -47,41 +66,87 @@ export function GlobalSearch() {
       >
         <Search />
       </Button>
-      <CommandDialog className="w-full translate-y-0 top-20" open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search..." />
+      <CommandDialog
+        shouldFilter={false}
+        className="p-2 w-full translate-y-0 top-20"
+        open={globalSearchOpen}
+        onOpenChange={setGlobalSearchOpen}
+      >
+        <CommandInput
+          placeholder="Search..."
+          onValueChange={(v) => setSearch(v)}
+          value={search}
+        />
+
         <CommandList className="h-full max-h-[80vh]">
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Recent Posts">
-            {latestPosts.length > 0 &&
-              latestPosts.map((i,index) => (
-                <CommandItem
-                className="!p-0"
-                key={(i.id && i.category) ? i.id + i.category + index: index}
-                value={`${i.title} ${i.category ?? ""}`} // 👈 searchable text
-              >
-                <PostItem className="bg-transparent w-full text-xs rounded" item={i} />
-              </CommandItem>
-              
-              ))}
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>
-              <User />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <CreditCard />
-              <span>Billing</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Settings />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
+          {search ? (
+            <>
+              {filteredPost.length > 0 && (
+                <CommandGroup heading="Posts">
+                  {filteredPost.map((i, index) => {
+                    return (
+                      <CommandItem
+                        onSelect={() => handleOnSelect(i.slug)}
+                        className="!p-0 "
+                        key={
+                          i.id && i.category ? i.id + i.category + index : index
+                        }
+                      >
+                        <PostItem
+                          disableLink
+                          className="bg-transparent w-full text-sm rounded"
+                          item={i}
+                        />
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              )}
+
+              <CommandEmpty>No results found.</CommandEmpty>
+            </>
+          ) : (
+            <>
+              <CommandGroup heading="Recent Posts">
+                {latestPosts.length > 0 &&
+                  latestPosts.map((i, index) => (
+                    <CommandItem
+                      className="!p-0"
+                      onSelect={() => handleOnSelect(i.slug)}
+                      key={
+                        i.id && i.category ? i.id + i.category + index : index
+                      }
+                      value={`${i.title} ${i.category ?? ""}`} // 👈 searchable text
+                    >
+                      <PostItem
+                        disableLink
+                        className="bg-transparent w-full text-sm rounded"
+                        item={i}
+                      />
+                    </CommandItem>
+                  ))}
+              </CommandGroup>
+              <CommandSeparator />
+              <div className="grid grid-cols-4">
+                <CommandGroup
+                  className="p-1.5 text-sm"
+                  heading="Learning & Development"
+                >
+                  {navItems
+                    .filter((i) => i.link == "/learning-development")[0]
+                    .subitems?.map((i) => (
+                      <CommandItem
+                        key={i.title}
+                        className="!py-1 text-xs"
+                        onSelect={() => handleOnSelect(i.link)}
+                      >
+                        {i.title}
+                      </CommandItem>
+                    ))}
+                </CommandGroup>
+              </div>
+            </>
+          )}
         </CommandList>
       </CommandDialog>
     </>
