@@ -1,6 +1,6 @@
 const ChatPage = () => {
     return (
-        <div>
+        <div className="card">
             <iframe
             className="card"
   src="https://chattera.co/embed/aiagent?id=NDrzgPn2iB&w=448px&h=1000px"
@@ -11,7 +11,7 @@ const ChatPage = () => {
     border: "none",
     background: "transparent",
     width: "800px",
-    height: "1000px",
+    height: "800px",
   }}
 />
         </div>

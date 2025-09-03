@@ -1,7 +1,7 @@
 "use client";
 import Video from "@/components/ui/video";
-import { Post } from "./postCard";
 import Audio from "@/components/ui/audio";
+import { Post } from "@/serverActions/crudPosts";
 
 type PostSingle = {
   data: Partial<Post> | null;

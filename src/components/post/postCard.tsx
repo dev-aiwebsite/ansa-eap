@@ -3,24 +3,9 @@ import { Clock } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { Post } from "@/serverActions/crudPosts";
 
-export type Post = {
-  id: string;
-  title: string;
-  slug: string;
-  author: string;
-  tags: string;
-  video?: string;
-  audio?: string;
-  thumbnail?: string;
-  duration_hours: number;
-  duration_minutes: number;
-  description?: string;
-  created_at: string;
-  updated_at: string;
-};
-type PostCard = Post
-const PostCard = ({ item, actionText = "read", className }: { item: Partial<PostCard>, actionText?: "read" | "watch", className?: string; }) => {
+const PostCard = ({ item, actionText = "read", className }: { item: Partial<Post>, actionText?: "read" | "watch", className?: string; }) => {
   return (
     <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
       {(item.thumbnail && item.title) && (

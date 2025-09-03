@@ -1,7 +1,8 @@
 "use client";
-import { Post } from "@/components/post/postCard";
+
 import PostCards from "@/components/post/postCards";
 import { usePostServiceContext } from "@/context/postServiceContext";
+import { Post } from "@/serverActions/crudPosts";
 import { useEffect, useState } from "react";
 
 type PostCategory = "healthNews" | "yoga" | "video" | "threeMinute";
@@ -22,11 +23,11 @@ const ContentLibraryPage = () => {
   const [activeSection, setActiveSection] = useState<string>("");
 
   // 👇 Use context instead of fetching here
-  const { healthNewsPosts, yogas, videoContents, blogs } = usePostServiceContext();
+  const { healthNews, yogas, videoContents, blogs } = usePostServiceContext();
 
   // Map context data into the sections object shape
   const posts: Record<PostCategory, Partial<Post>[]> = {
-    healthNews: healthNewsPosts ?? [],
+    healthNews: healthNews ?? [],
     yoga: yogas ?? [],
     video: videoContents ?? [],
     threeMinute: blogs ?? [],

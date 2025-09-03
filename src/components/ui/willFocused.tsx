@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 type WillFocusedProps = {
@@ -7,9 +8,11 @@ type WillFocusedProps = {
     isFocused: boolean;
     focusOnChange: (value: boolean) => void;
   }) => ReactNode;
+  className?:string;
+  focusedClassName?:string;
 };
 
-const WillFocused = ({ children}: WillFocusedProps) => {
+const WillFocused = ({ children, className, focusedClassName}: WillFocusedProps) => {
   
   const ref = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -50,16 +53,14 @@ const WillFocused = ({ children}: WillFocusedProps) => {
         document
           .querySelectorAll(".overflow-auto.overflow-visible")
           .forEach((el) => el.classList.remove("overflow-visible"));
-      }, 500);
+      }, 300);
     }
   
   }
   return (
     <div
       ref={ref}
-      className={`will-focused card h-fit w-full text-white bg-primary transition-all ${
-        isFocused && "focused"
-      }`}
+      className={cn("will-focused card h-fit w-full text-white bg-primary transition-all", className, isFocused && "focused", isFocused && focusedClassName)}
     >
       {children({ isFocused, focusOnChange })}
     </div>

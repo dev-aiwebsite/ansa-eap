@@ -117,7 +117,7 @@ export default function DailyCheckIn({
               <Button
                 onClick={removeFocused}
                 size="sm"
-                className="!ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white"
+                className="absolute bottom-6 !ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white"
                 variant="outline"
               >
                 Do it later

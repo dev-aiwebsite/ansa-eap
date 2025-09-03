@@ -7,21 +7,17 @@ import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import ImageWithFallback from "../ui/imageWithFallback";
-import { Post } from "./postCard";
+import { cn } from "@/lib/utils";
+import { Post } from "@/serverActions/crudPosts";
+import { useAppServiceContext } from "@/context/appServiceContext";
 
 type PostSidebarProps = {
     currentPost: Partial<Post> | null;
     currentCategory: string;
 }
 const PostSidebar = ({currentPost, currentCategory}:PostSidebarProps) => {
-  const { yogas, healthNewsPosts, blogs, videoContents } = usePostServiceContext();
-
-  const latestPosts = [
-    {...yogas.at(-1), category:"7p2v1Ur_O5" },
-    {...healthNewsPosts.at(-1), category: "7p2v1Ur_O4"},
-    {...blogs.at(-1), category: "7p2v1Ur_O6"},
-    {...videoContents.at(-1), category: "7p2v1Ur_O1"}
-  ];
+  const {latestPosts } = usePostServiceContext();
+  const {setGlobalSearchOpen} = useAppServiceContext()
 
 console.log(currentPost, 'postData')
 console.log(currentCategory, 'currentCategory')
@@ -29,14 +25,19 @@ console.log(currentCategory, 'currentCategory')
     <Container className="max-w-[400px]">
       <div className="flex flex-col flex-nowrap gap-6">
         <div className="card space-y-4">
-          <div className="flex flex-row gap-2 items-center">
+          <div
+          className="flex flex-row gap-2 items-center">
             <Input
-              className="p-5 !ring-0 !shadow-none"
+              onClick={()=>setGlobalSearchOpen(true)}
+              className="p-5 !ring-0 !shadow-none cursor-pointer"
               type="search"
               name="post-search"
+              readOnly
               placeholder="Keyword"
             />
-            <Button className="p-5" size={"icon"}>
+            <Button
+            onClick={()=>setGlobalSearchOpen(true)}
+            className="p-5" size={"icon"}>
               <Search size={40} />
             </Button>
           </div>
@@ -61,7 +62,7 @@ console.log(currentCategory, 'currentCategory')
           <h4 className="card-title mb-2">Recent Posts</h4>
           <div>
             {(latestPosts.length > 0) &&
-              latestPosts.map((i) => <PostItem key={i.id} item={i} />)}
+              latestPosts.map((i,index) => <PostItem key={(i?.id && i?.category) ? i.id + i.category + index : index } item={i} />)}
           </div>
         </div>
       </div>
@@ -71,27 +72,58 @@ console.log(currentCategory, 'currentCategory')
 
 export default PostSidebar;
 
-function PostItem({ item }: { item: Partial<Post> & { category: string } }) {
-  return (
-    <Link
-      className="space-x-4 rounded-xl p-2 bg-muted flex flex-row justify-between items-center"
-      href="#"
+export function PostItem({ item, className, disableLink = false }: {disableLink?:boolean, item: Partial<Post> & { category?: string }, className?:string }) {
+  return disableLink ? (
+    <div
+      className={cn(
+        "space-x-4 rounded-xl text-base p-2 bg-muted flex flex-row justify-between items-center",
+        className
+      )}
     >
       <div className="h-full w-fit">
         <ImageWithFallback
           iconSize={30}
-          className="object-contain w-auto !bg-gray-200 aspect-square rounded overflow-hidden"
+          className="w-[3em] h-[3em] object-contain w-auto !bg-gray-200 aspect-square rounded overflow-hidden"
           width={40}
           height={40}
-          alt={""}
+          alt=""
           src={item.thumbnail}
         />
       </div>
       <div className="flex-1">
-        <p className="font-medium text-muted-foreground text-sm">
+        <p className="font-medium text-muted-foreground text-[0.875em]">
           {item.title}
         </p>
-        <p className="capitalize text-muted-foreground text-xs">{categories.find( i => i.id == item.category)?.label}</p>
+        <p className="capitalize text-muted-foreground text-[0.75em]">
+          {categories.find((i) => i.id == item.category)?.label}
+        </p>
+      </div>
+    </div>
+  ) : (
+    <Link
+      className={cn(
+        "space-x-4 rounded-xl text-base p-2 bg-muted flex flex-row justify-between items-center",
+        className
+      )}
+      href={item.slug ?? "#"}
+    >
+      <div className="h-full w-fit">
+        <ImageWithFallback
+          iconSize={30}
+          className="w-[3em] h-[3em] object-contain w-auto !bg-gray-200 aspect-square rounded overflow-hidden"
+          width={40}
+          height={40}
+          alt=""
+          src={item.thumbnail}
+        />
+      </div>
+      <div className="flex-1">
+        <p className="font-medium text-muted-foreground text-[0.875em]">
+          {item.title}
+        </p>
+        <p className="capitalize text-muted-foreground text-[0.75em]">
+          {categories.find((i) => i.id == item.category)?.label}
+        </p>
       </div>
     </Link>
   );
