@@ -5,11 +5,23 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.abc.net.au", // allow all subdomains of abc.net.au
+        hostname: "**.ucarecdn.com", // allow ALL Uploadcare CDN subdomains
       },
       {
         protocol: "https",
-        hostname: "**.abc-cdn.net.au", // allow all subdomains of abc-cdn.net.au
+        hostname: "**.ucarecd.net", // allow ALL Uploadcare CDN subdomains
+      },
+      {
+        protocol: "https",
+        hostname: "ucarecdn.com", // root domain
+      },
+      {
+        protocol: "https",
+        hostname: "**.abc.net.au",
+      },
+      {
+        protocol: "https",
+        hostname: "**.abc-cdn.net.au",
       },
       {
         protocol: "https",
@@ -17,15 +29,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ucarecdn.com",
+        hostname: "**.wellbeing.com.au",
       },
       {
         protocol: "https",
-        hostname: "**.wellbeing.com.au", // ✅ allow wellbeing.com.au + subdomains
-      },
-      {
-        protocol: "https",
-        hostname: "**.squarespace-cdn.com", // ✅ allow wellbeing.com.au + subdomains
+        hostname: "**.squarespace-cdn.com",
       },
     ],
   },

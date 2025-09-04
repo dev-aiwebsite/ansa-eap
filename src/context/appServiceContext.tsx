@@ -7,12 +7,13 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { User, DailyActivity, DailyCheckIn } from "@/types"; // adjust path if needed
+import { DailyActivity, DailyCheckIn } from "@/types"; // adjust path if needed
 import { updateDailyActivity } from "@/serverActions/crudDailyActivities";
 import {
   createDailyCheckIn,
   DailyCheckinQA,
 } from "@/serverActions/crudDailyCheckIns";
+import { User } from "@/serverActions/crudUsers";
 
 type AppServiceContextType = {
   currentUser: User | null;

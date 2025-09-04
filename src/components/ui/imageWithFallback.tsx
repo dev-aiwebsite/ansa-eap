@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Props = {
   src?: string | null;
@@ -18,6 +19,8 @@ export default function ImageWithFallback({
   className = "rounded-md object-cover",
   iconSize = 40
 }: Props) {
+  const isDefault = src?.includes('default')
+
   if (!src) {
     return (
       <div
@@ -35,7 +38,7 @@ export default function ImageWithFallback({
       alt={alt}
       width={width}
       height={height}
-      className={className}
+      className={cn(className, isDefault && "bg-gray-200 p-1")}
     />
   );
 }
