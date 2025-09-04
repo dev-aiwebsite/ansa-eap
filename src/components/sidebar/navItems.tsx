@@ -1,11 +1,11 @@
 "use client";
 
 import {
-  IconGrid,
   IconBookMark,
   IconCalendar,
   IconChatDots,
   IconDocument,
+  IconGrid,
 } from "@/icons";
 import { NavItemsType } from "@/types";
 import Link from "next/link";
