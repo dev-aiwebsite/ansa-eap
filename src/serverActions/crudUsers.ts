@@ -1,114 +1,167 @@
 "use server";
-import { nanoid } from "nanoid";
 import pool from "@/lib/db";
-import { User } from "@/types";
+import { nanoid } from "nanoid";
 
-// Create User
-export async function createUser({
-  id = nanoid(10),
-  name,
-  email,
-  password,
-}: {
-  id?: string;
-  name: string;
+export type User = {
+  id: string;
+  first_name?: string;
+  last_name?: string;
+  profile_img?:string;
   email: string;
   password: string;
-}) {
-  const query = `INSERT INTO users (id, name, email, password) VALUES ($1, $2, $3, $4) RETURNING *`;
-  const values = [id, name, email, password];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
+  created_at: string;
+  updated_at: string;
+};
+
+type Result<T> = {
+  success: boolean;
+  message: string;
+  data?: T;
+};
+
+// CREATE
+export async function createUser(
+  data: Omit<User, "id" | "created_at" | "updated_at">
+): Promise<Result<User>> {
+  try {
+    const id = nanoid(10);
+
+    const query = `
+      INSERT INTO users (id, email, password, first_name, last_name, profile_img)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *;
+    `;
+
+    const values = [
+      id,
+      data.email,
+      data.password,
+      data.first_name ?? null,
+      data.last_name ?? null,
+      !data.profile_img || data.profile_img.trim() === ""
+        ? "/assets/images/default-avatar.png" // ✅ default handled in app
+        : data.profile_img,
+    ];
+
+    const result = await pool.query(query, values);
+
+    return {
+      success: true,
+      message: "User created successfully",
+      data: result.rows[0] as User,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
 }
 
-// Get All Users
-export async function getUsers() {
-  const query = `SELECT * FROM users`;
-  const { rows } = await pool.query(query);
-  return rows as User[];
+// READ ALL
+export async function getUsers(): Promise<Result<User[]>> {
+  try {
+    const result = await pool.query(`SELECT * FROM users ORDER BY created_at DESC`);
+    return {
+      success: true,
+      message: "Users fetched successfully",
+      data: result.rows as User[],
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
 }
 
-// Get User by ID
-export async function getUserById(userId: string) {
-  const query = `SELECT * FROM users WHERE id = $1`;
-  const { rows } = await pool.query(query, [userId]);
-  return rows[0] as User;
-}
-export async function getUserByEmail({ email }: { email: string }) {
-  const query = `SELECT * FROM users WHERE email = $1`;
-  const { rows } = await pool.query(query, [email]);
-  return rows[0] as User;
-}
+// READ ONE (by ID)
+export async function getUserById(id: string): Promise<Result<User>> {
+  try {
+    const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
+    if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
 
-// Update User
-export async function updateUser(userId: string, userData: Partial<User>): Promise<User> {
-  // Filter out fields that are undefined or null from userData
-  const fieldsToUpdate: string[] = [];
-  const values: (string | string[] | null)[] = [];
-
-  if (userData.first_name) {
-    fieldsToUpdate.push(`first_name = $${values.length + 1}`);
-    values.push(userData.first_name);
+    return {
+      success: true,
+      message: "User fetched successfully",
+      data: result.rows[0] as User,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
   }
-  if (userData.last_name) {
-    fieldsToUpdate.push(`last_name = $${values.length + 1}`);
-    values.push(userData.last_name);
-  }
-
-  if (userData.email) {
-    fieldsToUpdate.push(`email = $${values.length + 1}`);
-    values.push(userData.email);
-  }
-
-  if (userData.password) {
-    fieldsToUpdate.push(`password = $${values.length + 1}`);
-    values.push(userData.password);
-  }
-
-  // Add updated_at field if there are any updates
-  fieldsToUpdate.push("updated_at = NOW()");
-
-  if (fieldsToUpdate.length === 0) {
-    throw new Error("No fields to update");
-  }
-
-  values.push(userId);
-  console.log(values,'update user values')
-  // Construct the query dynamically based on the fields that need updating
-  const query = `
-    UPDATE users
-    SET ${fieldsToUpdate.join(", ")}
-     WHERE id = $${values.length}
-    RETURNING *;
-  `;
-
-  const { rows } = await pool.query(query, values);
-
-  if (rows.length === 0) {
-    throw new Error(`User with ID ${userId} not found.`);
-  }
-
-  return rows[0] as User;
 }
 
-// Delete User
-export async function deleteUser(userId: string) {
-  const query = `DELETE FROM users WHERE id = $1 RETURNING *`;
-  const { rows } = await pool.query(query, [userId]);
-  return rows[0];
+// READ ONE (by Email)
+export async function getUserByEmail(email: string): Promise<Result<User>> {
+  try {
+    const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+    if (!result.rows[0]) return { success: false, message: `User: ${email} not found` };
+
+    return {
+      success: true,
+      message: "User fetched successfully",
+      data: result.rows[0] as User,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
 }
 
-// Create Team
-export async function createTeam({
-  name,
-  members = [],
-}: {
-  name: string;
-  members?: string[];
-}) {
-  const id = nanoid(10);
-  const query = `INSERT INTO teams (id, name, members) VALUES ($1, $2, $3) RETURNING *`;
-  const values = [id, name, members];
-  const { rows } = await pool.query(query, values);
-  return rows[0];
+// UPDATE
+export async function updateUser(
+  id: string,
+  data: Partial<Omit<User, "id" | "created_at">>
+): Promise<Result<User>> {
+  try {
+    const fields = [];
+    const values = [];
+    let i = 1;
+
+    for (const [key, value] of Object.entries(data)) {
+      fields.push(`${key} = $${i++}`);
+      values.push(value);
+    }
+
+    values.push(id);
+
+    const query = `
+      UPDATE users
+      SET ${fields.join(", ")}, updated_at = NOW()
+      WHERE id = $${i}
+      RETURNING *;
+    `;
+
+    const result = await pool.query(query, values);
+    if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
+
+    return {
+      success: true,
+      message: `User: ${id} updated successfully`,
+      data: result.rows[0] as User,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+
+// DELETE
+export async function deleteUser(id: string): Promise<Result<User>> {
+  try {
+    const result = await pool.query(`DELETE FROM users WHERE id = $1 RETURNING *`, [id]);
+    if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
+
+    return {
+      success: true,
+      message: `User: ${id} deleted successfully`,
+      data: result.rows[0] as User,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
 }

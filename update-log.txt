@@ -1,54 +1,5 @@
-BEGIN;
+added uploadcare
 
-ALTER TABLE yogas ADD COLUMN audio TEXT;
-ALTER TABLE blogs ADD COLUMN audio TEXT;
-ALTER TABLE webinars ADD COLUMN audio TEXT;
+ALTER TABLE users
+ADD COLUMN profile_img TEXT;
 
-COMMIT;
-
-
-- added posts table
-- added posts crud
-- Update PostContext
-- added GlobalSearch
-- added category column on posts
-
-
-
-//
-
-INSERT INTO posts (
-  id,
-  title,
-  slug,
-  author,
-  tags,
-  video,
-  audio,
-  thumbnail,
-  duration_hours,
-  duration_minutes,
-  description,
-  created_at,
-  updated_at,
-  category
-)
-SELECT
-  id,
-  title,
-  COALESCE(
-    slug,
-    '/learning-development/webinars/' || regexp_replace(lower(title), '[^a-z0-9]+', '-', 'g')
-  ) AS slug,
-  author,
-  string_to_array(tags, ',')::text[],
-  video,
-  audio,
-  thumbnail,
-  duration_hours,
-  duration_minutes,
-  description,
-  created_at,
-  updated_at,
-  '7p2v1Ur_O6'
-FROM blogs;

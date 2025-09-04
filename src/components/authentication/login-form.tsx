@@ -18,17 +18,21 @@ export function LoginForm({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [useremail,setUserEmail] = useState("")
+  const [userpass, setUserpass] = useState("")
     const router = useRouter();
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setIsLoading(true)
     setError("")
-    const form = e.target as HTMLFormElement
-    if(!form) return
-    const formData = new FormData(form)
+    
+    const credentials = {
+      useremail,userpass
+    }
+    
     try {
-        const res = await AuthenticateUser(formData)
+        const res = await AuthenticateUser(credentials)
         console.log(res, 'AuthenticateUser res')
         if(!res){
           setError("Wrong credentials")
@@ -80,13 +84,18 @@ export function LoginForm({
                   id="email"
                   type="email"
                   name="useremail"
+                  value={useremail}
+                  onChange={(e)=> setUserEmail(e.target.value)}
                   placeholder="m@example.com"
                   required
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" name="userpass" required />
+                <Input
+                value={userpass}
+                onChange={(e)=> setUserpass(e.target.value)}
+                 id="password" type="password" name="userpass" required />
               </div>
               <Button
                 isLoading={isLoading}

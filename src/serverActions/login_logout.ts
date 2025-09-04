@@ -2,10 +2,10 @@
 
 import { signIn, signOut } from "@/auth";
 
-export const AuthenticateUser = async (formData: FormData) => {
-    const { useremail, userpass, viaadmin } = Object.fromEntries(formData);
+export const AuthenticateUser = async (credentials: {useremail:string,userpass:string}) => {
+    const { useremail, userpass } = credentials;
     try {
-        const redirectUrl = await signIn('credentials', { useremail, userpass, viaadmin, redirect: false });
+        const redirectUrl = await signIn('credentials', { useremail, userpass, redirect: false });
         return {
             redirectUrl
         }

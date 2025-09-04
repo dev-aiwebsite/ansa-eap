@@ -21,7 +21,7 @@ const userId = session.user_id
 if(!userId) return
 
   const [currentUser, dailyActivities, dailyCheckIns] = await Promise.all([
-    getUserById(userId),
+    (await getUserById(userId)).data,
     getDailyActivities(userId),
     getDailyCheckIns(userId),
   ]);

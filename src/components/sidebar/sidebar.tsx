@@ -1,8 +1,8 @@
+import NavItems from "@/components/sidebar/navItems";
+import { Button } from "@/components/ui/button";
 import {
   IconLogo,
 } from "@/icons";
-import { Button } from "@/components/ui/button";
-import NavItems from "@/components/sidebar/navItems";
 
 
 const Sidebar = () => {
@@ -22,5 +22,6 @@ const Sidebar = () => {
     </nav>
   );
 };
+
 
 export default Sidebar;

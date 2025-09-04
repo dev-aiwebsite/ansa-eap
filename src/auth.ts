@@ -5,14 +5,14 @@ import { authConfig } from "./authConfig";
 import { getUserByEmail } from "./serverActions/crudUsers";
 import { ExtendedSession, ExtendedUser } from "./next-auth";
 
-const login = async (credentials: Partial<Record<string, unknown>>) => {
+const login = async (credentials: { useremail: string; userpass: string; viaadmin?: boolean } ) => {
   try {
-    const user = await getUserByEmail({ email: credentials?.useremail as string })
+    const {data:user} = await getUserByEmail(credentials?.useremail)
 
     if (!user) throw new Error('wrong credentials')
     const viaAdmin = credentials?.viaadmin || false
   
-    if (viaAdmin === "undefined" || !viaAdmin) {
+    if (!viaAdmin) {
       // const isPasswordCorrect = await bcrypt.compare( credentials.userpass as string, user.password as string);
       const isPasswordCorrect = credentials.userpass === user.password
       if (!isPasswordCorrect) throw new Error('wrong credentials');
@@ -30,12 +30,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        useremail: {},
+        userpass: {},
       },
       authorize: async (credentials) => {
 
-        const user = await login(credentials)
+        const user = await login(credentials as {
+      useremail: string;
+      userpass: string;
+      viaadmin?: boolean;
+    })
 
         if (user) {
           return user
