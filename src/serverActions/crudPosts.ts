@@ -27,7 +27,7 @@ type Result<T> = {
 };
 
 // CREATE
-export async function createYoga(data: Omit<Post, "id" | "created_at" | "updated_at">): Promise<Result<Post>> {
+export async function createPost(data: Omit<Post, "id" | "created_at" | "updated_at">): Promise<Result<Post>> {
   try {
     const id = nanoid();
     const query = `
@@ -75,7 +75,7 @@ export async function getPosts(): Promise<Result<Post[]>> {
 export async function getPostById(id: string): Promise<Result<Post>> {
   try {
     const result = await pool.query(`SELECT * FROM posts WHERE id = $1`, [id]);
-    if (!result.rows[0]) return { success: false, message: "Yoga not found" };
+    if (!result.rows[0]) return { success: false, message: "Post not found" };
     return { success: true, message: "Post fetched successfully", data: result.rows[0] as Post };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -109,7 +109,7 @@ export async function getPostBySlug(slug: string): Promise<Result<Post>> {
 
     return {
       success: true,
-      message: "Yoga fetched successfully",
+      message: "Post fetched successfully",
       data: result.rows[0] as Post
     };
   } catch (error: unknown) {
@@ -155,7 +155,7 @@ export async function updatePost(id: string, data: Partial<Omit<Post, "id" | "cr
 export async function deletePost(id: string): Promise<Result<Post>> {
   try {
     const result = await pool.query(`DELETE FROM posts WHERE id = $1 RETURNING *`, [id]);
-    if (!result.rows[0]) return { success: false, message: "Yoga not found" };
+    if (!result.rows[0]) return { success: false, message: "Post not found" };
     return { success: true, message: `Post: ${id} deleted successfully`, data: result.rows[0] as Post };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
