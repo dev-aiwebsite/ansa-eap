@@ -15,7 +15,6 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
 
-
   const session = (await auth()) as ExtendedSession;
 const userId = session.user_id
 if(!userId) return

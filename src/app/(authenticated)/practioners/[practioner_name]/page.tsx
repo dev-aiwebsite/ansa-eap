@@ -1,10 +1,10 @@
 "use client";
-import { useParams } from "next/navigation";
+import { practionersData } from "@/app/demo/demoData";
+import Container from "@/components/ui/container";
+import HalaxyBooking from "@/components/ui/halaxybooking";
 import { slugifyName } from "@/lib/helper";
 import Image from "next/image";
-import { practionersData } from "@/app/demo/demoData";
-import CalendarFull from "@/components/widgets/calendar/calendarFull";
-import Container from "@/components/ui/container";
+import { useParams } from "next/navigation";
 
 const PractionerSingle = () => {
   const params = useParams();
@@ -15,7 +15,7 @@ const PractionerSingle = () => {
 
   return (
     <div className="flex gap-6 h-full">
-      <Container className="card">
+      <Container className="card max-w-[400px]" >
         <>
           <div className="flex flex-col items-center p-4">
             <Image
@@ -36,11 +36,12 @@ const PractionerSingle = () => {
               dangerouslySetInnerHTML={{ __html: practionerData.description ?? "" }}
             />
         </>
-      </Container>
+        </Container>
+      
+        <Container  className="card bg-[#e9ecef]">
+            <HalaxyBooking />
+        </Container>
 
-      <div className="max-w-[800px] flex-1 overflow-hidden">
-        <CalendarFull />
-        </div>
     </div>
   );
 };

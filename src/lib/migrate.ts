@@ -71,6 +71,38 @@ CREATE TABLE tags (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );`;
 
+
+
+const createRolesTable = `
+CREATE TABLE IF NOT EXISTS roles (
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL
+);
+`;
+
+const createUserRolesTable = `
+CREATE TABLE IF NOT EXISTS user_roles (
+    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role_id INT NOT NULL REFERENCES roles(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, role_id)
+);
+`
+
+const insertDefaultRole = `
+  INSERT INTO roles (name)
+  VALUES ('user')
+  ON CONFLICT (name) DO NOTHING;
+
+  -- 4. Assign default role to all existing users
+  INSERT INTO user_roles (user_id, role_id)
+  SELECT u.id, r.id
+  FROM users u
+  CROSS JOIN (SELECT id FROM roles WHERE name = 'user') r
+  ON CONFLICT DO NOTHING;
+  `
+
+
+
   try {
     console.log("🚀 Starting migration...");
 
@@ -86,6 +118,9 @@ CREATE TABLE tags (
     await pool.query(createDailyCheckInsTable);
     await pool.query(createPostsTable);
     await pool.query(createTagsTable);
+    await pool.query(createRolesTable);
+    await pool.query(createUserRolesTable);
+    await pool.query(insertDefaultRole); 
  
 
     console.log("✅ Tables created successfully.");

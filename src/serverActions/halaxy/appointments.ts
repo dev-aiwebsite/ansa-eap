@@ -21,11 +21,33 @@ export async function bookAppointment() {
       );
 
       console.log(startISO,endISO)
-      console.log(findAppointmentsResponse)
+      console.log( JSON.stringify(findAppointmentsResponse, null, 2))
 
     
     const timestamp = Math.floor(Date.now() / 1000);
     const proposedId = `proposed-${timestamp}-${duration}`;
+
+
+    const testAppointment = {
+      "fullUrl": "https://au-api.halaxy.com/main/Appointment/proposed-1757485800-30",
+      "resource": {
+        "start": "2025-09-10T06:30:00+00:00",
+        "end": "2025-09-10T07:00:00+00:00",
+        "minutesDuration": 30,
+        "id": "proposed-1757485800-30",
+        "resourceType": "Appointment",
+        "participant": [
+          {
+            "actor": {
+              "reference": "https://au-api.halaxy.com/main/PractitionerRole/PR-3314603",
+              "type": "PractitionerRole"
+            }
+          }
+        ]
+      }
+    }
+  
+
 
    return halaxyFetch("/Appointment/$book", {
     method: "POST",
@@ -35,9 +57,9 @@ export async function bookAppointment() {
         {
           name: "appt-resource",
           resource: {
-            "start": startISO,
-            "end": endISO,
-            "minutesDuration": duration,
+            "start": testAppointment.resource.start,
+            "end": testAppointment.resource.end,
+            "minutesDuration": testAppointment.resource.minutesDuration,
             "id": proposedId,
             resourceType: "Appointment",
             participant: [
@@ -45,7 +67,13 @@ export async function bookAppointment() {
             ],
           },
         },
-        
+        {
+"name": "app-id",
+"valueReference": {
+"reference": "Appointment/1",
+"type": "Appointment"
+}
+},
         { name: "patient-id", valueReference: { reference: "Patient/150003003", type: "Patient" } },
         { name: "healthcare-service-id", valueReference: { reference: "HealthcareService/558363", type: "HealthcareService" } },
         { name: "location-type", valueCode: "clinic" },
