@@ -11,6 +11,7 @@ import { Ellipsis } from "lucide-react";
 import Link from "next/link";
 
 const DashboardPage = () => {
+
   return (
     <div className="flex-1 h-full flex flex-col">
       <div className="flex flex-row h-full gap-6">

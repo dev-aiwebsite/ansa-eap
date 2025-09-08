@@ -54,6 +54,7 @@ export async function getAccessToken(): Promise<string | null> {
 
 export async function halaxyFetch(endpoint: string, options: { method?: string; payload?: unknown } = {}) {
   const token = await getAccessToken();
+  console.log(token, 'token')
 
   const res = await fetch(`${baseUrl}${endpoint}`, {
     method: options.method ?? "GET",

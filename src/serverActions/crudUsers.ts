@@ -4,13 +4,14 @@ import { nanoid } from "nanoid";
 
 export type User = {
   id: string;
-  first_name?: string;
-  last_name?: string;
-  profile_img?:string;
+  first_name: string;
+  last_name: string;
+  profile_img: string;
   email: string;
   password: string;
   created_at: string;
   updated_at: string;
+  roles: string[];
 };
 
 type Result<T> = {
@@ -21,7 +22,7 @@ type Result<T> = {
 
 // CREATE
 export async function createUser(
-  data: Omit<User, "id" | "created_at" | "updated_at">
+  data: Omit<User, "id" | "created_at" | "updated_at" | "roles">
 ): Promise<Result<User>> {
   try {
     const id = nanoid(10);
@@ -39,16 +40,35 @@ export async function createUser(
       data.first_name ?? null,
       data.last_name ?? null,
       !data.profile_img || data.profile_img.trim() === ""
-        ? "/assets/images/default-avatar.png" // ✅ default handled in app
+        ? "/assets/images/default-avatar.png"
         : data.profile_img,
     ];
 
     const result = await pool.query(query, values);
+    const user = result.rows[0] as User;
+
+    // ✅ Insert default "user" role
+    await pool.query(
+      `INSERT INTO user_roles (user_id, role_id)
+       VALUES ($1, (SELECT id FROM roles WHERE name = 'user'))
+       ON CONFLICT DO NOTHING;`,
+      [user.id]
+    );
+
+    // fetch roles
+    const rolesRes = await pool.query(
+      `SELECT r.name FROM roles r
+       JOIN user_roles ur ON r.id = ur.role_id
+       WHERE ur.user_id = $1;`,
+      [user.id]
+    );
+
+    user.roles = rolesRes.rows.map((r) => r.name);
 
     return {
       success: true,
       message: "User created successfully",
-      data: result.rows[0] as User,
+      data: user,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -60,7 +80,15 @@ export async function createUser(
 // READ ALL
 export async function getUsers(): Promise<Result<User[]>> {
   try {
-    const result = await pool.query(`SELECT * FROM users ORDER BY created_at DESC`);
+    const result = await pool.query(`
+      SELECT u.*, COALESCE(json_agg(r.name) FILTER (WHERE r.name IS NOT NULL), '[]') AS roles
+      FROM users u
+      LEFT JOIN user_roles ur ON u.id = ur.user_id
+      LEFT JOIN roles r ON ur.role_id = r.id
+      GROUP BY u.id
+      ORDER BY u.created_at DESC;
+    `);
+
     return {
       success: true,
       message: "Users fetched successfully",
@@ -76,7 +104,15 @@ export async function getUsers(): Promise<Result<User[]>> {
 // READ ONE (by ID)
 export async function getUserById(id: string): Promise<Result<User>> {
   try {
-    const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
+    const result = await pool.query(`
+      SELECT u.*, COALESCE(json_agg(r.name) FILTER (WHERE r.name IS NOT NULL), '[]') AS roles
+      FROM users u
+      LEFT JOIN user_roles ur ON u.id = ur.user_id
+      LEFT JOIN roles r ON ur.role_id = r.id
+      WHERE u.id = $1
+      GROUP BY u.id;
+    `, [id]);
+
     if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
 
     return {
@@ -94,7 +130,15 @@ export async function getUserById(id: string): Promise<Result<User>> {
 // READ ONE (by Email)
 export async function getUserByEmail(email: string): Promise<Result<User>> {
   try {
-    const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+    const result = await pool.query(`
+      SELECT u.*, COALESCE(json_agg(r.name) FILTER (WHERE r.name IS NOT NULL), '[]') AS roles
+      FROM users u
+      LEFT JOIN user_roles ur ON u.id = ur.user_id
+      LEFT JOIN roles r ON ur.role_id = r.id
+      WHERE u.email = $1
+      GROUP BY u.id;
+    `, [email]);
+
     if (!result.rows[0]) return { success: false, message: `User: ${email} not found` };
 
     return {
@@ -120,6 +164,7 @@ export async function updateUser(
     let i = 1;
 
     for (const [key, value] of Object.entries(data)) {
+      if (key === "roles") continue; // handled separately
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }
@@ -136,10 +181,35 @@ export async function updateUser(
     const result = await pool.query(query, values);
     if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
 
+    const user = result.rows[0] as User;
+
+    // ✅ If roles provided, update them
+    if (data.roles) {
+      await pool.query(`DELETE FROM user_roles WHERE user_id = $1`, [id]);
+
+      for (const role of data.roles) {
+        await pool.query(
+          `INSERT INTO user_roles (user_id, role_id)
+           VALUES ($1, (SELECT id FROM roles WHERE name = $2))
+           ON CONFLICT DO NOTHING;`,
+          [id, role]
+        );
+      }
+
+      const rolesRes = await pool.query(
+        `SELECT r.name FROM roles r
+         JOIN user_roles ur ON r.id = ur.role_id
+         WHERE ur.user_id = $1;`,
+        [id]
+      );
+
+      user.roles = rolesRes.rows.map((r) => r.name);
+    }
+
     return {
       success: true,
       message: `User: ${id} updated successfully`,
-      data: result.rows[0] as User,
+      data: user,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";

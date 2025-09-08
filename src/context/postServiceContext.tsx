@@ -8,85 +8,77 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 
-type PartialPost = (Partial<Post> & { category?: string })[];
+type PartialPost = (Partial<Post> & { category?: string });
 
 type PostServiceContextType = {
-  allPosts: PartialPost;
-  setAllPosts: Dispatch<SetStateAction<PartialPost>>;
-  latestPosts: PartialPost;
-  healthNews: PartialPost;
-  setHealthNews: Dispatch<SetStateAction<PartialPost>>;
-  videoContents: PartialPost;
-  yogas: PartialPost;
-  blogs: PartialPost;
-  addPosts: (posts: PartialPost) => void;
-};
-
-type AppServiceContextProviderProps = {
-  children?: React.ReactNode;
-  data?: PartialPost;
+  allPosts: PartialPost[];
+  setAllPosts: Dispatch<SetStateAction<PartialPost[]>>;
+  blogs: Post[];
+  yogas: Post[];
+  videoContents: Post[];
+  healthNews: PartialPost[];
+  latestPosts: PartialPost[];
+  addOrUpdatePost: (post: Partial<Post>) => void;
 };
 
 const PostServiceContext = createContext<PostServiceContextType | null>(null);
 
-export function PostServiceProvider({ children, data }: AppServiceContextProviderProps) {
-  const [allPosts, setAllPosts] = useState<PartialPost>([]);
-  const [healthNews, setHealthNews] = useState<PartialPost>(data ?? []);
+export function PostServiceProvider({ children }: { children: React.ReactNode }) {
+  const [allPosts, setAllPosts] = useState<PartialPost[]>([]);
+  const [blogs, setBlogs] = useState<Post[]>([]);
+  const [yogas, setYogas] = useState<Post[]>([]);
+  const [videoContents, setVideoContents] = useState<Post[]>([]);
+  const [healthNews, setHealthNews] = useState<PartialPost[]>([]);
 
+  // fetch data
   useEffect(() => {
     if (!healthNews.length) {
       getNews().then((res) => {
-        const formattedSlug = res.map((i) => ({
+        const formatted = res.map((i) => ({
           ...i,
           slug: `/learning-development/health-news/${slugifyName(i.title)}`,
         }));
-        setHealthNews(formattedSlug);
+        setHealthNews(formatted);
       });
     }
 
     if (!allPosts.length) {
       getPosts().then((r) => {
-        const data = r.data;
-        if (data) {
-          setAllPosts(data);
-        }
+        const data = r.data ?? [];
+        setAllPosts(data);
       });
     }
   }, []);
 
-  const blogs = useMemo<PartialPost>(
-    () => allPosts.filter((p) => p.category === "7p2v1Ur_O6"),
-    [allPosts]
-  );
+  // derive categories once when allPosts changes
+  useEffect(() => {
+    if (!allPosts.length) return;
 
-  const yogas = useMemo<PartialPost>(
-    () => allPosts.filter((p) => p.category === "7p2v1Ur_O5"),
-    [allPosts]
-  );
+    setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Post[]);
+    setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5")  as Post[]);
+    setVideoContents(allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Post[]);
+  }, [allPosts]);
 
-  const videoContents = useMemo<PartialPost>(
-    () => allPosts.filter((p) => p.category === "7p2v1Ur_O1"),
-    [allPosts]
-  );
+  const latestPosts = [
+    yogas.at(-1) ?? null,
+    healthNews.at(-1) ?? null,
+    blogs.at(-1) ?? null,
+    videoContents.at(-1) ?? null,
+  ].filter(Boolean) as PartialPost[];
 
-  const latestPosts = useMemo<PartialPost>(() => {
-    return [
-      yogas.at(-1) ?? null,
-      healthNews.at(-1) ?? null,
-      blogs.at(-1) ?? null,
-      videoContents.at(-1) ?? null,
-    ].filter(Boolean) as PartialPost;
-  }, [allPosts, healthNews, blogs, yogas, videoContents]);
-
-  const addPosts = (posts: PartialPost) => {
+  // update or insert post into allPosts (and derived categories auto-update)
+  const addOrUpdatePost = (post: Partial<Post>) => {
     setAllPosts((prev) => {
-      const existingIds = new Set(prev.map((p) => p.id));
-      const deduped = posts.filter((p) => !existingIds.has(p.id));
-      return [...prev, ...deduped];
+      const exists = prev.findIndex((p) => p.id === post.id);
+      if (exists !== -1) {
+        const updated = [...prev];
+        updated[exists] = { ...updated[exists], ...post };
+        return updated;
+      }
+      return [...prev, post];
     });
   };
 
@@ -95,13 +87,12 @@ export function PostServiceProvider({ children, data }: AppServiceContextProvide
       value={{
         allPosts,
         setAllPosts,
-        latestPosts,
-        healthNews,
-        setHealthNews,
-        videoContents,
-        yogas,
         blogs,
-        addPosts,
+        yogas,
+        videoContents,
+        healthNews,
+        latestPosts,
+        addOrUpdatePost,
       }}
     >
       {children}
@@ -110,9 +101,9 @@ export function PostServiceProvider({ children, data }: AppServiceContextProvide
 }
 
 export function usePostServiceContext() {
-  const context = useContext(PostServiceContext);
-  if (!context) {
-    throw new Error("usePostServiceContext must be used within a PostServiceProvider");
+  const ctx = useContext(PostServiceContext);
+  if (!ctx) {
+    throw new Error("usePostServiceContext must be used within PostServiceProvider");
   }
-  return context;
+  return ctx;
 }
