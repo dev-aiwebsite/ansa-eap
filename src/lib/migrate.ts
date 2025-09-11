@@ -104,7 +104,7 @@ const insertDefaultRole = `
 const createPractitionersTable = `
 -- Create the practitioners table
 CREATE TABLE practitioners (
-    id UUID PRIMARY KEY,
+    id TEXT PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,

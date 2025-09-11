@@ -32,7 +32,7 @@ export type Practitioner = {
   updated_at: string;
 };
 
-type Result<T> = {
+export type Result<T> = {
   success: boolean;
   message: string;
   data?: T;

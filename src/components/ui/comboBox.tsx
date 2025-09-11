@@ -37,7 +37,7 @@ export default function Combobox({label = "Item",options, value, onValueChange}:
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="h-full w-full justify-between"
+          className={cn("border-input !ring-input bg-transparent h-full w-full justify-between", val ? "text-foreground" : "text-foreground/50")}
         >
           {val
             ? options.find((option) => option.value === val)?.label
