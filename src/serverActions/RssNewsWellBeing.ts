@@ -1,4 +1,5 @@
 "use server"
+import { htmlToPlainText } from './../lib/helper';
 import { XMLParser } from "fast-xml-parser";
 
 type RssGuid = { "#text": string; isPermaLink?: string };
@@ -82,7 +83,7 @@ function mapRssItem(item: RssJson["rss"]["channel"]["item"][0]): RssItem {
 
   return {
     id: toText(item.guid),
-    title: toText(item.title),
+    title: htmlToPlainText(toText(item.title)),
     slug: toText(item.link),
     description: descriptionHtml, // HTML
     created_at: item.pubDate,
@@ -93,7 +94,7 @@ function mapRssItem(item: RssJson["rss"]["channel"]["item"][0]): RssItem {
 }
 
 export async function getNews(): Promise<RssItem[]> {
-  const res = await fetch("https://www.wellbeing.com.au/feed");
+  const res = await fetch("https://watersedgecounselling.com/category/mental-health-issues-2/feed/");
   if (!res.ok) {
     throw new Error(`Failed to fetch RSS feed: ${res.status}`);
   }
@@ -104,6 +105,7 @@ export async function getNews(): Promise<RssItem[]> {
     ignoreAttributes: false,
     attributeNamePrefix: "",
     textNodeName: "#text",
+    processEntities: true,
   });
 
   const json = parser.parse(xml) as RssJson;

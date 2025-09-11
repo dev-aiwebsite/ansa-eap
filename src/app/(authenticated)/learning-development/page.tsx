@@ -79,7 +79,7 @@ const ContentLibraryPage = () => {
     <div className="card flex-1 px-0 h-full bg-transparent overflow-hidden">
       <div className="w-full-sidebar snap-y snap-proximity scrollContainer pb-[300px] rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
         {/* Sticky Tabs */}
-        <div className="stickyNav card sticky top-0 bg-white px-6 py-4 flex space-x-6 z-[999999]">
+        <div className="stickyNav card sticky top-0 bg-white px-6 py-4 flex space-x-6 z-[10]">
           {sections.map((s) => (
             <button
               key={s.id}
