@@ -9,9 +9,10 @@ export default function HalaxyBooking() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent<HalaxyMessage>) => {
       // ✅ Security: Only allow from halaxy.com
+        console.log("🔍 Raw message received:", event.origin, event.data);
       if (!event.origin.includes("halaxy.com")) return;
-
       console.log("Message received from Halaxy iframe:", event.data);
+
 
       if (event.data?.type === "BOOKING_CONFIRMED") {
         console.log("Booking confirmed:", event.data.data);

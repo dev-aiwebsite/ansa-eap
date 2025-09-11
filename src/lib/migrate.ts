@@ -101,6 +101,61 @@ const insertDefaultRole = `
   ON CONFLICT DO NOTHING;
   `
 
+const createPractitionersTable = `
+-- Create the practitioners table
+CREATE TABLE practitioners (
+    id UUID PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    profile_img TEXT,
+    description TEXT,
+    profession TEXT,
+    location TEXT,
+    clinic TEXT,
+    booking_link TEXT,
+    title TEXT,
+
+    expertise TEXT[] DEFAULT '{}',
+    languages TEXT[] DEFAULT '{}',
+    modalities TEXT[] DEFAULT '{}',
+    patient_focus TEXT[] DEFAULT '{}',
+    services TEXT[] DEFAULT '{}',
+    qualifications TEXT[] DEFAULT '{}',
+    accreditations TEXT[] DEFAULT '{}',
+    certifications TEXT[] DEFAULT '{}',
+    other_services TEXT[] DEFAULT '{}',
+
+    registrations JSONB DEFAULT '[]'::jsonb,
+    identifications JSONB DEFAULT '[]'::jsonb,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Standard B-tree indexes
+CREATE INDEX idx_practitioners_first_name ON practitioners(first_name);
+CREATE INDEX idx_practitioners_last_name ON practitioners(last_name);
+CREATE INDEX idx_practitioners_location ON practitioners(location);
+CREATE INDEX idx_practitioners_clinic ON practitioners(clinic);
+
+-- GIN indexes for array columns
+CREATE INDEX gin_practitioners_expertise ON practitioners USING GIN(expertise);
+CREATE INDEX gin_practitioners_languages ON practitioners USING GIN(languages);
+CREATE INDEX gin_practitioners_modalities ON practitioners USING GIN(modalities);
+CREATE INDEX gin_practitioners_patient_focus ON practitioners USING GIN(patient_focus);
+CREATE INDEX gin_practitioners_services ON practitioners USING GIN(services);
+CREATE INDEX gin_practitioners_qualifications ON practitioners USING GIN(qualifications);
+CREATE INDEX gin_practitioners_accreditations ON practitioners USING GIN(accreditations);
+CREATE INDEX gin_practitioners_certifications ON practitioners USING GIN(certifications);
+CREATE INDEX gin_practitioners_other_services ON practitioners USING GIN(other_services);
+
+-- Optional: JSONB indexing for faster JSON queries
+CREATE INDEX gin_practitioners_registrations ON practitioners USING GIN(registrations);
+CREATE INDEX gin_practitioners_identifications ON practitioners USING GIN(identifications);
+
+`;
+
 
 
   try {
@@ -120,7 +175,8 @@ const insertDefaultRole = `
     await pool.query(createTagsTable);
     await pool.query(createRolesTable);
     await pool.query(createUserRolesTable);
-    await pool.query(insertDefaultRole); 
+    await pool.query(insertDefaultRole);
+    await pool.query(createPractitionersTable); 
  
 
     console.log("✅ Tables created successfully.");

@@ -1,10 +1,10 @@
 "use client"
+import { practionersData } from "@/app/demo/demoData";
 import { Button } from "@/components/ui/button";
+import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
 import { CalendarPlus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
-import { practionersData } from "@/app/demo/demoData";
 
 
 
