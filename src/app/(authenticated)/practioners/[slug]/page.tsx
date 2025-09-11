@@ -5,11 +5,11 @@ import { getPractitionerById } from "@/serverActions/crudPractitioners";
 import { Suspense } from "react";
 
 interface PractionerSingleProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-const PractionerSingle = ({ params }: PractionerSingleProps) => {
-  const slug = params.slug;
+const PractionerSingle = async ({ params }: PractionerSingleProps) => {
+  const {slug} = await params
   const id = slug.split("~").pop();
 
   return (
