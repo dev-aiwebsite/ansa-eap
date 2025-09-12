@@ -18,7 +18,7 @@ const Practitioners = () => {
     {isAdmin && (
         <div className="flex items-center justify-between">
           <Button
-            href="/learning-development/blogs/new"
+            href="/practioners/new"
             className="flex ml-auto"
           >
             <Plus /> Add New
