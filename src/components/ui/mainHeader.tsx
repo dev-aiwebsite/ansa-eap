@@ -3,15 +3,11 @@ import { GlobalSearch } from "@/components/ui/globalSearch";
 import { Bell } from "lucide-react";
 import { Button } from "./button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
-import PageTitle from "./pageTitle";
 import { UserMenu } from "./userMenu";
 
 const MainHeader = () => {
   return (
     <div className="flex flex-row items-center gap-4 pb-6 pt-0 h-header">
-      <h1 className="text-lg font-bold">
-        <PageTitle />
-      </h1>
       <div>
         <GlobalSearch />
       </div>

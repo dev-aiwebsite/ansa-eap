@@ -51,6 +51,8 @@
   --color-app-yellow-400: #ffcc4d;
   --color-app-purple-300: #9ba1ff;
   --color-app-purple-400: #2d32a4;
+  --spacing-breadcrumb-h: var(--breadcrumb-h);
+
 --text-shadow-medium: 
     0.2px 0px currentColor,
     0px 0.2px currentColor,
@@ -77,6 +79,7 @@
   --header-h: 80px;
   --sidebar-w: 240px;
   --sidebar-right-w: 500px;
+  --breadcrumb-h: 40px;
 
   /* ✅ Updated brand primary color */
   --primary: oklch(0.74 0.13 161.68);
@@ -250,7 +253,7 @@
 }
 
 
-body {
+body, .bg-body-blend {
   background: 
   radial-gradient(circle at top left,     #D6FCF9 0%, transparent 50%),
   radial-gradient(circle at top center,   #FFECFD 0%, transparent 50%),
@@ -259,7 +262,7 @@ body {
   radial-gradient(circle at bottom center,#FFFEEF 0%, transparent 50%),
   radial-gradient(circle at bottom left,  #F7E1E0 0%, transparent 50%);
 background-color: white; /* fallback or base color */
-
+ background-attachment: fixed;
 }
 
 button.shadow-btn {
@@ -350,6 +353,15 @@ body :has(.focused) * {
   scrollbar-width: none;     /* Firefox */
 }
 
+.breadcrumb {
+  max-height: var(--breadcrumb-h);
+  min-height: var(--breadcrumb-h);
+  height: 100%;
+}
+
+.breadcrumb + .h-full {
+  max-height: calc(100% - var(--breadcrumb-h));
+}
 
 
 html {
