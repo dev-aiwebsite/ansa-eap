@@ -171,6 +171,20 @@ CREATE TABLE user_activities (
   UNIQUE (user_id, target_id, action, activity_date)
 );
 `
+const createEventsTable = `
+CREATE TABLE public_events (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL;
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+`
 
   try {
     console.log("🚀 Starting migration...");
@@ -192,6 +206,7 @@ CREATE TABLE user_activities (
     await pool.query(insertDefaultRole);
     await pool.query(createPractitionersTable);
     await pool.query(createUserActivitiesTable); 
+    await pool.query(createEventsTable); 
  
 
     console.log("✅ Tables created successfully.");

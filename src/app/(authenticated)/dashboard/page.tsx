@@ -1,13 +1,13 @@
 "use client";
 import DailyCheckIn from "@/components/forms/dailyCheckin/dailyCheckIn";
+import PublicEventsList from "@/components/publicEvents/publicEventsList";
 import { Calendar } from "@/components/ui/calendar";
 import Container from "@/components/ui/container";
-import ImageWithFallback from "@/components/ui/imageWithFallback";
 import WillFocused from "@/components/ui/willFocused";
 import WeeklyBites from "@/components/weeklyBites";
 import FeaturedWidget from "@/components/widgets/FeaturedWidget";
 import MoodWidget from "@/components/widgets/MoodWidget";
-import { Ellipsis } from "lucide-react";
+
 import Link from "next/link";
 
 const DashboardPage = () => {
@@ -18,12 +18,10 @@ const DashboardPage = () => {
         <div className="flex-1 gap-6 flex flex-col flex-nowrap overflow-auto">
           <WillFocused focusedClassName="pb-12">
             {({ isFocused, focusOnChange }) => (
-              
-                <DailyCheckIn
-                  isFocused={isFocused}
-                  focusOnChange={focusOnChange}
-                />
-              
+              <DailyCheckIn
+                isFocused={isFocused}
+                focusOnChange={focusOnChange}
+              />
             )}
           </WillFocused>
           <div className="flex flex-row flex-wrap basis-full min-h-[290px] max-h-fit gap-6">
@@ -40,116 +38,61 @@ const DashboardPage = () => {
             <WeeklyBites />
           </div>
         </div>
-          <Container className="card min-w-fit max-w-sidebar-right">
-            <div className="space-y-10">
-              <Calendar className="w-full text-xs calendar" />
+        <Container className="card min-w-fit max-w-sidebar-right">
+          <div className="space-y-10">
+            <Calendar className="w-full text-xs calendar" />
 
+            <div className="space-y-4">
+              <div className="flex flex-row justify-between items-center">
+                <div>
+                  <p className="card-title">Public Sessions</p>
+                  {/* <p className="text-sm text-muted-foreground">
+                    Tuesday 1, July 2025
+                  </p> */}
+                </div>
+                <Link
+                  className="text-sm text-app-purple-300 font-medium"
+                  href="#"
+                >
+                  See all
+                </Link>
+              </div>
+
+             <PublicEventsList />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex flex-row justify-between items-center">
+                <p className="card-title">Upcoming Appointment</p>
+                <Link
+                  className="text-sm text-app-purple-300 font-medium"
+                  href="#"
+                >
+                  See all
+                </Link>
+              </div>
               <div className="space-y-4">
-                <div className="flex flex-row justify-between items-center">
-                  <div>
-                    <p className="card-title">Public Sessions</p>
-                    <p className="text-sm text-muted-foreground">
-                      Tuesday 1, July 2025
-                    </p>
-                  </div>
-                  <Link
-                    className="text-sm text-app-purple-300 font-medium"
-                    href="#"
-                  >
-                    See all
-                  </Link>
-                </div>
-
-                <div className="space-y-2">
-                  <Link
-                    className="space-x-4 rounded-xl p-4 border border-px border-border flex flex-row justify-between items-center"
-                    href="#"
-                  >
-                    <div className="h-full w-fit">
-                      <ImageWithFallback
-                        iconSize={30}
-                        className="object-contain w-auto !bg-gray-200 aspect-square rounded-full overflow-hidden"
-                        width={40}
-                        height={40}
-                        alt={""}
-                        src={""}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-muted-foreground text-sm">
-                        Burnout vs Stress
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        <span>8:00am</span>
-                        <span> - </span>
-                        <span>8:05am</span>
-                      </p>
-                    </div>
-
-                    <span className="text-xl text-muted-foreground font-medium line-through"><Ellipsis size={18} /></span>
-                  </Link>
-                  <Link
-                    className="space-x-4 rounded-xl p-4 border border-px border-border flex flex-row justify-between items-center"
-                    href="#"
-                  >
-                    <div className="h-full w-fit">
-                      <ImageWithFallback
-                        iconSize={30}
-                        className="object-contain w-auto !bg-gray-200 aspect-square rounded-full overflow-hidden"
-                        width={40}
-                        height={40}
-                        alt={""}
-                        src={""}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-muted-foreground text-sm">
-                        When to seek help
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        <span>4:00pm</span>
-                        <span> - </span>
-                        <span>4:10pm</span>
-                      </p>
-                    </div>
-
-                    <span className="text-xl text-muted-foreground font-medium line-through"><Ellipsis size={18} /></span>
-                  </Link>
-                </div>
+                <Link
+                  className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
+                  href="#"
+                >
+                  <span className="font-medium text-muted-foreground text-sm">
+                    30-Minute Consulation
+                  </span>
+                  <span className="text-xl font-medium line-through">$120</span>
+                </Link>
+                <Link
+                  className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
+                  href="#"
+                >
+                  <span className="font-medium text-muted-foreground text-sm ">
+                    1 Hour 1:1 Session
+                  </span>
+                  <span className="text-xl font-medium line-through">$140</span>
+                </Link>
               </div>
-
-              <div className="space-y-2">
-                <div className="flex flex-row justify-between items-center">
-                  <p className="card-title">Upcoming Appointment</p>
-                  <Link
-                    className="text-sm text-app-purple-300 font-medium"
-                    href="#"
-                  >
-                    See all
-                  </Link>
-                </div>
-                <div className="space-y-4">
-                  <Link
-                    className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
-                    href="#"
-                  >
-                    <span className="font-medium text-muted-foreground text-sm">
-                      30-Minute Consulation
-                    </span>
-                    <span className="text-xl font-medium line-through">$120</span>
-                  </Link>
-                  <Link
-                    className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
-                    href="#"
-                  >
-                    <span className="font-medium text-muted-foreground text-sm ">
-                      1 Hour 1:1 Session
-                    </span>
-                    <span className="text-xl font-medium line-through">$140</span>
-                  </Link>
-                </div>
-              </div>
-              </div>
+            </div>
+          </div>
         </Container>
       </div>
     </div>
@@ -157,3 +100,4 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+
