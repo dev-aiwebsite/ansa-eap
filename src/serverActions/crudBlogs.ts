@@ -27,7 +27,7 @@ type Result<T> = {
 // CREATE
 export async function createBlog(data: Omit<Blog, "id" | "created_at" | "updated_at">): Promise<Result<Blog>> {
   try {
-    const id = nanoid();
+    const id = nanoid(10);
     const query = `
       INSERT INTO blogs
       (id, title, slug, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)

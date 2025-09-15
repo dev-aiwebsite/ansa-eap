@@ -51,6 +51,8 @@
   --color-app-yellow-400: #ffcc4d;
   --color-app-purple-300: #9ba1ff;
   --color-app-purple-400: #2d32a4;
+  --spacing-breadcrumb-h: var(--breadcrumb-h);
+
 --text-shadow-medium: 
     0.2px 0px currentColor,
     0px 0.2px currentColor,
@@ -77,6 +79,7 @@
   --header-h: 80px;
   --sidebar-w: 240px;
   --sidebar-right-w: 500px;
+  --breadcrumb-h: 40px;
 
   /* ✅ Updated brand primary color */
   --primary: oklch(0.74 0.13 161.68);
@@ -169,7 +172,14 @@
 
   }
   .nav-item {
-    @apply transition-opacity transition-colors duration-200 ease-in-out flex gap-3 items-center px-5 py-3 opacity-50 hover:opacity-100 hover:bg-primary/5 hover:text-primary hover:border-primary hover:border-l-[3px] hover:ml-[-3px];
+    @apply transition-opacity transition-colors  px-3 py-2 duration-200 ease-in-out opacity-50 hover:opacity-100 hover:bg-primary/5 hover:text-primary hover:border-primary hover:border-l-[3px] hover:ml-[-3px];
+  }
+  .nav-item a {
+    @apply flex items-center gap-2;
+  }
+
+  .submenu .nav-item {
+    @apply py-1;
   }
   .nav-item.active {
     @apply opacity-100 bg-primary/5 text-primary border-primary border-l-[3px] ml-[-3px]
@@ -250,7 +260,7 @@
 }
 
 
-body {
+body, .bg-body-blend {
   background: 
   radial-gradient(circle at top left,     #D6FCF9 0%, transparent 50%),
   radial-gradient(circle at top center,   #FFECFD 0%, transparent 50%),
@@ -259,7 +269,7 @@ body {
   radial-gradient(circle at bottom center,#FFFEEF 0%, transparent 50%),
   radial-gradient(circle at bottom left,  #F7E1E0 0%, transparent 50%);
 background-color: white; /* fallback or base color */
-
+ background-attachment: fixed;
 }
 
 button.shadow-btn {
@@ -350,6 +360,15 @@ body :has(.focused) * {
   scrollbar-width: none;     /* Firefox */
 }
 
+.breadcrumb {
+  max-height: var(--breadcrumb-h);
+  min-height: var(--breadcrumb-h);
+  height: 100%;
+}
+
+.breadcrumb + .h-full {
+  max-height: calc(100% - var(--breadcrumb-h));
+}
 
 
 html {

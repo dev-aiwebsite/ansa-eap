@@ -2,13 +2,15 @@
 import PostSidebar from "@/components/post/postSidebar";
 import PostSingle from "@/components/post/singlePost";
 import { usePostServiceContext } from "@/context/postServiceContext";
+import { useUserActivityContext } from "@/context/userActivitiesContext";
 import { usePathname } from "next/navigation";
 
 const BlogSingle = () => {
   const pathName = usePathname();
   const { blogs } = usePostServiceContext();
-
+  const { useActivityLogger} = useUserActivityContext()
   const data = blogs.find((b) => b.slug == pathName) ?? null;
+  useActivityLogger({ targetId: data?.id || "", targetType: data?.category || "", action: 'read' })
 
   return (
     <div className="flex gap-6 h-full">
