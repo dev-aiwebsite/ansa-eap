@@ -39,6 +39,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "watersedgecounselling.com",
       },
+      {
+        protocol: "https",
+        hostname: "online.vu.edu.au",
+      },
     ],
   },
 };

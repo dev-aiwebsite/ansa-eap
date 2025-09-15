@@ -27,7 +27,7 @@ type Result<T> = {
 // CREATE
 export async function createYoga(data: Omit<Yoga, "id" | "created_at" | "updated_at">): Promise<Result<Yoga>> {
   try {
-    const id = nanoid();
+    const id = nanoid(10);
     const query = `
       INSERT INTO yogas
      (id, title, slug, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)

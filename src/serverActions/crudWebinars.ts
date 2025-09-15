@@ -27,7 +27,7 @@ type Result<T> = {
 // CREATE
 export async function createWebinar(data: Omit<Webinar, "id" | "created_at" | "updated_at">): Promise<Result<Webinar>> {
   try {
-    const id = nanoid();
+    const id = nanoid(10);
     const query = `
       INSERT INTO webinars
      (id, title, slug, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)

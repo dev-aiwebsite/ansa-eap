@@ -29,7 +29,7 @@ type Result<T> = {
 // CREATE
 export async function createPost(data: Omit<Post, "id" | "created_at" | "updated_at">): Promise<Result<Post>> {
   try {
-    const id = nanoid();
+    const id = nanoid(10);
     const query = `
       INSERT INTO posts
      (id, title, slug, category, author, tags, video, audio, thumbnail, description, duration_hours, duration_minutes)

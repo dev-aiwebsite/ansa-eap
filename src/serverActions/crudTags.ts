@@ -13,7 +13,7 @@ type Result<T> = { success: boolean; message: string; data?: T };
 // CREATE
 export async function createTag(name: string): Promise<Result<Tag>> {
   try {
-    const id = nanoid();
+    const id = nanoid(10);
     const result = await pool.query(
       `INSERT INTO tags (id, name) VALUES ($1, $2) RETURNING *`,
       [id, name]

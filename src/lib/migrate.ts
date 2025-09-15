@@ -157,6 +157,20 @@ CREATE INDEX gin_practitioners_identifications ON practitioners USING GIN(identi
 `;
 
 
+const createUserActivitiesTable = `
+CREATE TABLE user_activities (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  target_id TEXT NOT NULL,
+  target_type TEXT NOT NULL,    -- e.g. 'BLOG' | 'VIDEO'
+  action TEXT NOT NULL,         -- e.g. 'READ' | 'WATCH'
+  activity_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  duration INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+  UNIQUE (user_id, target_id, action, activity_date)
+);
+`
 
   try {
     console.log("🚀 Starting migration...");
@@ -176,7 +190,8 @@ CREATE INDEX gin_practitioners_identifications ON practitioners USING GIN(identi
     await pool.query(createRolesTable);
     await pool.query(createUserRolesTable);
     await pool.query(insertDefaultRole);
-    await pool.query(createPractitionersTable); 
+    await pool.query(createPractitionersTable);
+    await pool.query(createUserActivitiesTable); 
  
 
     console.log("✅ Tables created successfully.");

@@ -76,10 +76,11 @@ export default function NavItems() {
 
         return (
           <React.Fragment key={navitem.title}>
-            <li key={navitem.title}>
+            <li key={navitem.title}
+            className={`nav-item ${isActive ? "active" : ""}`}>
               <Link
                 href={navitem.link}
-                className={`nav-item ${isActive ? "active" : ""}`}
+                
               >
                 {navitem.icon && navitem.icon}
                 <span>{navitem.title}</span>
@@ -90,10 +91,10 @@ export default function NavItems() {
                 {navitem.subitems.map((subitem) => {
                   const isActive = pathname === subitem.link;
                   return (
-                      <li key={subitem.title}>
+                      <li key={subitem.title}
+                      className={`nav-item ${isActive ? "active" : ""}`}>
                         <Link
                           href={subitem.link}
-                          className={`nav-item ${isActive ? "active" : ""}`}
                         >
                           {subitem.icon && subitem.icon}
                           <span>{subitem.title}</span>

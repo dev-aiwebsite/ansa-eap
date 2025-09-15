@@ -43,7 +43,7 @@ export async function createPractitioner(
   data: Omit<Practitioner, "id" | "created_at" | "updated_at">
 ): Promise<Result<Practitioner>> {
   try {
-    const id = nanoid();
+    const id = nanoid(10);
     const query = `
       INSERT INTO practitioners
       (id, first_name, last_name, email, profile_img, description, profession, location, clinic, booking_link, title,
