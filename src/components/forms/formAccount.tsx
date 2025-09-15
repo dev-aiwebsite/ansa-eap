@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 import "@uploadcare/react-uploader/core.css";
+import Image from "next/image";
 
 type FormAccountProps = {
   onSubmitSuccess?: (user: User) => void;
@@ -75,7 +76,7 @@ export default function FormAccount({
       {/* Profile Image Preview */}
       <div className="form-item flex flex-col items-center gap-3">
         {profileImg ? (
-          <img
+          <Image
             src={profileImg}
             alt="Profile"
             className="w-24 h-24 rounded-full object-cover border"
