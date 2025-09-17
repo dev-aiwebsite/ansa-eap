@@ -1,5 +1,5 @@
+import BookingWidget from "@/components/bookingWidget";
 import Container from "@/components/ui/container";
-import HalaxyBooking from "@/components/ui/halaxybooking";
 import ImageWithFallback from "@/components/ui/imageWithFallback";
 import { getPractitionerById } from "@/serverActions/crudPractitioners";
 import { Suspense } from "react";
@@ -72,7 +72,7 @@ async function Single({ id }: { id: string }) {
       </Container>
 
       <Container className="card bg-[#e9ecef]">
-        <HalaxyBooking />
+          <BookingWidget />
       </Container>
     </div>
   );

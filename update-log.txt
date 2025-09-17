@@ -1,1 +1,16 @@
-added userActivities on migrate.ts
+UPDATE daily_check_ins
+SET responses = (
+  SELECT jsonb_agg(
+    jsonb_build_object(
+      'answer', elem->>'answer',
+      'question_id',
+        CASE elem->>'question'
+          WHEN 'How would you rate your energy today?' THEN 'dcq1'
+          WHEN 'How stressed are you feeling right now?' THEN 'dcq2'
+          WHEN 'How are you feeling today overall?' THEN 'dcq3'
+        END
+    )
+  )
+  FROM jsonb_array_elements(responses) AS elem
+)
+WHERE responses IS NOT NULL;

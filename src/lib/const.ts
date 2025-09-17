@@ -115,3 +115,43 @@ export const OTHER_SERVICES_OPTIONS = [
   { value: "School Visits", label: "School Visits" },
   { value: "Wheelchair access", label: "Wheelchair access" },
 ];
+
+
+export const DAILY_CHECKINS_QUESTIONS = [
+  {
+    id: "dcq1",
+    question: "How would you rate your energy today?",
+    labels: {
+      min: "Flat",
+      max: "Energized",
+    },
+    min: 0,
+    max: 5,
+    rangeClassName: "bg-app-red-200",
+    thumbClassName: "bg-app-red-200",
+  },
+  {
+    id: "dcq2",
+    question: "How stressed are you feeling right now?",
+    labels: {
+      min: "Not at all",
+      max: "Extemely",
+    },
+    min: 0,
+    max: 5,
+    rangeClassName: "bg-app-blue-400",
+    thumbClassName: "bg-app-blue-400",
+  },
+  {
+    id: "dcq3",
+    question: "How are you feeling today overall?",
+    labels: {
+      min: "Very low",
+      max: "Great",
+    },
+    min: 0,
+    max: 5,
+    rangeClassName: "bg-app-yellow-400",
+    thumbClassName: "bg-app-yellow-400",
+  },
+];

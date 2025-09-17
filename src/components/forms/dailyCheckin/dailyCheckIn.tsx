@@ -3,46 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useAppServiceContext } from "@/context/appServiceContext";
+import { DAILY_CHECKINS_QUESTIONS } from "@/lib/const";
+import { getDailyCheckinsOverall } from "@/lib/helper";
 import { cn } from "@/lib/utils";
+import { DailyCheckIn as DailyCheckinType } from "@/types";
 import { useEffect, useRef, useState } from "react";
-const questions = [
-  {
-    id: "dcq1",
-    question: "How would you rate your energy today?",
-    labels: {
-      min: "Flat",
-      max: "Energized",
-    },
-    min: 0,
-    max: 5,
-    rangeClassName: "bg-app-red-200",
-    thumbClassName: "bg-app-red-200",
-  },
-  {
-    id: "dcq2",
-    question: "How stressed are you feeling right now?",
-    labels: {
-      min: "Not at all",
-      max: "Extemely",
-    },
-    min: 0,
-    max: 5,
-    rangeClassName: "bg-app-blue-400",
-    thumbClassName: "bg-app-blue-400",
-  },
-  {
-    id: "dcq3",
-    question: "How are you feeling today overall?",
-    labels: {
-      min: "Very low",
-      max: "Great",
-    },
-    min: 0,
-    max: 5,
-    rangeClassName: "bg-app-yellow-400",
-    thumbClassName: "bg-app-yellow-400",
-  },
-];
 
 type DailyCheckInProps = {
   isFocused: boolean;
@@ -57,10 +22,12 @@ export default function DailyCheckIn({
     useAppServiceContext();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>(
-    Array(questions.length).fill(3)
+    Array(DAILY_CHECKINS_QUESTIONS.length).fill(3)
   );
 
   const entryToday = getEntryToday(dailyCheckIns);
+  console.log(dailyCheckIns, 'dailyCheckIns')
+
 
   const handleSliderChange = (value: number[]) => {
     const updated = [...answers];
@@ -69,7 +36,7 @@ export default function DailyCheckIn({
   };
 
   const next = () => {
-    if (step < questions.length - 1) {
+    if (step < DAILY_CHECKINS_QUESTIONS.length - 1) {
       setStep(step + 1);
     }
   };
@@ -77,9 +44,9 @@ export default function DailyCheckIn({
   const handleSubmit = async () => {
     alert(`"Daily check-in answers:", ${answers}`);
 
-    const formData = questions.map((q, index) => {
+    const formData = DAILY_CHECKINS_QUESTIONS.map((q, index) => {
       return {
-        question: q.question,
+        question_id: q.id,
         answer: answers[index],
       };
     });
@@ -101,18 +68,20 @@ export default function DailyCheckIn({
     if (didInitRef.current) return; 
     didInitRef.current = true;
 
-    if (!entryToday.length) {
+    if (!entryToday) {
       focusOnChange(true);
     }
   }, [entryToday]);
 
+console.log(entryToday, 'entryToday')
+  const todayOverall = entryToday ? getDailyCheckinsOverall(entryToday.responses) : null
   return (
     <div className="w-full flex flex-row">
-      {entryToday.length <= 0 && (
+      {!entryToday && (
         <>
           <div className="md:min-w-[300px] pr-10">
             <h1 className="text-3xl">Hi {currentUser?.first_name},</h1>
-            <p className="text-lg mb-4">{questions[step].question}</p>
+            <p className="text-lg mb-4">{DAILY_CHECKINS_QUESTIONS[step].question}</p>
             {isFocused && (
               <Button
                 onClick={removeFocused}
@@ -128,8 +97,8 @@ export default function DailyCheckIn({
             <div className="flex flex-row gap-10">
               <div className="flex-1 formItem">
                 <div className="mb-2 text-sm flex flex-row w-full">
-                  <p>{questions[step].labels.min}</p>
-                  <p className="ml-auto">{questions[step].labels.max}</p>
+                  <p>{DAILY_CHECKINS_QUESTIONS[step].labels.min}</p>
+                  <p className="ml-auto">{DAILY_CHECKINS_QUESTIONS[step].labels.max}</p>
                 </div>
                 <div className="relative mb-4 h-6">
                   <div className="absolute w-full top-0 flex justify-between px-1 text-xs text-gray-500">
@@ -155,13 +124,13 @@ export default function DailyCheckIn({
                 <Slider
                   value={[answers[step]]}
                   onValueChange={handleSliderChange}
-                  min={questions[step].min}
-                  max={questions[step].max}
+                  min={DAILY_CHECKINS_QUESTIONS[step].min}
+                  max={DAILY_CHECKINS_QUESTIONS[step].max}
                   step={1}
                   className="mb-2 ring-white"
-                  rangeClassName={questions[step].rangeClassName}
+                  rangeClassName={DAILY_CHECKINS_QUESTIONS[step].rangeClassName}
                   thumbClassName={cn(
-                    questions[step].thumbClassName,
+                    DAILY_CHECKINS_QUESTIONS[step].thumbClassName,
                     "!h-6 !w-6"
                   )}
                   trackClassName="!h-3"
@@ -170,10 +139,10 @@ export default function DailyCheckIn({
 
               <div className="flex gap-2 flex-col justify-end">
                 <p className="text-xs w-fit mx-auto">
-                  {step + 1}/{questions.length} <span>Questions</span>
+                  {step + 1}/{DAILY_CHECKINS_QUESTIONS.length} <span>Questions</span>
                 </p>
 
-                {step < questions.length - 1 ? (
+                {step < DAILY_CHECKINS_QUESTIONS.length - 1 ? (
                   <Button
                     variant="secondary"
                     onClick={next}
@@ -195,17 +164,21 @@ export default function DailyCheckIn({
           </div>
         </>
       )}
-      {entryToday.length > 0 && <div>Glad to know your mood is looking great today.</div>}
+      {entryToday && <div> {todayOverall?.percentage}% Glad to know your mood is looking great today.</div>}
     </div>
   );
 }
 
-function getEntryToday(entries: Record<"created_at", string>[]) {
-  if (!entries.length) return [];
-  const today = new Date().toISOString().split("T")[0]; // "2025-08-27"
+function getEntryToday(entries: DailyCheckinType[]): DailyCheckinType | null {
+  if (!entries.length) return null;
 
-  return entries.filter((entry) => {
+  const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+
+  const found = entries.find((entry) => {
     const entryDate = new Date(entry.created_at).toISOString().split("T")[0];
     return entryDate === today;
   });
+
+  return found ?? null;
 }
+
