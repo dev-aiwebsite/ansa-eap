@@ -26,13 +26,11 @@ export type NavItemsType = {
     updated_at: string;
   }
 
+  export type DailyCheckinQA = { question_id: string; answer: number };
   export type DailyCheckIn = {
     id: string;
     user_id: string;
-    responses: {
-      question: string;
-      answer: number;
-    }[];
+    responses: DailyCheckinQA[];
     created_at: string;
     updated_at: string;
   };

@@ -1,19 +1,18 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from "react";
-import { DailyActivity, DailyCheckIn } from "@/types"; // adjust path if needed
 import { updateDailyActivity } from "@/serverActions/crudDailyActivities";
 import {
-  createDailyCheckIn,
-  DailyCheckinQA,
+  createDailyCheckIn
 } from "@/serverActions/crudDailyCheckIns";
 import { User } from "@/serverActions/crudUsers";
+import { DailyActivity, DailyCheckIn, DailyCheckinQA } from "@/types"; // adjust path if needed
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 type AppServiceContextType = {
   currentUser: User | null;
@@ -29,7 +28,7 @@ type AppServiceContextType = {
 
   dailyCheckIns: DailyCheckIn[] | [];
   saveDailyCheckIns: (
-    checkIn: DailyCheckinQA
+    checkIn: DailyCheckinQA[]
   ) => Promise<{ success: boolean; message: string } | undefined>;
 
   globalSearchOpen:boolean;
@@ -90,7 +89,7 @@ export function AppServiceContextProvider({
     return result;
   };
 
-  const saveDailyCheckIns = async (checkIn: DailyCheckinQA) => {
+  const saveDailyCheckIns = async (checkIn: DailyCheckinQA[]) => {
     const result = {
       success: false,
       message: "",

@@ -1,3 +1,5 @@
+import { DailyCheckinQA } from "@/types";
+
 export function slugifyName(name: string): string {
     return name
       .toLowerCase()
@@ -58,6 +60,30 @@ export const htmlToPlainText = (html: string): string => {
 };
 
 
-  
 
-  
+//threshold
+//   0-40%:
+// 41-70%:
+// 71-100%:
+
+export const getDailyCheckinsOverall = (entry: DailyCheckinQA[]) => {
+  const maxPerQuestion = 5;
+
+  const total = entry.reduce((acc, cur) => {
+    let score = Number(cur.answer);
+    if (cur.question_id === "dcq2") {
+      // invert stress score so lower stress = higher value
+      score = (maxPerQuestion - Number(cur.answer)) + 1;
+    }
+    return acc + score;
+  }, 0);
+
+  const maxPossible = entry.length * maxPerQuestion;
+  const normalized = total / maxPossible; // 0–1
+
+  return {
+    score: parseFloat(normalized.toFixed(1)),        // e.g. 0.6
+    percentage: parseFloat((normalized * 100).toFixed(1)), // e.g. 60.0
+  };
+};
+

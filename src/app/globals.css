@@ -374,3 +374,70 @@ body :has(.focused) * {
 html {
   overflow: hidden;
 }
+.main-sidebar,
+/* .main-sidebar a span,
+.main-sidebar .logo-container :not(svg), */
+.main-sidebar * {
+  transition: opacity 0.3s ease-in-out,
+              max-width 0.3s ease-in-out,
+              top 0.3s ease-in-out,
+              left 0.3s ease-in-out,
+              max-height 0.3s ease-in-out;
+              
+}
+
+.main-sidebar a span,
+.main-sidebar .logo-container :not(svg) {
+  opacity: 100;
+  max-width: 500px;
+  max-height: 500px;
+}
+
+
+.main-sidebar svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+
+
+@media (max-width: 900px) {
+:root {
+  --sidebar-w: 45px;
+}
+
+.main-sidebar {
+  overflow: visible;
+}
+.main-sidebar > ul > *:not(.submenu) a span,
+.main-sidebar .logo-container :not(svg){
+    max-width: 0 ;
+    max-height: 0;
+    overflow: hidden;
+    
+}
+.main-sidebar .logo-container svg {
+  width: 30px;
+}
+.main-sidebar > ul > .nav-item:hover + .submenu,
+.main-sidebar .submenu:hover {
+  opacity: 1;
+  pointer-events: all;
+  left: 45px;
+}
+.main-sidebar .submenu {
+  opacity: 0;
+  pointer-events: none;
+  width: 250px;
+  background: #fff;
+  z-index: 999999;
+  position: relative;
+  isolation: isolate;
+  box-shadow: 2px 5px 10px #ddd;
+  border-radius: 10px;
+  top: -55px;
+  left: 40px;
+  padding: 10px 0;
+}
+
+}

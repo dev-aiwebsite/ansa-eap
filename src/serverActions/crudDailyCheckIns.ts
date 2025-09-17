@@ -1,14 +1,12 @@
 "use server";
 import { nanoid } from "nanoid";
 import pool from "@/lib/db";
-import { DailyCheckIn } from "@/types";
+import { DailyCheckIn, DailyCheckinQA } from "@/types";
 
 export type CreateDailyCheckInParams = {
   user_id: string;
-  responses: DailyCheckinQA;
+  responses: DailyCheckinQA[];
 };
-
-export type DailyCheckinQA = { question: string; answer: number }[];
 
 export async function createDailyCheckIn({
   user_id,
@@ -33,7 +31,7 @@ export async function getDailyCheckIns(userId: string):Promise<DailyCheckIn[]> {
 
 export async function updateDailyCheckIn(
   id: string,
-  responses: DailyCheckinQA
+  responses: DailyCheckinQA[]
 ):Promise<DailyCheckIn>  {
   const query = `
       UPDATE daily_check_ins
