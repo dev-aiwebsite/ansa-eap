@@ -5,7 +5,7 @@ import HalaxyBooking from "./ui/halaxybooking";
 import { ConsentForm } from "./forms/consentForm";
 
 const BookingWidget = () => {
-  const [agreed, setAgreed] = useState(false);
+  const [agreed, setAgreed] = useState(true);
 
   return (
     <>
