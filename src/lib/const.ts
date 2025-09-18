@@ -155,3 +155,31 @@ export const DAILY_CHECKINS_QUESTIONS = [
     thumbClassName: "bg-app-yellow-400",
   },
 ];
+
+
+export const MOOD_STATEMENT_BANK = {
+  above: [
+    "Glad to know your mood is looking great today!",
+    "You're shining bright today—keep it up!",
+    "Your positivity is contagious!",
+    "You’re on a roll—love to see it!",
+    "Your mood is lifting the day already!",
+    "Great energy today—keep spreading it!",
+    "Love the vibe you’re bringing today!",
+    "You're in a fantastic headspace—amazing!",
+    "Your good mood is setting the tone!",
+    "Feeling great looks good on you!",
+  ],
+  below: [
+    "Your mood seems a bit low today — maybe something in our L&D library can help lift it.",
+    "Not feeling your best? The L&D library has resources that might support you.",
+    "It looks like today’s been tough — why not check out the L&D library for a boost?",
+    "If your mood is off, exploring the L&D library could give you fresh energy.",
+    "Having a rough day? The L&D library might have something to help you through.",
+    "Your energy feels a little down — the L&D library could offer some inspiration.",
+    "If today feels heavy, the L&D library is a great place to find light and ideas.",
+    "Not the easiest day? See if the L&D library can give you some perspective.",
+    "Your mood might improve with a quick visit to the L&D library.",
+    "When you’re not feeling great, our L&D library could be just what you need.",
+  ],
+};

@@ -8,6 +8,7 @@ import { useState } from "react";
 import ImageWithFallback from "./ui/imageWithFallback";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
+import { ActionText } from "@/types";
 
 
 
@@ -26,7 +27,7 @@ const WeeklyBites = () => {
       author: i.author ?? "",
       likes: 0,
       duration: formatDuration(0, 5),
-      action: "read" as "watch" | "read",
+      action: "view" as ActionText,
       link: i.slug ?? "",
     }
   })
@@ -41,7 +42,7 @@ const WeeklyBites = () => {
       author: i.author ?? "",
       likes: 0,
       duration: formatDuration(0, 5),
-      action: "read" as "watch" | "read",
+      action: "view" as ActionText,
       link: i.slug ?? "",
     }
   })
@@ -56,7 +57,7 @@ const WeeklyBites = () => {
       author: i.author ?? "",
       likes: 0,
       duration: formatDuration(0, 5),
-      action: "read" as "watch" | "read",
+      action: "view" as ActionText,
       link: i.slug ?? "",
     }
   })
@@ -134,7 +135,7 @@ type WeeklyBitesData = {
   author: string;
   likes?:number;
   duration: string;
-  action: "read" | "watch";
+  action: ActionText;
   link: string;
 }
 

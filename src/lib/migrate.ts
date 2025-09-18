@@ -186,6 +186,42 @@ CREATE TABLE public_events (
 );
 `
 
+const createCompaniesTable = `CREATE TABLE companies (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  logo_url TEXT, -- optional logo
+  max_users INT DEFAULT 10 CHECK (max_users > 0),
+  max_booking_credits_per_user INT DEFAULT 5 CHECK (max_booking_credits_per_user >= 0),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+`
+
+const createFeaturedContentTable = `CREATE TABLE featured_content (
+  id TEXT PRIMARY KEY,
+  ids TEXT[] NOT NULL,       -- array of post IDs
+  type TEXT NOT NULL,        -- e.g., "banner", "highlight", "carousel"
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+`
+const createWho5ResponsesTable = `
+CREATE TABLE who5_responses (
+  id TEXT PRIMARY KEY,                     -- e.g. nanoid()
+  user_id TEXT NOT NULL,                   -- reference to users table
+  q1 INT NOT NULL CHECK (q1 BETWEEN 0 AND 5),  -- Cheerful and in good spirits
+  q2 INT NOT NULL CHECK (q2 BETWEEN 0 AND 5),  -- Calm and relaxed
+  q3 INT NOT NULL CHECK (q3 BETWEEN 0 AND 5),  -- Active and vigorous
+  q4 INT NOT NULL CHECK (q4 BETWEEN 0 AND 5),  -- Fresh and rested
+  q5 INT NOT NULL CHECK (q5 BETWEEN 0 AND 5),  -- Interested in daily life
+  raw_score INT GENERATED ALWAYS AS (q1 + q2 + q3 + q4 + q5) STORED,
+  percentage_score INT GENERATED ALWAYS AS ((q1 + q2 + q3 + q4 + q5) * 4) STORED,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+`;
+
+
   try {
     console.log("🚀 Starting migration...");
 
@@ -207,7 +243,9 @@ CREATE TABLE public_events (
     await pool.query(createPractitionersTable);
     await pool.query(createUserActivitiesTable); 
     await pool.query(createEventsTable); 
- 
+    await pool.query(createCompaniesTable);
+    await pool.query(createFeaturedContentTable);
+    await pool.query(createWho5ResponsesTable);
 
     console.log("✅ Tables created successfully.");
 

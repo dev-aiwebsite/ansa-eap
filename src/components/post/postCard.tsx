@@ -1,22 +1,23 @@
 import { htmlToPlainText, truncateText } from "@/lib/helper";
-import { Clock } from "lucide-react";
-import Image from "next/image";
-import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 import { Post } from "@/serverActions/crudPosts";
+import { ActionText } from "@/types";
+import { Clock } from "lucide-react";
+import { Button } from "../ui/button";
+import ImageWithFallback from "../ui/imageWithFallback";
 
-const PostCard = ({ item, actionText = "read", className }: { item: Partial<Post>, actionText?: "read" | "watch", className?: string; }) => {
+const PostCard = ({ item, actionText = "read", className }: { item: Partial<Post>, actionText?: ActionText, className?: string; }) => {
   return (
     <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
-      {(item.thumbnail && item.title) && (
-        <Image
+      
+        <ImageWithFallback
           className="rounded-sm w-full h-[167px] object-cover object-top"
           width={200}
           height={100}
           src={item.thumbnail}
-          alt={item.title}
+          alt={item.title || ""}
         />
-      )}
+      
 
       <p className="text-base font-medium">{item.title}</p>
 

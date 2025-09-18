@@ -1,46 +1,97 @@
 "use client";
 
+import { usePostServiceContext } from "@/context/postServiceContext";
+import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-
-const data = {
-  bg_color: "#26cec4",
-  bg_image: "/assets/images/img4.png",
-  title: "WEBINAR:",
-  text_content:
-    "Supporting Autistic, ADHD & Neurodivergent Clients in Your Healthcare Practice",
-  btn_text: "Register",
-  btn_link: "#",
-};
+import { getFeaturedContents } from "@/serverActions/crudFeaturedContent";
+import { Post } from "@/serverActions/crudPosts";
+import { Crown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "../ui/button";
+import ImageWithFallback from "../ui/imageWithFallback";
 
 const FeaturedWidget = ({ className }: { className?: string }) => {
+  const { allPosts } = usePostServiceContext();
+  const [featuredPosts, setFeaturedPosts] = useState<Post[] | null>(null);
+  
+
+  useEffect(() => {
+    async function fetchFeatured() {
+      
+      const res = await getFeaturedContents();
+      if (res.data && res.data.length > 0) {
+        // match posts by ids array
+        const ids = res.data[0].ids;
+        const matches = allPosts.filter((post) => ids.includes(post.id));
+        setFeaturedPosts(matches);
+      } else {
+        setFeaturedPosts([]);
+      }
+      
+    }
+
+    if (allPosts.length > 0) {
+      fetchFeatured();
+    }
+  }, [allPosts]);
+
+  const featuredPost = featuredPosts ? featuredPosts[0] : null
   return (
-    <div
-      className={cn("text-sm", className)}
-      style={{
-        backgroundColor: data.bg_color ?? "",
-        backgroundImage: data.bg_image ? `url(${data.bg_image})` : undefined,
-        backgroundSize: "contain",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      <div className="pr-[30%] h-full space-y-10">
-        <h2 className="card-title font-medium text-background">
-          Featured Content
-        </h2>
-        <p className="text-background">
-          <strong>{data.title ?? ""} </strong>
-          {data.text_content ?? ""}
-        </p>
-        <Link
-          className="decoration-none block w-fit rounded-md ring-1 ring-white py-2 px-5 text-center text-white"
-          href={data.btn_link ?? "#"}
-        >
-          {data.btn_text ?? "Register"}
-        </Link>
+    <div className="relative">
+    <Crown size={30} className="z-10 bg-white/80 rounded-full p-1 right-2 top-2 absolute text-yellow-500 fill-yellow-500" />
+    {featuredPost ?
+     <div className={cn("text-white rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
+      
+        <ImageWithFallback
+          className="rounded-sm w-full h-[130px] object-cover object-top"
+          width={270}
+          height={130}
+          src={featuredPost.thumbnail}
+          alt={featuredPost.title || ""}
+        />
+      
+
+      <p className="text-base font-medium">{featuredPost.title}</p>
+
+      <p className="text-body line-clamp-3 text-muted text-xs whitespace-pre-wrap">
+        {featuredPost.description &&
+          truncateText(htmlToPlainText(featuredPost.description), 100)}
+      </p>
+
+
+      <div className="flex mt-auto">
+        <Button className="ml-auto capitalize bg-transparent !border-white !ring-white text-white" variant="outline" href={featuredPost.slug}>
+          view
+        </Button>
       </div>
     </div>
+  : <div
+      className={cn(
+        "rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm animate-pulse",
+        className
+      )}
+    >
+      {/* Thumbnail */}
+      <div className="rounded-sm w-full h-[130px] bg-zinc-200" />
+
+      {/* Title */}
+      <div className="h-5 w-3/4 bg-zinc-200 rounded" />
+
+      {/* Description */}
+      <div className="space-y-2">
+        <div className="h-3 w-full bg-zinc-200 rounded" />
+        <div className="h-3 w-5/6 bg-zinc-200 rounded" />
+      </div>
+
+      {/* Footer */}
+      <div className="flex mt-auto items-center">
+        <div className="ml-auto h-8 w-16 bg-zinc-200 rounded" />
+      </div>
+    </div>}
+    
+    
+    </div>
+   
   );
 };
 

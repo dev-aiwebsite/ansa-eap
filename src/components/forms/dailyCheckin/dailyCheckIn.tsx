@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import MoodStatement from "@/components/ui/moodStatement";
 import { Slider } from "@/components/ui/slider";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { DAILY_CHECKINS_QUESTIONS } from "@/lib/const";
@@ -26,8 +27,7 @@ export default function DailyCheckIn({
   );
 
   const entryToday = getEntryToday(dailyCheckIns);
-  console.log(dailyCheckIns, 'dailyCheckIns')
-
+  console.log(dailyCheckIns, "dailyCheckIns");
 
   const handleSliderChange = (value: number[]) => {
     const updated = [...answers];
@@ -42,7 +42,6 @@ export default function DailyCheckIn({
   };
 
   const handleSubmit = async () => {
-    alert(`"Daily check-in answers:", ${answers}`);
 
     const formData = DAILY_CHECKINS_QUESTIONS.map((q, index) => {
       return {
@@ -58,30 +57,59 @@ export default function DailyCheckIn({
       .catch((err) => console.log(err));
   };
 
+  const STORAGE_KEY_SKIP = "daily_checkin_skip";
+  const SKIP_DURATION = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
   function removeFocused() {
-    
     focusOnChange(false);
+    // save snooze timestamp
+    localStorage.setItem(
+      STORAGE_KEY_SKIP,
+      JSON.stringify({ until: Date.now() + SKIP_DURATION })
+    );
   }
 
   useEffect(() => {
-    
-    if (didInitRef.current) return; 
+    if (didInitRef.current) return;
     didInitRef.current = true;
 
     if (!entryToday) {
-      focusOnChange(true);
+      const raw = localStorage.getItem(STORAGE_KEY_SKIP);
+      let snoozed = false;
+
+      if (raw) {
+        try {
+          const { until } = JSON.parse(raw) as { until: number };
+          if (Date.now() < until) {
+            snoozed = true; // still within 5 mins snooze
+          } else {
+            localStorage.removeItem(STORAGE_KEY_SKIP); // expired snooze
+          }
+        } catch {
+          localStorage.removeItem(STORAGE_KEY_SKIP);
+        }
+      }
+
+      if (!snoozed) {
+        focusOnChange(true);
+      } else {
+        focusOnChange(false);
+      }
     }
   }, [entryToday]);
 
-console.log(entryToday, 'entryToday')
-  const todayOverall = entryToday ? getDailyCheckinsOverall(entryToday.responses) : null
+  console.log(entryToday, "entryToday");
+  const todayOverall = entryToday
+    ? getDailyCheckinsOverall(entryToday.responses)
+    : null;
   return (
     <div className="w-full flex flex-row">
       {!entryToday && (
         <>
           <div className="md:min-w-[300px] pr-10">
             <h1 className="text-3xl">Hi {currentUser?.first_name},</h1>
-            <p className="text-lg mb-4">{DAILY_CHECKINS_QUESTIONS[step].question}</p>
+            <p className="text-lg mb-4">
+              {DAILY_CHECKINS_QUESTIONS[step].question}
+            </p>
             {isFocused && (
               <Button
                 onClick={removeFocused}
@@ -98,7 +126,9 @@ console.log(entryToday, 'entryToday')
               <div className="flex-1 formItem">
                 <div className="mb-2 text-sm flex flex-row w-full">
                   <p>{DAILY_CHECKINS_QUESTIONS[step].labels.min}</p>
-                  <p className="ml-auto">{DAILY_CHECKINS_QUESTIONS[step].labels.max}</p>
+                  <p className="ml-auto">
+                    {DAILY_CHECKINS_QUESTIONS[step].labels.max}
+                  </p>
                 </div>
                 <div className="relative mb-4 h-6">
                   <div className="absolute w-full top-0 flex justify-between px-1 text-xs text-gray-500">
@@ -139,7 +169,8 @@ console.log(entryToday, 'entryToday')
 
               <div className="flex gap-2 flex-col justify-end">
                 <p className="text-xs w-fit mx-auto">
-                  {step + 1}/{DAILY_CHECKINS_QUESTIONS.length} <span>Questions</span>
+                  {step + 1}/{DAILY_CHECKINS_QUESTIONS.length}{" "}
+                  <span>Questions</span>
                 </p>
 
                 {step < DAILY_CHECKINS_QUESTIONS.length - 1 ? (
@@ -164,7 +195,9 @@ console.log(entryToday, 'entryToday')
           </div>
         </>
       )}
-      {entryToday && <div> {todayOverall?.percentage}% Glad to know your mood is looking great today.</div>}
+      {entryToday && (
+        <MoodStatement percentage={todayOverall?.percentage}/>
+      )}
     </div>
   );
 }
@@ -181,4 +214,3 @@ function getEntryToday(entries: DailyCheckinType[]): DailyCheckinType | null {
 
   return found ?? null;
 }
-

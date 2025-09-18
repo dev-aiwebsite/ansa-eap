@@ -18,7 +18,6 @@ const PostCardSkeleton = ({ className }: { className?: string }) => {
       <div className="space-y-2">
         <div className="h-3 w-full bg-zinc-200 rounded" />
         <div className="h-3 w-5/6 bg-zinc-200 rounded" />
-        <div className="h-3 w-2/3 bg-zinc-200 rounded" />
       </div>
 
       {/* Footer */}

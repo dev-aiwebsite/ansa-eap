@@ -1,4 +1,5 @@
 "use client";
+import AppointmentList from "@/components/appointmentList";
 import DailyCheckIn from "@/components/forms/dailyCheckin/dailyCheckIn";
 import PublicEventsList from "@/components/publicEvents/publicEventsList";
 import { Calendar } from "@/components/ui/calendar";
@@ -25,8 +26,8 @@ const DashboardPage = () => {
             )}
           </WillFocused>
           <div className="flex flex-row flex-wrap basis-full min-h-[290px] max-h-fit gap-6">
-            <div className="card p-0 w-1/3 min-w-[300px]">
-              <FeaturedWidget className="card h-full" />
+            <div className="bg-[#26cec4] card p-0 w-1/3 min-w-[300px]">
+              <FeaturedWidget />
             </div>
 
             <div className="card bg-white flex-1">
@@ -71,26 +72,7 @@ const DashboardPage = () => {
                   See all
                 </Link>
               </div>
-              <div className="space-y-4">
-                <Link
-                  className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
-                  href="#"
-                >
-                  <span className="font-medium text-muted-foreground text-sm">
-                    30-Minute Consulation
-                  </span>
-                  <span className="text-xl font-medium line-through">$120</span>
-                </Link>
-                <Link
-                  className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
-                  href="#"
-                >
-                  <span className="font-medium text-muted-foreground text-sm ">
-                    1 Hour 1:1 Session
-                  </span>
-                  <span className="text-xl font-medium line-through">$140</span>
-                </Link>
-              </div>
+                <AppointmentList/>
             </div>
           </div>
         </Container>
