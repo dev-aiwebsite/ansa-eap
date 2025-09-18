@@ -3,6 +3,7 @@
 import PostCards from "@/components/post/postCards";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { Post } from "@/serverActions/crudPosts";
+import { ActionText } from "@/types";
 import { useEffect, useState } from "react";
 
 type PostCategory = "healthNews" | "yoga" | "video" | "threeMinute";
@@ -10,13 +11,13 @@ type Section = {
   id: string; // DOM id for scroll
   title: string; // UI label
   key: PostCategory; // which posts to use
-  actionText: "watch" | "read";
+  actionText: ActionText;
 };
 const sections: Section[] = [
-  { id: "healthNews", title: "Allied Health News", key: "healthNews", "actionText": "read" },
-  { id: "yoga", title: "Yoga", key: "yoga", "actionText": "watch" },
-  { id: "video", title: "Videos", key: "video", "actionText": "watch" },
-  { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute", "actionText": "read" },
+  { id: "healthNews", title: "Allied Health News", key: "healthNews", "actionText": "view" },
+  { id: "yoga", title: "Yoga", key: "yoga", "actionText": "view" },
+  { id: "video", title: "Videos", key: "video", "actionText": "view" },
+  { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute", "actionText": "view" },
 ];
 
 const ContentLibraryPage = () => {
@@ -115,7 +116,7 @@ function SectionEl({
   id: string;
   title: string;
   data: Partial<Post>[];
-  actionText: "watch" | "read";
+  actionText: ActionText;
 }) {
   return (
     <section id={id} className="snap-start py-4 px-6 relative mb-14">

@@ -1,7 +1,7 @@
 "use client";
 import { slugifyName } from "@/lib/helper";
 import { getPosts, Post } from "@/serverActions/crudPosts";
-import { getNews } from "@/serverActions/RssNewsWellBeing";
+import { getNews } from "@/serverActions/RssNews";
 import {
   createContext,
   Dispatch,
@@ -11,27 +11,26 @@ import {
   useState,
 } from "react";
 
-type PartialPost = (Partial<Post> & { category?: string });
+
 
 type PostServiceContextType = {
-  allPosts: PartialPost[];
-  setAllPosts: Dispatch<SetStateAction<PartialPost[]>>;
+  allPosts: Post[];
+  setAllPosts: Dispatch<SetStateAction<Post[]>>;
   blogs: Post[];
   yogas: Post[];
   videoContents: Post[];
-  healthNews: PartialPost[];
-  latestPosts: PartialPost[];
-  addOrUpdatePost: (post: Partial<Post>) => void;
+  healthNews: Post[];
+  latestPosts: Post[];
 };
 
 const PostServiceContext = createContext<PostServiceContextType | null>(null);
 
 export function PostServiceProvider({ children }: { children: React.ReactNode }) {
-  const [allPosts, setAllPosts] = useState<PartialPost[]>([]);
+  const [allPosts, setAllPosts] = useState<Post[]>([]);
   const [blogs, setBlogs] = useState<Post[]>([]);
   const [yogas, setYogas] = useState<Post[]>([]);
   const [videoContents, setVideoContents] = useState<Post[]>([]);
-  const [healthNews, setHealthNews] = useState<PartialPost[]>([]);
+  const [healthNews, setHealthNews] = useState<Post[]>([]);
 
   // fetch data
   useEffect(() => {
@@ -67,20 +66,7 @@ export function PostServiceProvider({ children }: { children: React.ReactNode })
     healthNews.at(-1) ?? null,
     blogs.at(-1) ?? null,
     videoContents.at(-1) ?? null,
-  ].filter(Boolean) as PartialPost[];
-
-  // update or insert post into allPosts (and derived categories auto-update)
-  const addOrUpdatePost = (post: Partial<Post>) => {
-    setAllPosts((prev) => {
-      const exists = prev.findIndex((p) => p.id === post.id);
-      if (exists !== -1) {
-        const updated = [...prev];
-        updated[exists] = { ...updated[exists], ...post };
-        return updated;
-      }
-      return [...prev, post];
-    });
-  };
+  ].filter(Boolean) as Post[];
 
   return (
     <PostServiceContext.Provider
@@ -92,7 +78,6 @@ export function PostServiceProvider({ children }: { children: React.ReactNode })
         videoContents,
         healthNews,
         latestPosts,
-        addOrUpdatePost,
       }}
     >
       {children}

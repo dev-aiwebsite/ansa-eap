@@ -1,11 +1,12 @@
 import { Post } from "@/serverActions/crudPosts";
 import PostCardSkeleton from "./postCardSkeleton";
 import PostCard from "./postCard";
+import { ActionText } from "@/types";
 
 type PostCards = {
     data: Partial<Post>[],
     id_prefix: string;
-    actionText: "read" | "watch";
+    actionText: ActionText;
     className?: string; 
 }
 const PostCards = ({data,className,id_prefix,actionText}:PostCards) => {

@@ -87,7 +87,12 @@ export async function bookAppointment() {
 
 
   
+export async function getUserAppointments(patient_id:string){
 
+ const res =  await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`)
+ return res
+ 
+}
 
 
 export async function bookAppointment2() {

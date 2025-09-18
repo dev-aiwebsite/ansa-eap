@@ -1,3 +1,5 @@
+import { Post } from "./serverActions/crudPosts";
+
 export type NavItemsType = {
     title: string;
     link: string;
@@ -34,3 +36,7 @@ export type NavItemsType = {
     created_at: string;
     updated_at: string;
   };
+
+
+  export type ActionText = "read" | "watch" | "view"
+  export type PartialPost = (Partial<Post> & { category?: string});

@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { updateUser, User } from "@/serverActions/crudUsers";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 import "@uploadcare/react-uploader/core.css";
-import Image from "next/image";
+import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import ImageWithFallback from "../ui/imageWithFallback";
 
 type FormAccountProps = {
   onSubmitSuccess?: (user: User) => void;
@@ -36,6 +36,7 @@ export default function FormAccount({
       last_name: currentUser?.last_name || "",
       email: currentUser?.email || "",
       profile_img: currentUser?.profile_img || "",
+      company: currentUser?.company || "",
     },
   });
 
@@ -75,17 +76,12 @@ export default function FormAccount({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Profile Image Preview */}
       <div className="form-item flex flex-col items-center gap-3">
-        {profileImg ? (
-          <Image
+          <ImageWithFallback
             src={profileImg}
             alt="Profile"
             className="w-24 h-24 rounded-full object-cover border"
           />
-        ) : (
-          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
-            No Image
-          </div>
-        )}
+        
 
         <FileUploaderRegular
           useCloudImageEditor={false}
@@ -134,6 +130,21 @@ export default function FormAccount({
           <p className="text-red-500 text-sm">{errors.email.message}</p>
         )}
       </div>
+
+      <div className="form-item">
+        <label className="form-item-label">Company Code</label>
+        <Input
+          readOnly
+          disabled
+          placeholder="Company Code"
+          {...register("company", { required: "Email is required" })}
+        />
+        {errors.company && (
+          <p className="text-red-500 text-sm">{errors.company.message}</p>
+        )}
+      </div>
+
+      
 
       {!hideSubmitButton && (
         <Button className="float-right" type="submit" disabled={isSubmitting}>

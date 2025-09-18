@@ -33,7 +33,7 @@ const BlogPage = () => {
           <PostCards
             id_prefix="video-content"
             data={sortedData}
-            actionText="watch"
+            actionText="view"
           />
         </div>
       </div>

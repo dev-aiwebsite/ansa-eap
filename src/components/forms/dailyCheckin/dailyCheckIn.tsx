@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import MoodStatement from "@/components/ui/moodStatement";
 import { Slider } from "@/components/ui/slider";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { DAILY_CHECKINS_QUESTIONS } from "@/lib/const";
@@ -41,7 +42,6 @@ export default function DailyCheckIn({
   };
 
   const handleSubmit = async () => {
-    alert(`"Daily check-in answers:", ${answers}`);
 
     const formData = DAILY_CHECKINS_QUESTIONS.map((q, index) => {
       return {
@@ -58,7 +58,7 @@ export default function DailyCheckIn({
   };
 
   const STORAGE_KEY_SKIP = "daily_checkin_skip";
-  const SKIP_DURATION = 5 * 60 * 1000; // 5 minutes
+  const SKIP_DURATION = 4 * 60 * 60 * 1000; // 4 hours in milliseconds
   function removeFocused() {
     focusOnChange(false);
     // save snooze timestamp
@@ -196,11 +196,7 @@ export default function DailyCheckIn({
         </>
       )}
       {entryToday && (
-        <div>
-          {" "}
-          {todayOverall?.percentage}% Glad to know your mood is looking great
-          today.
-        </div>
+        <MoodStatement percentage={todayOverall?.percentage}/>
       )}
     </div>
   );

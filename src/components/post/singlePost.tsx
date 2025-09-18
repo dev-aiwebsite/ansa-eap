@@ -32,11 +32,11 @@ const PostSingle = ({ data }: PostSingle) => {
 
             <div className="p-4">
               <h1 className="mt-6 text-xl font-medium">{data.title}</h1>
-              <div className="meta-container mt-2">
+              <div className="meta-container mt-2 gap-2 capitalize">
                 <span className="pr-2">{data.author}</span>
                 {data.tags &&
                   data.tags.split(",").map((i) => (
-                    <span key={i} className="px-2">
+                    <span key={i} className="pr-2">
                       {i}
                     </span>
                   ))}

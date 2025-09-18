@@ -455,6 +455,7 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
             {selected.map((option) => {
               return (
                 <Badge
+                variant="secondary"
                   key={option.value}
                   className={cn(
                     'h-[3em] data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground',

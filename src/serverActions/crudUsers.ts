@@ -9,6 +9,7 @@ export type User = {
   profile_img: string;
   email: string;
   password: string;
+  company: string;
   created_at: string;
   updated_at: string;
   roles: string[];
@@ -22,14 +23,14 @@ type Result<T> = {
 
 // CREATE
 export async function createUser(
-  data: Omit<User, "id" | "created_at" | "updated_at" | "roles">
+  data: Omit<User, "id" | "created_at" | "updated_at" | "roles" | "profile_img">
 ): Promise<Result<User>> {
   try {
     const id = nanoid(10);
 
     const query = `
-      INSERT INTO users (id, email, password, first_name, last_name, profile_img)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO users (id, email, password, company, first_name, last_name, profile_img)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
 
@@ -37,11 +38,10 @@ export async function createUser(
       id,
       data.email,
       data.password,
+      data.company ?? null,
       data.first_name ?? null,
       data.last_name ?? null,
-      !data.profile_img || data.profile_img.trim() === ""
-        ? "/assets/images/default-avatar.png"
-        : data.profile_img,
+      "/assets/images/default-avatar.png",
     ];
 
     const result = await pool.query(query, values);

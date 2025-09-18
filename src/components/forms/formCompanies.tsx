@@ -1,0 +1,173 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+ 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Check } from "lucide-react";
+import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
+import "@uploadcare/react-uploader/core.css";
+import Image from "next/image";
+import { createCompany } from "@/serverActions/crudCompanies";
+import { cn } from "@/lib/utils";
+
+type CompanyFormValues = {
+  name: string;
+  logo_url: string | null;
+  max_users: number;
+  max_booking_credits_per_user: number;
+};
+
+export default function CompanyForm({
+  className,
+}: React.ComponentPropsWithoutRef<"div">) {
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<CompanyFormValues>({
+    defaultValues: {
+      name: "",
+      logo_url: null,
+      max_users: 10,
+      max_booking_credits_per_user: 5,
+    },
+  });
+
+  const logoUrl = watch("logo_url");
+
+  async function onSubmit(values: CompanyFormValues) {
+    setIsLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      // Ensure logo_url is null if empty
+      const payload = { ...values, logo_url: values.logo_url || null };
+
+      const result = await createCompany(payload);
+      if (!result.success) {
+        setError(result.message);
+        return;
+      }
+
+      setSuccess(true);
+      reset({
+        name: "",
+        logo_url: null,
+        max_users: 10,
+        max_booking_credits_per_user: 5,
+      });
+    } catch (err) {
+      const typedError = err as Error;
+      setError(typedError.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  return (
+    
+      <form onSubmit={handleSubmit(onSubmit)} className={cn("space-y-6", className)}>
+        {/* Company Logo Preview */}
+        <div className="form-item flex flex-col items-center gap-3">
+          {logoUrl ? (
+            <Image
+              src={logoUrl}
+              alt="Company Logo"
+              className="w-24 h-24 object-cover border rounded-md"
+              width={96}
+              height={96}
+            />
+          ) : (
+            <div className="w-24 h-24 bg-gray-200 flex items-center justify-center text-sm text-gray-500 rounded-md border">
+              No Logo
+            </div>
+          )}
+
+          <FileUploaderRegular
+            useCloudImageEditor={false}
+            sourceList="local"
+            classNameUploader="uc-light"
+            pubkey="9c35a0212e26c1a710ca"
+            multiple={false}
+            onCommonUploadSuccess={(e) => {
+              const cdnUrl = e.successEntries[0].cdnUrl;
+              setValue("logo_url", cdnUrl, { shouldDirty: true });
+            }}
+          />
+        </div>
+
+        {/* Company Name */}
+        <div className="space-y-2">
+          <Label htmlFor="name">Company Name</Label>
+          <Input
+            id="name"
+            {...register("name", { required: "Company name is required" })}
+            placeholder="Acme Inc."
+          />
+          {errors.name && (
+            <p className="text-xs text-red-400">{errors.name.message}</p>
+          )}
+        </div>
+
+        {/* Max Users */}
+        <div className="space-y-2">
+          <Label htmlFor="max_users">Max Users</Label>
+          <Input
+            id="max_users"
+            type="number"
+            {...register("max_users", {
+              required: "Max users is required",
+              min: { value: 1, message: "Must be at least 1" },
+            })}
+          />
+          {errors.max_users && (
+            <p className="text-xs text-red-400">{errors.max_users.message}</p>
+          )}
+        </div>
+
+        {/* Max Booking Credits per User */}
+        <div className="space-y-2">
+          <Label htmlFor="max_booking_credits_per_user">
+            Max Booking Credits / User
+          </Label>
+          <Input
+            id="max_booking_credits_per_user"
+            type="number"
+            {...register("max_booking_credits_per_user", {
+              required: "This field is required",
+              min: { value: 1, message: "Must be at least 1" },
+            })}
+          />
+          {errors.max_booking_credits_per_user && (
+            <p className="text-xs text-red-400">
+              {errors.max_booking_credits_per_user.message}
+            </p>
+          )}
+        </div>
+
+        {error && <p className="text-xs text-red-400">{error}</p>}
+
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {success ? (
+            <>
+              <Check className="mr-2 h-4 w-4" /> Success
+            </>
+          ) : (
+            <>Create Company</>
+          )}
+        </Button>
+      </form>
+    
+  );
+}
