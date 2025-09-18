@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react";
 
 const Page = () => {
-  const [featuredPosts, setFeaturedPosts] = useState<FeaturedContent[]>();
+  const [featuredPosts, setFeaturedPosts] = useState<FeaturedContent[]>([]);
   
   useEffect(() => {
     getFeaturedContents().then((r) => {
@@ -24,9 +24,9 @@ const Page = () => {
       <h2 className="mb-5">Featured Contents</h2>
       <div className="grid grid-cols-2 gap-6">
       <div className="card">        
-           {featuredPosts && featuredPosts.length > 0 && (
-                <FeaturedContentForm header="Post" editMode defaultValues={{ ...featuredPosts[0] }} />
-            )}
+       
+          <FeaturedContentForm header="Post" editMode defaultValues={{ ...featuredPosts[0] }} />
+       
 
       </div>
 

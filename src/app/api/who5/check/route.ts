@@ -4,7 +4,7 @@ import pool from "@/lib/db"; // your PostgreSQL pool
 
 export async function GET(req: NextRequest) {
   try {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName: "__Secure-authjs.session-token", secureCookie: true });  
     if (!token?.sub) return NextResponse.json({ completed: false }, { status: 401 });
 
     const userId = token.sub;

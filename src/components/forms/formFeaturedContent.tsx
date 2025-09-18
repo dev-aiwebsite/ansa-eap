@@ -143,7 +143,7 @@ export default function FeaturedContentForm({
 
       {!isEditing && <>
         <div className="flex gap-2 flex-wrap">
-            {allPosts && defaultValues && defaultValues?.ids.map(i => {
+            {allPosts && defaultValues && defaultValues?.ids?.length > 0 && defaultValues.ids.map(i => {
                 return <Badge
                 className="p-3"
                  variant="secondary" key={i}>{allPosts.find(p => p.id == i)?.title}</Badge>
