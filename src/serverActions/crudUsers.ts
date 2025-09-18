@@ -127,6 +127,35 @@ export async function getUserById(id: string): Promise<Result<User>> {
   }
 }
 
+// READ ALL USERS BY COMPANY
+export async function getUsersByCompany(companyId: string): Promise<Result<User[]>> {
+  try {
+    const result = await pool.query(
+      `
+      SELECT u.*, COALESCE(json_agg(r.name) FILTER (WHERE r.name IS NOT NULL), '[]') AS roles
+      FROM users u
+      LEFT JOIN user_roles ur ON u.id = ur.user_id
+      LEFT JOIN roles r ON ur.role_id = r.id
+      WHERE u.company = $1
+      GROUP BY u.id
+      ORDER BY u.created_at DESC;
+      `,
+      [companyId]
+    );
+
+    return {
+      success: true,
+      message: "Users fetched successfully for company",
+      data: result.rows as User[],
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+
+
 // READ ONE (by Email)
 export async function getUserByEmail(email: string): Promise<Result<User>> {
   try {

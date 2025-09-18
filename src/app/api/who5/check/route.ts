@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 import pool from "@/lib/db"; // your PostgreSQL pool
+import { getAuthToken } from "@/lib/getAuthToken";
 
 export async function GET(req: NextRequest) {
   try {
-    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName: "__Secure-authjs.session-token", secureCookie: true });  
+    const token = await getAuthToken(req);
     if (!token?.sub) return NextResponse.json({ completed: false }, { status: 401 });
 
     const userId = token.sub;
