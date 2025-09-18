@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';  
+import { getAuthToken } from './lib/getAuthToken';
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, cookieName: "__Secure-authjs.session-token", secureCookie: true });  
-  // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET});  
+  const token = await getAuthToken(req);
   const pathname = req.nextUrl.pathname;
 
   // Define auth-related paths
@@ -46,5 +45,6 @@ export async function middleware(req: NextRequest) {
 
 // Middleware matcher to exclude certain paths
 export const config = {
-  matcher: "/((?!api|_next/static|_next/image|.*\\.png$|.*\\.svg$|public).*)",
+  matcher: "/((?!api|_next/static|_next/image|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|public).*)",
 };
+

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import {
   IconLogo,
 } from "@/icons";
+import Image from "next/image";
 
 
 const Sidebar = () => {
@@ -15,6 +16,17 @@ const Sidebar = () => {
       </div>
       <NavItems />
       <div className="mt-auto p-6">
+        <div className="mb-4">
+          <Image
+          className="w-[150px] mx-auto"
+          width={200}
+          height={300}
+          alt="available on mobile"
+          src="/assets/images/mobileavailable.png" />
+          <span className="text-xs text-muted-foreground">
+            Elevate is available on <span className="text-app-purple-300">Mobile</span>
+          </span>
+        </div>
         <Button href="/critical-response" variant="default" className="w-full shadow-btn">
           <span>Critical Response</span>
         </Button>

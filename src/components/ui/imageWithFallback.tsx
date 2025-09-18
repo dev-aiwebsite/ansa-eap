@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 type Props = {
-  src?: string | null;
+  src?: string | StaticImport | null;
   alt: string;
   width?: number;
   height?: number;
@@ -19,7 +20,7 @@ export default function ImageWithFallback({
   className = "rounded-md object-cover",
   iconSize = 40
 }: Props) {
-  const isDefault = src?.includes('default')
+  const isDefault = typeof(src) == 'string' ? src?.includes('default') : src
 
   if (!src) {
     return (
