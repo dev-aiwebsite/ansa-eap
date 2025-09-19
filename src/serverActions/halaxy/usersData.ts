@@ -23,7 +23,7 @@ export async function getMyAppointments(userEmail: string) {
   )[0];
 
   if (!patientEntry) {
-    throw new Error("No patient record found");
+    console.log("No patient record found")
   }
 
   const patientId = patientEntry.resource.id;

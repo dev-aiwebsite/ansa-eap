@@ -10,7 +10,7 @@ interface PractionerSingleProps {
 
 const PractionerSingle = async ({ params }: PractionerSingleProps) => {
   const {slug} = await params
-  const id = slug.split("~").pop();
+  const id = slug.split("~")[0];
 
   return (
     <Suspense

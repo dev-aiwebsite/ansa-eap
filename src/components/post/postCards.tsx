@@ -4,7 +4,7 @@ import PostCard from "./postCard";
 import { ActionText } from "@/types";
 
 type PostCards = {
-    data: Partial<Post>[],
+    data: Post[],
     id_prefix: string;
     actionText: ActionText;
     className?: string; 

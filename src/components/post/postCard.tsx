@@ -1,12 +1,13 @@
-import { htmlToPlainText, truncateText } from "@/lib/helper";
+import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { Post } from "@/serverActions/crudPosts";
 import { ActionText } from "@/types";
 import { Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import ImageWithFallback from "../ui/imageWithFallback";
+import { categories } from "@/app/demo/demoData";
 
-const PostCard = ({ item, actionText = "read", className }: { item: Partial<Post>, actionText?: ActionText, className?: string; }) => {
+const PostCard = ({ item, actionText = "read", className }: { item: Post, actionText?: ActionText, className?: string; }) => {
   return (
     <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
       
@@ -34,7 +35,7 @@ const PostCard = ({ item, actionText = "read", className }: { item: Partial<Post
             {item.duration_hours}:{item.duration_minutes}
           </span>
         </div>
-        <Button className="ml-auto capitalize" variant="outline" href={item.slug}>
+        <Button className="ml-auto capitalize" variant="outline" href={`/learning-development/${item.category}~${slugifyName(categories.find(c => c.id == item.category)?.label ?? "")}/${item.id}~${slugifyName(item.title)}`}>
           {actionText}
         </Button>
       </div>
