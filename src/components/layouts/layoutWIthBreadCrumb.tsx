@@ -1,5 +1,5 @@
-import Breadcrumb from "@/components/ui/breadcrumb";
 import { ReactNode } from "react";
+import AppBreadCrumb from "../breadCrumb/appBreadCrumb";
 
 export type LayoutWithChildrenProps = {
     children: ReactNode;
@@ -8,7 +8,7 @@ export type LayoutWithChildrenProps = {
 const LayoutWithBreadcrumb = ({children}:LayoutWithChildrenProps) => {
     return (
       <>
-        <Breadcrumb />
+        <AppBreadCrumb />
         {children}
       </>
     );

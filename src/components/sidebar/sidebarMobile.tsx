@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 const items = [
   { icon: IconServices, label: "Services", link: "/health-services" },
   { icon: IconPractitioner, label: "Practitioners", link: "/practioners" },
-  { icon: IconCalendar, label: "Appointments", link:"/critical-response" },
-  { icon: IconEmergency, label: "Emergency", className: 'bg-red-500', textClassName: "text-white", link: "" },
+  { icon: IconCalendar, label: "Appointments", link:"" },
+  { icon: IconEmergency, label: "Emergency", className: 'bg-red-500', textClassName: "text-white", link: "/critical-response" },
   { icon: IconPublicSession, label: "Public Session", link: "" },
   { icon: IconContents, label: "Contents", link: "/learning-development" },
   { icon: IconAiChat, label: "AI Chat", link: "/chat" },

@@ -16,13 +16,12 @@ type PostSidebarProps = {
     currentCategory: string;
 }
 const PostSidebar = ({currentPost, currentCategory}:PostSidebarProps) => {
+  console.log(currentCategory, currentPost)
   const {latestPosts } = usePostServiceContext();
   const {setGlobalSearchOpen} = useAppServiceContext()
 
-console.log(currentPost, 'postData')
-console.log(currentCategory, 'currentCategory')
   return (
-    <Container className="max-w-[400px]">
+    <Container className="max-md:hidden max-w-[400px]">
       <div className="flex flex-col flex-nowrap gap-6">
         <div className="card space-y-4">
           <div
