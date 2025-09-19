@@ -1,6 +1,6 @@
 "use client";
 
-import PostAddNew from "@/components/forms/postAddNew";
+import PostEditor from "@/components/forms/postEditor";
 
 export default function Page() {
 
@@ -8,7 +8,7 @@ export default function Page() {
     <div className="flex gap-6 h-full">
       <div className="card flex-1 overflow-hidden">
         <div className="rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
-            <PostAddNew />
+            <PostEditor />
         </div>
       </div>
       <div className="right-sidebar">

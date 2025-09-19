@@ -15,7 +15,7 @@ export type Post = {
   thumbnail?: string;
   duration_hours: number;
   duration_minutes: number;
-  description?: string;
+  description: string;
   created_at: string;
   updated_at: string;
 };
@@ -121,13 +121,14 @@ export async function getPostBySlug(slug: string): Promise<Result<Post>> {
 }
 
 // UPDATE
-export async function updatePost(id: string, data: Partial<Omit<Post, "id" | "created_at">>): Promise<Result<Post>> {
+export async function updatePost(id: string, data: Partial<Omit<Post, "id" | "created_at" | "updated_at">>): Promise<Result<Post>> {
   try {
     const fields = [];
     const values = [];
     let i = 1;
 
     for (const [key, value] of Object.entries(data)) {
+      if (["id", "created_at", "updated_at"].includes(key)) continue; // ✅ skip these
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }

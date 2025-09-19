@@ -2,6 +2,7 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Bold, Italic, Strikethrough, List, ListOrdered,
@@ -18,19 +19,25 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
     extensions: [StarterKit],
     content: value ?? "",
     onUpdate: ({ editor }) => onChange(editor.getHTML()),
-    immediatelyRender: false, // avoid SSR hydration mismatch
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class:
-          // style the content area
           "prose prose-sm dark:prose-invert min-h-[160px] p-3 focus:outline-none",
       },
     },
   });
 
+  // ✅ Sync external value (from react-hook-form reset) with Tiptap editor
+  useEffect(() => {
+    if (editor && value !== editor.getHTML()) {
+      editor.commands.setContent(value || "", { emitUpdate: false });
+
+    }
+  }, [value, editor]);
+
   if (!editor) return null;
 
-  // helper to render a toolbar button
   const Btn = ({
     isActive,
     canRun = true,
@@ -50,7 +57,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
       variant={isActive ? "default" : "outline"}
       disabled={!canRun}
       title={label}
-      // keep selection; don’t blur editor
       onMouseDown={(e) => e.preventDefault()}
       onClick={(e) => {
         e.preventDefault();
@@ -73,7 +79,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         >
           <Bold className="h-4 w-4" />
         </Btn>
-
         <Btn
           label="Italic"
           isActive={editor.isActive("italic")}
@@ -82,7 +87,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         >
           <Italic className="h-4 w-4" />
         </Btn>
-
         <Btn
           label="Strike"
           isActive={editor.isActive("strike")}
@@ -101,7 +105,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         >
           <List className="h-4 w-4" />
         </Btn>
-
         <Btn
           label="Ordered List"
           isActive={editor.isActive("orderedList")}
@@ -119,7 +122,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         >
           <Heading1 className="h-4 w-4" />
         </Btn>
-
         <Btn
           label="H2"
           isActive={editor.isActive("heading", { level: 2 })}
@@ -137,7 +139,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         >
           <Quote className="h-4 w-4" />
         </Btn>
-
         <Btn
           label="Horizontal Rule"
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
@@ -154,7 +155,6 @@ export function TiptapEditor({ value, onChange }: TiptapEditorProps) {
         >
           <Undo2 className="h-4 w-4" />
         </Btn>
-
         <Btn
           label="Redo"
           canRun={editor.can().chain().focus().redo().run()}

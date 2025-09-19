@@ -2,14 +2,13 @@
 import FeaturedContentForm from "@/components/forms/formFeaturedContent";
 import Container from "@/components/ui/container";
 import {
-    FeaturedContent,
-    getFeaturedContents,
+  FeaturedContent,
+  getFeaturedContents,
 } from "@/serverActions/crudFeaturedContent";
 import { useEffect, useState } from "react";
 
 const Page = () => {
   const [featuredPosts, setFeaturedPosts] = useState<FeaturedContent[]>([]);
-  
   useEffect(() => {
     getFeaturedContents().then((r) => {
       if (r.data) {
@@ -18,18 +17,19 @@ const Page = () => {
     });
   }, []);
 
-  
   return (
     <Container>
-      <h2 className="mb-5">Featured Contents</h2>
-      <div className="grid grid-cols-2 gap-6">
-      <div className="card">        
-       
-          <FeaturedContentForm header="Post" editMode defaultValues={{ ...featuredPosts[0] }} />
-       
-
-      </div>
-
+      <div>
+        <h2 className="mb-5">Featured Contents</h2>
+        <div className="grid grid-cols-2 gap-6">
+          <div className="card">
+            <FeaturedContentForm
+              header="Post"
+              editMode
+              defaultValues={{ ...featuredPosts[0] }}
+            />
+          </div>
+        </div>
       </div>
     </Container>
   );

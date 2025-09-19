@@ -18,6 +18,8 @@ import {
 } from "../ui/collapsible";
 import { ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
+import { categories } from "@/app/demo/demoData";
+import { slugifyName } from "@/lib/helper";
 export const navItems: NavItemsType[] = [
   {
     title: "Dasboard",
@@ -44,32 +46,10 @@ export const navItems: NavItemsType[] = [
     link: "/learning-development",
     icon: <IconDocument width="1.1rem" />,
     subitems: [
-      {
-        title: "Allied Health News",
-        link: "/learning-development/health-news",
-      },
-      {
-        title: "Video",
-        link: "/learning-development/webinars",
-      },
-      {
-        title: "Audio",
-        link: "#",
-        // link: "/learning-development/audio",
-      },
-      {
-        title: "Yoga",
-        link: "/learning-development/yoga",
-      },
-      {
-        title: "Quick Reads",
-        link: "/learning-development/blogs",
-      },
-      {
-        title: "Short Clips",
-        link: "#",
-        // link: "/learning-development/shorts",
-      },
+      ...categories.map(i =>  ({
+        title: i.label,
+        link: `/learning-development/${i.id}~${slugifyName(i.label)}`,
+      }))
     ],
   },
 ];
@@ -93,7 +73,7 @@ export default function NavItems() {
                 >
                   <Link href={navitem.link} className="group flex-1">
                     {navitem.icon && navitem.icon}
-                    <span className="group-hover:underline decoration-[0.5px] underline-offset-[2px]">
+                    <span className="capitalize group-hover:underline decoration-[0.5px] underline-offset-[2px]">
                       {navitem.title}
                     </span>
                   </Link>
@@ -120,7 +100,7 @@ export default function NavItems() {
                         >
                           <Link href={subitem.link}>
                             {subitem.icon && subitem.icon}
-                            <span>{subitem.title}</span>
+                            <span className="capitalize">{subitem.title}</span>
                           </Link>
                         </li>
                       );

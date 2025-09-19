@@ -4,13 +4,29 @@ import { categories } from "@/app/demo/demoData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { slugifyName } from "@/lib/helper";
-import { createPost, Post } from "@/serverActions/crudPosts";
+import {
+  createPost,
+  updatePost,
+  getPostById,
+  Post,
+} from "@/serverActions/crudPosts";
 import { usePathname } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { TiptapEditor } from "../ui/tiptap-editor";
 
-export default function PostAddNew() {
+type PostEditorProps = {
+  postId?: string;
+};
+
+export default function PostEditor({ postId }: PostEditorProps) {
   const pathName = usePathname();
   const {
     control,
@@ -18,25 +34,57 @@ export default function PostAddNew() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<Post>();
+  } = useForm<Post>({
+    defaultValues: {
+      title: "",
+      author: "",
+      category: "",
+      tags: "",
+      video: "",
+      audio: "",
+      thumbnail: "",
+      duration_hours: 0,
+      duration_minutes: 0,
+      description: "", // ✅ ensures description is initialized
+    },
+  });
+
+  // Populate form if editing
+  useEffect(() => {
+    if (!postId) return;
+    (async () => {
+      try {
+        const { data } = await getPostById(postId);
+        if (data) {
+          reset(data); // ✅ resets all fields, including description
+        }
+      } catch (error) {
+        console.error("Failed to fetch post:", error);
+      }
+    })();
+  }, [postId, reset]);
 
   const onSubmit = async (data: Post) => {
     console.log("Form data:", data);
     const slug = `${pathName.slice(0, -3)}${slugifyName(data.title)}`;
 
     try {
-      const result = await createPost({ ...data, slug });
-      console.log(result);
-      reset();
+      let result;
+      if (postId) {
+        result = await updatePost(postId, { ...data, slug });
+      } else {
+        result = await createPost({ ...data, slug });
+      }
+      console.log("Saved:", result);
+      reset(result.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
-
-  
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Title */}
       <div className="form-item">
         <label className="form-item-label">Title</label>
         <Input
@@ -48,6 +96,7 @@ export default function PostAddNew() {
         )}
       </div>
 
+      {/* Author */}
       <div className="form-item">
         <label className="form-item-label">Author</label>
         <Input
@@ -59,7 +108,8 @@ export default function PostAddNew() {
         )}
       </div>
 
- <div className="form-item">
+      {/* Category */}
+      <div className="form-item">
         <label className="form-item-label">Category</label>
         <Controller
           name="category"
@@ -85,7 +135,7 @@ export default function PostAddNew() {
         )}
       </div>
 
-
+      {/* Tags */}
       <div className="form-item">
         <label className="form-item-label">Tags</label>
         <Input
@@ -97,46 +147,44 @@ export default function PostAddNew() {
         )}
       </div>
 
+      {/* Video link */}
       <div className="form-item">
         <label className="form-item-label">Video link</label>
         <Input placeholder="Video link" {...register("video")} />
       </div>
 
+      {/* Audio link */}
       <div className="form-item">
         <label className="form-item-label">Audio link</label>
         <Input placeholder="Audio link" {...register("audio")} />
       </div>
 
+      {/* Thumbnail */}
       <div className="form-item">
         <label className="form-item-label">Thumbnail</label>
         <Input placeholder="Thumbnail link" {...register("thumbnail")} />
       </div>
+
+      {/* Duration */}
       <div className="form-item">
         <label className="form-item-label">Duration</label>
         <div className="flex gap-2">
           <div>
-            <label htmlFor="" className="label-inset">
-              Hours
-            </label>
+            <label className="label-inset">Hours</label>
             <Input
               type="number"
               min={0}
-              defaultValue={0}
               {...register("duration_hours", { valueAsNumber: true })}
               placeholder="00"
               className="form-control w-30"
             />
           </div>
-
           <div>
-            <label htmlFor="" className="label-inset">
-              Minutes
-            </label>
+            <label className="label-inset">Minutes</label>
             <Input
               type="number"
               min={0}
               max={59}
-              defaultValue={0}
               {...register("duration_minutes", { valueAsNumber: true })}
               placeholder="00"
               className="form-control w-30"
@@ -145,20 +193,22 @@ export default function PostAddNew() {
         </div>
       </div>
 
-
+      {/* Description */}
       <div className="form-item">
         <label className="form-item-label">Description</label>
         <Controller
           name="description"
-          control={control} // from useForm
+          control={control}
+          defaultValue="" // ✅ ensures initial value is set
           render={({ field }) => (
-            <TiptapEditor value={field.value ?? ""} onChange={field.onChange} />
+            <TiptapEditor value={field.value} onChange={field.onChange} />
           )}
         />
       </div>
 
+      {/* Submit */}
       <Button className="float-right" type="submit" disabled={isSubmitting}>
-        {isSubmitting ? "Saving..." : "Save"}
+        {isSubmitting ? "Saving..." : postId ? "Update" : "Save"}
       </Button>
     </form>
   );

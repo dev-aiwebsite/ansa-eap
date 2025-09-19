@@ -62,7 +62,7 @@ function PractitionerCard({
             <Button
               variant="ghost"
               className="rounded-full !py-5 underline decoration-muted"
-            ><Link href={`/practioners/${slugifyName(professionalName)}~${item.id}`}>View Profile</Link></Button>
+            ><Link href={`/practioners/${item.id}~${slugifyName(professionalName)}`}>View Profile</Link></Button>
           </div>
         </div>
       </div>
