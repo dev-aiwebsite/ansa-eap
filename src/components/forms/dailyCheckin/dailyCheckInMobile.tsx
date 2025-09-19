@@ -14,7 +14,7 @@ type DailyCheckInProps = {
   isFocused: boolean;
   focusOnChange?: (value: boolean) => void; // <-- the setter function type
 };
-export default function DailyCheckIn({
+export default function DailyCheckInMobile({
   isFocused = false,
   focusOnChange,
 }: DailyCheckInProps) {
@@ -110,36 +110,23 @@ export default function DailyCheckIn({
     <div className="w-full flex flex-row">
       {!entryToday && (
         <>
-          <div className="md:min-w-[300px] pr-10">
-            <h1 className="text-3xl">Hi {currentUser?.first_name},</h1>
-            <p className="text-lg mb-4">
-              {DAILY_CHECKINS_QUESTIONS[step].question}
-            </p>
-            {isFocused && (
-              <Button
-                onClick={removeFocused}
-                size="sm"
-                className="absolute bottom-6 !ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white"
-                variant="outline"
-              >
-                Do it later
-              </Button>
-            )}
-          </div>
-          <div className="md:w-full">
-            <div className="flex flex-row gap-10">
-              <div className="flex-1 formItem">
-                <div className="mb-2 text-sm flex flex-row w-full">
-                  <p>{DAILY_CHECKINS_QUESTIONS[step].labels.min}</p>
-                  <p className="ml-auto">
-                    {DAILY_CHECKINS_QUESTIONS[step].labels.max}
-                  </p>
-                </div>
-       <div className="relative mb-1 mt-3 h-6">
+          <div className="md:min-w-[300px] flex-1">
+            <div className="pt-5 pl-5">
+              <h1 className="text-xl">Hi {currentUser?.first_name}!</h1>
+              <p className="mb-4">{DAILY_CHECKINS_QUESTIONS[step].question}</p>
+            </div>
+            <div className="flex-1 formItem bg-white p-5 rounded-tr-3xl">
+              <div className="mb-2 text-xs flex flex-row w-full text-foreground">
+                <p>{DAILY_CHECKINS_QUESTIONS[step].labels.min}</p>
+                <p className="ml-auto">
+                  {DAILY_CHECKINS_QUESTIONS[step].labels.max}
+                </p>
+              </div>
+              <div className="relative mb-1 mt-3 h-6">
                 <div className="absolute w-full top-0 flex-nowrap flex flex-row px-1 text-xs text-gray-500">
                      <div
                         key={DAILY_CHECKINS_QUESTIONS[step].min + "default"}
-                        className="w-0 text-sm text-background"
+                        className="w-0 text-sm text-foreground"
                       >
                         <span>{DAILY_CHECKINS_QUESTIONS[step].min}</span>
                         {/* <div className="h-3 w-[1px] bg-white mb-[2px]" /> */}
@@ -151,7 +138,7 @@ export default function DailyCheckIn({
                     return (
                       <div
                         key={currentNum}
-                        className="text-end text-sm text-background"
+                        className="text-end text-sm text-foreground"
                       >
                         <span className="-translate-x-1/2 absolute">{currentNum}</span>
                         {/* <div className="h-3 w-[1px] bg-white mb-[2px]" /> */}
@@ -162,23 +149,35 @@ export default function DailyCheckIn({
        
                 </div>
               </div>
-                <Slider
-                  value={[answers[step]]}
-                  onValueChange={handleSliderChange}
-                  min={DAILY_CHECKINS_QUESTIONS[step].min}
-                  max={DAILY_CHECKINS_QUESTIONS[step].max}
-                  step={1}
-                  className="mb-2 ring-white"
-                  rangeClassName={DAILY_CHECKINS_QUESTIONS[step].rangeClassName}
-                  thumbClassName={cn(
-                    DAILY_CHECKINS_QUESTIONS[step].thumbClassName,
-                    "!h-6 !w-6"
-                  )}
-                  trackClassName="!h-3"
-                />
-              </div>
-
-              <div className="flex gap-2 flex-col justify-end">
+              <Slider
+                value={[answers[step]]}
+                onValueChange={handleSliderChange}
+                min={DAILY_CHECKINS_QUESTIONS[step].min}
+                max={DAILY_CHECKINS_QUESTIONS[step].max}
+                step={1}
+                className="mb-2 ring-white"
+                rangeClassName={DAILY_CHECKINS_QUESTIONS[step].rangeClassName}
+                thumbClassName={cn(
+                  DAILY_CHECKINS_QUESTIONS[step].thumbClassName,
+                  "!h-5 !w-5"
+                )}
+                trackClassName="!h-2"
+              />
+            </div>
+            {isFocused && (
+              <Button
+                onClick={removeFocused}
+                size="sm"
+                className="absolute bottom-6 !ring-1 ring-white opacity-80 hover:opacity-100 bg-transparent text-white hover:text-white"
+                variant="outline"
+              >
+                Do it later
+              </Button>
+            )}
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="flex flex-row gap-10 h-full p-5 justify-center items-center">
+              <div className="flex gap-2 flex-col h-[80%] items-center justify-center">
                 <p className="text-xs w-fit mx-auto">
                   {step + 1}/{DAILY_CHECKINS_QUESTIONS.length}{" "}
                   <span>Questions</span>
@@ -188,7 +187,7 @@ export default function DailyCheckIn({
                   <Button
                     variant="secondary"
                     onClick={next}
-                    className="bg-white text-primary rounded-xl !py-[3px] min-w-[11ch]"
+                    className="h-[60%] bg-white text-primary rounded-xl !py-[3px] w-full min-w-[8ch]"
                   >
                     Next
                   </Button>
@@ -196,7 +195,7 @@ export default function DailyCheckIn({
                   <Button
                     variant="secondary"
                     onClick={handleSubmit}
-                    className="bg-white text-primary rounded-xl !py-[3px] min-w-[11ch]"
+                    className="h-[60%] bg-white text-primary rounded-xl !py-[3px] w-full min-w-[8ch]"
                   >
                     Submit
                   </Button>

@@ -189,12 +189,15 @@
     @apply rounded-3xl p-6 bg-card text-card-foreground;
   }
   .card-title {
-    @apply text-lg font-medium;
+    @apply sm:text-lg font-medium;
   }
   .btn-thin {
     @apply !px-4 !py-2;
   }
 
+  .muted-text {
+    @apply text-muted-foreground text-xs md:text-sm;
+  }
   .submenu {
     @apply pl-7 text-sm;
   }
@@ -406,8 +409,26 @@ html {
 }
 
 
+@media(max-width: 780px){
+  :root {
+  --sidebar-w: 0px;
+}
 
-@media (max-width: 900px) {
+.w-full-sidebar {
+  max-width: 100%;
+}
+
+body, .bg-body-blend {
+    background: radial-gradient(circle at top left, #D6FCF9 0%, transparent 50%), radial-gradient(circle at top center, #FFECFD 0%, transparent 50%), radial-gradient(circle at top right, #ECFFE8 0%, transparent 50%), radial-gradient(circle at bottom right, #E5E7FF 0%, transparent 50%), radial-gradient(circle at bottom center, #FFFEEF 0%, transparent 50%), radial-gradient(circle at bottom left, #F7E1E0 0%, transparent 50%);
+    background-color: #4fc49136;
+    background-position: bottom;
+    background-attachment: fixed;
+    background-size: 20px;
+}
+
+}
+
+@media (min-width: 780px ) and (max-width: 900px) {
 :root {
   --sidebar-w: 45px;
 }
@@ -451,3 +472,4 @@ html {
 button[role="radio"] {
   padding: 10px;
 }
+
