@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import Sidebar from "@/components/sidebar/sidebar";
-import MainHeader from "@/components/ui/mainHeader";
+import AppHeader from "@/components/header/appHeader";
+import AppSidebar from "@/components/sidebar/appSidebar";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
 import { ExtendedSession } from "@/next-auth";
@@ -32,13 +32,13 @@ export default async function Layout({
   return (
     <AppServiceContextProvider data={data}>
       <PostServiceProvider>
-          <main className="flex flex-row flex-nowrap h-screen w-screen p-4 space-x-6">
+          <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
             <div>
-              <Sidebar />
+              <AppSidebar />
             </div>
             <div className="flex-1">
-              <MainHeader />
-              <div className="h-screen-header overflow-auto">{children}</div>
+              <AppHeader />
+              <div className="h-screen-header overflow-auto max-sm:p-4">{children}</div>
             </div>
           </main>
       </PostServiceProvider>

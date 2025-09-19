@@ -12,7 +12,7 @@ import { ActionText } from "@/types";
 
 
 
-const WeeklyBites = () => {
+const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
 
   const [activeTab, setActiveTab] = useState("blogs")
   const {healthNews,blogs,videoContents} = usePostServiceContext()
@@ -67,7 +67,7 @@ const WeeklyBites = () => {
     <div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="card-title">Weekly Bites</h3>
+          {!hideTitle && <h3 className="card-title">Weekly Bites</h3>}
           <TabsList className="bg-transparent rounded-md p-1">
             <Link
             href="/learning-development"

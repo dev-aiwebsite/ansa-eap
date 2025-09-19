@@ -1,61 +1,64 @@
 "use client";
-import { useEffect, useState } from "react";
+import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { getPublicEvents, PublicEvent } from "@/serverActions/crudPublicEvents";
+import { useEffect, useState } from "react";
 import ImageWithFallback from "../ui/imageWithFallback";
-import { Ellipsis } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // This replaces PublicEventsList with client-side fetching
-export default function PublicEventsList() {
+export default function PublicEventsList({count = 2,className}:{count?:number, className?:string}) {
   const [events, setEvents] = useState<PublicEvent[] | null>(null);
 
   
   useEffect(() => {
     getPublicEvents({
-      limit: 2,
+      limit: count,
       orderBy: 'date',
       order: 'DESC'
     }).then((res) => setEvents(res.data || []));
-  }, []);
+  }, [count]);
 
   if (!events) return <PublicEventsSkeleton />;
 
   return (
     <div className="space-y-2">
       {events.map((event) => (
-        <PublicEventCard key={event.id} event={event} />
+        <PublicEventCard className={className} key={event.id} event={event} />
       ))}
     </div>
   );
 }
 
-function PublicEventCard({ event }: { event: PublicEvent }) {
-    const dateFormatter = new Intl.DateTimeFormat('en-AU', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  
-});
+function PublicEventCard({ event, className }: { event: PublicEvent, className?:string }) {
   return (
     <a
       target="_blank"
       rel="noopener noreferrer"
       href={event.link || "#"}
-      className="flex items-center justify-between p-4 border rounded-xl space-x-4"
+      className={cn("flex items-center justify-between p-4 border rounded-xl space-x-4", className)}
     >
       <ImageWithFallback
-        iconSize={30}
-        className="object-cover w-10 h-10 rounded-full bg-gray-200"
+        iconSize={40}
+        className="object-cover w-12 h-12 rounded bg-gray-200"
         width={40}
         height={40}
         alt={event.title}
         src={event.image || ""}
       />
       <div className="flex-1">
-        <p className="font-medium text-muted-foreground text-sm">{event.title}</p>
-        <p className="text-xs text-muted-foreground">{dateFormatter.format(event.date)}</p>
-        <p className="text-xs text-muted-foreground">{event.time} @ {event.location}</p>
+        <p className="!text-sm font-medium muted-text">{event.title}</p>
+        <p className="muted-text">{truncateText(htmlToPlainText(event.description), 100)}</p>
       </div>
-      <Ellipsis size={18} className="text-muted-foreground" />
+      <div className="tracking-wider text-center font-bold">
+          <p>{event.date.toLocaleDateString("en-US", {
+        month: "short",
+      })}</p>
+      <p className="text-xs">
+        {event.date.toLocaleDateString("en-US", {
+        day: "numeric",
+      })}
+      </p>
+      </div>
     </a>
   );
 }
@@ -64,7 +67,7 @@ function PublicEventCard({ event }: { event: PublicEvent }) {
 function PublicEventsSkeleton() {
   return (
     <div className="space-y-2">
-      {[...Array(2)].map((_, i) => (
+      {[...Array(1)].map((_, i) => (
         <div
           key={i}
           className="animate-pulse flex items-center justify-between p-4 border rounded-xl space-x-4"

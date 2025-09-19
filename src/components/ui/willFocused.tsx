@@ -60,7 +60,7 @@ const WillFocused = ({ children, className, focusedClassName}: WillFocusedProps)
   return (
     <div
       ref={ref}
-      className={cn("will-focused card h-fit w-full text-white bg-primary transition-all", className, isFocused && "focused", isFocused && focusedClassName)}
+      className={cn("will-focused h-fit w-full transition-all", className, isFocused && "focused", isFocused && focusedClassName)}
     >
       {children({ isFocused, focusOnChange })}
     </div>

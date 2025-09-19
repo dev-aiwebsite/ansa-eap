@@ -54,7 +54,7 @@ const AppointmentList = () => {
   }
 
   if (!myAppointments || myAppointments.entry.length === 0) {
-    return <p className="text-sm text-muted-foreground">No upcoming appointments.</p>;
+    return <p className="muted-text">No upcoming appointments.</p>;
   }
 
   return (
@@ -66,8 +66,8 @@ const AppointmentList = () => {
           href="#"
         >
           <div className="flex-1">
-            <p className="font-medium text-muted-foreground text-sm">Consultation</p>
-            <p className="text-xs text-muted-foreground">
+            <p className="">Consultation</p>
+            <p className="muted-text">
               {dateFormatter.format(new Date(i.resource.start))}
             </p>
           </div>

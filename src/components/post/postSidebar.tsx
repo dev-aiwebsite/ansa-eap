@@ -43,7 +43,7 @@ console.log(currentCategory, 'currentCategory')
           </div>
           <div>
             <h4 className="card-title mb-2">Categories</h4>
-            <ul className="font-medium text-muted-foreground text-sm">
+            <ul className="font-medium muted-text">
               {categories.map((i) => (
                 <li key={i.id} className="capitalize">
                   <Link
@@ -91,10 +91,10 @@ export function PostItem({ item, className, disableLink = false }: {disableLink?
         />
       </div>
       <div className="flex-1">
-        <p className="font-medium text-muted-foreground text-[0.875em]">
+        <p className="font-medium muted-text">
           {item.title}
         </p>
-        <p className="capitalize text-muted-foreground text-[0.75em]">
+        <p className="capitalize muted-text">
           {categories.find((i) => i.id == item.category)?.label}
         </p>
       </div>
@@ -118,10 +118,10 @@ export function PostItem({ item, className, disableLink = false }: {disableLink?
         />
       </div>
       <div className="flex-1">
-        <p className="font-medium text-muted-foreground text-[0.875em]">
+        <p className="font-medium muted-text">
           {item.title}
         </p>
-        <p className="capitalize text-muted-foreground text-[0.75em]">
+        <p className="capitalize muted-text">
           {categories.find((i) => i.id == item.category)?.label}
         </p>
       </div>
