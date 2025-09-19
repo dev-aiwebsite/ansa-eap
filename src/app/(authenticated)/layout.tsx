@@ -38,7 +38,7 @@ export default async function Layout({
             </div>
             <div className="flex-1">
               <AppHeader />
-              <div className="h-screen-header overflow-auto max-sm:p-4">{children}</div>
+              <div className="h-screen-header overflow-auto max-sm:p-4 max-sm:pt-0">{children}</div>
             </div>
           </main>
       </PostServiceProvider>

@@ -412,6 +412,7 @@ html {
 @media(max-width: 780px){
   :root {
   --sidebar-w: 0px;
+  --header-h: 60px;
 }
 
 .w-full-sidebar {

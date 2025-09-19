@@ -8,7 +8,7 @@ type PostSingle = {
 };
 
 const PostSingle = ({ data }: PostSingle) => {
-  return (
+  return (<>
     <div className="card flex-1 overflow-hidden">
       <div className="rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
         {data ? (
@@ -71,6 +71,7 @@ const PostSingle = ({ data }: PostSingle) => {
         )}
       </div>
     </div>
+  </>
   );
 };
 
