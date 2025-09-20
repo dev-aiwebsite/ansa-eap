@@ -12,7 +12,6 @@ import {
   Practitioner,
   createPractitioner,
   updatePractitioner,
-  getPractitionerById,
 } from "@/serverActions/crudPractitioners";
 
 import MultiSelect from "../multiSelect";
@@ -49,19 +48,19 @@ function optionsToStrings(options: Option[] | null | undefined): string[] {
 }
 
 type FormPractitionerProps = {
-  practitionerId?: string;
+  practitioner?: Practitioner; // ✅ pass data directly
   onSubmitSuccess?: (practitioner: Practitioner) => void;
   hideSubmitButton?: boolean;
   submitForm?: (submitFn: () => void) => void;
 };
 
 export default function FormPractitioner({
-  practitionerId,
+  practitioner,
   onSubmitSuccess,
   hideSubmitButton = false,
   submitForm,
 }: FormPractitionerProps) {
-  const [loading, setLoading] = useState<boolean>(!!practitionerId);
+  const [loading, setLoading] = useState<boolean>(!!practitioner);
 
   const {
     register,
@@ -96,31 +95,21 @@ export default function FormPractitioner({
 
   const profileImg = watch("profile_img");
 
-  // Load practitioner for edit
+  // ✅ Prefill form when practitioner is passed
   useEffect(() => {
-    if (!practitionerId) return;
-    (async () => {
-      try {
-        setLoading(true);
-        const result = await getPractitionerById(practitionerId);
-        if (result.success && result.data) {
-       reset({
-        ...result.data,
-        expertise: stringsToOptions(result.data.expertise, EXPERTISE_OPTIONS) as unknown as string[],
-        languages: stringsToOptions(result.data.languages, LANGUAGE_OPTIONS) as unknown as string[],
-        modalities: stringsToOptions(result.data.modalities, MODALITY_OPTIONS) as unknown as string[],
-        patient_focus: stringsToOptions(result.data.patient_focus, PATIENT_FOCUS_OPTIONS) as unknown as string[],
-        other_services: stringsToOptions(result.data.other_services, OTHER_SERVICES_OPTIONS) as unknown as string[],
+    if (practitioner) {
+      setLoading(true);
+      reset({
+        ...practitioner,
+        expertise: stringsToOptions(practitioner.expertise, EXPERTISE_OPTIONS) as unknown as string[],
+        languages: stringsToOptions(practitioner.languages, LANGUAGE_OPTIONS) as unknown as string[],
+        modalities: stringsToOptions(practitioner.modalities, MODALITY_OPTIONS) as unknown as string[],
+        patient_focus: stringsToOptions(practitioner.patient_focus, PATIENT_FOCUS_OPTIONS) as unknown as string[],
+        other_services: stringsToOptions(practitioner.other_services, OTHER_SERVICES_OPTIONS) as unknown as string[],
       });
-
-        }
-      } catch (error) {
-        console.error("Failed to load practitioner:", error);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [practitionerId, reset]);
+      setLoading(false);
+    }
+  }, [practitioner, reset]);
 
   const onSubmit = async (data: Practitioner) => {
     const formatted = {
@@ -131,34 +120,31 @@ export default function FormPractitioner({
       patient_focus: optionsToStrings(data.patient_focus as unknown as Option[]),
       other_services: optionsToStrings(data.other_services as unknown as Option[]),
     };
-    
 
     try {
       let result;
-      if (practitionerId) {
-        result = await updatePractitioner(practitionerId, formatted);
+      if (practitioner?.id) {
+        result = await updatePractitioner(practitioner.id, formatted);
       } else {
         result = await createPractitioner(formatted);
       }
 
       if (result.success && result.data) {
         onSubmitSuccess?.(result.data);
-        if(practitionerId){
+
+        if (practitioner?.id) {
           reset({
-          ...result.data,
-          expertise: stringsToOptions(result.data.expertise, EXPERTISE_OPTIONS) as unknown as string[],
-          languages: stringsToOptions(result.data.languages, LANGUAGE_OPTIONS) as unknown as string[],
-          modalities: stringsToOptions(result.data.modalities, MODALITY_OPTIONS) as unknown as string[],
-          patient_focus: stringsToOptions(result.data.patient_focus, PATIENT_FOCUS_OPTIONS) as unknown as string[],
-          other_services: stringsToOptions(result.data.other_services, OTHER_SERVICES_OPTIONS) as unknown as string[],
-        });
-
-
+            ...result.data,
+            expertise: stringsToOptions(result.data.expertise, EXPERTISE_OPTIONS) as unknown as string[],
+            languages: stringsToOptions(result.data.languages, LANGUAGE_OPTIONS) as unknown as string[],
+            modalities: stringsToOptions(result.data.modalities, MODALITY_OPTIONS) as unknown as string[],
+            patient_focus: stringsToOptions(result.data.patient_focus, PATIENT_FOCUS_OPTIONS) as unknown as string[],
+            other_services: stringsToOptions(result.data.other_services, OTHER_SERVICES_OPTIONS) as unknown as string[],
+          });
         } else {
-          reset()
+          reset();
         }
       }
-      console.log(result);
     } catch (error) {
       console.error(error);
     }
@@ -178,7 +164,6 @@ export default function FormPractitioner({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
       {/* Profile Image */}
-
       <div className="form-item flex flex-col items-center gap-3">
         {profileImg ? (
           <Image
@@ -203,183 +188,163 @@ export default function FormPractitioner({
         />
       </div>
 
+      {/* Personal Details */}
       <FieldGroup label="Personal Details">
         <div className="space-y-8">
-          <div className="flex flex-row w-full">
-          <Input placeholder="Title" {...register("title")} />
-          <Input
-            placeholder="First name"
-            {...register("first_name", { required: true })}
-          />
-          <Input
-            placeholder="Last name"
-            {...register("last_name", { required: true })}
-          />
-          </div>
+          <div className="flex flex-row w-full gap-2">
+            <Input placeholder="Title" {...register("title")} />
             <Input
+              placeholder="First name"
+              {...register("first_name", { required: true })}
+            />
+            <Input
+              placeholder="Last name"
+              {...register("last_name", { required: true })}
+            />
+          </div>
+          <Input
             placeholder="Email"
             {...register("email", { required: true })}
           />
         </div>
       </FieldGroup>
+
+      {/* Qualifications & Credentials */}
       <FieldGroup label="Qualifications & Credentials">
-          <div className="space-y-8">
-              <Input placeholder="Profession" {...register("profession")} />
-              <Textarea placeholder="Professional Description" {...register("description")} />
-          </div>
+        <div className="space-y-8">
+          <Input placeholder="Profession" {...register("profession")} />
+          <Textarea placeholder="Professional Description" {...register("description")} />
+        </div>
 
-      <div className="space-y-2">
-        <label className="form-item-label">
-          Identifications
-        </label>
-        <Controller
-          control={control}
-          name="identifications"
-          render={({ field }) => (
-            <FormDynamicFields
-              addBtn={{
-                text: "ADD IDENTIFICATION",
-                className: "text-[11px] font-[600] text-primary tracking-wider mt-2",
-              }}
-              formControl={
-                <KeyValueInput options={IDENTIFICATION_OPTIONS} />
-              }
-              onChange={(v) => {
-                console.log(v);
-                return field.onChange;
-              }}
-              
-              initialValues={field.value}
-            />
-          )}
-        />
-      </div>
-      <div className="space-y-2">
-        <label className="form-item-label">
-          Professional Registration Number
-        </label>
-        <Controller
-          control={control}
-          name="registrations"
-          render={({ field }) => (
-            <FormDynamicFields
-              addBtn={{
-                text: "ADD REGISTRATION",
-                className: "text-[11px] font-[600] text-primary tracking-wider mt-2",
-              }}
-              formControl={
-                <KeyValueInput options={PROFESSIONAL_REGISTRATION_OPTIONS} />
-              }
-              onChange={(v) => {
-                console.log(v);
-                return field.onChange;
-              }}
-              
-              initialValues={field.value}
-            />
-          )}
-        />
-      </div>
-      </FieldGroup>
-     
-    
+        <div className="space-y-2">
+          <label className="form-item-label">Identifications</label>
+          <Controller
+            control={control}
+            name="identifications"
+            render={({ field }) => (
+              <FormDynamicFields
+                addBtn={{
+                  text: "ADD IDENTIFICATION",
+                  className: "text-[11px] font-[600] text-primary tracking-wider mt-2",
+                }}
+                formControl={<KeyValueInput options={IDENTIFICATION_OPTIONS} />}
+                onChange={field.onChange}
+                initialValues={field.value}
+              />
+            )}
+          />
+        </div>
 
-      
-
-      {/* Expertise */}
-      <FieldGroup 
-      label="EXPERTISE & LANGUAGE">
-      <div className="space-y-2">
-        {/* <label className="form-item-label">Expertise</label> */}
-        <Controller
-          name="expertise"
-          control={control}
-          render={({ field }) => (
-            <MultiSelect
-              placeholder="Expertise"
-              options={EXPERTISE_OPTIONS}
-              value={(field.value as unknown as Option[]) || []} // convert string[] → Option[]
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </div>
-
-      {/* Languages */}
-      <div className="space-y-2">
-        {/* <label className="form-item-label">Languages</label> */}
-        <Controller
-          control={control}
-          name="languages"
-          render={({ field }) => (
-            <MultiSelect
-              placeholder="Select languages"
-              options={LANGUAGE_OPTIONS}
-              value={(field.value as unknown as Option[]) || []}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </div>
-
+        <div className="space-y-2">
+          <label className="form-item-label">Professional Registration Number</label>
+          <Controller
+            control={control}
+            name="registrations"
+            render={({ field }) => (
+              <FormDynamicFields
+                addBtn={{
+                  text: "ADD REGISTRATION",
+                  className: "text-[11px] font-[600] text-primary tracking-wider mt-2",
+                }}
+                formControl={<KeyValueInput options={PROFESSIONAL_REGISTRATION_OPTIONS} />}
+                onChange={field.onChange}
+                initialValues={field.value}
+              />
+            )}
+          />
+        </div>
       </FieldGroup>
 
-     
-<FieldGroup label="Other Clinical Credentials & Preferences">
-    <Input placeholder="Clinic" {...register("clinic")} />
-      <Input placeholder="Location" {...register("location")} />
-      <Input placeholder="Booking Link" {...register("booking_link")} />
-       <div className="space-y-2">
-        <label className="form-item-label">Modalities</label>
-        <Controller
-          control={control}
-          name="modalities"
-          render={({ field }) => (
-            <MultiSelect
-              placeholder="Select modalities"
-              options={MODALITY_OPTIONS}
-              value={(field.value as unknown as Option[]) || []}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </div>
-       <div className="space-y-2">
-        <label className="form-item-label">Patient Focus</label>
-        <Controller
-          control={control}
-          name="patient_focus"
-          render={({ field }) => (
-            <MultiSelect
-              placeholder="Select from list"
-              options={PATIENT_FOCUS_OPTIONS}
-              value={(field.value as unknown as Option[]) || []}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </div>
-       <div className="space-y-2">
-        <label className="form-item-label">Other Services</label>
-        <Controller
-          control={control}
-          name="other_services"
-          render={({ field }) => (
-            <MultiSelect
-              placeholder="Select from list"
-              options={OTHER_SERVICES_OPTIONS}
-              value={(field.value as unknown as Option[]) || []}
-              onChange={field.onChange}
-            />
-          )}
-        />
-      </div>
-</FieldGroup>
+      {/* Expertise & Languages */}
+      <FieldGroup label="EXPERTISE & LANGUAGE">
+        <div className="space-y-2">
+          <Controller
+            name="expertise"
+            control={control}
+            render={({ field }) => (
+              <MultiSelect
+                placeholder="Expertise"
+                options={EXPERTISE_OPTIONS}
+                value={(field.value as unknown as Option[]) || []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+        <div className="space-y-2">
+          <Controller
+            control={control}
+            name="languages"
+            render={({ field }) => (
+              <MultiSelect
+                placeholder="Select languages"
+                options={LANGUAGE_OPTIONS}
+                value={(field.value as unknown as Option[]) || []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+      </FieldGroup>
 
+      {/* Other Clinical Credentials */}
+      <FieldGroup label="Other Clinical Credentials & Preferences">
+        <Input placeholder="Clinic" {...register("clinic")} />
+        <Input placeholder="Location" {...register("location")} />
+        <Input placeholder="Booking Link" {...register("booking_link")} />
+
+        <div className="space-y-2">
+          <label className="form-item-label">Modalities</label>
+          <Controller
+            control={control}
+            name="modalities"
+            render={({ field }) => (
+              <MultiSelect
+                placeholder="Select modalities"
+                options={MODALITY_OPTIONS}
+                value={(field.value as unknown as Option[]) || []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="form-item-label">Patient Focus</label>
+          <Controller
+            control={control}
+            name="patient_focus"
+            render={({ field }) => (
+              <MultiSelect
+                placeholder="Select from list"
+                options={PATIENT_FOCUS_OPTIONS}
+                value={(field.value as unknown as Option[]) || []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label className="form-item-label">Other Services</label>
+          <Controller
+            control={control}
+            name="other_services"
+            render={({ field }) => (
+              <MultiSelect
+                placeholder="Select from list"
+                options={OTHER_SERVICES_OPTIONS}
+                value={(field.value as unknown as Option[]) || []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+      </FieldGroup>
 
       {!hideSubmitButton && (
         <Button className="float-right" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : practitionerId ? "Update" : "Create"}
+          {isSubmitting ? "Saving..." : practitioner?.id ? "Update" : "Create"}
         </Button>
       )}
     </form>

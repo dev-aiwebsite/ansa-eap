@@ -3,10 +3,11 @@
 import { Company } from "@/serverActions/crudCompanies";
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
-import { CopyButton } from "../ui/copyButton";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
+import { CopyButton } from "../../ui/copyButton";
+import DeleteItemButton from "./deleteCompanyBtn";
 
-export const companyColumns: ColumnDef<Company>[] = [
+export const CompanyColumns: ColumnDef<Company>[] = [
   {
     accessorKey: "id",
     header: "Company Code",
@@ -63,9 +64,12 @@ export const companyColumns: ColumnDef<Company>[] = [
     cell: ({ row }) => {
       const company = row.original;
       return (
+        <div className="space-x-2">
         <Button href={`/admin/companies/${company.id}`} size="sm" variant="outline">
           Edit
         </Button>
+           <DeleteItemButton itemLabel="company" itemId={company.id} itemName={company.name} />
+      </div>
       );
     },
   },

@@ -14,14 +14,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 
 interface DataTableProps<TData, TValue> {
+  className?:string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function PostDataTable<TData, TValue>({
+export function DataTable<TData, TValue>({
+  className,
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -32,7 +35,7 @@ export function PostDataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border">
+    <div className={cn("rounded-md border", className)}>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -70,7 +73,7 @@ export function PostDataTable<TData, TValue>({
                 colSpan={columns.length}
                 className="h-24 text-center"
               >
-                No posts found
+                No entries found
               </TableCell>
             </TableRow>
           )}
