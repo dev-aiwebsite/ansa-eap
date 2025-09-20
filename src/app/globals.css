@@ -474,3 +474,12 @@ button[role="radio"] {
   padding: 10px;
 }
 
+
+td {
+    max-width: 300px;
+    overflow: auto;
+}
+
+tbody td:hover {
+    background: #5551;
+}
