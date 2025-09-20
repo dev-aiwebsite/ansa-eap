@@ -27,7 +27,7 @@ const ContentLibraryPage = () => {
   const { healthNews, yogas, videoContents, blogs } = usePostServiceContext();
 
   // Map context data into the sections object shape
-  const posts: Record<PostCategory, Partial<Post>[]> = {
+  const posts: Record<PostCategory, Post[]> = {
     healthNews: healthNews ?? [],
     yoga: yogas ?? [],
     video: videoContents ?? [],
@@ -115,7 +115,7 @@ function SectionEl({
 }: {
   id: string;
   title: string;
-  data: Partial<Post>[];
+  data: Post[];
   actionText: ActionText;
 }) {
   return (
