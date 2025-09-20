@@ -4,12 +4,11 @@ import Container from "@/components/ui/container";
 import { getCompanyById } from "@/serverActions/crudCompanies";
 import { ArrowLeft } from "lucide-react";
 
-export default async function Page({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+interface DynamicPageProps {
+  params: Promise<{ id: string }>;
+}
+export default async function Page({params}:DynamicPageProps) {
+  const { id } = await params;
 
   // fetch data server-side
   const company = await getCompanyById(id);
