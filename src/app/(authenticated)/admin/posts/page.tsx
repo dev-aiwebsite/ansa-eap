@@ -11,7 +11,7 @@ const Page = () => {
        <div className="card">
               <div className="flex flex-row">
                 <h2 className="mb-5">Post </h2>
-                <Button className="ml-auto">
+                <Button href="/admin/posts/new" className="ml-auto">
                   <PlusCircle /> Add Post
                 </Button>
               </div>

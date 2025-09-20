@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from 'next/font/google'
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "sonner";
 
 
 const montserrat = Montserrat({
@@ -26,6 +27,7 @@ export default function RootLayout({
         className={`${montserrat.variable} ${montserrat.variable} antialiased`}
       >
         <TooltipProvider>
+          <Toaster position="top-right" />
         {children}
         </TooltipProvider>
       </body>
