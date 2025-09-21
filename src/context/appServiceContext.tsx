@@ -1,5 +1,6 @@
 "use client";
 
+import ChatBubble from "@/components/aiChatBubble";
 import { updateDailyActivity } from "@/serverActions/crudDailyActivities";
 import {
   createDailyCheckIn
@@ -130,6 +131,7 @@ export function AppServiceContextProvider({
         saveDailyCheckIns,
       }}
     >
+      <ChatBubble agentId="NDrzgPn2iB" />
       {children}
     </appServiceContext.Provider>
   );

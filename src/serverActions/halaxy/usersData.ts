@@ -26,9 +26,12 @@ export async function getMyAppointments(userEmail: string) {
     console.log("No patient record found")
   }
 
-  const patientId = patientEntry.resource.id;
+  const patientId = patientEntry?.resource?.id;
   console.log(patientId, "patientId");
 
+  if(!patientId){
+    return null
+  }
   const res = await getUserAppointments(patientId);
   console.log(res, "res");
   return res;

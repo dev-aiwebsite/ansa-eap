@@ -49,9 +49,10 @@ export function LoginForm({
   }
 
   return (
-    <div className="grid grid-cols-2 rounded-3xl overflow-hidden bg-white">
-      <div className="bg-app-blue-600 p-10 items-center justify-center flex">
+    <div className="grid md:grid-cols-2 rounded-3xl overflow-hidden bg-white">
+      <div className="bg-app-blue-600 p-5 md:p-10 items-center justify-center flex">
         <Image 
+        className="max-md:w-[120px]"
         src="/assets/images/logo.png"
         width={350}
         height={200}

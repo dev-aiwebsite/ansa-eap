@@ -1,7 +1,6 @@
 "use client";
 
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { getFeaturedContents } from "@/serverActions/crudFeaturedContent";
 import { Post } from "@/serverActions/crudPosts";
@@ -19,6 +18,7 @@ const FeaturedWidget = ({ className }: { className?: string }) => {
     async function fetchFeatured() {
       
       const res = await getFeaturedContents();
+      
       if (res.data && res.data.length > 0) {
         // match posts by ids array
         const ids = res.data[0].ids;
@@ -37,7 +37,7 @@ const FeaturedWidget = ({ className }: { className?: string }) => {
 
   const featuredPost = featuredPosts ? featuredPosts[0] : null
   return (
-    <div className="relative">
+    <div className="relative h-full">
     <Crown size={30} className="z-10 bg-white/80 rounded-full p-1 right-2 top-2 absolute text-yellow-500 fill-yellow-500" />
     {featuredPost ?
      <div className={cn("text-white rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
@@ -52,12 +52,6 @@ const FeaturedWidget = ({ className }: { className?: string }) => {
       
 
       <p className="text-base font-medium">{featuredPost.title}</p>
-
-      <p className="text-body line-clamp-3 text-muted text-xs whitespace-pre-wrap">
-        {featuredPost.description &&
-          truncateText(htmlToPlainText(featuredPost.description), 100)}
-      </p>
-
 
       <div className="flex mt-auto">
         <Button className="ml-auto capitalize bg-transparent !border-white !ring-white text-white" variant="outline" href={featuredPost.slug}>
