@@ -78,7 +78,7 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --header-h: 80px;
   --sidebar-w: 240px;
-  --sidebar-right-w: 500px;
+  --sidebar-right-w: min(400px, 25vw);
   --breadcrumb-h: 40px;
 
   /* ✅ Updated brand primary color */
@@ -482,4 +482,16 @@ td {
 
 tbody td:hover {
     background: #5551;
+}
+
+#chattera_chatbubble_wrapper {
+  visibility: visible;
+}
+body #chattera_chatbubble_wrapper_trigger {
+  aspect-ratio: 1/1;
+  padding-inline: 20px !important;
+  background: #9ba1ff;
+}
+body #chattera_chatbubble_wrapper_trigger:hover {
+  background: #2d32a4;
 }

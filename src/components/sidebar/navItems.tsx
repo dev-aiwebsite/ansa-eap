@@ -1,25 +1,24 @@
 "use client";
 
+import { categories } from "@/app/demo/demoData";
 import {
   IconBookMark,
   IconCalendar,
-  IconChatDots,
   IconDocument,
-  IconGrid,
+  IconGrid
 } from "@/icons";
+import { slugifyName } from "@/lib/helper";
 import { NavItemsType } from "@/types";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
+import { Button } from "../ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { ChevronRight } from "lucide-react";
-import { Button } from "../ui/button";
-import { categories } from "@/app/demo/demoData";
-import { slugifyName } from "@/lib/helper";
 export const navItems: NavItemsType[] = [
   {
     title: "Dasboard",
@@ -35,11 +34,6 @@ export const navItems: NavItemsType[] = [
     title: "Practioners",
     link: "/practioners",
     icon: <IconCalendar width="1.1rem" />,
-  },
-  {
-    title: "Chat",
-    link: "/chat",
-    icon: <IconChatDots width="1.1rem" />,
   },
   {
     title: "Learning & Development",

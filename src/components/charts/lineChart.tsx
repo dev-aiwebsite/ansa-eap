@@ -14,6 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { cn } from "@/lib/utils";
 
 export type TypeChartData = {
   x: {
@@ -26,7 +27,23 @@ export type TypeChartData = {
   };
 };
 
+export type LineChartOptions = {
+    line: {
+      strokeWidth?: number;
+      dot?: {
+        radius?: number;
+        strokeWidth?: number;
+      },
+      activeDot?: {
+        radius?: number;
+        strokeWidth?: number;
+      };
+    }
+  }
+
 type ChartLineLabelProps = {
+  chartOptions?:LineChartOptions;
+  className?:string;
   chartData: TypeChartData;
   yTickCount?: number;
   yDomain?:
@@ -42,9 +59,11 @@ const margin = {
 };
 
 export function ChartLineLabel({
+  chartOptions,
   chartData,
   yTickCount = 6,
   yDomain,
+  className,
 }: ChartLineLabelProps) {
   const xDataKey = chartData.x.label;
   const yDataKey = chartData.y.label;
@@ -62,7 +81,7 @@ export function ChartLineLabel({
   } satisfies ChartConfig;
 
   return (
-    <ChartContainer config={chartConfig} className="h-[200px] aspect-auto">
+    <ChartContainer config={chartConfig} className={cn("h-[200px] aspect-auto", className)}>
       <LineChart accessibilityLayer data={formattedData} margin={margin}>
         <defs>
           <linearGradient id="valueBasedGradient" x1="0" y1="1" x2="0" y2="0">
@@ -85,7 +104,9 @@ export function ChartLineLabel({
           tickLine={false}
           axisLine={false}
           tickMargin={8}
-          tickFormatter={(value) => value.slice(0, 3)}
+          interval={0}
+          tickFormatter={(value) => {
+            return value.slice(0, 3)}}
         />
         <YAxis
           domain={yDomain ?? ["dataMin - 1", "dataMax + 1"]} // auto-pad by default
@@ -104,22 +125,22 @@ export function ChartLineLabel({
           dataKey={yDataKey}
           type="natural"
           stroke="url(#valueBasedGradient)"
-          strokeWidth={5}
+          strokeWidth={chartOptions?.line.strokeWidth || 5}
           dot={(props) => {
             const { key, dataKey, ...rest } = props;
             return (
               <circle
              key={key + dataKey}
             {...rest}
-                r={8}
-                strokeWidth={2}
+                r={chartOptions?.line?.dot?.radius || 8}
+                strokeWidth={chartOptions?.line?.dot?.strokeWidth || 2}
                 stroke="white"
                 fill="var(--color-primary)"
               />
             );
           }}
           activeDot={{
-            r: 10,
+            r: chartOptions?.line?.activeDot?.radius || 10,
             stroke: "white",
             fill: "var(--color-primary)",
           }}

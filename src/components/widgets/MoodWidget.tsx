@@ -1,10 +1,16 @@
 "use client";
 import { useState } from "react";
 import Calendar22 from "../calendar-22";
-import { ChartLineLabel, TypeChartData } from "../charts/lineChart";
+import { ChartLineLabel, LineChartOptions, TypeChartData } from "../charts/lineChart";
 import { useAppServiceContext } from "@/context/appServiceContext";
 
-const MoodWidget = () => {
+const MoodWidget = ({
+chartClassName,
+chartOptions,
+}:{
+  chartOptions?: LineChartOptions
+  chartClassName?:string;
+}) => {
   const [dateFilter, setDateFilter] = useState<Date>(new Date()); // default today
   const { dailyCheckIns } = useAppServiceContext();
 
@@ -44,13 +50,14 @@ const MoodWidget = () => {
     loopDate.setDate(loopDate.getDate() + 1);
   }
 
+  
   return (
     <>
-      <div className="flex flex-row flex-nowrap items-center justify-between gap-2 w-full mb-6">
-        <h3 className="card-title">My Mood</h3>
+      <div className="flex flex-row flex-nowrap items-center justify-between gap-2 w-full md:mb-6">
+        <p className="card-title">My Mood</p>
         <Calendar22 value={dateFilter} onSelect={(date) => date && setDateFilter(date)} />
       </div>
-      <ChartLineLabel yDomain={[-1, 15]} chartData={chartData} />
+      <ChartLineLabel chartOptions={chartOptions} className={chartClassName} yDomain={[0, 15]} chartData={chartData} />
     </>
   );
 };

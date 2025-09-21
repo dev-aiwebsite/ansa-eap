@@ -39,7 +39,7 @@ const Dashboard = () => {
             <WeeklyBites />
           </div>
         </div>
-        <Container className="card max-w-sidebar-right">
+        <Container className="card w-sidebar-right max-w-sidebar-right">
           <div className="space-y-10">
             <Calendar className="w-full text-xs calendar" />
 
