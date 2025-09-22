@@ -1,20 +1,39 @@
-import { Session, User } from "next-auth"
-export interface ExtendedUser extends User {
-    // Add additional properties here
+// next-auth.d.ts
+import "next-auth";
+import "next-auth/jwt";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      first_name: string;
+      last_name: string;
+      email: string;
+      profile_img: string;
+      roles: string[];
+      who5Completed: boolean;
+    };
+  }
+
+  interface User {
+    id: string;
     first_name: string;
     last_name: string;
     email: string;
-    img: string;
-    role: string;
-    id: string;
+    profile_img: string;
+    roles: string[];
+    who5Completed: boolean;
   }
-  export interface ExtendedSession extends Session {
-    user_id: string;
-    user_first_name: string;
-    user_last_name: string;
-    user_email: string;
-    user_img: string;
-    user_role: string;
-  }
+}
 
-  
+declare module "next-auth/jwt" {
+  interface JWT {
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile_img: string;
+    roles: string[];
+    who5Completed: boolean;
+  }
+}

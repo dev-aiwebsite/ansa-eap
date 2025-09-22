@@ -1,11 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useForm, Controller } from "react-hook-form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { createWHO5Response } from "@/serverActions/crudWho5";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppServiceContext } from "@/context/appServiceContext";
+import { createWHO5Response } from "@/serverActions/crudWho5";
+import { AuthenticateUser } from "@/serverActions/login_logout";
+import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
 
 type WHO5Form = {
   q1: number;
@@ -35,7 +37,7 @@ const responseScale = [
 export default function WHO5FormComponent() {
   const { currentUser } = useAppServiceContext();
   const CURRENT_USER_ID = currentUser?.id;
-
+  const router = useRouter()
   const {
     handleSubmit,
     control,
@@ -77,8 +79,17 @@ export default function WHO5FormComponent() {
     console.log("Raw score:", total, "Percentage score:", total * 4);
 
     reset();
+    const credentials = {
+      useremail: currentUser.email,userpass: currentUser.password
+    }
+    
+    const authRes = await AuthenticateUser(credentials)
+    router.push(authRes?.redirectUrl)
+     
   };
 
+
+  
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

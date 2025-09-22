@@ -2,28 +2,30 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 // import bcrypt from 'bcrypt';
 import { authConfig } from "./authConfig";
-import { getUserByEmail } from "./serverActions/crudUsers";
-import { ExtendedSession, ExtendedUser } from "./next-auth";
+import { getUserByEmail, User } from "./serverActions/crudUsers";
+import { getWHO5ResponsesByUser } from "./serverActions/crudWho5";
 
-const login = async (credentials: { useremail: string; userpass: string; viaadmin?: boolean } ) => {
+const login = async (credentials: { useremail: string; userpass: string; viaadmin?: boolean }): Promise<User & {who5Completed: boolean} | null> => {
   try {
-    const {data:user} = await getUserByEmail(credentials?.useremail)
+    const { data: user } = await getUserByEmail(credentials?.useremail);
+    if (!user) return null;
 
-    if (!user) throw new Error('wrong credentials')
-    const viaAdmin = credentials?.viaadmin || false
-  
+    const viaAdmin = credentials?.viaadmin || false;
     if (!viaAdmin) {
-      // const isPasswordCorrect = await bcrypt.compare( credentials.userpass as string, user.password as string);
-      const isPasswordCorrect = credentials.userpass === user.password
-      if (!isPasswordCorrect) throw new Error('wrong credentials');
+      const isPasswordCorrect = credentials.userpass === user.password;
+      if (!isPasswordCorrect) return null;
     }
 
-    return user
+        // Add missing field
+    const res = await getWHO5ResponsesByUser(user.id);
+    const who5Completed = res.success && res.data && res.data.length > 0 || false;
 
+    return { ...user, who5Completed };
   } catch {
-    throw new Error('wrong credentials')
+    return null;
   }
-}
+};
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
@@ -36,10 +38,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
 
         const user = await login(credentials as {
-      useremail: string;
-      userpass: string;
-      viaadmin?: boolean;
-    })
+          useremail: string;
+          userpass: string;
+          viaadmin?: boolean;
+        })
 
         if (user) {
           return user
@@ -51,32 +53,44 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ], callbacks: {
     async jwt({ token, user }) {
       if (user) {
+      
+        token.first_name = user.first_name;
+        token.last_name = user.last_name;
+        token.email = user.email;
+        token.profile_img = user.profile_img ?? null;
 
-        const extendedUser = user as ExtendedUser;
-        
-        token.first_name = extendedUser.first_name
-        token.last_name = extendedUser.last_name
-        token.email = extendedUser.email;
-        token.img = extendedUser.img;
-        token.user_id = extendedUser.id;
-        token.role = extendedUser.role;
-        // token.profileImage = user.profileImage;
-        // token.roles = user.roles;
+        // Serialize roles array as plain array
+        token.roles = Array.isArray(user.roles)
+          ? [...user.roles]
+          : [];
+
+        token.user_id = user.id;
+
+        // Default to false until checked
+        token.who5Completed = false;
       }
+
+      // Always refresh WHO5 flag if user_id exists
+      if (token.user_id) {
+        const res = await getWHO5ResponsesByUser(token.user_id as string);
+        token.who5Completed = res.success && res.data && res.data.length > 0 || false;
+      }
+
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        const extendedSession = session as unknown as ExtendedSession;
-        extendedSession.user_id = token.user_id as string;
-        extendedSession.user_first_name = token.first_name as string;
-        extendedSession.user_last_name = token.last_name as string;
-        extendedSession.user_email = token.email as string;
-        extendedSession.user_img = token.img as string;
-        extendedSession.user_role = token.role as string;
+       
+        session.user.id = token.user_id
+        session.user.first_name = token.first_name
+        session.user.last_name = token.last_name
+        session.user.email = token.email
+        session.user.profile_img = token.profile_img
+        session.user.roles = token.roles
+        session.user.who5Completed = token.who5Completed
       }
       return session;
     }
-    
+
   }
 })

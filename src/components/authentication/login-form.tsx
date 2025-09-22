@@ -31,7 +31,7 @@ export function LoginForm({
     }
     
     try {
-        const res = await AuthenticateUser(credentials)
+        const res = await AuthenticateUser(credentials, false)
         console.log(res, 'AuthenticateUser res')
         if(!res){
           setError("Wrong credentials")
