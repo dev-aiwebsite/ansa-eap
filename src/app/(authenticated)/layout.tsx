@@ -3,19 +3,18 @@ import AppHeader from "@/components/header/appHeader";
 import AppSidebar from "@/components/sidebar/appSidebar";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
-import { ExtendedSession } from "@/next-auth";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
 import { getDailyCheckIns } from "@/serverActions/crudDailyCheckIns";
 import { getUserById } from "@/serverActions/crudUsers";
-
 export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = (await auth()) as ExtendedSession;
-  const userId = session.user_id;
-  if (!userId) return;
+  
+  const session = await auth();
+  if(!session) return
+  const userId = session.user.id;
 
   const [currentUser, dailyActivities, dailyCheckIns] = await Promise.all([
     (await getUserById(userId)).data,
