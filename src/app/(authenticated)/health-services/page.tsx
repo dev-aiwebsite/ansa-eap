@@ -1,74 +1,74 @@
-import { alliedHealthData, mentalHealthData } from "@/app/demo/demoData";
+import PostCardSkeleton from "@/components/post/postCardSkeleton";
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
-import Image from "next/image";
-const HealthServices = () => {
+import Container from "@/components/ui/container";
+import ImageWithFallback from "@/components/ui/imageWithFallback";
+import { htmlToPlainText, truncateText } from "@/lib/helper";
+import { getServices, Service } from "@/serverActions/crudServices";
+import { Suspense } from "react";
+
+
+
+export default function HealthServicesWrapper() {
   return (
-    <div className="grid">
-      <div>
-        <h3 className="my-5 text-xl text-muted-foreground">Mental Health</h3>
-        <div className="overflow-auto max-w-full flex flex-row flex-nowrap gap-5 overflow-auto w-full-sidebar">
-        {mentalHealthData.map((item,index) => (
-            <Card key={item.title + index} item={item} />
-        ))}
+    <Suspense fallback={<SkeletonGrid />}>
+      {/* Suspense waits for HealthServices to resolve */}
+      <HealthServices />
+    </Suspense>
+  );
+}
 
+
+const HealthServices = async () => {
+  const { data } = await getServices();
+
+  return (
+    <Container>
+      <h3 className="my-5 text-xl text-muted-foreground">Services</h3>
+
+      {data && (
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-6 w-full-sidebar">
+          {data.map((item) => (
+            <Card key={item.id} item={item} />
+          ))}
         </div>
-      </div>
-
-      <div>
-        <h3 className="my-5 text-xl text-muted-foreground">Allied Health</h3>
-        <div className="overflow-auto max-w-full flex flex-row flex-nowrap gap-5 overflow-auto w-full-sidebar">
-        {alliedHealthData.map((item,index) => (
-            <Card key={item.title + index} item={item} />
-        ))}
-
-        </div>
-      </div>
-      <div></div>
-    </div>
+      )}
+    </Container>
   );
 };
 
-export default HealthServices;
 
-function Card({item}:{item:{
-    title: string;
-    image: string;
-    duration: string;
-    list: string[];
-}}){
 
-      return (
-        <div className="card rounded-lg p-4 w-1/4 min-w-[350px] flex flex-col gap-5 text-sm">
-          <Image
-            className="rounded-sm w-full h-[140px] object-cover"
-            width={200}
-            height={100}
-            src={item.image}
-            alt={item.title}
-          />
-          <p className="text-base font-medium">{item.title}</p>
+function Card({ item }: { item: Service }) {
+  return (
+    <div className="card rounded-lg p-4 min-w-[200px] flex flex-col gap-5 text-sm border">
+      <ImageWithFallback
+        className="rounded-sm w-full h-[140px] object-cover"
+        width={200}
+        height={100}
+        src={item.image_url}
+        alt={item.service_name}
+      />
+      <p className="text-base font-medium">{item.service_name}</p>
 
-          <ul className="list-disc px-[inherit] text-muted-foreground text-xs">
-            {
-            item.list.map((i,index) => {
-                return <li key={index}>{i}</li>
-            })
-            }
-          </ul>
-          <div className="flex">
-            <div className="flex flex-row items-center gap-2">
-              <Clock
-                width="1em"
-                className="text-app-purple-300 text-base"
-              />
-              <span className="text-muted-foreground">1 - 2 hours</span>
-            </div>
-            <Button className="ml-auto" variant="outline">
-              Book Now
-            </Button>
-          </div>
-        </div>
-    );
+      <p className="px-[inherit] text-muted-foreground text-xs">
+        {truncateText(htmlToPlainText(item.description), 150)}
+      </p>
+      <div className="flex">
+        <Button target="_blank" href={item.booking_link} className="ml-auto" variant="outline">
+          Book Now
+        </Button>
+      </div>
+    </div>
+  );
+}
 
+// 🔹 Skeleton Loader for the grid
+function SkeletonGrid() {
+  return (
+    <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-6 w-full-sidebar">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <PostCardSkeleton key={i} />
+      ))}
+    </div>
+  );
 }

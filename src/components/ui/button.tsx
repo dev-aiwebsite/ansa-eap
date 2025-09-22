@@ -1,9 +1,9 @@
 "use client"
 
-import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
 import { useRouter } from "next/navigation"
+import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Loader2 } from "lucide-react"
@@ -48,12 +48,15 @@ function Button({
   asChild = false,
   children,
   href,
+  target,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
     isLoading?: boolean
     href?: string
+    target?:"_self" | "_blank" | "_parent" | "_top"
+
   }) {
   const router = useRouter()
   const Comp = asChild ? Slot : "button"
@@ -61,7 +64,12 @@ function Button({
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (props.onClick) props.onClick(e)
     if (!e.defaultPrevented && href) {
+       if (target === "_blank") {
+      // open in new tab
+      window.open(href, "_blank", "noopener,noreferrer")
+    } else {
       router.push(href)
+    }
     }
   }
 
