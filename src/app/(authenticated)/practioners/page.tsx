@@ -5,7 +5,6 @@ import { useAppServiceContext } from "@/context/appServiceContext";
 import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
 import { getPractitioners, Practitioner } from "@/serverActions/crudPractitioners";
 import { CalendarPlus, Plus } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 
@@ -53,16 +52,13 @@ function PractitionerCard({
         <div className="flex">
           <div className="flex flex-row items-center gap-2">
             <Button
+            href={`/practioners/${item.id}~${slugifyName(professionalName)}`}
               variant="outline"
               className="ring-muted border-muted rounded-full !py-5 text-muted-foreground hover:border-primary"
             >
               <CalendarPlus />
               Book Now
             </Button>
-            <Button
-              variant="ghost"
-              className="rounded-full !py-5 underline decoration-muted"
-            ><Link href={`/practioners/${item.id}~${slugifyName(professionalName)}`}>View Profile</Link></Button>
           </div>
         </div>
       </div>
