@@ -4,13 +4,13 @@ import { useState } from "react";
 import HalaxyBooking from "./ui/halaxybooking";
 import { ConsentForm } from "./forms/consentForm";
 
-const BookingWidget = () => {
+const BookingWidget = ({link}:{link:string}) => {
   const [agreed, setAgreed] = useState(true);
 
   return (
     <>
       {agreed ? (
-        <HalaxyBooking />
+        <HalaxyBooking link={link}/>
       ) : (
         <div className="card">
             <h2 className="mb-5">Please read and agree to consent form to proceed with booking</h2>
