@@ -45,9 +45,9 @@ function PublicEventCard({ event, className }: { event: PublicEvent, className?:
         alt={event.title}
         src={event.image || ""}
       />
-      <div className="flex-1">
+      <div className="flex-1 line-clamp-2">
         <p className="!text-sm font-medium muted-text">{event.title}</p>
-        <p className="muted-text">{truncateText(htmlToPlainText(event.description), 100)}</p>
+        <p className="muted-text">{truncateText(htmlToPlainText(event.description), 50)}</p>
       </div>
       <div className="tracking-wider text-center font-bold">
           <p>{event.date.toLocaleDateString("en-US", {
