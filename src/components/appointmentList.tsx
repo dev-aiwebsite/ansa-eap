@@ -5,7 +5,7 @@ import { getMyAppointments } from "@/serverActions/halaxy/usersData";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type Appointment = {
+export type Appointment = {
   resource: {
     id: string;
     start: string;
@@ -13,11 +13,11 @@ type Appointment = {
   };
 };
 
-type AppointmentsResponse = {
+export type AppointmentsResponse = {
   entry: Appointment[];
 };
 
-const AppointmentList = () => {
+const AppointmentList = ({ count }: { count?: number }) => {
   const dateFormatter = new Intl.DateTimeFormat("en-AU", {
     year: "numeric",
     month: "long",
@@ -43,7 +43,7 @@ const AppointmentList = () => {
   if (loading) {
     return (
       <div className="space-y-4">
-        {[...Array(1)].map((_, idx) => (
+        {[...Array(count ?? 1)].map((_, idx) => (
           <div
             key={idx}
             className="rounded-xl p-4 bg-muted animate-pulse h-16"
@@ -57,9 +57,14 @@ const AppointmentList = () => {
     return <p className="muted-text">No upcoming appointments.</p>;
   }
 
+  // 🔹 Apply `count` limit if provided
+  const appointmentsToShow = count
+    ? myAppointments.entry.slice(0, count)
+    : myAppointments.entry;
+
   return (
     <div className="space-y-4">
-      {myAppointments.entry.map((i) => (
+      {appointmentsToShow.map((i) => (
         <Link
           key={i.resource.id}
           className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"

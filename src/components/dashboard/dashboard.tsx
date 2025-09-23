@@ -72,7 +72,7 @@ const Dashboard = () => {
                   See all
                 </Link>
               </div>
-                <AppointmentList/>
+                <AppointmentList count={2}/>
             </div>
           </div>
         </Container>

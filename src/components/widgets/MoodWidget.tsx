@@ -57,7 +57,7 @@ chartOptions,
         <p className="card-title">My Mood</p>
         <Calendar22 value={dateFilter} onSelect={(date) => date && setDateFilter(date)} />
       </div>
-      <ChartLineLabel chartOptions={chartOptions} className={chartClassName} yDomain={[0, 15]} chartData={chartData} />
+      <ChartLineLabel chartOptions={chartOptions} className={chartClassName} yDomain={[-1, 15]} chartData={chartData} />
     </>
   );
 };

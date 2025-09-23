@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { formatDuration } from "@/lib/helper";
+import { formatDuration, truncateText } from "@/lib/helper";
 import { ActionText } from "@/types";
 import { Heart } from "lucide-react";
 import ImageWithFallback from "./ui/imageWithFallback";
@@ -66,23 +66,23 @@ function WeeklyBitesTable ({data}:{data:WeeklyBitesData[]}) {
               </td>
              <td className="align-middle text-start">
                  <div>
-                     <p>{item.title}</p>
+                     <p>{truncateText(item.title,80)}</p>
                      <p className="text-xs text-muted-foreground">{item.author}</p>
                  </div>
              </td>
-             <td className="align-middle w-[100px]">
+             <td className="align-middle w-[80px]">
                  
-                 <span className="capitalize">{item.duration} {item.action}</span>
+                 <span className="text-xs capitalize text-muted-foreground">{item.duration} {item.action}</span>
                  
              </td>
-             <td className="align-middle w-[80px]">
+             <td className="align-middle w-[50px]">
                  <div className="flex flex-row gap-2 items-center">
-                     <Heart className="w-[1em] h-[1em] fill-red-400 text-red-400"/>
-                     <span>{item.likes ?? 0}</span>
+                     <Heart className="w-[1em] h-[1em] fill-red-400/80 text-red-400/80"/>
+                     <span className="text-xs text-muted-foreground ">{item.likes ?? 0}</span>
    
                  </div>
              </td>
-             <td className="align-middle w-[100px]">
+             <td className="align-middle w-[80px]">
                      <Button href={item.link} className="h-fit rounded-lg w-full !px-2 !py-1 text-[1em]" variant="outline">
                          {item.action}
                      </Button>

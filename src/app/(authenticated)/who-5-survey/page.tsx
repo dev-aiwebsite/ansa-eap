@@ -1,6 +1,7 @@
 import WHO5FormComponent from "@/components/forms/formWhoFive";
 
 const Page = () => {
+  
   return (
     <div className="w-[800px] mx-auto p-4">
       <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 mb-6 rounded shadow-md text-center">
