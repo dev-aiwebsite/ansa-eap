@@ -17,7 +17,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer";
 const items = [
   { icon: IconServices, label: "Services", link: "/health-services" },
   { icon: IconPractitioner, label: "Practitioners", link: "/practioners" },
-  { icon: IconCalendar, label: "Appointments", link: "" },
+  { icon: IconCalendar, label: "Appointments", link: "/my-appointments" },
   {
     icon: IconEmergency,
     label: "Emergency",
@@ -25,7 +25,7 @@ const items = [
     textClassName: "text-white",
     link: "/critical-response",
   },
-  { icon: IconPublicSession, label: "Public Session", link: "" },
+  { icon: IconPublicSession, label: "Public Session", link: "/public-events" },
   { icon: IconContents, label: "Contents", link: "/learning-development" },
   { icon: IconAiChat, label: "AI Chat", link: "/chat" },
   { icon: UserCog, label: "Account", link: "/settings/account" },
