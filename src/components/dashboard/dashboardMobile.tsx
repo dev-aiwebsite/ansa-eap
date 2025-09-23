@@ -8,16 +8,26 @@ const DashboardMobile = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <div className="flex flex-row justify-between items-center">
+        <div className="flex flex-row flex-nowrap">
           <p className="card-title">Upcoming Appointment</p>
+          <Link
+            className="ml-auto text-sm text-app-purple-300 font-medium"
+            href="/my-appointments"
+          >
+            See all
+          </Link>
         </div>
-        <AppointmentList />
+        <AppointmentList count={1} />
       </div>
       <div className="space-y-4">
-        <div className="flex flex-row justify-between items-center">
-          <div>
-            <p className="card-title">Public Sessions</p>
-          </div>
+        <div className="flex flex-row flex-nowrap">
+          <p className="card-title">Public Sessions</p>
+          <Link
+            className="ml-auto text-sm text-app-purple-300 font-medium"
+            href="/public-events"
+          >
+            See all
+          </Link>
         </div>
 
         <PublicEventsList count={1} />

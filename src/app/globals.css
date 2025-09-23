@@ -413,6 +413,22 @@ html {
   :root {
   --sidebar-w: 0px;
   --header-h: 60px;
+
+    span.chat-trigger-label {
+    display: none;
+    }
+
+    button#chattera_chatbubble_wrapper_trigger {
+        scale: .7;
+        float: left;
+    }
+
+    body #chattera_chatbubble_wrapper {
+        left: 10px !important;
+        right: auto !important;
+    }
+
+
 }
 
 .w-full-sidebar {
@@ -495,3 +511,5 @@ body #chattera_chatbubble_wrapper_trigger {
 body #chattera_chatbubble_wrapper_trigger:hover {
   background: #2d32a4;
 }
+
+

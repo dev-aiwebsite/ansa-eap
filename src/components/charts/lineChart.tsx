@@ -123,7 +123,7 @@ export function ChartLineLabel({
         <Line
           connectNulls={true}
           dataKey={yDataKey}
-          type="natural"
+          type="monotone"
           stroke="url(#valueBasedGradient)"
           strokeWidth={chartOptions?.line.strokeWidth || 5}
           dot={(props) => {
