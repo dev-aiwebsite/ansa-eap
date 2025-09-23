@@ -53,7 +53,7 @@ const Dashboard = () => {
                 </div>
                 <Link
                   className="text-sm text-app-purple-300 font-medium"
-                  href="#"
+                  href="/public-events"
                 >
                   See all
                 </Link>
@@ -67,7 +67,7 @@ const Dashboard = () => {
                 <p className="card-title">Upcoming Appointment</p>
                 <Link
                   className="text-sm text-app-purple-300 font-medium"
-                  href="#"
+                  href="/my-appointments"
                 >
                   See all
                 </Link>
