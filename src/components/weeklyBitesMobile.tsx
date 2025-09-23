@@ -62,18 +62,13 @@ function WeeklyBitesTable ({data}:{data:WeeklyBitesData[]}) {
     { data.map(item => (
              <tr key={item.id} className="bg-white text-xs rounded-lg border border-muted">
               <td className="w-[80px]">
-                <ImageWithFallback className="max-h-[32px] rounded" width={50} height={32} alt={item.title} src={item.image}/>
+                <ImageWithFallback className="w-full rounded" width={50} height={32} alt={item.title} src={item.image}/>
               </td>
              <td className="align-middle text-start">
                  <div>
-                     <p>{truncateText(item.title,80)}</p>
-                     <p className="text-xs text-muted-foreground">{item.author}</p>
+                     <p className="line-clamp-2">{truncateText(item.title,80)}</p>
+                     <p className="line-clamp-1 text-xs text-muted-foreground">{item.author}</p>
                  </div>
-             </td>
-             <td className="align-middle w-[80px]">
-                 
-                 <span className="text-xs capitalize text-muted-foreground">{item.duration} {item.action}</span>
-                 
              </td>
              <td className="align-middle w-[50px]">
                  <div className="flex flex-row gap-2 items-center">
