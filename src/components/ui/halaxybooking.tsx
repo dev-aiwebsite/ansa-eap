@@ -1,34 +1,9 @@
-"use client";
-import { useEffect } from "react";
-
-type HalaxyMessage =
-  | { type: "BOOKING_CONFIRMED"; data: unknown }
-  | { type: string; data?: unknown }; // fallback for unknown messages
-
-export default function HalaxyBooking() {
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent<HalaxyMessage>) => {
-      // ✅ Security: Only allow from halaxy.com
-        console.log("🔍 Raw message received:", event.origin, event.data);
-      if (!event.origin.includes("halaxy.com")) return;
-      console.log("Message received from Halaxy iframe:", event.data);
-
-
-      if (event.data?.type === "BOOKING_CONFIRMED") {
-        console.log("Booking confirmed:", event.data.data);
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
+export default function HalaxyBooking({link}:{link:string}) {
 
   return (
     <div className="flex-1 h-full overflow-hidden rounded-lg">
       <iframe
-        src="https://www.halaxy.com/book/widget/psychologist/adam-stefano/1273761/1328509"
+        src={link}
         allow="payment"
         style={{ border: 0, width: "100%", height: "100%" }}
         title="Halaxy booking widget"
