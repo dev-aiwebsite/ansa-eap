@@ -414,6 +414,10 @@ html {
   --sidebar-w: 0px;
   --header-h: 60px;
 
+    .max-h-webkit-fill.h-full.overflow-auto {
+      padding-bottom: 200px;
+    }
+
     span.chat-trigger-label {
     display: none;
     }
@@ -450,9 +454,6 @@ body, .bg-body-blend {
   --sidebar-w: 45px;
 }
 
-.max-h-webkit-fill.h-full.overflow-auto {
-  padding-bottom: 100px;
-}
 
 .main-sidebar {
   overflow: visible;
