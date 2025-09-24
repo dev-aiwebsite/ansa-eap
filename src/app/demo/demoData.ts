@@ -1,3 +1,4 @@
+import { IconAudios, IconNews, IconQuickReads, IconShortClips, IconVideos, IconYogas } from "@/icons";
 import { Webinar } from "@/serverActions/crudWebinars";
 
 
@@ -388,36 +389,43 @@ Anxiety, depression, stress, trauma, pregnancy and parenthood, interpersonal rel
     id: string;
     label: string;
     created_at: string;
+    icon?: React.ReactNode | string
   }
   export const categories = [
     {
       id: "7p2v1Ur_O1",
       label: "video",
-      created_at: ""
+      created_at: "",
+      icon: IconVideos,
     },
     {
       id: "7p2v1Ur_O2",
       label: "audio",
-      created_at: ""
+      created_at: "",
+      icon: IconAudios
     },
     {
       id: "7p2v1Ur_O3",
       label: "short clips",
-      created_at: ""
+      created_at: "",
+      icon: IconShortClips
     },
     {
       id: "7p2v1Ur_O4",
       label: "allied health news",
-      created_at: ""
+      created_at: "",
+      icon: IconNews,
     },
     {
       id: "7p2v1Ur_O5",
       label: "yoga",
-      created_at: ""
+      created_at: "",
+      icon: IconYogas,
     },
     {
       id: "7p2v1Ur_O6",
       label: "quick reads",
-      created_at: ""
+      created_at: "",
+      icon: IconQuickReads
     },
   ]

@@ -3,7 +3,6 @@
 import { categories } from "@/app/demo/demoData";
 import {
   IconBookMark,
-  IconCalendar,
   IconDocument,
   IconGrid
 } from "@/icons";
@@ -29,11 +28,6 @@ export const navItems: NavItemsType[] = [
     title: "Health Services",
     link: "/health-services",
     icon: <IconBookMark width="1.1rem" />,
-  },
-  {
-    title: "Practioners",
-    link: "/practioners",
-    icon: <IconCalendar width="1.1rem" />,
   },
   {
     title: "Learning & Development",
