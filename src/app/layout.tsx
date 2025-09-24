@@ -26,23 +26,35 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <link
-        rel="icon"
-        type="image/png"
-        href="/favicon-96x96.png"
-        sizes="96x96"
-      />
-      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-      <link rel="shortcut icon" href="/favicon.ico" />
-      <link
-        rel="apple-touch-icon"
-        sizes="180x180"
-        href="/apple-touch-icon.png"
-      />
-      <meta name="apple-mobile-web-app-title" content="Elevate" />
-      <link rel="manifest" href="/site.webmanifest" />
+      <head>
+        {/* Favicons */}
+        <link
+          rel="icon"
+          type="image/png"
+          href="/favicon-96x96.png"
+          sizes="96x96"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+
+        {/* PWA manifest */}
+        <link rel="manifest" href="/manifest.json" />
+
+
+        {/* Theme & iOS settings */}
+        <meta name="apple-mobile-web-app-title" content="Elevate" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes"></meta>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#ffffff" />
+      </head>
       <body
-        className={`${montserrat.variable} ${montserrat.variable} antialiased`}
+        className={`${montserrat.variable} antialiased`}
       >
         <TooltipProvider>
           <Toaster position="top-right" />
