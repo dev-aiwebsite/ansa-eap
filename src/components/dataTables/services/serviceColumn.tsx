@@ -50,7 +50,7 @@ export const ServiceColumns: ColumnDef<Service>[] = [
       return (
          <div className="space-x-2">
                   <Button
-                    href={`/admin/service/${item.id}`}
+                    href={`/admin/services/${item.id}`}
                     size="sm"
                     variant="outline"
                   >

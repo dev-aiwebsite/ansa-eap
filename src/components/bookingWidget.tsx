@@ -6,7 +6,7 @@ import { ConsentForm } from "./forms/consentForm";
 
 const BookingWidget = ({link}:{link:string}) => {
   const [agreed, setAgreed] = useState(true);
-
+  console.log(link, 'bookingwidget')
   return (
     <>
       {agreed ? (

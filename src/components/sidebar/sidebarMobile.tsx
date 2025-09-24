@@ -4,21 +4,20 @@ import {
   IconContents,
   IconEmergency,
   IconLogo,
-  IconPractitioner,
   IconPublicSession,
-  IconServices,
+  IconServices
 } from "@/icons";
 import { cn } from "@/lib/utils";
 import { House, UserCog } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import { Drawer, DrawerContent, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { UserMenu } from "../ui/userMenu";
-import { usePathname } from "next/navigation";
 
 const items = [
   { icon: House, label: "Home", link: "/dashboard" },
-  { icon: IconServices, label: "Services", link: "/health-services" },
-  { icon: IconPractitioner, label: "Practitioners", link: "/practioners" },
+    { icon: IconServices, label: "Services", link: "/health-services" },
+  { icon: IconCalendar, label: "Appointments", link: "/my-appointments" },
   {
     icon: IconEmergency,
     label: "Emergency",
@@ -26,7 +25,6 @@ const items = [
     textClassName: "text-white",
     link: "/critical-response",
   },
-  { icon: IconCalendar, label: "Appointments", link: "/my-appointments" },
   { icon: IconPublicSession, label: "Public Session", link: "/public-events" },
   { icon: IconContents, label: "Contents", link: "/learning-development" },
   { icon: UserCog, label: "Account", link: "/settings/account" },

@@ -6,8 +6,6 @@ import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { getServices, Service } from "@/serverActions/crudServices";
 import { Suspense } from "react";
 
-
-
 export default function HealthServicesWrapper() {
   return (
     <Suspense fallback={<SkeletonGrid />}>
@@ -16,7 +14,6 @@ export default function HealthServicesWrapper() {
     </Suspense>
   );
 }
-
 
 const HealthServices = async () => {
   const { data } = await getServices();
@@ -36,8 +33,6 @@ const HealthServices = async () => {
   );
 };
 
-
-
 function Card({ item }: { item: Service }) {
   return (
     <div className="card rounded-lg p-4 min-w-[200px] flex flex-col gap-5 text-sm border">
@@ -54,7 +49,12 @@ function Card({ item }: { item: Service }) {
         {truncateText(htmlToPlainText(item.description), 150)}
       </p>
       <div className="flex">
-        <Button target="_blank" href={item.booking_link} className="ml-auto" variant="outline">
+        <Button
+          href={item.booking_link || "/health-services/booking"}
+          className="ml-auto"
+          variant="outline"
+          {...(item.booking_link ? { target: "_blank" } : {})}
+        >
           Book Now
         </Button>
       </div>

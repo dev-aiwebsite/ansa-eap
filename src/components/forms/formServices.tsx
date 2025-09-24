@@ -185,7 +185,6 @@ export default function ServiceForm({
           id="booking_link"
           type="url"
           {...register("booking_link", {
-            required: "Booking link is required",
             pattern: {
               value:
                 /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/,
