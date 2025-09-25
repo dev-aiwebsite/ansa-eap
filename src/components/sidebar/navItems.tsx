@@ -22,17 +22,17 @@ export const navItems: NavItemsType[] = [
   {
     title: "Dasboard",
     link: "/dashboard",
-    icon: <IconGrid width="1.1rem" />,
+    icon: <IconGrid style={{ width: "1.1rem", height: "1.1rem" }} />,
   },
   {
     title: "Health Services",
     link: "/health-services",
-    icon: <IconBookMark width="1.1rem" />,
+    icon: <IconBookMark style={{ width: "1.1rem", height: "1.1rem" }} />,
   },
   {
     title: "Learning & Development",
     link: "/learning-development",
-    icon: <IconDocument width="1.1rem" />,
+    icon: <IconDocument style={{ width: "1.1rem", height: "1.1rem" }} />,
     subitems: [
       ...categories.map(i =>  ({
         title: i.label,

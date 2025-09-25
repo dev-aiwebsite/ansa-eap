@@ -18,11 +18,11 @@ export default function HealthServicesWrapper() {
 const HealthServices = async () => {
   const { data } = await getServices();
   
-  const sortedServices = data?.sort((a, b) => {
-    if (a.service_name.toLowerCase() === "counseling") return -1;
-    if (b.service_name.toLowerCase() === "counseling") return 1;
-    return 0;
-  });
+const sortedServices = data?.sort((a, b) => 
+  a.id === "H_3Y4jhxE5" ? -1 :
+  b.id === "H_3Y4jhxE5" ? 1 :
+  0
+);
 
   return (
     <Container>
