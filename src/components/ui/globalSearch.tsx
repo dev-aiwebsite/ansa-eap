@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/command";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { usePostServiceContext } from "@/context/postServiceContext";
+import { getPostLink } from "@/lib/helper";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PostItem } from "../post/postSidebar";
@@ -86,7 +87,7 @@ export function GlobalSearch() {
                   {filteredPost.map((i, index) => {
                     return (
                       <CommandItem
-                        onSelect={() => handleOnSelect(i.slug)}
+                        onSelect={() => handleOnSelect(getPostLink(i))}
                         className="!p-0 "
                         key={
                           i.id && i.category ? i.id + i.category + index : index
@@ -112,7 +113,7 @@ export function GlobalSearch() {
                   latestPosts.map((i, index) => (
                     <CommandItem
                       className="!p-0"
-                      onSelect={() => handleOnSelect(i.slug)}
+                      onSelect={() => handleOnSelect(getPostLink(i))}
                       key={
                         i.id && i.category ? i.id + i.category + index : index
                       }

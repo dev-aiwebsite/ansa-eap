@@ -424,6 +424,11 @@ html {
       padding-bottom: 200px;
     }
 
+    body #chattera_chatbubble_wrapper_trigger {
+      width: 60px !important;
+      height: 60px !important;
+    }
+
     span.chat-trigger-label {
     display: none;
     }
@@ -518,11 +523,12 @@ body #chattera_chatbubble_wrapper_trigger {
   aspect-ratio: 1/1;
   padding-inline: 20px !important;
   background: #9ba1ff;
-  width: 60px !important;
-  height: 60px !important;
 }
 body #chattera_chatbubble_wrapper_trigger:hover {
   background: #2d32a4;
 }
 
 
+.prose * {
+  margin: revert;
+}

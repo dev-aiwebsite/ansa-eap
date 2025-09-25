@@ -12,8 +12,7 @@ const PostPage = () => {
   const params = useParams();
   const category = params?.category as string;
 
-  const { allPosts, healthNews } = usePostServiceContext();
-  console.log(healthNews, 'healthNews')
+  const { allPosts } = usePostServiceContext();
   const categoryId = category.split('~')[0]
 
   // only recompute when inputs change

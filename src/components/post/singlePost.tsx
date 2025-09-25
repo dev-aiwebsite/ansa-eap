@@ -44,8 +44,10 @@ const PostSingle = ({ data }: PostSingle) => {
               <div className="mt-10">
                 <p className="font-medium text-sm">Description</p>
                 <div
-                  className="prose text-sm mt-2 text-muted-foreground max-w-none whitespace-pre-line"
-                  dangerouslySetInnerHTML={{ __html: data.description ?? "" }}
+                  className="prose text-sm mt-2 text-muted-foreground max-w-none"
+                  dangerouslySetInnerHTML={{ __html: data.description
+                    ?.replace(/<br class="ProseMirror-trailingBreak">/g, "")
+                    ?.replace(/<p>(\s*?)<\/p>/g, "<br />") ?? "" }}
                 />
               </div>
             </div>
