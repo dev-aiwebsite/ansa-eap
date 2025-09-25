@@ -13,12 +13,12 @@ import {
 } from "@/components/ui/command";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { getPostLink } from "@/lib/helper";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PostItem } from "../post/postSidebar";
 import { navItems } from "../sidebar/navItems";
 import { Button } from "./button";
+import { generatePostLink } from "@/lib/helper";
 
 export function GlobalSearch() {
   const {globalSearchOpen, setGlobalSearchOpen} = useAppServiceContext()
@@ -87,7 +87,7 @@ export function GlobalSearch() {
                   {filteredPost.map((i, index) => {
                     return (
                       <CommandItem
-                        onSelect={() => handleOnSelect(getPostLink(i))}
+                        onSelect={() => handleOnSelect(generatePostLink(i))}
                         className="!p-0 "
                         key={
                           i.id && i.category ? i.id + i.category + index : index
@@ -113,7 +113,7 @@ export function GlobalSearch() {
                   latestPosts.map((i, index) => (
                     <CommandItem
                       className="!p-0"
-                      onSelect={() => handleOnSelect(getPostLink(i))}
+                      onSelect={() => handleOnSelect(generatePostLink(i))}
                       key={
                         i.id && i.category ? i.id + i.category + index : index
                       }
