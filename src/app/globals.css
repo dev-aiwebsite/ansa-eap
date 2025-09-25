@@ -526,3 +526,6 @@ body #chattera_chatbubble_wrapper_trigger:hover {
 }
 
 
+.prose * {
+  margin: revert;
+}
