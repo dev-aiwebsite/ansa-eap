@@ -4,6 +4,7 @@ import PostCards from "@/components/post/postCards";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { Post } from "@/serverActions/crudPosts";
 import { ActionText } from "@/types";
+
 import { useEffect, useState } from "react";
 
 type PostCategory = "healthNews" | "yoga" | "video" | "threeMinute";
