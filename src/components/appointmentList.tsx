@@ -28,7 +28,8 @@ const AppointmentList = ({ count }: { count?: number }) => {
   });
 
   const { currentUser } = useAppServiceContext();
-  const [myAppointments, setMyAppointments] = useState<AppointmentsResponse | null>(null);
+  const [myAppointments, setMyAppointments] =
+    useState<AppointmentsResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -54,7 +55,13 @@ const AppointmentList = ({ count }: { count?: number }) => {
   }
 
   if (!myAppointments || myAppointments.entry.length === 0) {
-    return <p className="muted-text">No upcoming appointments.</p>;
+    return (
+      <div className="max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center">
+        <div className="text-zinc-500 flex h-[38px] items-center">
+          <p className="max-md:!text-sm font-medium">No upcoming appointments</p>
+        </div>
+      </div>
+    );
   }
 
   // 🔹 Apply `count` limit if provided
@@ -67,16 +74,18 @@ const AppointmentList = ({ count }: { count?: number }) => {
       {appointmentsToShow.map((i) => (
         <Link
           key={i.resource.id}
-          className="rounded-xl p-4 bg-muted flex flex-row justify-between items-center"
+          className="max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center"
           href="#"
         >
-          <div className="flex-1">
-            <p className="">Consultation</p>
+          <div className="flex-1 text-zinc-500">
+            <p className="max-md:!text-sm font-medium">Consultation</p>
             <p className="muted-text">
               {dateFormatter.format(new Date(i.resource.start))}
             </p>
           </div>
-          <span className="text-xl font-medium line-through">$120</span>
+          <span className="max-md:hidden text-xl font-medium line-through">
+            $120
+          </span>
         </Link>
       ))}
     </div>

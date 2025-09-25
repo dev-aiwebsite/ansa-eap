@@ -35,7 +35,7 @@ function PublicEventCard({ event, className }: { event: PublicEvent, className?:
       target="_blank"
       rel="noopener noreferrer"
       href={event.link || "#"}
-      className={cn("flex items-center justify-between p-4 border rounded-xl space-x-4", className)}
+      className={cn("max-md:!bg-[#70958517] flex items-center justify-between p-4 md:border rounded-xl space-x-4", className)}
     >
       <ImageWithFallback
         iconSize={40}
@@ -46,7 +46,7 @@ function PublicEventCard({ event, className }: { event: PublicEvent, className?:
         src={event.image || ""}
       />
       <div className="flex-1 line-clamp-2">
-        <p className="!text-sm font-medium muted-text">{event.title}</p>
+        <p className="!text-sm font-medium muted-text max-md:text-zinc-500">{event.title}</p>
         <p className="muted-text">{truncateText(htmlToPlainText(event.description), 50)}</p>
       </div>
       <div className="tracking-wider text-center font-bold">

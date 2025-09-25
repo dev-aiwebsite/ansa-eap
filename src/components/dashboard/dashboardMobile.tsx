@@ -7,9 +7,9 @@ import WeeklyBitesMobile from "../weeklyBitesMobile";
 const DashboardMobile = () => {
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
+      <div className="space-y-1">
         <div className="flex flex-row flex-nowrap">
-          <p className="card-title">Upcoming Appointment</p>
+          <span className="card-title">Upcoming Appointments</span>
           <Link
             className="ml-auto text-sm text-app-purple-300 font-medium"
             href="/my-appointments"
@@ -19,9 +19,9 @@ const DashboardMobile = () => {
         </div>
         <AppointmentList count={1} />
       </div>
-      <div className="space-y-4">
+      <div className="space-y-1">
         <div className="flex flex-row flex-nowrap">
-          <p className="card-title">Public Sessions</p>
+          <span className="card-title">Public Sessions</span>
           <Link
             className="ml-auto text-sm text-app-purple-300 font-medium"
             href="/public-events"
@@ -38,7 +38,7 @@ const DashboardMobile = () => {
       </div>
       <div>
         <div className="flex flex-row flex-nowrap">
-          <p className="card-title">Weekly Bites</p>
+          <span className="card-title">Weekly Bites</span>
           <Link
             className="ml-auto text-sm text-app-purple-300 font-medium"
             href="/learning-development"

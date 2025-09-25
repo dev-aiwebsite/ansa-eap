@@ -2,6 +2,7 @@
 
 import PostCards from "@/components/post/postCards";
 import PostFilter from "@/components/post/postFilter";
+import Container from "@/components/ui/container";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { Post } from "@/serverActions/crudPosts";
 import { useParams } from "next/navigation";
@@ -30,7 +31,7 @@ const PostPage = () => {
     setSortedData(data);
   }, [data]);
 
-  return (
+  return (<Container>
     <div className="space-y-2">
       <PostFilter data={data} onChange={setSortedData} />
 
@@ -50,6 +51,7 @@ const PostPage = () => {
         </div>
       )}
     </div>
+    </Container>
   );
 };
 

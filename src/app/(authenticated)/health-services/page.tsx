@@ -17,6 +17,12 @@ export default function HealthServicesWrapper() {
 
 const HealthServices = async () => {
   const { data } = await getServices();
+  
+  const sortedServices = data?.sort((a, b) => {
+    if (a.service_name.toLowerCase() === "counseling") return -1;
+    if (b.service_name.toLowerCase() === "counseling") return 1;
+    return 0;
+  });
 
   return (
     <Container>
@@ -24,7 +30,7 @@ const HealthServices = async () => {
 
       {data && (
         <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-6 w-full-sidebar">
-          {data.map((item) => (
+          {sortedServices && sortedServices.map((item) => (
             <Card key={item.id} item={item} />
           ))}
         </div>
