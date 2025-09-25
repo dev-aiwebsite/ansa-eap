@@ -9,6 +9,7 @@ import ImageWithFallback from "./ui/imageWithFallback";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
 import { ActionText } from "@/types";
+import { categories } from "@/app/demo/demoData";
 
 
 
@@ -28,7 +29,7 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: i.slug ?? "",
+      link: `/learning-development/${i.category}~${categories.find(c => c.id == i.category)?.label}/${i.id}~${i.title}`,
     }
   })
   
@@ -43,7 +44,7 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: i.slug ?? "",
+      link: `/learning-development/${i.category}~${categories.find(c => c.id == i.category)?.label}/${i.id}~${i.title}`,
     }
   })
 
@@ -58,7 +59,7 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: i.slug ?? "",
+      link: `/learning-development/${i.category}~${categories.find(c => c.id == i.category)?.label}/${i.id}~${i.title}`,
     }
   })
 
@@ -146,20 +147,20 @@ function WeeklyBitesTable ({data}:{data:WeeklyBitesData[]}) {
     { data.map(item => (
              <tr key={item.id} className="text-xs rounded-lg border border-muted">
               <td className="w-[80px]">
-                <ImageWithFallback className="max-h-[32px] rounded" width={50} height={32} alt={item.title} src={item.image}/>
+                <ImageWithFallback className="w-full rounded" width={50} height={32} alt={item.title} src={item.image}/>
               </td>
              <td className="align-middle text-start">
                  <div>
-                     <p>{item.title}</p>
+                     <p className="line-clamp-2">{item.title}</p>
                      <p className="text-xs text-muted-foreground">{item.author}</p>
                  </div>
              </td>
-             <td className="align-middle w-[100px]">
+             <td className="align-middle w-[90px]">
                  
                  <span className="capitalize">{item.duration} {item.action}</span>
                  
              </td>
-             <td className="align-middle w-[80px]">
+             <td className="align-middle w-[60px]">
                  <div className="flex flex-row gap-2 items-center">
                      <Heart className="w-[1em] h-[1em] fill-red-400 text-red-400"/>
                      <span>{item.likes ?? 0}</span>

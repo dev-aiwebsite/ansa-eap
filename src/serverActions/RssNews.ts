@@ -1,4 +1,5 @@
 "use server"
+import { nanoid } from 'nanoid';
 import { htmlToPlainText } from '../lib/helper';
 import { XMLParser } from "fast-xml-parser";
 import { Post } from './crudPosts';
@@ -73,11 +74,11 @@ function mapRssItem(item: RssJson["rss"]["channel"]["item"][0]): Post {
     extractImageFromHtml(descriptionHtml);
 
   return {
-    id: toText(item.guid),
+    id: nanoid(10),
     title: htmlToPlainText(toText(item.title)),
     slug: toText(item.link),
     description: descriptionHtml, // keep as HTML
-    category: categories.join(", "), // single string
+    category: "7p2v1Ur_O4", // single string
     author: item["dc:creator"] ?? "Unknown",
     tags: categories.join(","), // same as category for now
     video: item["media:content"]?.type?.includes("video") ? item["media:content"]?.url : undefined,

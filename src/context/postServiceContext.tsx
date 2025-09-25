@@ -33,29 +33,36 @@ export function PostServiceProvider({ children }: { children: React.ReactNode })
   const [healthNews, setHealthNews] = useState<Post[]>([]);
 
   // fetch data
-  useEffect(() => {
-    if (!healthNews.length) {
-      getNews().then((res) => {
-        const formatted = res.map((i) => ({
-          ...i,
-          slug: `/learning-development/health-news/${slugifyName(i.title)}`,
-        }));
-        setHealthNews(formatted);
-      });
-    }
+useEffect(() => {
+  async function fetchPosts() {
+    try {
+      // Run both requests in parallel
+      const [newsRes, postsRes] = await Promise.all([getNews(), getPosts()]);
 
-    if (!allPosts.length) {
-      getPosts().then((r) => {
-        const data = r.data ?? [];
-        setAllPosts(data);
-      });
+      // Format health news
+      const formattedNews = (newsRes || []).map((i) => ({
+        ...i,
+        slug: `/learning-development/7p2v1Ur_O4~health-news/${slugifyName(i.title)}`,
+      }));
+
+      // Get posts
+      const postsData = postsRes?.data ?? [];
+
+      // Update state once
+      setHealthNews(formattedNews);
+      setAllPosts([...formattedNews, ...postsData]);
+    } catch (error) {
+      console.error("Failed to fetch posts:", error);
     }
-  }, []);
+  }
+
+  fetchPosts();
+}, []);
+
 
   // derive categories once when allPosts changes
   useEffect(() => {
-    if (!allPosts.length) return;
-
+    if (!allPosts.length) return; 
     setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Post[]);
     setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5")  as Post[]);
     setVideoContents(allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Post[]);
