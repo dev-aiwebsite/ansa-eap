@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { formatDuration, truncateText } from "@/lib/helper";
+import { formatDuration, generatePostLink, truncateText } from "@/lib/helper";
 import { ActionText } from "@/types";
 import { Heart } from "lucide-react";
 import ImageWithFallback from "./ui/imageWithFallback";
@@ -25,7 +25,7 @@ const WeeklyBitesMobile = () => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: i.slug ?? "",
+      link: generatePostLink(i),
     }
   })
  

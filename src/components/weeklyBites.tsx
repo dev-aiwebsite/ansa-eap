@@ -1,15 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { formatDuration } from "@/lib/helper";
+import { formatDuration, generatePostLink } from "@/lib/helper";
+import { ActionText } from "@/types";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import ImageWithFallback from "./ui/imageWithFallback";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
-import { ActionText } from "@/types";
-import { categories } from "@/app/demo/demoData";
 
 
 
@@ -29,7 +28,7 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: `/learning-development/${i.category}~${categories.find(c => c.id == i.category)?.label}/${i.id}~${i.title}`,
+      link: generatePostLink(i),
     }
   })
   
@@ -44,7 +43,7 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: `/learning-development/${i.category}~${categories.find(c => c.id == i.category)?.label}/${i.id}~${i.title}`,
+      link: generatePostLink(i),
     }
   })
 
@@ -59,7 +58,7 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
       likes: 0,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
-      link: `/learning-development/${i.category}~${categories.find(c => c.id == i.category)?.label}/${i.id}~${i.title}`,
+      link: generatePostLink(i),
     }
   })
 

@@ -91,6 +91,6 @@ export const getDailyCheckinsOverall = (entry: DailyCheckinQA[]) => {
 
 
 
-export function getPostLink(post: Post) {
+export function generatePostLink(post: Post) {
   return `/learning-development/${post.category}~${categories.find(c => c.id == post.category)?.label}/${post.id}~${post.title}`
 }
