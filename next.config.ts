@@ -4,6 +4,9 @@ import withPWA from "next-pwa";
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
+   experimental: {
+    viewTransition: true,
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.ucarecdn.com" },

@@ -418,7 +418,7 @@ Anxiety, depression, stress, trauma, pregnancy and parenthood, interpersonal rel
     },
     {
       id: "7p2v1Ur_O5",
-      label: "yoga",
+      label: "yoga and pilates",
       created_at: "",
       icon: IconYogas,
     },

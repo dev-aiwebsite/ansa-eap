@@ -5,7 +5,7 @@ import { authConfig } from "./authConfig";
 import { getUserByEmail, User } from "./serverActions/crudUsers";
 import { getWHO5ResponsesByUser } from "./serverActions/crudWho5";
 
-const login = async (credentials: { useremail: string; userpass: string; viaadmin?: boolean }): Promise<User & {who5Completed: boolean} | null> => {
+export const login = async (credentials: { useremail: string; userpass: string; viaadmin?: boolean }): Promise<User & {who5Completed: boolean} | null> => {
   try {
     const { data: user } = await getUserByEmail(credentials?.useremail);
     if (!user) return null;

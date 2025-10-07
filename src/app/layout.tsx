@@ -1,12 +1,19 @@
+import { unstable_ViewTransition as ViewTransition } from 'react'
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
 import PageTransition from "@/components/ui/pageTransition";
 import { isMobileUA } from "@/lib/isMobileUa";
 
-const montserrat = Montserrat({
+// const montserrat = Montserrat({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-sans",
+// });
+
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
@@ -54,16 +61,18 @@ export default async function RootLayout({
         <meta name="theme-color" content="#ffffff" />
       </head>
       <body
-        className={`${montserrat.variable} antialiased`}
+        className={`${inter.variable} antialiased`}
       >
+        <ViewTransition>
         <TooltipProvider>
-          <Toaster position="top-right" />
+          <Toaster position="top-center" />
           {isMobile ? (
             <PageTransition>{children}</PageTransition>
           ) : (
             <>{children}</>
           )}
         </TooltipProvider>
+        </ViewTransition>
       </body>
     </html>
   );
