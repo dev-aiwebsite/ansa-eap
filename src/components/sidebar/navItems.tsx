@@ -20,7 +20,7 @@ import {
 } from "../ui/collapsible";
 export const navItems: NavItemsType[] = [
   {
-    title: "Dasboard",
+    title: "Dashboard",
     link: "/dashboard",
     icon: <IconGrid style={{ width: "1.1rem", height: "1.1rem" }} />,
   },

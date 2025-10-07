@@ -201,7 +201,7 @@
   }
 
   .muted-text {
-    @apply text-muted-foreground text-xs;
+    @apply text-muted-foreground text-xs md:text-sm;
   }
   
   .submenu {

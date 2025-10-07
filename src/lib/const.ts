@@ -123,7 +123,7 @@ export const DAILY_CHECKINS_QUESTIONS = [
     question: "How would you rate your energy today?",
     labels: {
       min: "Flat",
-      max: "Energized",
+      max: "Energised",
     },
     min: 1,
     max: 5,
