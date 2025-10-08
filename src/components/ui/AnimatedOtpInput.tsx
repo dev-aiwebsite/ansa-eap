@@ -8,7 +8,8 @@ import { AnimatePresence, motion, MotionProps } from "motion/react"
 import { cn } from "@/lib/utils"
 
 interface AnimatedInputOTPProps {
-  containerClassName?: string
+  containerClassName?: string,
+  slotClassName?:string,
   value?: string
   onChange?: (value: string) => void
   onComplete?: (value: string) => void
@@ -191,6 +192,7 @@ function AnimatedInputOTPSeparator({ ...props }: React.ComponentProps<"div"> & M
 export function AnimatedOTPInput({
   maxLength = 6,
   className,
+  slotClassName,
   value,
   onChange,
   onComplete,
@@ -206,15 +208,9 @@ export function AnimatedOTPInput({
       {...props}
     >
       <AnimatedInputOTPGroup>
-        <AnimatedInputOTPSlot index={0} />
-        <AnimatedInputOTPSlot index={1} />
-        <AnimatedInputOTPSlot index={2} />
-      </AnimatedInputOTPGroup>
-      <AnimatedInputOTPSeparator />
-      <AnimatedInputOTPGroup>
-        <AnimatedInputOTPSlot index={3} />
-        <AnimatedInputOTPSlot index={4} />
-        <AnimatedInputOTPSlot index={5} />
+        {[...Array(maxLength)].map((_, i) => (
+          <AnimatedInputOTPSlot key={i} index={i} className={slotClassName} />
+        ))}
       </AnimatedInputOTPGroup>
     </AnimatedInputOTP>
   )

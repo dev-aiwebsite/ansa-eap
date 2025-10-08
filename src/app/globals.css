@@ -96,8 +96,8 @@
 
   --destructive: oklch(0.577 0.245 27.325);
 
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
+  --border: oklch(0.90 0.004 286.32);
+  --input: oklch(0.90 0.004 286.32);
   --ring: oklch(0.74 0.13 161.68);
 
   /* ✅ Updated chart palette */
@@ -531,4 +531,9 @@ body #chattera_chatbubble_wrapper_trigger:hover {
 
 .prose * {
   margin: revert;
+}
+
+[data-slot="input-otp-slot"]:empty:before {
+    content: "-";
+    color: #aaa;
 }
