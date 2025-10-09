@@ -11,6 +11,7 @@ const Page = () => {
           <Button href="/admin/companies" variant="link">Companies</Button>   
           <Button href="/admin/services" variant="link">Services</Button>   
           <Button href="/admin/practitioners" variant="link">Practitioners</Button>   
+          <Button href="/admin/categories" variant="link">Categories</Button>   
       </div>
     </Container>
   );

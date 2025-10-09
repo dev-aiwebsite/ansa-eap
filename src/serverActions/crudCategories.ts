@@ -1,14 +1,13 @@
 "use server";
-import { IconComponent } from "@/icons";
 import pool from "@/lib/db";
 import { nanoid } from "nanoid";
 
-export type Categories = {
+export type Category = {
   id: string;
   label: string;
   type: string;
   created_at: string;
-    icon?: string | IconComponent | null
+    icon?: string 
 };
 
 type Result<T> = {
@@ -19,8 +18,8 @@ type Result<T> = {
 
 // CREATE
 export async function createCategory(
-  data: Omit<Categories, "id" | "created_at">
-): Promise<Result<Categories>> {
+  data: Omit<Category, "id" | "created_at">
+): Promise<Result<Category>> {
   try {
     const id = nanoid(10);
     const query = `
@@ -34,7 +33,7 @@ export async function createCategory(
     return {
       success: true,
       message: "Category created successfully",
-      data: result.rows[0] as Categories,
+      data: result.rows[0] as Category,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -44,15 +43,15 @@ export async function createCategory(
 }
 
 // READ ALL
-export async function getCategories(): Promise<Result<Categories[]>> {
+export async function getCategories(): Promise<Result<Category[]>> {
   try {
     const result = await pool.query(
       `SELECT * FROM categories ORDER BY created_at DESC`
     );
     return {
       success: true,
-      message: "Categories fetched successfully",
-      data: result.rows as Categories[],
+      message: "Category fetched successfully",
+      data: result.rows as Category[],
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -62,7 +61,7 @@ export async function getCategories(): Promise<Result<Categories[]>> {
 }
 
 // READ ONE (by ID)
-export async function getCategoryById(id: string): Promise<Result<Categories>> {
+export async function getCategoryById(id: string): Promise<Result<Category>> {
   try {
     const result = await pool.query(`SELECT * FROM categories WHERE id = $1`, [
       id,
@@ -72,7 +71,7 @@ export async function getCategoryById(id: string): Promise<Result<Categories>> {
     return {
       success: true,
       message: "Category fetched successfully",
-      data: result.rows[0] as Categories,
+      data: result.rows[0] as Category,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -81,7 +80,7 @@ export async function getCategoryById(id: string): Promise<Result<Categories>> {
   }
 }
 
-export async function getCategoryByType(type: string): Promise<Result<Categories[]>> {
+export async function getCategoryByType(type: string): Promise<Result<Category[]>> {
   try {
     const result = await pool.query(`SELECT * FROM categories WHERE type = $1`, [
       type,
@@ -102,7 +101,7 @@ export async function getCategoryByType(type: string): Promise<Result<Categories
 // READ ONE (by label)
 export async function getCategoryByLabel(
   label: string
-): Promise<Result<Categories>> {
+): Promise<Result<Category>> {
   try {
     const result = await pool.query(
       `SELECT * FROM categories WHERE label = $1`,
@@ -113,7 +112,7 @@ export async function getCategoryByLabel(
     return {
       success: true,
       message: `Category '${label}' fetched successfully`,
-      data: result.rows[0] as Categories,
+      data: result.rows[0] as Category,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -125,8 +124,8 @@ export async function getCategoryByLabel(
 // UPDATE
 export async function updateCategory(
   id: string,
-  data: Partial<Omit<Categories, "id" | "created_at">>
-): Promise<Result<Categories>> {
+  data: Partial<Omit<Category, "id" | "created_at">>
+): Promise<Result<Category>> {
   try {
     const fields: string[] = [];
     const values: unknown[] = [];
@@ -153,7 +152,7 @@ export async function updateCategory(
     return {
       success: true,
       message: `Category '${id}' updated successfully`,
-      data: result.rows[0] as Categories,
+      data: result.rows[0] as Category,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
@@ -163,7 +162,7 @@ export async function updateCategory(
 }
 
 // DELETE
-export async function deleteCategory(id: string): Promise<Result<Categories>> {
+export async function deleteCategory(id: string): Promise<Result<Category>> {
   try {
     const result = await pool.query(
       `DELETE FROM categories WHERE id = $1 RETURNING *`,
@@ -174,7 +173,7 @@ export async function deleteCategory(id: string): Promise<Result<Categories>> {
     return {
       success: true,
       message: `Category '${id}' deleted successfully`,
-      data: result.rows[0] as Categories,
+      data: result.rows[0] as Category,
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";

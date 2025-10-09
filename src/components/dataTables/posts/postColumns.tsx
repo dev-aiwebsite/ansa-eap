@@ -24,7 +24,7 @@ export function usePostColumns(): ColumnDef<Post>[] {
       header: "Category",
       cell: ({ row }) => {
         const categoryId = row.getValue<string>("category");
-        return categories.find((i) => i.id === categoryId)?.label ?? categoryId;
+        return categories.find((i) => i.id === categoryId)?.label ?? "";
       },
     },
     {
@@ -50,7 +50,7 @@ export function usePostColumns(): ColumnDef<Post>[] {
               Edit
             </Button>
             <DeleteItemButton
-              itemLabel="practitioner"
+              itemLabel="post"
               itemId={item.id}
               itemName={item.title}
             />

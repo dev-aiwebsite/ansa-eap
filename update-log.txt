@@ -15,3 +15,19 @@ CREATE TABLE categories (
   icon TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );
+
+
+INSERT INTO categories (id, label, type, icon, created_at) VALUES
+('7p2v1Ur_O4', 'allied health news', 'post', 'IconNews', NOW()),
+('7p2v1Ur_O5', 'yoga and pilates', 'post', 'IconYogas', NOW()),
+('7p2v1Ur_O7', 'Managing Stress & Anxiety', 'post', NULL, NOW()),
+('7p2v1Ur_O8', 'Building Resilience & Psychological Flexibility', 'post', NULL, NOW()),
+('7p2v1Ur_O9', 'Mindfulness & Meditation', 'post', NULL, NOW()),
+('7p2v1Ur_10', 'Healthy Sleep & Daily Routines', 'post', NULL, NOW()),
+('7p2v1Ur_11', 'Navigating Difficult Emotions', 'post', NULL, NOW()),
+('7p2v1Ur_12', 'Communication & Healthy Boundaries', 'post', NULL, NOW()),
+('7p2v1Ur_13', 'Grief, Loss & Life Transitions', 'post', NULL, NOW()),
+('7p2v1Ur_14', 'Addiction & Recovery', 'post', NULL, NOW()),
+('7p2v1Ur_15', 'Understanding Neurodiversity', 'post', NULL, NOW()),
+('7p2v1Ur_16', 'Workplace Wellbeing & Ergonomics', 'post', NULL, NOW())
+ON CONFLICT (id) DO NOTHING;

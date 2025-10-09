@@ -1,9 +1,8 @@
 "use client";
 import { slugifyName } from "@/lib/helper";
-import { Categories, getCategoryByType } from "@/serverActions/crudCategories";
+import { Category, getCategoryByType } from "@/serverActions/crudCategories";
 import { getPosts, Post } from "@/serverActions/crudPosts";
 import { getNews } from "@/serverActions/RssNews";
-import * as Icons from "@/icons";
 import {
   createContext,
   Dispatch,
@@ -15,7 +14,8 @@ import {
 
 type PostServiceContextType = {
   generatePostLink: (post:Post)=> string,
-  categories: Categories[];
+  setCategories:Dispatch<SetStateAction<Category[]>>;
+  categories: Category[];
   allPosts: Post[];
   setAllPosts: Dispatch<SetStateAction<Post[]>>;
   blogs: Post[];
@@ -37,7 +37,7 @@ export function PostServiceProvider({
   const [yogas, setYogas] = useState<Post[]>([]);
   const [videoContents, setVideoContents] = useState<Post[]>([]);
   const [healthNews, setHealthNews] = useState<Post[]>([]);
-  const [categories, setCategories] = useState<Categories[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   // fetch data
   useEffect(() => {
     async function fetchPosts() {
@@ -70,25 +70,7 @@ export function PostServiceProvider({
       const { data } = await getCategoryByType("post");
 
       if (data) {
-        const withIcons = data.map((cat) => {
-          let iconValue: Icons.IconComponent | null = null;
-
-          if (typeof cat.icon === "string") {
-            const iconKey = cat.icon as keyof typeof Icons;
-
-            if (iconKey in Icons) {
-              const Icon = Icons[iconKey] as Icons.IconComponent;
-              iconValue = Icon;
-            }
-          }
-
-          return {
-            ...cat,
-            icon: iconValue,
-          };
-        });
-
-        setCategories(withIcons);
+        setCategories(data);
       }
     }
 
@@ -120,6 +102,7 @@ export function PostServiceProvider({
     <PostServiceContext.Provider
       value={{
         generatePostLink,
+        setCategories,
         categories,
         allPosts,
         setAllPosts,
