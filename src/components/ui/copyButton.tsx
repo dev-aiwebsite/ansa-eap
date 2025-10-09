@@ -15,11 +15,11 @@ export function CopyButton({ value, label }: CopyButtonProps) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(value);
-      toast("Copied to clipboard", {
+      toast.success("Copied to clipboard", {
         description: value,
       });
     } catch (err) {
-      toast("Failed to copy", {
+      toast.error("Failed to copy", {
         description: err as string,
       });
     }
