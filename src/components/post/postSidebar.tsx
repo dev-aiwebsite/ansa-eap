@@ -1,5 +1,4 @@
 "use client";
-import { categories } from "@/app/demo/demoData";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import Container from "../ui/container";
 import { Input } from "../ui/input";
@@ -16,6 +15,7 @@ type PostSidebarProps = {
     currentCategory: string;
 }
 const PostSidebar = ({currentPost, currentCategory}:PostSidebarProps) => {
+  const {categories} = usePostServiceContext()
   console.log(currentCategory, currentPost)
   const {latestPosts } = usePostServiceContext();
   const {setGlobalSearchOpen} = useAppServiceContext()
@@ -72,6 +72,7 @@ const PostSidebar = ({currentPost, currentCategory}:PostSidebarProps) => {
 export default PostSidebar;
 
 export function PostItem({ item, className, disableLink = false }: {disableLink?:boolean, item: Partial<Post> & { category?: string }, className?:string }) {
+  const {categories} = usePostServiceContext()
   return disableLink ? (
     <div
       className={cn(

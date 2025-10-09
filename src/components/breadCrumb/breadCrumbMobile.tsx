@@ -1,11 +1,13 @@
 "use client";
 
+import { usePostServiceContext } from "@/context/postServiceContext";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { categories } from "@/app/demo/demoData";
+
 
 const BreadcrumbMobile = () => {
+  const {categories} = usePostServiceContext()
   const pathname = usePathname();
   const paths = pathname.split("/").filter(Boolean);
   const isRoot = paths.length === 0;

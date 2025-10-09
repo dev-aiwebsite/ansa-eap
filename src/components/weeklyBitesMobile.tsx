@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { formatDuration, generatePostLink, truncateText } from "@/lib/helper";
+import { formatDuration, truncateText } from "@/lib/helper";
 import { ActionText } from "@/types";
 import { Heart } from "lucide-react";
 import ImageWithFallback from "./ui/imageWithFallback";
@@ -12,7 +12,7 @@ import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
 const WeeklyBitesMobile = () => {
 
   
-  const {latestPosts} = usePostServiceContext()
+  const {latestPosts, generatePostLink} = usePostServiceContext()
 
   const data = latestPosts.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
   .slice(0,2)

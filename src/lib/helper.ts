@@ -1,5 +1,3 @@
-import { categories } from "@/app/demo/demoData";
-import { Post } from "@/serverActions/crudPosts";
 import { DailyCheckinQA } from "@/types";
 
 export function slugifyName(name: string): string {
@@ -88,9 +86,3 @@ export const getDailyCheckinsOverall = (entry: DailyCheckinQA[]) => {
     percentage: parseFloat((normalized * 100).toFixed(1)), // e.g. 60.0
   };
 };
-
-
-
-export function generatePostLink(post: Post) {
-  return `/learning-development/${post.category}~${categories.find(c => c.id == post.category)?.label}/${post.id}~${post.title}`
-}

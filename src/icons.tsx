@@ -1,6 +1,5 @@
-import { SVGProps } from "react";
-
-export function IconGoogle(props: SVGProps<SVGSVGElement>) {
+export type IconComponent = React.FC<React.SVGProps<SVGSVGElement>>;
+export const IconGoogle:IconComponent = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +38,7 @@ export function IconGoogle(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IconFacebook(props: SVGProps<SVGSVGElement>) {
+export const IconFacebook:IconComponent = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +69,7 @@ export function IconFacebook(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IconLogo(props: SVGProps<SVGSVGElement>) {
+export const IconLogo:IconComponent = (props) => {
   return (
     <svg
       width="58"
@@ -88,7 +87,7 @@ export function IconLogo(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-export function IconGrid(props: SVGProps<SVGSVGElement>) {
+export const IconGrid:IconComponent = (props) => {
   return (
     <svg
       width="24"
@@ -142,7 +141,7 @@ export function IconGrid(props: SVGProps<SVGSVGElement>) {
 }
 
 // Bookmark Icon
-export const IconBookMark = (props: React.SVGProps<SVGSVGElement>) => (
+export const IconBookMark:IconComponent = (props) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
     <path
       fillRule="evenodd"
@@ -165,7 +164,7 @@ export const IconBookMark = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 // Calendar Icon
-export const IconCalendar = (props: React.SVGProps<SVGSVGElement>) => (
+export const IconCalendar:IconComponent = (props) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
     <path
       opacity="0.4"
@@ -195,7 +194,7 @@ export const IconCalendar = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 // Chat/Dots Icon
-export const IconChatDots = (props: React.SVGProps<SVGSVGElement>) => (
+export const IconChatDots:IconComponent = (props) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
     <path
       fillRule="evenodd"
@@ -234,7 +233,7 @@ export const IconChatDots = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 // Document Icon
-export const IconDocument = (props: React.SVGProps<SVGSVGElement>) => (
+export const IconDocument:IconComponent = (props) => (
   <svg width="24" height="26" viewBox="0 0 24 26" fill="none" {...props}>
     <path
       opacity="0.4"
@@ -644,7 +643,7 @@ export const IconRulerPencil = ({
   </svg>
 );
 
-export const IconPublicSession = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconPublicSession:IconComponent = (props) => {
   return (
     <svg
       width="32"
@@ -661,7 +660,7 @@ export const IconPublicSession = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconAiChat = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconAiChat:IconComponent = (props) => {
   return (
     <svg
       width="32"
@@ -682,7 +681,7 @@ export const IconAiChat = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconPractitioner = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconPractitioner:IconComponent = (props) => {
   return (
     <svg
       width="32"
@@ -702,7 +701,7 @@ export const IconPractitioner = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconServices = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconServices:IconComponent = (props) => {
   return (
     <svg
       width="32"
@@ -725,7 +724,7 @@ export const IconServices = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconLogo2 = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconLogo2:IconComponent = (props) => {
   return (
     <svg
       width="101"
@@ -750,7 +749,7 @@ export const IconLogo2 = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconEmergency = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconEmergency:IconComponent = (props) => {
   return (
     <svg
       width="32"
@@ -792,7 +791,7 @@ export const IconEmergency = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconContents = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconContents:IconComponent = (props) => {
   return (
     <svg
       width="32"
@@ -809,7 +808,7 @@ export const IconContents = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconVideos = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconVideos:IconComponent = (props) => {
   return (
   
  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"  {...props}>
@@ -819,7 +818,7 @@ export const IconVideos = (props: React.SVGProps<SVGSVGElement>) => {
     </svg>
   );
 };
-export const IconAudios = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconAudios:IconComponent = (props) => {
   return (
   
  <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -834,7 +833,7 @@ export const IconAudios = (props: React.SVGProps<SVGSVGElement>) => {
 
   );
 };
-export const IconShortClips = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconShortClips:IconComponent = (props) => {
   return (
 <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
 <path d="M14.5237 29.8284V34.4025C14.5237 35.0419 15.0581 35.5603 15.7181 35.5603H31.6124V24.7594H14.5237V27.3553" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -846,7 +845,7 @@ export const IconShortClips = (props: React.SVGProps<SVGSVGElement>) => {
 
   );
 };
-export const IconYogas = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconYogas:IconComponent = (props) => {
   return (
 <svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
 <path d="M31.5649 9.64763C34.3177 11.8682 37.5238 15.5748 31.3301 18.9849C25.1364 22.3949 22.04 16.5921 23.0564 13.4014C22.6628 13.6863 22.3334 14.0507 22.0896 14.471C21.8458 14.8913 21.693 15.3582 21.6411 15.8413C21.2654 15.5904 20.966 15.2409 20.7757 14.8312C20.5854 14.4215 20.5115 13.9673 20.5621 13.5184C20.0436 13.869 19.5976 14.3162 19.2482 14.8354C19.2482 14.8354 17.5826 8.49794 23.7292 9.52982C24.2922 8.45082 25.2542 7.11344 28.1866 6.87863C28.2808 6.01088 28.7586 5.23738 30.2202 4.83763C30.0718 5.67151 30.1809 6.53082 30.5331 7.30113C31.1324 6.6048 31.8687 6.03928 32.6961 5.63979C33.5235 5.24029 34.4242 5.01537 35.3422 4.97901C35.4121 7.48963 33.4581 11.4433 33.4581 11.4433" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -861,7 +860,7 @@ export const IconYogas = (props: React.SVGProps<SVGSVGElement>) => {
 
   );
 };
-export const IconNews = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconNews:IconComponent = (props) => {
   return (
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
 <path d="M25.6667 3.66667H6.33341C4.86675 3.66667 3.66675 4.86667 3.66675 6.33334V25.6667C3.66675 27.1333 4.86675 28.3333 6.33341 28.3333H25.6667C27.1334 28.3333 28.3334 27.1333 28.3334 25.6667V6.33334C28.3334 4.86667 27.1334 3.66667 25.6667 3.66667Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -869,7 +868,7 @@ export const IconNews = (props: React.SVGProps<SVGSVGElement>) => {
 </svg>
   )
 };
-export const IconQuickReads = (props: React.SVGProps<SVGSVGElement>) => {
+export const IconQuickReads:IconComponent = (props) => {
   return (
 <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
 <path d="M9.97502 10.3629H15.7463M9.93544 12.8329H15.7146M9.93544 15.2633H15.7146M9.93544 17.7571H15.7146M19.0634 28.3654C19.0634 28.3654 17.0842 26.98 15.6671 26.98H6.86377V7.125L15.9521 6.94292C17.0927 6.94456 18.1871 7.39369 19 8.19375L19.0634 28.3654ZM19.0634 28.3654C19.0634 28.3654 21.0425 26.98 22.4596 26.98H24.3992M19.0634 28.3654L19.1346 8.19375C19.9436 7.39752 21.0316 6.9487 22.1667 6.94292H24.3834M26.8296 7.01417L31.2629 7.08542V26.98H26.8296" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>

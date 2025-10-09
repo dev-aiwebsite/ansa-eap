@@ -16,13 +16,13 @@ import { usePostServiceContext } from "@/context/postServiceContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PostItem } from "../post/postSidebar";
-import { navItems } from "../sidebar/navItems";
 import { Button } from "./button";
-import { generatePostLink } from "@/lib/helper";
+import { useNavItems } from "../sidebar/navItems";
 
 export function GlobalSearch() {
+  const navItems = useNavItems()
   const {globalSearchOpen, setGlobalSearchOpen} = useAppServiceContext()
-  const { allPosts, latestPosts } = usePostServiceContext();
+  const { allPosts, latestPosts, generatePostLink } = usePostServiceContext();
   const [search, setSearch] = useState("");
   const router = useRouter();
 
