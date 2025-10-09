@@ -388,44 +388,51 @@ Anxiety, depression, stress, trauma, pregnancy and parenthood, interpersonal rel
   export type Categories = {
     id: string;
     label: string;
+    type: string;
     created_at: string;
     icon?: React.ReactNode | string
   }
   export const categories = [
-    {
-      id: "7p2v1Ur_O1",
-      label: "video",
-      created_at: "",
-      icon: IconVideos,
-    },
-    {
-      id: "7p2v1Ur_O2",
-      label: "audio",
-      created_at: "",
-      icon: IconAudios
-    },
-    {
-      id: "7p2v1Ur_O3",
-      label: "short clips",
-      created_at: "",
-      icon: IconShortClips
-    },
-    {
-      id: "7p2v1Ur_O4",
-      label: "allied health news",
-      created_at: "",
-      icon: IconNews,
-    },
-    {
-      id: "7p2v1Ur_O5",
-      label: "yoga and pilates",
-      created_at: "",
-      icon: IconYogas,
-    },
-    {
-      id: "7p2v1Ur_O6",
-      label: "quick reads",
-      created_at: "",
-      icon: IconQuickReads
-    },
-  ]
+  {
+    id: "7p2v1Ur_O1",
+    label: "video",
+    type: "post",
+    created_at: "",
+    icon: IconVideos,
+  },
+  {
+    id: "7p2v1Ur_O2",
+    label: "audio",
+    type: "post",
+    created_at: "",
+    icon: IconAudios,
+  },
+  {
+    id: "7p2v1Ur_O3",
+    label: "short clips",
+    type: "post",
+    created_at: "",
+    icon: IconShortClips,
+  },
+  {
+    id: "7p2v1Ur_O4",
+    label: "allied health news",
+    type: "post",
+    created_at: "",
+    icon: IconNews,
+  },
+  {
+    id: "7p2v1Ur_O5",
+    label: "yoga and pilates",
+    type: "post",
+    created_at: "",
+    icon: IconYogas,
+  },
+  {
+    id: "7p2v1Ur_O6",
+    label: "quick reads",
+    type: "post",
+    created_at: "",
+    icon: IconQuickReads,
+  },
+];

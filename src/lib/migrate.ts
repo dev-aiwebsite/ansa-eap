@@ -221,7 +221,14 @@ CREATE TABLE who5_responses (
 );
 `;
 
-
+const createCategoriesTable = `
+CREATE TABLE categories (
+  id VARCHAR(20) PRIMARY KEY,
+  label TEXT NOT NULL,
+  type TEXT NOT NULL,
+  icon TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);`
   try {
     console.log("🚀 Starting migration...");
 
@@ -246,7 +253,7 @@ CREATE TABLE who5_responses (
     await pool.query(createCompaniesTable);
     await pool.query(createFeaturedContentTable);
     await pool.query(createWho5ResponsesTable);
-
+    await pool.query(createCategoriesTable);
     console.log("✅ Tables created successfully.");
 
 

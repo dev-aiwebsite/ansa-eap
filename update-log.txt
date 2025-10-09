@@ -7,3 +7,11 @@ CREATE TABLE services (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE categories (
+  id VARCHAR(20) PRIMARY KEY,
+  label TEXT NOT NULL,
+  type TEXT NOT NULL,
+  icon TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);

@@ -1,5 +1,5 @@
 "use client"
-import { PostColumns } from "@/components/dataTables/posts/postColumns";
+import { usePostColumns } from "@/components/dataTables/posts/postColumns";
 import { DataTable } from "@/components/dataTables/dataTable";
 import { Button } from "@/components/ui/button";
 import { usePostServiceContext } from "@/context/postServiceContext";
@@ -16,7 +16,7 @@ const Page = () => {
                   <PlusCircle /> Add Post
                 </Button>
               </div>
-                <DataTable columns={PostColumns} data={allPosts}/>              
+                <DataTable columns={usePostColumns()} data={allPosts}/>              
         </Container>
     );
 }

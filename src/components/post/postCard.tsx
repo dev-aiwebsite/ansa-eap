@@ -5,9 +5,10 @@ import { ActionText } from "@/types";
 import { Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import ImageWithFallback from "../ui/imageWithFallback";
-import { categories } from "@/app/demo/demoData";
+import { usePostServiceContext } from "@/context/postServiceContext";
 
 const PostCard = ({ item, actionText = "read", className }: { item: Post, actionText?: ActionText, className?: string; }) => {
+  const {categories} = usePostServiceContext()
   return (
     <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
       

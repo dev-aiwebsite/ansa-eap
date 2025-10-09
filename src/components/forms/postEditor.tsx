@@ -1,6 +1,4 @@
 "use client";
-
-import { categories } from "@/app/demo/demoData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { slugifyName } from "@/lib/helper";
@@ -21,12 +19,14 @@ import {
   SelectValue,
 } from "../ui/select";
 import { TiptapEditor } from "../ui/tiptap-editor";
+import { usePostServiceContext } from "@/context/postServiceContext";
 
 type PostEditorProps = {
   postId?: string;
 };
 
 export default function PostEditor({ postId }: PostEditorProps) {
+  const {categories} = usePostServiceContext()
   const pathName = usePathname();
   const {
     control,

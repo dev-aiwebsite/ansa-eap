@@ -1,6 +1,4 @@
 "use client";
-
-import { categories } from "@/app/demo/demoData";
 import {
   IconBookMark,
   IconDocument,
@@ -18,32 +16,41 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-export const navItems: NavItemsType[] = [
-  {
-    title: "Dashboard",
-    link: "/dashboard",
-    icon: <IconGrid style={{ width: "1.1rem", height: "1.1rem" }} />,
-  },
-  {
-    title: "Health Services",
-    link: "/health-services",
-    icon: <IconBookMark style={{ width: "1.1rem", height: "1.1rem" }} />,
-  },
-  {
-    title: "Learning & Development",
-    link: "/learning-development",
-    icon: <IconDocument style={{ width: "1.1rem", height: "1.1rem" }} />,
-    subitems: [
-      ...categories.map(i =>  ({
+import { usePostServiceContext } from "@/context/postServiceContext";
+
+
+export function useNavItems(): NavItemsType[] {
+  const { categories } = usePostServiceContext();
+
+  const navItems: NavItemsType[] = [
+    {
+      title: "Dashboard",
+      link: "/dashboard",
+      icon: <IconGrid style={{ width: "1.1rem", height: "1.1rem" }} />,
+    },
+    {
+      title: "Health Services",
+      link: "/health-services",
+      icon: <IconBookMark style={{ width: "1.1rem", height: "1.1rem" }} />,
+    },
+    {
+      title: "Learning & Development",
+      link: "/learning-development",
+      icon: <IconDocument style={{ width: "1.1rem", height: "1.1rem" }} />,
+      subitems: categories.map((i) => ({
         title: i.label,
         link: `/learning-development/${i.id}~${slugifyName(i.label)}`,
-      }))
-    ],
-  },
-];
+      })),
+    },
+  ];
+
+  return navItems;
+}
+
 
 export default function NavItems() {
   const pathname = usePathname();
+  const navItems = useNavItems()
   return (
     <ul className="space-y-1">
       {navItems.map((navitem) => {

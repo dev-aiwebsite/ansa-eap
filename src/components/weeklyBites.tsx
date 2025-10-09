@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { formatDuration, generatePostLink } from "@/lib/helper";
+import { formatDuration } from "@/lib/helper";
 import { ActionText } from "@/types";
 import { Heart } from "lucide-react";
 import Link from "next/link";
@@ -15,7 +15,7 @@ import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
 const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
 
   const [activeTab, setActiveTab] = useState("blogs")
-  const {healthNews,blogs,videoContents} = usePostServiceContext()
+  const {healthNews,blogs,videoContents, generatePostLink} = usePostServiceContext()
 
   const blogData = blogs.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
   .slice(0,4)

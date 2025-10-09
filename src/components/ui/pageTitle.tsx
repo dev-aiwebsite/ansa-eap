@@ -1,9 +1,10 @@
 "use client"
 
 import { usePathname } from "next/navigation";
-import { navItems } from "../sidebar/navItems";
+import { useNavItems } from "../sidebar/navItems";
 
 const PageTitle = () => {
+    const navItems = useNavItems()
     const path = usePathname().split("~")
     path.pop()
     const pathname = path.join()
