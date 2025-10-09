@@ -20,13 +20,14 @@ import {
 } from "../ui/select";
 import { TiptapEditor } from "../ui/tiptap-editor";
 import { usePostServiceContext } from "@/context/postServiceContext";
+import { toast } from "sonner";
 
 type PostEditorProps = {
   postId?: string;
 };
 
 export default function PostEditor({ postId }: PostEditorProps) {
-  const {categories} = usePostServiceContext()
+  const {categories, setAllPosts} = usePostServiceContext()
   const pathName = usePathname();
   const {
     control,
@@ -64,20 +65,38 @@ export default function PostEditor({ postId }: PostEditorProps) {
     })();
   }, [postId, reset]);
 
-  const onSubmit = async (data: Post) => {
-    console.log("Form data:", data);
-    const slug = `${pathName.slice(0, -3)}${slugifyName(data.title)}`;
+  const onSubmit = async (formData: Post) => {
+    
+    const slug = `${pathName.slice(0, -3)}${slugifyName(formData.title)}`;
 
     try {
-      let result;
+      
       if (postId) {
-        result = await updatePost(postId, { ...data, slug });
+        const {data} = await updatePost(postId, { ...formData, slug });
+         if(!data) return
+        setAllPosts((prev) =>
+          prev.map((p) => (p.id === postId ? data : p))
+        );
+        reset(data);
+        toast.success("Successfully updated", {
+          description: data.title,
+        });
+
       } else {
-        result = await createPost({ ...data, slug });
+        const {data} = await createPost({ ...formData, slug });
+        if(!data) return
+        setAllPosts((prev) =>
+          prev.map((p) => (p.id === postId ? data : p))
+        );
+
+        reset(data);
+
+        toast.success("Successfully created", {
+         description: data.title,
+       });
       }
-      console.log("Saved:", result);
-      reset(result.data);
     } catch (error) {
+       toast.error("Something went wrong");
       console.error(error);
     }
   };

@@ -19,6 +19,7 @@ import {
 
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 type CategoryEditorProps = {
   categoryId?: string;
@@ -63,6 +64,9 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
         setCategories((prev) =>
           prev.map((c) => (c.id === categoryId ? data : c))
         );
+        toast.success("Successfully updated", {
+        description: data.label,
+      });
         reset(data);
       } else {
         const {data} = await createCategory(formData);
@@ -70,8 +74,13 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
         // Add new category to context
         setCategories((prev) => [...prev, data]);
         reset(data);
+
+         toast.success("Successfully created", {
+          description: data.label,
+        });
       }
     } catch (error) {
+       toast.error('Something went wrong')
       console.error(error);
     }
   };
