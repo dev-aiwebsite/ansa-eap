@@ -18,7 +18,7 @@ const BlogSingle = () => {
 
   return (
     <div className="flex gap-6 h-full">
-      <PostSingle data={data} />
+      <PostSingle id={postId}/>
       <PostSidebar currentPost={data} currentCategory="7p2v1Ur_O6"/>
     </div>
   );

@@ -14,8 +14,8 @@ import {
 } from "react";
 
 type AppServiceContextType = {
-  currentUser: User | null;
-  setCurrentUser: Dispatch<SetStateAction<User | null>>;
+  currentUser: User;
+  setCurrentUser: Dispatch<SetStateAction<User>>;
 
   users: User[] | [];
   setUsers: Dispatch<SetStateAction<User[]>>;
@@ -36,8 +36,8 @@ type AppServiceContextType = {
 
 type AppServiceContextProviderProps = {
   children?: React.ReactNode;
-  data?: {
-    currentUser?: User;
+  data: {
+    currentUser: User;
     users?: User[];
     dailyActivities?: DailyActivity[];
     dailyCheckIns?: DailyCheckIn[];
@@ -50,10 +50,11 @@ export function AppServiceContextProvider({
   children,
   data,
 }: AppServiceContextProviderProps) {
-  const [currentUser, setCurrentUser] = useState<User | null>(
-    data?.currentUser || null
-  );
   const [users, setUsers] = useState<User[]>(data?.users || []);
+  
+  const [currentUser, setCurrentUser] = useState<User>(
+    data.currentUser 
+  );
   const [dailyActivities, setDailyActivities] = useState<DailyActivity[] | []>(
     data?.dailyActivities || []
   );
