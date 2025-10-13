@@ -1,6 +1,7 @@
 "use client";
 import { slugifyName } from "@/lib/helper";
 import { Category, getCategoryByType } from "@/serverActions/crudCategories";
+import { createLike, deleteLike, getLikes, Like } from "@/serverActions/crudLikes";
 import { getPosts, Post } from "@/serverActions/crudPosts";
 import { getNews } from "@/serverActions/RssNews";
 import {
@@ -23,6 +24,8 @@ type PostServiceContextType = {
   videoContents: Post[];
   healthNews: Post[];
   latestPosts: Post[];
+  allLikes: Like[];
+  toggleLike: (postId: string, userId: string) => Promise<boolean>;
 };
 
 const PostServiceContext = createContext<PostServiceContextType | null>(null);
@@ -38,6 +41,7 @@ export function PostServiceProvider({
   const [videoContents, setVideoContents] = useState<Post[]>([]);
   const [healthNews, setHealthNews] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [allLikes,setAllLikes] = useState<Like[]>([])
   // fetch data
   useEffect(() => {
     async function fetchPosts() {
@@ -75,6 +79,16 @@ export function PostServiceProvider({
     }
 
     fetchCategories();
+    async function fetchLikes(){
+
+     const { data } = await getLikes();
+
+      if (data) {
+        setAllLikes(data)
+    }
+  }
+    fetchLikes()
+
   }, []);
 
   // derive categories once when allPosts changes
@@ -98,9 +112,41 @@ export function PostServiceProvider({
     return `/learning-development/${post.category}~${categories.find(c => c.id == post.category)?.label}/${post.id}~${post.title}`
   }
 
+
+  const toggleLike = async (postId:string, userId:string) => {
+    const isLiked = allLikes.some(l => l.post_id == postId && l.user_id == userId)
+    
+    const res = isLiked ? unLikePost(postId, userId) : likePost(postId, userId)
+    return res
+
+  }
+
+  const likePost = async (postId:string, userId:string) => {
+    const {data, success, message} = await createLike(userId, postId)
+    console.log(message)
+    if(success && data){
+      setAllLikes((prev) => ([...prev, data]))
+    }
+    return success
+  }
+
+  const unLikePost = async (postId:string, userId:string) => {
+    const {data, success, message} = await deleteLike(userId, postId)
+    console.log(message)
+    if(success && data){
+      setAllLikes((prev) => {
+        const filtered = prev.filter(like => like.id !== data.id)
+        return filtered
+      })
+    }
+    return success
+  }
+
   return (
     <PostServiceContext.Provider
       value={{
+        allLikes,
+        toggleLike,
         generatePostLink,
         setCategories,
         categories,

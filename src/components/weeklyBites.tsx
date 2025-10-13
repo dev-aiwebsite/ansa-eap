@@ -15,17 +15,19 @@ import { WeeklyBitesTableSkeleton } from "./weeklyBitesSkeleton";
 const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
 
   const [activeTab, setActiveTab] = useState("blogs")
-  const {healthNews,blogs,videoContents, generatePostLink} = usePostServiceContext()
+  const {healthNews,blogs,videoContents, generatePostLink, allLikes} = usePostServiceContext()
 
   const blogData = blogs.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
   .slice(0,4)
   .map(i => {
+      const postLikes = allLikes.filter(l => l.post_id == i.id)
+      const likesCount = postLikes.length
     return {
       id: i.id ?? "",
       image: i.thumbnail ?? "",
       title: i.title ?? "",
       author: i.author ?? "",
-      likes: 0,
+      likes: likesCount,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
       link: generatePostLink(i),
@@ -35,12 +37,15 @@ const WeeklyBites = ({hideTitle = false}:{hideTitle?:boolean}) => {
   const clipsData = videoContents.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
   .slice(0,4)
   .map(i => {
+     const postLikes = allLikes.filter(l => l.post_id == i.id)
+      const likesCount = postLikes.length
+
     return {
       id: i.id ?? "",
       image: i.thumbnail ?? "",
       title: i.title ?? "",
       author: i.author ?? "",
-      likes: 0,
+      likes: likesCount,
       duration: formatDuration(0, 5),
       action: "view" as ActionText,
       link: generatePostLink(i),

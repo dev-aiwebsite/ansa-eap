@@ -221,6 +221,17 @@ CREATE TABLE who5_responses (
 );
 `;
 
+const createLikesTable = `
+CREATE TABLE likes (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+  created_at TIMESTAMP DEFAULT now(),
+  UNIQUE (user_id, post_id)
+);
+
+`
+
 const createCategoriesTable = `
 CREATE TABLE categories (
   id VARCHAR(20) PRIMARY KEY,
@@ -254,6 +265,7 @@ CREATE TABLE categories (
     await pool.query(createFeaturedContentTable);
     await pool.query(createWho5ResponsesTable);
     await pool.query(createCategoriesTable);
+    await pool.query(createLikesTable);
     console.log("✅ Tables created successfully.");
 
 

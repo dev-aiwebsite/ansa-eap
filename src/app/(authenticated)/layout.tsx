@@ -22,6 +22,7 @@ export default async function Layout({
     getDailyCheckIns(userId),
   ]);
 
+  if(!currentUser) return
   const data = {
     currentUser,
     dailyActivities,
