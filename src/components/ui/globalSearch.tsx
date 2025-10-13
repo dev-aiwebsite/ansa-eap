@@ -18,11 +18,12 @@ import { useEffect, useState } from "react";
 import { PostItem } from "../post/postSidebar";
 import { Button } from "./button";
 import { useNavItems } from "../sidebar/navItems";
+import { Post } from "@/serverActions/crudPosts";
 
 export function GlobalSearch() {
   const navItems = useNavItems()
   const {globalSearchOpen, setGlobalSearchOpen} = useAppServiceContext()
-  const { allPosts, latestPosts, generatePostLink } = usePostServiceContext();
+  const { allPosts, latestPosts, generatePostLink, categories } = usePostServiceContext();
   const [search, setSearch] = useState("");
   const router = useRouter();
 
@@ -42,13 +43,52 @@ export function GlobalSearch() {
     setGlobalSearchOpen(true);
   }
 
-  const filteredPost = allPosts.filter((item) => {
-    const itemString = JSON.stringify(item).toLowerCase();
-    const terms = search.toLowerCase().split(/\s+/).filter(Boolean); // split on spaces, ignore empty
+  const searchResultItems:Record<string,Post[]> = {
+    title:[],
+    tags: [],
+    category: [],
+    author: [],
+    content: [],
+  }
 
-    // All terms must be present in the item string
-    return terms.every((term) => itemString.includes(term));
+  console.log(categories, 'categories')
+  allPosts.forEach((item) => {
+    const categoryName = categories.find(c => c.id == item.category)?.label || ""
+    const categoryString = JSON.stringify(categoryName).toLowerCase()
+    const itemString = JSON.stringify(item).toLowerCase() + categoryString;
+    const terms = search.toLowerCase().split(/\s+/).filter(Boolean); // split on spaces, ignore empty
+    
+    if(!terms.every((term) => itemString.includes(term))) return
+
+    const titleString = JSON.stringify(item.title).toLowerCase()
+    const tagString = JSON.stringify(item.tags).toLowerCase()
+    const authorString = JSON.stringify(item.author).toLowerCase()
+
+    if(terms.every((term) => titleString.includes(term))){
+      searchResultItems.title.push(item)
+
+    } else if(terms.every((term) => categoryString.includes(term))) {
+      searchResultItems.category.push(item)
+
+    } else if(terms.every((term) => tagString.includes(term))) {
+      searchResultItems.tags.push(item)
+    
+    } else if(terms.every((term) => authorString.includes(term))) {
+      searchResultItems.author.push(item)
+    } else {
+      searchResultItems.content.push(item)
+    }
+
+    
   });
+
+  const filteredPost = [
+    ...searchResultItems.title,
+    ...searchResultItems.tags,
+    ...searchResultItems.category,
+    ...searchResultItems.author,
+    ...searchResultItems.content
+  ]
   
 
   function handleOnSelect(slug?: string) {
