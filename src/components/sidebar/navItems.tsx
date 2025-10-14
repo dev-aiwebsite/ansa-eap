@@ -26,17 +26,17 @@ export function useNavItems(): NavItemsType[] {
     {
       title: "Dashboard",
       link: "/dashboard",
-      icon: <IconGrid style={{ width: "1.1rem", height: "1.1rem" }} />,
+      icon: <IconGrid />,
     },
     {
       title: "Health Services",
       link: "/health-services",
-      icon: <IconBookMark style={{ width: "1.1rem", height: "1.1rem" }} />,
+      icon: <IconBookMark />,
     },
     {
       title: "Learning & Development",
       link: "/learning-development",
-      icon: <IconDocument style={{ width: "1.1rem", height: "1.1rem" }} />,
+      icon: <IconDocument />,
       subitems: categories.map((i) => ({
         title: i.label,
         link: `/learning-development/${i.id}~${slugifyName(i.label)}`,
@@ -66,7 +66,7 @@ export default function NavItems() {
                     isActive ? "active" : ""
                   }`}
                 >
-                  <Link href={navitem.link} className="group flex-1">
+                  <Link href={navitem.link}>
                     {navitem.icon && navitem.icon}
                     <span className="capitalize group-hover:underline decoration-[0.5px] underline-offset-[2px]">
                       {navitem.title}
