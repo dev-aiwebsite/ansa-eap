@@ -1,10 +1,10 @@
-import { Post } from "@/serverActions/crudPosts";
-import PostCardSkeleton from "./postCardSkeleton";
-import PostCard from "./postCard";
+import { Posts } from "@/serverActions/crudPosts";
 import { ActionText } from "@/types";
+import PostCard from "./postCard";
+import PostCardSkeleton from "./postCardSkeleton";
 
 type PostCards = {
-    data: Post[],
+    data: Posts,
     id_prefix: string;
     actionText: ActionText;
     className?: string; 

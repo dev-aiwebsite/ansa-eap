@@ -4,7 +4,7 @@ import PostCards from "@/components/post/postCards";
 import PostFilter from "@/components/post/postFilter";
 import Container from "@/components/ui/container";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { Post } from "@/serverActions/crudPosts";
+import { Posts } from "@/serverActions/crudPosts";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
@@ -23,7 +23,7 @@ const PostPage = () => {
     );
   }, [allPosts, category]);
 
-  const [sortedData, setSortedData] = useState<Post[]>(data);
+  const [sortedData, setSortedData] = useState<Posts>(data);
 
   // keep sortedData in sync when base data changes
   useEffect(() => {

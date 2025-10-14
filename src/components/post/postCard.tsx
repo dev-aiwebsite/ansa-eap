@@ -1,4 +1,4 @@
-import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
+import { formatAsTime, htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
 import { cn } from "@/lib/utils";
 import { Post } from "@/serverActions/crudPosts";
 import { ActionText } from "@/types";
@@ -33,7 +33,7 @@ const PostCard = ({ item, actionText = "read", className }: { item: Post, action
         <div className="flex flex-row items-center gap-2">
           <Clock width="1em" className="text-app-purple-300 text-base" />
           <span className="text-muted-foreground">
-            {item.duration_hours}:{item.duration_minutes}
+            {formatAsTime(item.duration_hours,item.duration_minutes)}
           </span>
         </div>
         <Button className="ml-auto capitalize" variant="outline" href={`/learning-development/${item.category}~${slugifyName(categories.find(c => c.id == item.category)?.label ?? "")}/${item.id}~${slugifyName(item.title)}`}>

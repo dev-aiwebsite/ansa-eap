@@ -2,7 +2,7 @@
 import { slugifyName } from "@/lib/helper";
 import { Category, getCategoryByType } from "@/serverActions/crudCategories";
 import { createLike, deleteLike, getLikes, Like } from "@/serverActions/crudLikes";
-import { getPosts, Post } from "@/serverActions/crudPosts";
+import { getPosts, Post, Posts } from "@/serverActions/crudPosts";
 import { getNews } from "@/serverActions/RssNews";
 import {
   createContext,
@@ -17,13 +17,13 @@ type PostServiceContextType = {
   generatePostLink: (post:Post)=> string,
   setCategories:Dispatch<SetStateAction<Category[]>>;
   categories: Category[];
-  allPosts: Post[];
-  setAllPosts: Dispatch<SetStateAction<Post[]>>;
-  blogs: Post[];
-  yogas: Post[];
-  videoContents: Post[];
-  healthNews: Post[];
-  latestPosts: Post[];
+  allPosts: Posts;
+  setAllPosts: Dispatch<SetStateAction<Posts>>;
+  blogs: Posts;
+  yogas: Posts;
+  videoContents: Posts;
+  healthNews: Posts;
+  latestPosts: Posts;
   allLikes: Like[];
   toggleLike: (postId: string, userId: string) => Promise<boolean>;
 };
@@ -35,11 +35,11 @@ export function PostServiceProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [allPosts, setAllPosts] = useState<Post[]>([]);
-  const [blogs, setBlogs] = useState<Post[]>([]);
-  const [yogas, setYogas] = useState<Post[]>([]);
-  const [videoContents, setVideoContents] = useState<Post[]>([]);
-  const [healthNews, setHealthNews] = useState<Post[]>([]);
+  const [allPosts, setAllPosts] = useState<Posts>([]);
+  const [blogs, setBlogs] = useState<Posts>([]);
+  const [yogas, setYogas] = useState<Posts>([]);
+  const [videoContents, setVideoContents] = useState<Posts>([]);
+  const [healthNews, setHealthNews] = useState<Posts>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [allLikes,setAllLikes] = useState<Like[]>([])
   // fetch data
@@ -94,10 +94,10 @@ export function PostServiceProvider({
   // derive categories once when allPosts changes
   useEffect(() => {
     if (!allPosts.length) return;
-    setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Post[]);
-    setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Post[]);
+    setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts);
+    setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Posts);
     setVideoContents(
-      allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Post[]
+      allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Posts
     );
   }, [allPosts]);
 
@@ -106,7 +106,7 @@ export function PostServiceProvider({
     healthNews.at(-1) ?? null,
     blogs.at(-1) ?? null,
     videoContents.at(-1) ?? null,
-  ].filter(Boolean) as Post[];
+  ].filter(Boolean) as Posts;
 
   function generatePostLink(post: Post) {
     return `/learning-development/${post.category}~${categories.find(c => c.id == post.category)?.label}/${post.id}~${post.title}`
