@@ -20,6 +20,8 @@ export type Post = {
   updated_at: string;
 };
 
+export type Posts = Post[];
+
 type Result<T> = {
   success: boolean;
   message: string;

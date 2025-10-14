@@ -3,7 +3,7 @@
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { cn } from "@/lib/utils";
 import { getFeaturedContents } from "@/serverActions/crudFeaturedContent";
-import { Post } from "@/serverActions/crudPosts";
+import { Posts } from "@/serverActions/crudPosts";
 import { Crown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
@@ -11,7 +11,7 @@ import ImageWithFallback from "../ui/imageWithFallback";
 
 const FeaturedWidget = ({ className }: { className?: string }) => {
   const { allPosts } = usePostServiceContext();
-  const [featuredPosts, setFeaturedPosts] = useState<Post[] | null>(null);
+  const [featuredPosts, setFeaturedPosts] = useState<Posts | null>(null);
   
 
   useEffect(() => {

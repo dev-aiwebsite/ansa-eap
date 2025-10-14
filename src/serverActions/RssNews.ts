@@ -2,7 +2,7 @@
 import { nanoid } from 'nanoid';
 import { htmlToPlainText } from '../lib/helper';
 import { XMLParser } from "fast-xml-parser";
-import { Post } from './crudPosts';
+import { Post, Posts } from './crudPosts';
 
 type RssGuid = { "#text": string; isPermaLink?: string };
 
@@ -92,7 +92,7 @@ function mapRssItem(item: RssJson["rss"]["channel"]["item"][0]): Post {
 }
 
 
-export async function getNews(): Promise<Post[]> {
+export async function getNews(): Promise<Posts> {
   let res = await fetch("https://watersedgecounselling.com/category/mental-health-issues-2/feed/");
   
   if (!res.ok) {

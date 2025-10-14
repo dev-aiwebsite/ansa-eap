@@ -27,6 +27,11 @@ export function slugifyName(name: string): string {
     const m = minutes > 0 ? `${minutes}m` : "";
     return `${h} ${m}`.trim() || "0m";
   }
+
+  export function formatAsTime(hours: number, minutes: number): string {
+    return `${hours}:${minutes.toString().padStart(2, "0")}`;
+  }
+
   
   export const stripHtml = (html: string) => {
     return html.replace(/<[^>]*>/g, ""); // remove all tags

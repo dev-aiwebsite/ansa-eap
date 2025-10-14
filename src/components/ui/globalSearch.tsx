@@ -13,12 +13,12 @@ import {
 } from "@/components/ui/command";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { usePostServiceContext } from "@/context/postServiceContext";
+import { Posts } from "@/serverActions/crudPosts";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PostItem } from "../post/postSidebar";
-import { Button } from "./button";
 import { useNavItems } from "../sidebar/navItems";
-import { Post } from "@/serverActions/crudPosts";
+import { Button } from "./button";
 
 export function GlobalSearch() {
   const navItems = useNavItems()
@@ -43,7 +43,14 @@ export function GlobalSearch() {
     setGlobalSearchOpen(true);
   }
 
-  const searchResultItems:Record<string,Post[]> = {
+  const filteredAnsaContents:Record<string,Posts> = {
+    title:[],
+    tags: [],
+    category: [],
+    author: [],
+    content: [],
+  }
+  const filteredNotAnsaContents:Record<string,Posts> = {
     title:[],
     tags: [],
     category: [],
@@ -51,8 +58,13 @@ export function GlobalSearch() {
     content: [],
   }
 
+
   console.log(categories, 'categories')
   allPosts.forEach((item) => {
+    const categoryId = item.category
+    const isAnsaContent = categoryId != '7p2v1Ur_O4'
+    const targetMap = isAnsaContent ? filteredAnsaContents : filteredNotAnsaContents
+
     const categoryName = categories.find(c => c.id == item.category)?.label || ""
     const categoryString = JSON.stringify(categoryName).toLowerCase()
     const itemString = JSON.stringify(item).toLowerCase() + categoryString;
@@ -65,29 +77,33 @@ export function GlobalSearch() {
     const authorString = JSON.stringify(item.author).toLowerCase()
 
     if(terms.every((term) => titleString.includes(term))){
-      searchResultItems.title.push(item)
+      targetMap.title.push(item)
 
     } else if(terms.every((term) => categoryString.includes(term))) {
-      searchResultItems.category.push(item)
+      targetMap.category.push(item)
 
     } else if(terms.every((term) => tagString.includes(term))) {
-      searchResultItems.tags.push(item)
+      targetMap.tags.push(item)
     
     } else if(terms.every((term) => authorString.includes(term))) {
-      searchResultItems.author.push(item)
+      targetMap.author.push(item)
     } else {
-      searchResultItems.content.push(item)
+      targetMap.content.push(item)
     }
-
-    
   });
 
   const filteredPost = [
-    ...searchResultItems.title,
-    ...searchResultItems.tags,
-    ...searchResultItems.category,
-    ...searchResultItems.author,
-    ...searchResultItems.content
+    ...filteredAnsaContents.title,
+    ...filteredAnsaContents.tags,
+    ...filteredAnsaContents.category,
+    ...filteredAnsaContents.author,
+    ...filteredAnsaContents.content,
+
+    ...filteredNotAnsaContents.title,
+    ...filteredNotAnsaContents.tags,
+    ...filteredNotAnsaContents.category,
+    ...filteredNotAnsaContents.author,
+    ...filteredNotAnsaContents.content
   ]
   
 

@@ -2,7 +2,7 @@
 
 import PostCards from "@/components/post/postCards";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { Post } from "@/serverActions/crudPosts";
+import { Posts } from "@/serverActions/crudPosts";
 import { ActionText } from "@/types";
 
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ const ContentLibraryPage = () => {
   const { healthNews, yogas, videoContents, blogs } = usePostServiceContext();
 
   // Map context data into the sections object shape
-  const posts: Record<PostCategory, Post[]> = {
+  const posts: Record<PostCategory, Posts> = {
     healthNews: healthNews ?? [],
     yoga: yogas ?? [],
     video: videoContents ?? [],
@@ -116,7 +116,7 @@ function SectionEl({
 }: {
   id: string;
   title: string;
-  data: Post[];
+  data: Posts;
   actionText: ActionText;
 }) {
   return (

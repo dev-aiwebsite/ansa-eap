@@ -1,9 +1,5 @@
 "use client";
-import {
-  IconBookMark,
-  IconDocument,
-  IconGrid
-} from "@/icons";
+import { IconBookMark, IconDocument, IconGrid } from "@/icons";
 import { slugifyName } from "@/lib/helper";
 import { NavItemsType } from "@/types";
 import { ChevronRight } from "lucide-react";
@@ -17,7 +13,6 @@ import {
   CollapsibleTrigger,
 } from "../ui/collapsible";
 import { usePostServiceContext } from "@/context/postServiceContext";
-
 
 export function useNavItems(): NavItemsType[] {
   const { categories } = usePostServiceContext();
@@ -37,20 +32,21 @@ export function useNavItems(): NavItemsType[] {
       title: "Learning & Development",
       link: "/learning-development",
       icon: <IconDocument />,
-      subitems: categories.map((i) => ({
-        title: i.label,
-        link: `/learning-development/${i.id}~${slugifyName(i.label)}`,
-      })),
+      subitems: categories
+        .sort((a, b) => a.label.localeCompare(b.label))
+        .map((i) => ({
+          title: i.label,
+          link: `/learning-development/${i.id}~${slugifyName(i.label)}`,
+        })),
     },
   ];
 
   return navItems;
 }
 
-
 export default function NavItems() {
   const pathname = usePathname();
-  const navItems = useNavItems()
+  const navItems = useNavItems();
   return (
     <ul className="space-y-1">
       {navItems.map((navitem) => {
@@ -74,10 +70,7 @@ export default function NavItems() {
                   </Link>
 
                   {navitem.subitems && (
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                    >
+                    <Button size="icon" variant="ghost">
                       <ChevronRight className="collapsible-arrow h-4 w-4" />
                     </Button>
                   )}
