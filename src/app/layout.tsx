@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
 import PageTransition from "@/components/ui/pageTransition";
 import { isMobileUA } from "@/lib/isMobileUa";
+import ServiceWorkerRegister from '@/lib/ServiceWorkerRegister';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -16,7 +17,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "ELEVATE",
   description: "By ANSA",
-  manifest: "/manifest.json",
+  manifest: "/manifest.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -46,6 +47,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
+        <ServiceWorkerRegister />
         <ViewTransition>
           <TooltipProvider>
             <Toaster position="top-center" />

@@ -3,8 +3,18 @@ import { getAuthToken } from './lib/getAuthToken';
 
 export async function middleware(req: NextRequest) {
   const token = await getAuthToken(req);
-  const pathname = req.nextUrl.pathname;
-  console.log(token, 'token from middleware');
+const pathname = req.nextUrl.pathname;
+
+    if (
+    pathname.startsWith("/manifest.webmanifest") ||
+    pathname.startsWith("/favicon") ||
+    pathname.startsWith("/apple-touch-icon") ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/assets") // if you have images/assets
+  ) {
+    return NextResponse.next();
+  }
+
   const isAuthPage = ["/login", "/signup", "/password-reset"].some(p => pathname.startsWith(p));
   const isHome = pathname === "/";
   const isUnrestrictedPage = ["/embed"].some(p => pathname.startsWith(p));

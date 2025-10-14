@@ -3,7 +3,6 @@ import AppHeader from "@/components/header/appHeader";
 import AppSidebar from "@/components/sidebar/appSidebar";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
-import ServiceWorkerRegister from "@/lib/ServiceWorkerRegister";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
 import { getDailyCheckIns } from "@/serverActions/crudDailyCheckIns";
 import { getUserById } from "@/serverActions/crudUsers";
@@ -32,7 +31,6 @@ export default async function Layout({
 
   return (
     <AppServiceContextProvider data={data}>
-      <ServiceWorkerRegister />
       <PostServiceProvider>
           <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
             <div>

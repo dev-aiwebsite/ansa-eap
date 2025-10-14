@@ -12,7 +12,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: "/web-app-manifest-192x192.png",
         sizes: "192x192",
         type: "image/png",
-        purpose: "maskable"
+        purpose: "any"
       },
       {
         src: "/web-app-manifest-512x512.png",
@@ -23,5 +23,18 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     theme_color: "#ffffff",
     background_color: "#ffffff",
+    screenshots: [
+      {
+        src: "/screenshots/homepage-desktop.png",
+        sizes: "1280x720",
+        type: "image/png",
+        form_factor: "wide"
+      },
+      {
+        src: "/screenshots/homepage-mobile.png",
+        sizes: "480x800",
+        type: "image/png"
+      }
+    ]
   }
 }
