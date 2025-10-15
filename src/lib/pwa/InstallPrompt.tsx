@@ -18,18 +18,20 @@ declare global {
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [isIOS, setIsIOS] = useState(false)
+  const [isSafari, setIsSafari] = useState(false)
   const [isStandalone, setIsStandalone] = useState(false)
   const [open, setOpen] = useState(false)
 
 useEffect(() => {
   const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
-  setIsIOS(isIOSDevice || isSafari)
+  setIsIOS(isIOSDevice)
+  setIsSafari(isSafariBrowser)
   setIsStandalone(window.matchMedia('(display-mode: standalone)').matches)
 
   // If Safari (iOS or macOS), show custom install popup
-  if (isSafari) {
+  if (isSafariBrowser || isIOSDevice) {
     setOpen(true)
   }
 
@@ -64,14 +66,14 @@ useEffect(() => {
         <AlertDialogHeader>
           <AlertDialogTitle>Install App</AlertDialogTitle>
         <AlertDialogDescription className="mt-2 text-sm text-muted-foreground">
-  {isIOS ? (
-    <div className='text-balance leading-[2]'>
-      To install this app on iOS, tap the share button
-      <Share className="inline mx-1 h-4 w-4 text-muted-foreground" />
+  {(isIOS || isSafari) ? (
+    <div className='leading-[2]'>
+      To install this app, tap the share button
+      <Share className="inline mx-2 h-4 w-4 text-muted-foreground" />
       and then 
-      <p className='p-2 mx-2 inline ring-1 ring-border rounded-lg bg-gray-300 text-xs text-white font-medium'>
+      <p className='whitespace-nowrap p-2 mx-2 inline ring-1 ring-border rounded-lg bg-gray-300 text-xs text-white font-medium'>
         <SquarePlus className='inline mr-2' strokeWidth={2} width={14} height={14} />
-        Add to Home Screen
+        Add to {isSafari && isIOS ? 'Home Screen' : 'Dock'}
       </p>
     </div>
   ) : (
