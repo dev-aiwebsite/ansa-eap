@@ -7,6 +7,12 @@ export default function ServiceWorkerRegister() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(console.error)
     }
+
+    window.addEventListener('beforeinstallprompt', (e)=>{
+      console.log(e)
+
+    })
+
   }, [])
 
   return null
