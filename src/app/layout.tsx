@@ -1,4 +1,4 @@
-import { unstable_ViewTransition as ViewTransition } from 'react'
+import { unstable_ViewTransition as ViewTransition } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -6,7 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
 import PageTransition from "@/components/ui/pageTransition";
 import { isMobileUA } from "@/lib/isMobileUa";
-import ServiceWorkerRegister from '@/lib/ServiceWorkerRegister';
+import ServiceWorkerRegister from "@/lib/pwa/ServiceWorkerRegister";
+import InstallPrompt from "@/lib/pwa/InstallPrompt";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -36,7 +37,6 @@ export const viewport = {
   themeColor: "#ffffff",
 };
 
-
 export default async function RootLayout({
   children,
 }: {
@@ -47,15 +47,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
-        <ServiceWorkerRegister />
         <ViewTransition>
           <TooltipProvider>
             <Toaster position="top-center" />
-            {isMobile ? (
-              <PageTransition>{children}</PageTransition>
-            ) : (
-              children
-            )}
+            <InstallPrompt />
+            <ServiceWorkerRegister />
+            {isMobile ? <PageTransition>{children}</PageTransition> : children}
           </TooltipProvider>
         </ViewTransition>
       </body>

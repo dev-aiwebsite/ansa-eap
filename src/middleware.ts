@@ -46,7 +46,10 @@ const pathname = req.nextUrl.pathname;
 }
 
 // Middleware matcher to exclude certain paths
-export const config = {
-  matcher: "/((?!api|_next/static|_next/image|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|public).*)",
-};
+// export const config = {
+//   matcher: "/((?!api|_next/static|_next/image|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|public).*)",
+// };
 
+export const config = {
+  matcher: "/((?!api|_next/static|_next/image|.*\\.png$|.*\\.svg$|.*\\.jpg$|.*\\.jpeg$|public|sw\\.js).*)",
+};
