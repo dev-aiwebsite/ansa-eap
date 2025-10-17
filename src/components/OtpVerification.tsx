@@ -71,6 +71,9 @@ export function OtpVerification({
       alert("something went wrong");
     }
 
+    if(process.env.NODE_ENV == 'development'){
+      console.log(newOtp)
+    }
     
       setOtp(newOtp);
       setValue("");
