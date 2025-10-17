@@ -30,7 +30,7 @@ const Dashboard = () => {
               <FeaturedWidget />
             </div>
 
-            <div className="card bg-white flex-1">
+            <div className="card bg-white flex-1 overflow-hidden">
               <MoodWidget />
             </div>
           </div>

@@ -1,12 +1,13 @@
-import PageTransition from "@/components/ui/pageTransition";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { isMobileUA } from "@/lib/isMobileUa";
-import ServiceWorkerRegister from "@/lib/pwa/ServiceWorkerRegister";
+import { unstable_ViewTransition as ViewTransition } from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { unstable_ViewTransition as ViewTransition } from "react";
-import { Toaster } from "sonner";
 import "./globals.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "sonner";
+import PageTransition from "@/components/ui/pageTransition";
+import { isMobileUA } from "@/lib/isMobileUa";
+import ServiceWorkerRegister from "@/lib/pwa/ServiceWorkerRegister";
+import InstallPrompt from "@/lib/pwa/InstallPrompt";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -49,6 +50,7 @@ export default async function RootLayout({
         <ViewTransition>
           <TooltipProvider>
             <Toaster position="top-center" />
+            <InstallPrompt />
             <ServiceWorkerRegister />
             {isMobile ? <PageTransition>{children}</PageTransition> : children}
           </TooltipProvider>

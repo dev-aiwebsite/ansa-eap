@@ -260,11 +260,14 @@
   button {
     @apply p-4 !cursor-pointer;
   }
+  .calendar button {
+    @apply text-[inherit];
+  }
   .calendar td {
-    @apply !h-auto !w-[2.5em] !rounded-full p-0 flex items-center justify-center;
+    @apply !h-auto !w-[2.5em] !rounded-full !p-0 flex items-center justify-center;
   }
   .calendar tr {
-    @apply !justify-evenly;
+    @apply !justify-evenly gap-[10px];
   }
 
   .text-bold {
