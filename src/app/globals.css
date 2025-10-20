@@ -82,10 +82,13 @@
   --breadcrumb-h: 40px;
 
   /* ✅ Updated brand primary color */
-  --primary: oklch(0.74 0.13 161.68);
+  --primary: oklch(0.74 0.13 161.74);
   --primary-foreground: oklch(0.98 0.01 161.68);
 
-  --secondary: oklch(97.079% 0.02054 161.775);
+  
+  
+  --secondary: oklch(0.75 0.13 280.30);
+  /* --secondary: oklch(97.079% 0.02054 161.775); */
   --secondary-foreground: oklch(0.2 0.01 161.68);
 
   --accent: oklch(0.93 0.03 161.68);
@@ -207,7 +210,7 @@
   }
 
   .muted-text {
-    @apply text-muted-foreground text-xs md:text-sm;
+    @apply text-muted-foreground text-sm;
   }
   
   .submenu {
@@ -283,9 +286,21 @@
   [data-slot="collapsible-trigger"][data-state="open"] .collapsible-arrow {
     @apply rotate-90;
   }
-
 }
 
+
+.mobile-nav {
+  --rad: 25px;
+  padding: 10px;
+  /* border-radius: var(--rad) var(--rad) 0 0; */
+  position: fixed;
+  bottom: 0;
+  z-index: 9999999;
+  max-height: 80px;
+  width: 100vw;
+  background: white;
+  box-shadow: 0 0px 15px #0002;
+}
 
 body, .bg-body-blend {
   background: 
@@ -426,6 +441,11 @@ html {
     flex-shrink: 0;
 }
 
+@media (max-width: 500px){
+  html {
+    font-size: 14px;
+  }
+}
 
 @media(max-width: 780px){
   :root {
@@ -554,4 +574,52 @@ ul.submenu {
     max-height: 278px;
     overflow: scroll;
     /* box-shadow: inset 0 0 10px #efefef; */
+}
+.ios-app-icon {
+    color: transparent;
+    margin: auto;
+    border-radius: 18px;
+    box-shadow: 0 0 50px #fff5, 0 0 5px #fff3;
+}
+
+
+.install-app-arrow {
+    position: fixed;
+    z-index: 9999999999999999999999;
+    pointer-events: none;
+    animation: bouncing-arrow-animation 3s infinite;
+}
+
+.install-app-arrow.iphone.chrome {
+    top: -5px;
+    right: 0px;
+    height: 70px;
+    width: 70px;
+    rotate: 180deg;
+}
+
+.install-app-arrow.iphone.safari {
+    bottom: -5px;
+    right: 24px;
+    height: 70px;
+    width: 70px;
+}
+
+
+@keyframes bouncing-arrow-animation {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-30px);
+  }
+
+  60% {
+    transform: translateY(-15px);
+  }
 }

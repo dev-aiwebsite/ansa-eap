@@ -5,13 +5,15 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
-  AlertDialogHeader,
+  AlertDialogHeader
 } from "@/components/ui/alert-dialog";
+import { IconIosShare, LongArrowDown } from "@/icons";
 import { AlertDialogTitle } from "@radix-ui/react-alert-dialog";
-import { Share, SquarePlus } from "lucide-react";
+import { Ellipsis, SquarePlus } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { cn } from "../utils";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -37,7 +39,8 @@ export default function InstallPrompt() {
     let isNeedToPrompt = false;
 
     if (nextPromptDate) {
-      isNeedToPrompt = today > new Date(nextPromptDate);
+      // isNeedToPrompt = today > new Date(nextPromptDate);
+      isNeedToPrompt = true
     } else {
       isNeedToPrompt = true; // No record yet, so prompt the first time
     }
@@ -49,11 +52,14 @@ export default function InstallPrompt() {
       "elevate-install-prompt",
       fiveHoursFromToday.toISOString()
     );
+
+    const userAgent = navigator.userAgent
     const isIOSDevice =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(
-      navigator.userAgent
-    );
+      /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+   
+
+    const  isBrowserIOSChrome =  userAgent.match(/CriOS/)
+     const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(userAgent) && !isBrowserIOSChrome;
 
     setIsIOS(isIOSDevice);
     setIsSafari(isSafariBrowser);
@@ -87,35 +93,130 @@ export default function InstallPrompt() {
     return null;
   }
 
+
+  
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogContent className="sm:max-w-sm">
+      <AlertDialogContent className="sm:max-w-sm space-y-4 rounded-xl z-[99999999]"
+      overlayClassName="bg-black/90 z-[9999999]">
         <AlertDialogHeader>
-          <AlertDialogTitle>Install App</AlertDialogTitle>
-          <AlertDialogDescription className="mt-2 text-sm text-muted-foreground">
-            {isIOS || isSafari ? (
-              <div className="leading-[2]">
-                To install this app, tap the share button
-                <Share className="inline mx-2 h-4 w-4 text-muted-foreground" />
-                and then
-                <p className="whitespace-nowrap p-2 mx-2 inline ring-1 ring-border rounded-lg bg-gray-300 text-xs text-white font-medium">
-                  <SquarePlus
-                    className="inline mr-2"
-                    strokeWidth={2}
-                    width={14}
-                    height={14}
-                  />
-                  Add to {isSafari && isIOS ? "Home Screen" : "Dock"}
-                </p>
+          <Image
+          className="ios-app-icon !mt-[-60px]"
+          src="/favicon.svg"
+          width={80}
+          height={80}
+          alt="elevate app"
+          />
+          <AlertDialogTitle><span className="!font-bold">Install app <br /> Elevate</span></AlertDialogTitle>
+        </AlertDialogHeader>
+
+          <div className="mt-2 text-foreground">
+            {isIOS && isSafari && (
+              <div className="leading-[2] text-start text-lg">
+                <ol className="space-y-3">
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      1
+                    </div>
+                    <span>
+                      Tap 
+                      <span className="text-base px-2 py-1 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                        <Ellipsis className="inline"/>
+                      </span>
+                      in the toolbar.
+                    </span>
+                  </li>
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      2
+                    </div>
+                    <span>
+                      Tap 
+                      <span className="text-base px-2 py-1 pr-3 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                      <IconIosShare height={26} width={26} className="inline" /> Share
+                      </span>
+                      in the Menu.
+                    </span>
+                  </li>
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      3
+                    </div>
+                    <span>
+                      Tap 
+                      <span className="text-base px-2 py-1 pr-4 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                      <Ellipsis className="p-1 bg-gray-200 rounded-full inline"/> More
+                      </span>
+                    </span>
+                  </li>
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      4
+                    </div>
+                    <span>
+                      Select 
+                      <span className="text-base px-2 py-1 pr-4 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                      <SquarePlus className="inline" strokeWidth={1}/> Add to Home Screen
+                      </span>
+                      from the Menu.
+                    </span>
+                  </li>
+                </ol>
+                <p className="mt-6 text-base">An icon will be added to your home screen so you can quickly access the app</p>
               </div>
-            ) : (
+            )}
+            
+            {isIOS && !isSafari && (
+              <div className="leading-[2] text-start text-lg">
+                <ol className="space-y-3">
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      1
+                    </div>
+                    <span>
+                      Tap the
+                      <span className="text-base px-2 py-1 pr-3 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                      <IconIosShare height={26} width={26} className="inline" />
+                      </span>
+                      in the upper right corner.
+                    </span>
+                  </li>
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      2
+                    </div>
+                    <span>
+                      Tap 
+                      <span className="text-base px-2 py-1 pr-4 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                      <Ellipsis className="p-1 bg-gray-200 rounded-full inline"/> More
+                      </span>
+                    </span>
+                  </li>
+                  <li className="items-start flex flex-row flex-nowrap gap-2">
+                    <div className="mt-2 text-white aspect-square h-8 text-lg font-medium place-content-center-safe grid rounded-full bg-app-purple-300">
+                      3
+                    </div>
+                    <span>
+                      Select 
+                      <span className="text-base px-2 py-1 pr-4 shadow-sm shadow-black/30 rounded-md inline-flex items-center gap-2 mx-4" >
+                      <SquarePlus className="inline" strokeWidth={1}/> Add to Home Screen
+                      </span>
+                      from the Menu.
+                    </span>
+                  </li>
+                </ol>
+                <p className="mt-6 text-base">An icon will be added to your home screen so you can quickly access the app</p>
+              </div>
+            )}
+
+            {!isIOS && (
               "Install this app to your device for a better experience."
             )}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+          </div>
+
         <AlertDialogFooter className="flex justify-end gap-2">
           <AlertDialogCancel onClick={() => setOpen(false)}>
-            Cancel
+            Return
           </AlertDialogCancel>
           {!isIOS && deferredPrompt && (
             <AlertDialogAction onClick={handleInstallClick}>
@@ -124,6 +225,10 @@ export default function InstallPrompt() {
           )}
         </AlertDialogFooter>
       </AlertDialogContent>
+
+      {open && isIOS && !deferredPrompt &&
+        <LongArrowDown className={cn("iphone install-app-arrow text-blue-500", isSafari ? 'safari' : 'chrome')} />
+      }
     </AlertDialog>
   );
 }

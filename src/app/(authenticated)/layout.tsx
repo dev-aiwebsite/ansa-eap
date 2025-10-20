@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import AppHeader from "@/components/header/appHeader";
-import AppSidebar from "@/components/sidebar/appSidebar";
+import AppNav from "@/components/ui/nav/AppNav";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
@@ -34,7 +34,7 @@ export default async function Layout({
       <PostServiceProvider>
           <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
             <div>
-              <AppSidebar />
+              <AppNav />
             </div>
             <div className="flex-1">
               <AppHeader />
