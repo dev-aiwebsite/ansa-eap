@@ -54,6 +54,7 @@ const NavMobile = () => {
               )}
               variant="ghost"
             >
+              
               <Icon strokeWidth={1.2} className={cn("!w-[28px] !h-[28px] block", iconClassName)} />
               <span className={cn("text-[8px]", textClassName)}>{label}</span>
             </Button>
