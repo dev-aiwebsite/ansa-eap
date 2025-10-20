@@ -82,10 +82,13 @@
   --breadcrumb-h: 40px;
 
   /* ✅ Updated brand primary color */
-  --primary: oklch(0.74 0.13 161.68);
+  --primary: oklch(0.74 0.13 161.74);
   --primary-foreground: oklch(0.98 0.01 161.68);
 
-  --secondary: oklch(97.079% 0.02054 161.775);
+  
+  
+  --secondary: oklch(0.75 0.13 280.30);
+  /* --secondary: oklch(97.079% 0.02054 161.775); */
   --secondary-foreground: oklch(0.2 0.01 161.68);
 
   --accent: oklch(0.93 0.03 161.68);
