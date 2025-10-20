@@ -84,11 +84,13 @@ export default function FormAccount({
         
 
         <FileUploaderRegular
+          
           useCloudImageEditor={false}
           sourceList="local"
           classNameUploader="uc-light"
           pubkey="9c35a0212e26c1a710ca"
-          multiple={false}
+           multiple={false}
+          accept="image/*" // 👈 Only allow images
           onCommonUploadSuccess={(e) => {
             const cdnUrl = e.successEntries[0].cdnUrl;
             setValue("profile_img", cdnUrl, { shouldDirty: true });

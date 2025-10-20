@@ -1,14 +1,13 @@
 "use client";
-import { slugifyName } from "@/lib/helper";
-import { Button } from "../ui/button";
-import Container from "../ui/container";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import * as Icons from "@/icons";
+import { slugifyName } from "@/lib/helper";
+import { Button } from "../ui/button";
 const ContentLibraryPageMobile = () => {
   const { categories } = usePostServiceContext();
 
   return (
-    <Container>
+    
       <div className="grid grid-cols-3 gap-6 pt-10">
         {categories.map(({ id, label, icon }) => {
           const Icon = Icons[icon as keyof typeof Icons] as
@@ -33,7 +32,7 @@ const ContentLibraryPageMobile = () => {
           );
         })}
       </div>
-    </Container>
+    
   );
 };
 

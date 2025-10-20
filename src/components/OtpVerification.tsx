@@ -64,16 +64,20 @@ export function OtpVerification({
         subject: "One-time verification code",
         htmlBody: EMAIL_VERIFICATION_TEMPLATE({code:newOtp}),
       };
-      await sendMail(payload)
+
+      if(process.env.NODE_ENV == 'development'){
+      alert(newOtp)
+      } else {
+        await sendMail(payload)
+
+      }
       
     } catch (err) {
       console.log(err);
       alert("something went wrong");
     }
 
-    if(process.env.NODE_ENV == 'development'){
-      console.log(newOtp)
-    }
+    
     
       setOtp(newOtp);
       setValue("");

@@ -755,7 +755,7 @@ export const IconEmergency:IconComponent = (props) => {
       width="32"
       height="32"
       viewBox="0 0 32 32"
-      fill="none"
+      fill="white"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
@@ -786,7 +786,7 @@ export const IconEmergency:IconComponent = (props) => {
         />
       </mask>
       <g mask="url(#mask0_540_1283)">
-        <path d="M0 0H34V34H0V0Z" fill="white" />
+        <path d="M0 0H34V34H0V0Z" />
       </g>
     </svg>
   );
@@ -877,3 +877,46 @@ export const IconQuickReads:IconComponent = (props) => {
 
   )
 };
+
+
+export const IconIosShare: IconComponent = (props) => {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 50 50"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"
+        fill="currentColor"
+      />
+      <path d="M24 7h2v21h-2z" fill="currentColor" />
+      <path
+        d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+};
+
+
+export const LongArrowDown:IconComponent = (props) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    stroke="currentColor"
+    {...props}
+  >
+    <path
+      d="M12 4L12 20M12 20L18 14M12 20L6 14"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

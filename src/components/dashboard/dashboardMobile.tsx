@@ -6,7 +6,7 @@ import WeeklyBitesMobile from "../weeklyBitesMobile";
 
 const DashboardMobile = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-[200px]">
       <div className="space-y-1">
         <div className="flex flex-row flex-nowrap">
           <span className="card-title">Upcoming Appointments</span>

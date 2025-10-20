@@ -1,9 +1,9 @@
-import SidebarMobile from "@/components/sidebar/sidebarMobile";
+import AppNav from "@/components/ui/nav/AppNav";
 
 const page = () => {
     return (
         <div>
-            <SidebarMobile />
+            <AppNav />
         </div>
     );
 }
