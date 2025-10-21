@@ -15,7 +15,7 @@ const ContentLibraryPageMobile = () => {
             | undefined;
           return (
             <Button
-              href={`/learning-development/${id}~${slugifyName(label)}`}
+              href={`/resources/${id}~${slugifyName(label)}`}
               key={id}
               className="shadow-lg bg-white text-zinc-400 rounded-xl p-2 text-base flex-col aspect-square h-auto"
               variant="ghost"

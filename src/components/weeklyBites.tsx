@@ -87,7 +87,7 @@ const WeeklyBites = ({ hideTitle = false }: { hideTitle?: boolean }) => {
           {!hideTitle && <h3 className="card-title">Weekly Bites</h3>}
           <TabsList className="bg-transparent rounded-md p-1">
             <Link
-              href="/learning-development"
+              href="/resources"
               className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
               See All

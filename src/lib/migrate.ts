@@ -238,6 +238,7 @@ CREATE TABLE categories (
   label TEXT NOT NULL,
   type TEXT NOT NULL,
   icon TEXT,
+  image TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );`
   try {

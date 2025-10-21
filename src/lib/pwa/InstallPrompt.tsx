@@ -39,8 +39,8 @@ export default function InstallPrompt() {
     let isNeedToPrompt = false;
 
     if (nextPromptDate) {
-      // isNeedToPrompt = today > new Date(nextPromptDate);
-      isNeedToPrompt = true
+      isNeedToPrompt = today > new Date(nextPromptDate);
+      // isNeedToPrompt = true
     } else {
       isNeedToPrompt = true; // No record yet, so prompt the first time
     }
@@ -107,7 +107,7 @@ export default function InstallPrompt() {
           height={80}
           alt="elevate app"
           />
-          <AlertDialogTitle><span className="!font-bold">Install app <br /> Elevate</span></AlertDialogTitle>
+          <AlertDialogTitle className="text-center"><span className="!font-bold">Install app <br /> Elevate</span></AlertDialogTitle>
         </AlertDialogHeader>
 
           <div className="mt-2 text-foreground">

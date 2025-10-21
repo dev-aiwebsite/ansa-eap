@@ -36,7 +36,7 @@ const PostCard = ({ item, actionText = "read", className }: { item: Post, action
             {formatAsTime(item.duration_hours,item.duration_minutes)}
           </span>
         </div>
-        <Button className="ml-auto capitalize" variant="outline" href={`/learning-development/${item.category}~${slugifyName(categories.find(c => c.id == item.category)?.label ?? "")}/${item.id}~${slugifyName(item.title)}`}>
+        <Button className="ml-auto capitalize" variant="outline" href={`/resources/${item.category}~${slugifyName(categories.find(c => c.id == item.category)?.label ?? "")}/${item.id}~${slugifyName(item.title)}`}>
           {actionText}
         </Button>
       </div>

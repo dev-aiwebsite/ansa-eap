@@ -2,16 +2,17 @@
 import {
   IconContents,
   IconEmergency,
+  IconGrid,
   IconServices,
 } from "@/icons";
-import { House, UserCog } from "lucide-react";
+import { UserCog } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { Button } from "../button";
 import { cn } from "@/lib/utils";
 import { UserMenu } from "../userMenu";
 
 const items = [
-  { icon: House, label: "Home", link: "/dashboard" },
+  { icon: IconGrid, label: "Dashboard", link: "/dashboard" },
   { icon: IconServices, label: "Services", link: "/health-services" },
   {
     icon: IconEmergency,
@@ -21,7 +22,7 @@ const items = [
     textClassName: "",
     link: "/critical-response",
   },
-  { icon: IconContents, label: "Resources", link: "/learning-development" },
+  { icon: IconContents, label: "Resources", link: "/resources" },
   { icon: UserCog, label: "Account", link: "/settings/account" },
 ];
 const NavMobile = () => {

@@ -32,7 +32,7 @@ export default function MoodStatement({
     <div>
       <span>{statement} </span>
       {!isPositive && (
-        <Link href="/learning-development" className="underline font-medium">
+        <Link href="/resources" className="underline font-medium">
           Visit L&D
         </Link>
       )}

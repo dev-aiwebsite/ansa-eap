@@ -47,7 +47,7 @@ const PostSidebar = ({currentPost, currentCategory}:PostSidebarProps) => {
                 <li key={i.id} className="capitalize">
                   <Link
                     className="hover:text-app-purple-300"
-                    href={"/learning-development/" + i.label}
+                    href={"/resources/" + i.label}
                   >
                     {i.label}
                   </Link>
