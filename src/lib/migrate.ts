@@ -189,6 +189,7 @@ CREATE TABLE public_events (
 const createCompaniesTable = `CREATE TABLE companies (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
+  code TEXT,
   logo_url TEXT, -- optional logo
   max_users INT DEFAULT 10 CHECK (max_users > 0),
   max_booking_credits_per_user INT DEFAULT 5 CHECK (max_booking_credits_per_user >= 0),

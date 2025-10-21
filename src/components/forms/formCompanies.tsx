@@ -13,14 +13,6 @@ import Image from "next/image";
 import { Company, createCompany, updateCompany } from "@/serverActions/crudCompanies";
 import { cn } from "@/lib/utils";
 
-type CompanyFormValues = {
-  id?: string;
-  name: string;
-  logo_url: string | null;
-  max_users: number;
-  max_booking_credits_per_user: number;
-};
-
 export default function CompanyForm({
   company,
   className,
@@ -39,10 +31,10 @@ export default function CompanyForm({
     watch,
     reset,
     formState: { errors },
-  } = useForm<CompanyFormValues>({
+  } = useForm<Company>({
     defaultValues: company
       ? {
-          id: company.id,
+          id: company.id ?? "",
           name: company.name,
           logo_url: company.logo_url,
           max_users: company.max_users,
@@ -78,7 +70,7 @@ export default function CompanyForm({
 
   const logoUrl = watch("logo_url");
 
-  async function onSubmit(values: CompanyFormValues) {
+  async function onSubmit(values: Company) {
     setIsLoading(true);
     setError("");
     setSuccess(false);
@@ -87,7 +79,7 @@ export default function CompanyForm({
       let result;
       if (company) {
         // update mode
-        result = await updateCompany(values.id!, values);
+        result = await updateCompany(values.id, values);
       } else {
         // create mode
         result = await createCompany(values);

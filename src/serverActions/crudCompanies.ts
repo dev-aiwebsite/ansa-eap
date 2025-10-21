@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 
 export type Company = {
   id: string;
+  code: string;
   name: string;
   logo_url: string | null;
   max_users: number;
@@ -80,6 +81,29 @@ export async function getCompanyById(id: string): Promise<Result<Company>> {
 
     if (!result.rows[0]) {
       return { success: false, message: `Company: ${id} not found` };
+    }
+
+    return {
+      success: true,
+      message: "Company fetched successfully",
+      data: result.rows[0] as Company,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+
+export async function getCompanyByCode(code: string): Promise<Result<Company>> {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM companies WHERE code = $1;`,
+      [code]
+    );
+
+    if (!result.rows[0]) {
+      return { success: false, message: `Company: ${code} not found` };
     }
 
     return {

@@ -5,9 +5,9 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { createWHO5Response } from "@/serverActions/crudWho5";
-import { AuthenticateUser } from "@/serverActions/login_logout";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import Intro from "../intro/Intro";
 
 type WHO5Form = {
   q1: number;
@@ -36,8 +36,9 @@ const responseScale = [
 
 export default function WHO5FormComponent() {
   const { currentUser } = useAppServiceContext();
+  const [isComplete, setIsComplete] = useState(false)
   const CURRENT_USER_ID = currentUser?.id;
-  const router = useRouter()
+  
   const {
     handleSubmit,
     control,
@@ -73,24 +74,22 @@ export default function WHO5FormComponent() {
       q5: data.q5,
     });
 
-    console.log(res);
+    
 
     const total = Object.values(data).reduce((sum, val) => sum + Number(val), 0);
     console.log("Raw score:", total, "Percentage score:", total * 4);
-
-    reset();
-    const credentials = {
-      useremail: currentUser.email,userpass: currentUser.password
+    console.log(res)
+    if(res.success){
+      reset();
+      setIsComplete(true)
     }
     
-    const authRes = await AuthenticateUser(credentials)
-    router.push(authRes?.redirectUrl)
      
   };
 
 
   
-  return (
+  return (<>
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-6 p-4 border rounded-lg bg-white"
@@ -177,5 +176,9 @@ export default function WHO5FormComponent() {
         </Button>
       </div>
     </form>
+      {isComplete && 
+        <Intro/>
+      }
+  </>
   );
 }
