@@ -4,9 +4,19 @@ import { Button } from "@/components/ui/button";
 import DeleteItemButton from "./deleteCategoryBtn";
 import { Category } from "@/serverActions/crudCategories";
 import * as Icons from "@/icons";
+import ImageWithFallback from "@/components/ui/imageWithFallback";
 
 export function useCategoryColumns(): ColumnDef<Category>[] {
   const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: "image",
+      header: "Image",
+      cell: ({ row }) => {
+        const image = row.original.image;
+
+        return <ImageWithFallback src={image} alt="" className="!w-6 !h-6" />; // adjust size as needed
+      },
+    },
     {
       accessorKey: "icon",
       header: "Icon",
@@ -19,7 +29,7 @@ export function useCategoryColumns(): ColumnDef<Category>[] {
           | undefined;
         if (!Icon) return null;
 
-        return <Icon className="w-6 h-6" />; // adjust size as needed
+        return <Icon className="!w-6 !h-6" />; // adjust size as needed
       },
     },
     {

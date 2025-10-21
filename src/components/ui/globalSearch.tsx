@@ -190,7 +190,7 @@ export function GlobalSearch() {
                   heading="Learning & Development"
                 >
                   {navItems
-                    .filter((i) => i.link == "/learning-development")[0]
+                    .filter((i) => i.link == "/resources")[0]
                     .subitems?.map((i) => (
                       <CommandItem
                         key={i.title}

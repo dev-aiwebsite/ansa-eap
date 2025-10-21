@@ -1,5 +1,6 @@
 "use client";
-import { IconBookMark, IconDocument, IconGrid } from "@/icons";
+import { usePostServiceContext } from "@/context/postServiceContext";
+import { IconContents, IconGrid, IconServices } from "@/icons";
 import { slugifyName } from "@/lib/helper";
 import { NavItemsType } from "@/types";
 import { ChevronRight } from "lucide-react";
@@ -12,7 +13,6 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../ui/collapsible";
-import { usePostServiceContext } from "@/context/postServiceContext";
 
 export function useNavItems(): NavItemsType[] {
   const { categories } = usePostServiceContext();
@@ -26,17 +26,17 @@ export function useNavItems(): NavItemsType[] {
     {
       title: "Health Services",
       link: "/health-services",
-      icon: <IconBookMark />,
+      icon: <IconServices />,
     },
     {
-      title: "Learning & Development",
-      link: "/learning-development",
-      icon: <IconDocument />,
+      title: "Resources",
+      link: "/resources",
+      icon: <IconContents />,
       subitems: categories
         .sort((a, b) => a.label.localeCompare(b.label))
         .map((i) => ({
           title: i.label,
-          link: `/learning-development/${i.id}~${slugifyName(i.label)}`,
+          link: `/resources/${i.id}~${slugifyName(i.label)}`,
         })),
     },
   ];

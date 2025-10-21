@@ -7,7 +7,7 @@ export type Category = {
   label: string;
   type: string;
   created_at: string;
-  icon?: string
+  icon?: string;
   image?: string;
 };
 

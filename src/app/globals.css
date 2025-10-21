@@ -362,7 +362,7 @@ button.shadow-btn {
   transition: all .3s ease-in-out, z-index 0s;
 }
 .focused {
-  z-index: 99999999;
+  z-index: 9999999;
     translate: 0 50%;
     scale: 1.1;
     box-shadow: 0 0px 2px #fff, 0 0px 50px #fff, 0 0 0 200vw #0005;

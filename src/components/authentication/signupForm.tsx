@@ -1,18 +1,18 @@
 "use client";
 
-import { Check } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import Link from "next/link";
-import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { getCompanyByCode } from "@/serverActions/crudCompanies";
 import { createUser, getUsersByCompany } from "@/serverActions/crudUsers";
-import { useRouter } from "next/navigation";
 import { AuthenticateUser } from "@/serverActions/login_logout";
-import { getCompanyById } from "@/serverActions/crudCompanies";
+import { Check } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 type SignupFormData = {
   first_name: string;
@@ -42,7 +42,7 @@ export default function SignupForm({
 
     try {
       // 1️⃣ Validate company exists
-      const {data:company} = await getCompanyById(data.company);
+      const {data:company} = await getCompanyByCode(data.company);
       console.log(company, 'company')
       if (!company) {
         setError("company", {
@@ -54,7 +54,7 @@ export default function SignupForm({
       }
 
       // 2️⃣ Get current users in company
-      const usersRes = await getUsersByCompany(company.id);
+      const usersRes = await getUsersByCompany(company.code);
       const currentUsersCount = usersRes.success && usersRes.data ? usersRes.data.length : 0;
 
       // 3️⃣ Check max users restriction
@@ -159,10 +159,10 @@ export default function SignupForm({
 
           {/* Company */}
           <div className="grid gap-2">
-            <Label htmlFor="company">Company ID</Label>
+            <Label htmlFor="company">Company Code</Label>
             <Input
               id="company"
-              placeholder="Company ID"
+              placeholder="Code"
               {...register("company", { required: "Company is required" })}
             />
             {errors.company && (

@@ -52,7 +52,7 @@ export function PostServiceProvider({
         // Format health news
         const formattedNews = (newsRes || []).map((i) => ({
           ...i,
-          slug: `/learning-development/7p2v1Ur_O4~health-news/${slugifyName(
+          slug: `/resources/7p2v1Ur_O4~health-news/${slugifyName(
             i.title
           )}`,
         }));
@@ -109,7 +109,7 @@ export function PostServiceProvider({
   ].filter(Boolean) as Posts;
 
   function generatePostLink(post: Post) {
-    return `/learning-development/${post.category}~${categories.find(c => c.id == post.category)?.label}/${post.id}~${post.title}`
+    return `/resources/${post.category}~${categories.find(c => c.id == post.category)?.label}/${post.id}~${post.title}`
   }
 
 

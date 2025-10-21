@@ -41,7 +41,7 @@ const DashboardMobile = () => {
           <span className="card-title">Weekly Bites</span>
           <Link
             className="ml-auto text-sm text-app-purple-300 font-medium"
-            href="/learning-development"
+            href="/resources"
           >
             See all
           </Link>

@@ -26,7 +26,7 @@ const items = [
     link: "/critical-response",
   },
   { icon: IconPublicSession, label: "Public Session", link: "/public-events" },
-  { icon: IconContents, label: "Contents", link: "/learning-development" },
+  { icon: IconContents, label: "Contents", link: "/resources" },
   { icon: UserCog, label: "Account", link: "/settings/account" },
 ];
 const SidebarMobile = () => {

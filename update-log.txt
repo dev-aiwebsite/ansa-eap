@@ -1,16 +1,7 @@
-UPDATE categories
-SET label = 'Mental Health Moments'
-WHERE id = '7p2v1Ur_O4';
+ALTER TABLE companies
+ADD COLUMN code TEXT;
 
 
-ALTER TABLE categories
-ADD COLUMN image TEXT;
-
-
-
-// update notes
-Added Posts type and replace all Post[]
-[x] Mental Health Moments - Allied Health News
-[x] A-z order
-[x] Weekly bites replace 5m view with clock
-[x] ANSA content first 
+UPDATE companies
+SET code = 'ANSA'
+WHERE id = 'YaJ4wlDPyN';
