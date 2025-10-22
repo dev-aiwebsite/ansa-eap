@@ -15,7 +15,7 @@ const WeeklyBitesMobile = () => {
   const {latestPosts, generatePostLink} = usePostServiceContext()
 
   const data = latestPosts.sort((a, b) => new Date(b?.created_at ?? "").getTime() - new Date(a?.created_at ?? "").getTime())
-  .slice(0,2)
+  .slice(0,5)
   .map(i => {
     return {
       id: i.id ?? "",
@@ -78,7 +78,7 @@ function WeeklyBitesTable ({data}:{data:WeeklyBitesData[]}) {
                  </div>
              </td>
              <td className="align-middle w-[80px]">
-                     <Button href={item.link} className="h-fit rounded-lg w-full !px-2 !py-1 text-[1em]" variant="outline">
+                     <Button href={item.link} className="h-fit w-full !px-2 !py-1 text-[1em]" variant="outline">
                          {item.action}
                      </Button>
              </td>

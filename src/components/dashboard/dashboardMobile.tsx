@@ -9,6 +9,7 @@ const DashboardMobile = () => {
   return (
     <div className="space-y-6 pb-[100px]">
       <div className="space-y-1">
+        <span className="card-title">Mental Health Moments</span>
         <HealthNewsCarousel className="simple" />
       </div>
       <div className="space-y-1">
