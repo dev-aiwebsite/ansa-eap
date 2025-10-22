@@ -206,7 +206,7 @@
   }
 
   .btn-thin {
-    @apply !px-4 !py-2;
+    @apply !px-4 !py-2 !h-10;
   }
 
   .muted-text {
@@ -453,7 +453,7 @@ html {
   --header-h: 60px;
 
     .max-h-webkit-fill.h-full.overflow-auto {
-      padding-bottom: 200px;
+      padding-bottom: 100px;
     }
 
     body #chattera_chatbubble_wrapper_trigger {
@@ -622,4 +622,13 @@ ul.submenu {
   60% {
     transform: translateY(-15px);
   }
+}
+
+.post-carousel.simple .card *:not(.img) {
+    display: none;
+}
+
+.post-carousel img {
+    aspect-ratio: 16 / 9;
+    height: auto;
 }

@@ -4,12 +4,12 @@ const PostCardSkeleton = ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm animate-pulse",
+        "card skeleton rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm animate-pulse",
         className
       )}
     >
       {/* Thumbnail */}
-      <div className="rounded-sm w-full h-[167px] bg-zinc-200" />
+      <div className="img rounded-sm w-full h-[167px] bg-zinc-200" />
 
       {/* Title */}
       <div className="h-5 w-3/4 bg-zinc-200 rounded" />

@@ -13,7 +13,7 @@ const PostCard = ({ item, actionText = "read", className }: { item: Post, action
     <div className={cn("card rounded-lg p-4 w-1/4 min-w-[280px] w-full flex flex-col gap-5 text-sm", className)}>
       
         <ImageWithFallback
-          className="rounded-sm w-full h-[167px] object-cover object-top"
+          className="img rounded-sm w-full h-[167px] object-cover object-top"
           width={200}
           height={100}
           src={item.thumbnail}

@@ -1,23 +1,15 @@
 import Link from "next/link";
-import AppointmentList from "../appointmentList";
 import DailyCheckInMobile from "../forms/dailyCheckin/dailyCheckInMobile";
+import HealthNewsCarousel from "../post/HealthNewsCarousel";
 import PublicEventsList from "../publicEvents/publicEventsList";
 import WeeklyBitesMobile from "../weeklyBitesMobile";
+import CounsellingCard from "../services/CounsellingCard";
 
 const DashboardMobile = () => {
   return (
-    <div className="space-y-6 pb-[200px]">
+    <div className="space-y-6 pb-[100px]">
       <div className="space-y-1">
-        <div className="flex flex-row flex-nowrap">
-          <span className="card-title">Upcoming Appointments</span>
-          <Link
-            className="ml-auto text-sm text-app-purple-300 font-medium"
-            href="/my-appointments"
-          >
-            See all
-          </Link>
-        </div>
-        <AppointmentList count={1} />
+        <HealthNewsCarousel className="simple" />
       </div>
       <div className="space-y-1">
         <div className="flex flex-row flex-nowrap">
@@ -49,6 +41,14 @@ const DashboardMobile = () => {
         <div className="flex-1">
           <WeeklyBitesMobile />
         </div>
+      </div>
+
+      {/* counselling */}
+      <div className="space-y-1">
+        <div className="flex flex-row flex-nowrap">
+          <span className="card-title">Counselling</span>
+        </div>
+        <CounsellingCard />
       </div>
     </div>
   );

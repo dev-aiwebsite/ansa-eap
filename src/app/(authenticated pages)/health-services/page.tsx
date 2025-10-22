@@ -51,14 +51,13 @@ function Card({ item }: { item: Service }) {
       />
       <p className="text-base font-medium">{item.service_name}</p>
 
-      <p className="px-[inherit] text-muted-foreground text-xs">
+      <p className="text-muted-foreground text-xs">
         {truncateText(htmlToPlainText(item.description), 150)}
       </p>
-      <div className="flex">
+      <div className="flex mt-auto">
         <Button
           href={item.booking_link || "/health-services/booking"}
           className="ml-auto"
-          variant="outline"
           {...(item.booking_link ? { target: "_blank" } : {})}
         >
           Book Now
