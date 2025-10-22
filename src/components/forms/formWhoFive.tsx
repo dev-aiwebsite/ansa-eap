@@ -105,11 +105,11 @@ export default function WHO5FormComponent() {
         <table className="min-w-lg w-full border-collapse border text-sm">
           <thead>
             <tr>
-              <th className="border px-4 py-2 text-left">Question</th>
+              <th className="border px-4 py-2 text-left w-[250px]">Question</th>
               {responseScale.map((opt) => (
                 <th
                   key={opt.value}
-                  className="border px-2 py-2 text-center align-middle"
+                  className="border px-2 py-2 text-center align-middle w-[80px]"
                 >
                   <div className="flex flex-col items-center justify-center">
                     <span className="font-medium">{opt.value}</span>
@@ -128,13 +128,12 @@ export default function WHO5FormComponent() {
                   {idx + 1}. {q.text}
                 </td>
                 {responseScale.map((opt) => (
-                  <label
-                  className="contents"
-                  key={opt.value}
-                  htmlFor={`${q.id}-${opt.value}`}>
+              
                   <td
-                    className="border px-2 py-2 text-center align-middle"
+                  key={opt.value}
+                    className="relative border px-2 py-2 text-center align-middle"
                   >
+                        
                     <Controller
                       name={q.id as keyof WHO5Form}
                       control={control}
@@ -152,8 +151,12 @@ export default function WHO5FormComponent() {
                         </RadioGroup>
                       )}
                     />
+                    <label
+                   className="absolute top-0 left-0 h-full w-full cursor-pointer"
+                    htmlFor={`${q.id}-${opt.value}`}>
+                    </label>
                   </td>
-                  </label>
+                  
                 ))}
               </tr>
             ))}

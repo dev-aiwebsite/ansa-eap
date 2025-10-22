@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 interface AnimatedInputOTPProps {
   containerClassName?: string,
   slotClassName?:string,
+  wrapperClassName?:string,
   value?: string
   onChange?: (value: string) => void
   onComplete?: (value: string) => void
@@ -192,6 +193,7 @@ function AnimatedInputOTPSeparator({ ...props }: React.ComponentProps<"div"> & M
 export function AnimatedOTPInput({
   maxLength = 6,
   className,
+  wrapperClassName,
   slotClassName,
   value,
   onChange,
@@ -207,7 +209,7 @@ export function AnimatedOTPInput({
       onComplete={onComplete}
       {...props}
     >
-      <AnimatedInputOTPGroup>
+      <AnimatedInputOTPGroup className={wrapperClassName}>
         {[...Array(maxLength)].map((_, i) => (
           <AnimatedInputOTPSlot key={i} index={i} className={slotClassName} />
         ))}

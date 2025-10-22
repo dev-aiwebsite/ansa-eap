@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { sendMail } from "@/lib/email/elasticemail";
 import { EMAIL_VERIFICATION_TEMPLATE } from "@/lib/email/email_templates/EmailVerification";
+import Link from "next/link";
 
 type OtpVerificationProps = {
   className?: string;
@@ -140,7 +141,7 @@ export function OtpVerification({
                   <span className="font-medium">{email || "your email"}</span>.
                 </p>
                 <p className="text-balance muted-text">
-                  <span>Check your email and enter the code below.</span>
+                  <span>Check your inbox or spam folder and enter the code below.</span>
                 </p>
               </>
             ) : (
@@ -165,7 +166,8 @@ export function OtpVerification({
             onChange={setValue}
             onComplete={handleComplete}
             maxLength={6}
-            slotClassName="!p-6 !text-xl"
+            wrapperClassName="space-x-2"
+            slotClassName="!p-5 !text-lg rounded-md border-l"
           />
 
           {errorMsg && (
@@ -226,6 +228,13 @@ export function OtpVerification({
               </>
             )}
           </Button>
+        </div>
+
+        <div className="text-center muted-text text-balance">
+          <span>Need to change account? </span>
+          <Link onClick={() => window.location.reload()} href="#" className="underline underline-offset-4">
+            Back to login
+          </Link>
         </div>
       </div>
     </div>

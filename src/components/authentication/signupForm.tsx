@@ -11,8 +11,9 @@ import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import OtpVerification from "../OtpVerification";
 
 type SignupFormData = {
   first_name: string;
@@ -30,20 +31,36 @@ export default function SignupForm({
     register,
     handleSubmit,
     setError,
+    getValues,
     formState: { errors },
   } = useForm<SignupFormData>();
 
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [otpConfirmed, setOtpConfirmed] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!otpConfirmed) return;
+    const { email, password } = getValues();
+    const credentials = {
+      useremail: email,
+      userpass: password,
+    };
+    async function login() {
+      const authRes = await AuthenticateUser(credentials, false);
+      router.push(authRes?.redirectUrl);
+    }
+    login();
+  }, [otpConfirmed]);
 
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
 
     try {
       // 1️⃣ Validate company exists
-      const {data:company} = await getCompanyByCode(data.company);
-      console.log(company, 'company')
+      const { data: company } = await getCompanyByCode(data.company);
+      console.log(company, "company");
       if (!company) {
         setError("company", {
           type: "manual",
@@ -55,7 +72,8 @@ export default function SignupForm({
 
       // 2️⃣ Get current users in company
       const usersRes = await getUsersByCompany(company.code);
-      const currentUsersCount = usersRes.success && usersRes.data ? usersRes.data.length : 0;
+      const currentUsersCount =
+        usersRes.success && usersRes.data ? usersRes.data.length : 0;
 
       // 3️⃣ Check max users restriction
       if (currentUsersCount >= company.max_users) {
@@ -76,31 +94,20 @@ export default function SignupForm({
       });
 
       if (!res.success || !res.data) {
+        let message = "Unable to register";
+        if (res.message.includes("users_email_key")) {
+          message = "Email is already registered.";
+        }
+
         setError("root", {
           type: "manual",
-          message: res.message || "Unable to register",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      // 5️⃣ Auto-login
-      const loginRes = await AuthenticateUser({
-        useremail: data.email,
-        userpass: data.password,
-      });
-
-      if (!loginRes) {
-        setError("root", {
-          type: "manual",
-          message: "Registered but login failed",
+          message: message,
         });
         setIsLoading(false);
         return;
       }
 
       setSuccess(true);
-      router.push(loginRes.redirectUrl ?? "/dashboard");
     } catch (err) {
       const typedError = err as Error;
       setError("root", { type: "manual", message: typedError.message });
@@ -112,112 +119,147 @@ export default function SignupForm({
   return (
     <div className="grid md:grid-cols-2 rounded-3xl overflow-hidden bg-white">
       <div className="bg-app-blue-600 p-5 md:p-10 items-center justify-center flex">
-        <Image 
-        className="max-md:w-[120px]"
-        src="/assets/images/logo.png" width={350} height={200} alt="logo" />
+        <Image
+          className="max-md:w-[120px]"
+          src="/assets/images/logo.png"
+          width={350}
+          height={200}
+          alt="logo"
+        />
       </div>
 
       {/* Right panel */}
-      <div className={cn("flex flex-col gap-6 p-10", className)} {...props}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <div className="flex flex-col items-center gap-2">
-            <h1 className="text-xl font-bold">Sign Up</h1>
-          </div>
+      {!success && (
+        <div className={cn("flex flex-col gap-6 p-10", className)} {...props}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-6"
+          >
+            <div className="flex flex-col items-center gap-2">
+              <h1 className="text-xl font-bold">Sign Up</h1>
+            </div>
 
-          {/* Root / form-level errors */}
-          {errors.root && (
-            <p className="text-xs text-red-400 text-center">{errors.root.message}</p>
-          )}
+            {/* Root / form-level errors */}
+            {errors.root && (
+              <p className="text-xs text-red-400 text-center">
+                {errors.root.message}
+              </p>
+            )}
 
-          <div className="grid gap-2 grid-cols-2">
-            {/* First Name */}
+            <div className="grid gap-2 grid-cols-2">
+              {/* First Name */}
+              <div className="grid gap-2">
+                <Label htmlFor="first_name">First Name</Label>
+                <Input
+                  id="first_name"
+                  placeholder="John"
+                  {...register("first_name", {
+                    required: "First name is required",
+                  })}
+                />
+                {errors.first_name && (
+                  <span className="text-xs text-red-400">
+                    {errors.first_name.message}
+                  </span>
+                )}
+              </div>
+
+              {/* Last Name */}
+              <div className="grid gap-2">
+                <Label htmlFor="last_name">Last Name</Label>
+                <Input
+                  id="last_name"
+                  placeholder="Doe"
+                  {...register("last_name", {
+                    required: "Last name is required",
+                  })}
+                />
+                {errors.last_name && (
+                  <span className="text-xs text-red-400">
+                    {errors.last_name.message}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Company */}
             <div className="grid gap-2">
-              <Label htmlFor="first_name">First Name</Label>
+              <Label htmlFor="company">Company Code</Label>
               <Input
-                id="first_name"
-                placeholder="John"
-                {...register("first_name", { required: "First name is required" })}
+                id="company"
+                placeholder="Code"
+                {...register("company", { required: "Company is required" })}
               />
-              {errors.first_name && (
-                <span className="text-xs text-red-400">{errors.first_name.message}</span>
+              {errors.company && (
+                <span className="text-xs text-red-400">
+                  {errors.company.message}
+                </span>
               )}
             </div>
 
-            {/* Last Name */}
+            {/* Email */}
             <div className="grid gap-2">
-              <Label htmlFor="last_name">Last Name</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="last_name"
-                placeholder="Doe"
-                {...register("last_name", { required: "Last name is required" })}
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                {...register("email", { required: "Email is required" })}
               />
-              {errors.last_name && (
-                <span className="text-xs text-red-400">{errors.last_name.message}</span>
+              {errors.email && (
+                <span className="text-xs text-red-400">
+                  {errors.email.message}
+                </span>
               )}
             </div>
+
+            {/* Password */}
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+              />
+              {errors.password && (
+                <span className="text-xs text-red-400">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            <Button isLoading={isLoading} type="submit" className="w-full">
+              {success ? (
+                <>
+                  <Check /> Success
+                </>
+              ) : (
+                <>Sign Up</>
+              )}
+            </Button>
+          </form>
+
+          <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+            Already have an account?{" "}
+            <Link href="/login" className="ml-1">
+              Sign in
+            </Link>
           </div>
-
-          {/* Company */}
-          <div className="grid gap-2">
-            <Label htmlFor="company">Company Code</Label>
-            <Input
-              id="company"
-              placeholder="Code"
-              {...register("company", { required: "Company is required" })}
-            />
-            {errors.company && (
-              <span className="text-xs text-red-400">{errors.company.message}</span>
-            )}
-          </div>
-
-          {/* Email */}
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              {...register("email", { required: "Email is required" })}
-            />
-            {errors.email && (
-              <span className="text-xs text-red-400">{errors.email.message}</span>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              {...register("password", {
-                required: "Password is required",
-                minLength: { value: 6, message: "Password must be at least 6 characters" },
-              })}
-            />
-            {errors.password && (
-              <span className="text-xs text-red-400">{errors.password.message}</span>
-            )}
-          </div>
-
-          <Button isLoading={isLoading} type="submit" className="w-full">
-            {success ? (
-              <>
-                <Check /> Success
-              </>
-            ) : (
-              <>Sign Up</>
-            )}
-          </Button>
-        </form>
-
-        <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
-          Already have an account?{" "}
-          <Link href="/login" className="ml-1">
-            Sign in
-          </Link>
         </div>
-      </div>
+      )}
+      {success && (
+        <OtpVerification
+          className="mx-auto px-10 py-20"
+          email={getValues("email")}
+          onConfirmChange={(v) => setOtpConfirmed(v)}
+        />
+      )}
     </div>
   );
 }
