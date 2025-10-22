@@ -1,4 +1,3 @@
-import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { getServiceById } from "@/serverActions/crudServices";
 import { Suspense } from "react";
 import { Button } from "../ui/button";
@@ -16,6 +15,9 @@ export default function CounsellingCard() {
 const Card = async () => {
     const serviceId = process.env.NODE_ENV == 'production' ? 'H_3Y4jhxE5' : '0UARbv_WYX'
   const { data } = await getServiceById(serviceId);
+
+
+  const availableCredits = 6
   if (!data) return <>Service not available</>;
   return (
     <div className="card rounded-lg p-4 min-w-[200px] flex flex-row gap-5 text-sm border">
@@ -27,9 +29,11 @@ const Card = async () => {
         alt={data.service_name}
       />
       <div className="flex flex-col gap-2 flex-1">
-        <p className="text-base font-medium">{data.service_name}</p>
+        <p className="text-base font-medium italic">We’re here to support your well-being.</p>
         <p className="text-muted-foreground text-xs">
-            {truncateText(htmlToPlainText(data.description), 150)}
+            You have
+            <span className="font-medium"> {availableCredits} available </span>
+            counseling credits.
         </p>
         <div className="flex w-full mt-auto">
             <Button
