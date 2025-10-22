@@ -202,7 +202,7 @@
   }
   
    span.card-title {
-    @apply text-xs text-muted-foreground;
+    @apply text-muted-foreground;
   }
 
   .btn-thin {
@@ -443,7 +443,7 @@ html {
 
 @media (max-width: 500px){
   html {
-    font-size: 14px;
+    /* font-size: 14px; */
   }
 }
 

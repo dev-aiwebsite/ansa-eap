@@ -3,12 +3,18 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { isMobileUA } from "@/lib/isMobileUa";
 import InstallPrompt from "@/lib/pwa/InstallPrompt";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { unstable_ViewTransition as ViewTransition } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const inter = Inter({
+// const font = Inter({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-sans",
+// });
+
+const font = Montserrat({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
@@ -45,7 +51,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${font.variable} antialiased`}>
         <ViewTransition>
           <TooltipProvider>
             <Toaster position="top-right" />

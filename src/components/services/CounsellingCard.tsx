@@ -29,11 +29,10 @@ const Card = async () => {
         alt={data.service_name}
       />
       <div className="flex flex-col gap-2 flex-1">
-        <p className="text-base font-medium italic">We’re here to support your well-being.</p>
-        <p className="text-muted-foreground text-xs">
+        <p className="text-base font-semibold leading-[1.2em]">We’re here to support your well-being.</p>
+        <p className="text-xs">
             You have
-            <span className="font-medium"> {availableCredits} available </span>
-            counseling credits.
+            <span className="font-semibold underline"> {availableCredits} available </span> credits.
         </p>
         <div className="flex w-full mt-auto">
             <Button
