@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { createWHO5Response } from "@/serverActions/crudWho5";
@@ -103,7 +102,7 @@ export default function WHO5FormComponent() {
       </p>
 
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border text-sm">
+        <table className="min-w-lg w-full border-collapse border text-sm">
           <thead>
             <tr>
               <th className="border px-4 py-2 text-left">Question</th>
@@ -129,8 +128,11 @@ export default function WHO5FormComponent() {
                   {idx + 1}. {q.text}
                 </td>
                 {responseScale.map((opt) => (
+                  <label
+                  className="contents"
+                  key={opt.value}
+                  htmlFor={`${q.id}-${opt.value}`}>
                   <td
-                    key={opt.value}
                     className="border px-2 py-2 text-center align-middle"
                   >
                     <Controller
@@ -146,16 +148,12 @@ export default function WHO5FormComponent() {
                             value={opt.value.toString()}
                             id={`${q.id}-${opt.value}`}
                           />
-                          <Label
-                            htmlFor={`${q.id}-${opt.value}`}
-                            className="sr-only"
-                          >
-                            {opt.label}
-                          </Label>
+                       
                         </RadioGroup>
                       )}
                     />
                   </td>
+                  </label>
                 ))}
               </tr>
             ))}
