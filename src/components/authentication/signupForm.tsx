@@ -76,9 +76,14 @@ export default function SignupForm({
       });
 
       if (!res.success || !res.data) {
+        let message = "Unable to register"
+        if(res.message.includes('users_email_key')){
+          message = "Email is already registered."
+        }
+
         setError("root", {
           type: "manual",
-          message: res.message || "Unable to register",
+          message: message,
         });
         setIsLoading(false);
         return;
