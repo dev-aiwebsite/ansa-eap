@@ -28,6 +28,15 @@ const DashboardMobile = () => {
       <div className="card text-white bg-primary p-0 overflow-hidden rounded-3xl">
         <DailyCheckInMobile isFocused={false} />
       </div>
+
+      {/* counselling */}
+      <div className="space-y-1">
+        <div className="flex flex-row flex-nowrap">
+          <span className="card-title">Counselling</span>
+        </div>
+        <CounsellingCard />
+      </div>
+
       <div>
         <div className="flex flex-row flex-nowrap">
           <span className="card-title">Weekly Bites</span>
@@ -41,14 +50,6 @@ const DashboardMobile = () => {
         <div className="flex-1">
           <WeeklyBitesMobile />
         </div>
-      </div>
-
-      {/* counselling */}
-      <div className="space-y-1">
-        <div className="flex flex-row flex-nowrap">
-          <span className="card-title">Counselling</span>
-        </div>
-        <CounsellingCard />
       </div>
     </div>
   );
