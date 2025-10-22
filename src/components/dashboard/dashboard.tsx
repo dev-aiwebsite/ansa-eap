@@ -16,8 +16,8 @@ const Dashboard = () => {
   return (
     <div className="flex-1 h-full flex flex-col">
       <div className="flex flex-row h-full gap-6">
-        <div className="flex-1 gap-6 flex flex-col flex-nowrap overflow-auto">
-          <WillFocused className="card text-white bg-primary" focusedClassName="pb-12">
+        <div className="flex-1 space-y-6 h-screen-header overflow-auto">
+          <WillFocused className="card relative text-white bg-primary" focusedClassName="pb-12">
             {({ isFocused, focusOnChange }) => (
               <DailyCheckIn
                 isFocused={isFocused}
