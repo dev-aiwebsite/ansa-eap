@@ -1,9 +1,11 @@
-import CarouselWithPagination from "@/components/customized/carousel/carousel-06";
-;
+import PublicEventsCarousel from "@/components/publicEvents/PublicEventsCarousel";
+
 
 const page = () => {
     return (
-      <CarouselWithPagination />
+      <div className="mt-100">
+      <PublicEventsCarousel />
+      </div>
     );
 }
 
