@@ -1,13 +1,13 @@
 import Link from "next/link";
 import DailyCheckInMobile from "../forms/dailyCheckin/dailyCheckInMobile";
 import HealthNewsCarousel from "../post/HealthNewsCarousel";
-import PublicEventsList from "../publicEvents/publicEventsList";
-import WeeklyBitesMobile from "../weeklyBitesMobile";
+import PublicEventsCarousel from "../publicEvents/PublicEventsCarousel";
 import CounsellingCard from "../services/CounsellingCard";
+import WeeklyBitesMobile from "../weeklyBitesMobile";
 
 const DashboardMobile = () => {
   return (
-    <div className="space-y-6 pb-[100px]">
+    <div className="space-y-10 pb-[100px]">
       <div className="space-y-1">
         <span className="card-title">Mental Health Moments</span>
         <HealthNewsCarousel className="simple" />
@@ -23,7 +23,7 @@ const DashboardMobile = () => {
           </Link>
         </div>
 
-        <PublicEventsList count={1} />
+        <PublicEventsCarousel/>
       </div>
 
       <div className="card text-white bg-primary p-0 overflow-hidden rounded-3xl">
