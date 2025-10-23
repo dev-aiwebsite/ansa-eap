@@ -628,7 +628,7 @@ ul.submenu {
     display: none;
 }
 
-.post-carousel img {
+.post-carousel :where(.img, img) {
     aspect-ratio: 16 / 9;
     height: auto;
 }
