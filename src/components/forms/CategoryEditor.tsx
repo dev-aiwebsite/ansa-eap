@@ -1,5 +1,4 @@
 "use client";
-import "@uploadcare/react-uploader/core.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -16,12 +15,12 @@ import {
   createCategory,
   updateCategory,
 } from "@/serverActions/crudCategories";
-import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import ImageWithFallback from "../ui/imageWithFallback";
+import UploadcareGalleryDialog from "../uploadcare/UploacareGalleryDialog";
 
 type CategoryEditorProps = {
   categoryId?: string;
@@ -44,7 +43,8 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
       icon: categoryId
         ? categories.find((c) => c.id === categoryId)?.icon ?? ""
         : "",
-      image: "",
+      image_desktop: "",
+      image_mobile: "",
     },
   });
 
@@ -89,7 +89,8 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
     }
   };
 
-  const categoryImage = watch("image");
+  const categoryImageDesktop = watch("image_desktop");
+  const categoryImageMobile = watch("image_mobile");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -158,35 +159,52 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
         />
       </div>
 
-      {/* image */}
+      {/* image desktop */}
       <div className="form-item">
         <label htmlFor="" className="form-item-label">
-          Image
+          Desktop Image
         </label>
         <div className="flex flex-col items-center gap-2 w-fit">
           <ImageWithFallback
-            src={categoryImage}
+            src={categoryImageDesktop}
+            alt="Profile"
+            width={100}
+            height={100}
+            className="w-[100px] h-[100px] rounded object-cover"
+          />
+             <Controller
+            name="image_desktop"
+            control={control}
+            render={({ field }) => (
+              <UploadcareGalleryDialog
+              pubkey="9c35a0212e26c1a710ca"
+              onSelect={(url) => field.onChange(url)}
+               />
+            )}
+          />
+        </div>
+      </div>
+      {/* image mobile */}
+      <div className="form-item">
+        <label htmlFor="" className="form-item-label">
+          Mobile Image
+        </label>
+        <div className="flex flex-col items-center gap-2 w-fit">
+          <ImageWithFallback
+            src={categoryImageMobile}
             alt="Profile"
             width={100}
             height={100}
             className="w-[100px] h-[100px] rounded object-cover"
           />
           <Controller
-            name="image"
+            name="image_mobile"
             control={control}
             render={({ field }) => (
-              <FileUploaderRegular
-                useCloudImageEditor={false}
-                sourceList="local"
-                classNameUploader="uc-light"
-                pubkey="9c35a0212e26c1a710ca"
-                multiple={false}
-                accept="image/*" // 👈 Only allow images
-                onCommonUploadSuccess={(e) => {
-                  const cdnUrl = e.successEntries[0].cdnUrl;
-                  field.onChange(cdnUrl);
-                }}
-              />
+              <UploadcareGalleryDialog
+              pubkey="9c35a0212e26c1a710ca"
+              onSelect={(url) => field.onChange(url)}
+               />
             )}
           />
         </div>

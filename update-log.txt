@@ -1,7 +1,5 @@
-ALTER TABLE companies
-ADD COLUMN code TEXT;
+ALTER TABLE categories
+RENAME COLUMN image TO image_mobile;
 
-
-UPDATE companies
-SET code = 'ANSA'
-WHERE id = 'YaJ4wlDPyN';
+ALTER TABLE categories
+ADD COLUMN image_desktop TEXT;

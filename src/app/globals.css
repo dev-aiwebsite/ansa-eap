@@ -260,10 +260,10 @@
     @apply border-l-4 border-l-primary pl-4 text-sm bg-primary/5 p-4 rounded;
   }
 
-  button {
+  button:not(.input) {
     @apply p-4 !cursor-pointer;
   }
-  .calendar button {
+  .calendar button:not(.input) {
     @apply text-[inherit];
   }
   .calendar td {
@@ -313,8 +313,7 @@ body, .bg-body-blend {
 background-color: white; /* fallback or base color */
  background-attachment: fixed;
 }
-
-button.shadow-btn {
+button:not(.input).shadow-btn {
   box-shadow: 0px 16px 30px 0px #4DC5914D;
 }
 
@@ -631,4 +630,9 @@ ul.submenu {
 .post-carousel :where(.img, img) {
     aspect-ratio: 16 / 9;
     height: auto;
+}
+
+.shadow-xxs {
+  box-shadow: 0px 20px 50px 0px #F1E0E04D;
+
 }

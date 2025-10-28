@@ -29,6 +29,7 @@
     "@tiptap/react": "^3.2.0",
     "@tiptap/starter-kit": "^3.2.0",
     "@uploadcare/react-uploader": "^1.10.2",
+    "@uploadcare/rest-client": "^6.18.0",
     "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

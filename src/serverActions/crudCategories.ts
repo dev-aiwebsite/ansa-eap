@@ -8,7 +8,8 @@ export type Category = {
   type: string;
   created_at: string;
   icon?: string;
-  image?: string;
+  image_desktop?: string;
+  image_mobile?: string;
 };
 
 type Result<T> = {
@@ -24,8 +25,8 @@ export async function createCategory(
   try {
     const id = nanoid(10);
     const query = `
-  INSERT INTO categories (id, label, type, icon, image)
-  VALUES ($1, $2, $3, $4, $5)
+  INSERT INTO categories (id, label, type, icon, image_desktop, image_mobile)
+  VALUES ($1, $2, $3, $4, $5, $6)
   RETURNING *;
 `;
     const values = [
@@ -33,7 +34,8 @@ export async function createCategory(
       data.label,
       data.type,
       data.icon ?? null,
-      data.image ?? null,
+      data.image_desktop ?? null,
+      data.image_mobile ?? null,
     ];
 
     const result = await pool.query(query, values);
