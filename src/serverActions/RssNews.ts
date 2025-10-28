@@ -93,7 +93,10 @@ function mapRssItem(item: RssJson["rss"]["channel"]["item"][0]): Post {
 
 
 export async function getNews(): Promise<Posts> {
-  let res = await fetch("https://watersedgecounselling.com/category/mental-health-issues-2/feed/");
+  try {
+  // let res = await fetch("https://watersedgecounselling.com/category/mental-health-issues-2/feed/");
+  let res = await fetch("http://wellbeing.com.au/feed");
+  
   
   if (!res.ok) {
     res = await fetch("https://online.vu.edu.au/taxonomy/term/321/all/feed");
@@ -115,4 +118,9 @@ export async function getNews(): Promise<Posts> {
 
   const items = json?.rss?.channel?.item ?? [];
   return items.map(mapRssItem);
+
+  } catch (error) {
+    console.log(error)
+    return [];  
+  }
 }
