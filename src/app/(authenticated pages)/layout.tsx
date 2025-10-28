@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import AppHeader from "@/components/header/appHeader";
 import AppNav from "@/components/ui/nav/AppNav";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
+import { GalleryContextProvider } from "@/context/ImageGalleryContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
 import { getDailyCheckIns } from "@/serverActions/crudDailyCheckIns";
@@ -31,6 +32,7 @@ export default async function Layout({
 
   return (
     <AppServiceContextProvider data={data}>
+      <GalleryContextProvider>
       <PostServiceProvider>
           <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
             <div>
@@ -42,6 +44,7 @@ export default async function Layout({
             </div>
           </main>
       </PostServiceProvider>
+    </GalleryContextProvider>
     </AppServiceContextProvider>
   );
 }

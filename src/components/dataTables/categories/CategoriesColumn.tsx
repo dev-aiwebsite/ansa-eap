@@ -9,11 +9,18 @@ import ImageWithFallback from "@/components/ui/imageWithFallback";
 export function useCategoryColumns(): ColumnDef<Category>[] {
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: "image",
-      header: "Image",
+      accessorKey: "image_desktop",
+      header: "Image Desktop",
       cell: ({ row }) => {
-        const image = row.original.image;
-
+        const image = row.original.image_desktop;
+        return <ImageWithFallback src={image} alt="" className="!w-6 !h-6" />; // adjust size as needed
+      },
+    },
+    {
+      accessorKey: "image_mobile",
+      header: "Image Mobile",
+      cell: ({ row }) => {
+        const image = row.original.image_mobile;
         return <ImageWithFallback src={image} alt="" className="!w-6 !h-6" />; // adjust size as needed
       },
     },
