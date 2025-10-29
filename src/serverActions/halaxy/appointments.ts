@@ -6,50 +6,50 @@ import { halaxyFetch } from "./credentials";
 // Example: book an appointment
 export async function bookAppointment() {
 
-    const startDate = new Date();
-    const endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + 1);
-    
-    // Convert to ISO string for the API
-    const startISO = startDate.toISOString();
-    const endISO = endDate.toISOString();
-    const duration = 30;
-    const practitionerRoleId = "PR-3314603";
+  const startDate = new Date();
+  const endDate = new Date();
+  endDate.setMonth(endDate.getMonth() + 1);
 
-    const findAppointmentsResponse = await halaxyFetch(
-        `/Appointment/$find?start=${encodeURIComponent(startISO)}&end=${encodeURIComponent(endISO)}&duration=${duration}&practitioner-role=${practitionerRoleId}`
-      );
+  // Convert to ISO string for the API
+  const startISO = startDate.toISOString();
+  const endISO = endDate.toISOString();
+  const duration = 30;
+  const practitionerRoleId = "PR-3314603";
 
-      console.log(startISO,endISO)
-      console.log( JSON.stringify(findAppointmentsResponse, null, 2))
+  const findAppointmentsResponse = await halaxyFetch(
+    `/Appointment/$find?start=${encodeURIComponent(startISO)}&end=${encodeURIComponent(endISO)}&duration=${duration}&practitioner-role=${practitionerRoleId}`
+  );
 
-    
-    const timestamp = Math.floor(Date.now() / 1000);
-    const proposedId = `proposed-${timestamp}-${duration}`;
+  console.log(startISO, endISO)
+  console.log(JSON.stringify(findAppointmentsResponse, null, 2))
 
 
-    const testAppointment = {
-      "fullUrl": "https://au-api.halaxy.com/main/Appointment/proposed-1757485800-30",
-      "resource": {
-        "start": "2025-09-10T06:30:00+00:00",
-        "end": "2025-09-10T07:00:00+00:00",
-        "minutesDuration": 30,
-        "id": "proposed-1757485800-30",
-        "resourceType": "Appointment",
-        "participant": [
-          {
-            "actor": {
-              "reference": "https://au-api.halaxy.com/main/PractitionerRole/PR-3314603",
-              "type": "PractitionerRole"
-            }
+  const timestamp = Math.floor(Date.now() / 1000);
+  const proposedId = `proposed-${timestamp}-${duration}`;
+
+
+  const testAppointment = {
+    "fullUrl": "https://au-api.halaxy.com/main/Appointment/proposed-1757485800-30",
+    "resource": {
+      "start": "2025-09-10T06:30:00+00:00",
+      "end": "2025-09-10T07:00:00+00:00",
+      "minutesDuration": 30,
+      "id": "proposed-1757485800-30",
+      "resourceType": "Appointment",
+      "participant": [
+        {
+          "actor": {
+            "reference": "https://au-api.halaxy.com/main/PractitionerRole/PR-3314603",
+            "type": "PractitionerRole"
           }
-        ]
-      }
+        }
+      ]
     }
-  
+  }
 
 
-   return halaxyFetch("/Appointment/$book", {
+
+  return await halaxyFetch("/Appointment/$book", {
     method: "POST",
     payload: {
       resourceType: "Parameters",
@@ -68,12 +68,12 @@ export async function bookAppointment() {
           },
         },
         {
-"name": "app-id",
-"valueReference": {
-"reference": "Appointment/1",
-"type": "Appointment"
-}
-},
+          "name": "app-id",
+          "valueReference": {
+            "reference": "Appointment/1",
+            "type": "Appointment"
+          }
+        },
         { name: "patient-id", valueReference: { reference: "Patient/150003003", type: "Patient" } },
         { name: "healthcare-service-id", valueReference: { reference: "HealthcareService/558363", type: "HealthcareService" } },
         { name: "location-type", valueCode: "clinic" },
@@ -81,17 +81,17 @@ export async function bookAppointment() {
       ],
     },
   });
-  
-  
+
+
 }
 
 
-  
-export async function getUserAppointments(patient_id:string){
 
- const res =  await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`)
- return res
- 
+export async function getUserAppointments(patient_id: string) {
+
+  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`)
+  return res
+
 }
 
 
