@@ -10,9 +10,14 @@ const halaxyAccounts = [
     client_id: "39a221b207a478d3a47e969aa00dd177",
     client_secret: "737eb4f9e5fc518333087032466f262e953f3f7ff62c8471e5e6bb582b6a056a136881454c07ac3cce7c6db9072fcbe324931ce73ffd1bc7098a29cbb7b5b404",
   },
+  {
+    account_name: "Realworld Psychology",
+    client_id: "7c06ce128f43f8f18395664f8ef62636",
+    client_secret: "4fe1540ac6ad2132d28aa9ff38854d9e0e95462eaecea7905146b41939f2180ceed6a0de84995c4b442fae5d67e3e8fe3ef3c6e89240a6063a707f8555c588a5",
+  },
 ];
 
-const accountIndex = 1; // select account
+const accountIndex = 2; // select account
 const clientId = halaxyAccounts[accountIndex].client_id;
 const clientSecret = halaxyAccounts[accountIndex].client_secret;
 
@@ -54,7 +59,6 @@ export async function getAccessToken(): Promise<string | null> {
 
 export async function halaxyFetch(endpoint: string, options: { method?: string; payload?: unknown } = {}) {
   const token = await getAccessToken();
-  console.log(token, 'token')
 
   const res = await fetch(`${baseUrl}${endpoint}`, {
     method: options.method ?? "GET",

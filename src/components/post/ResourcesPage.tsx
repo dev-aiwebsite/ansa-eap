@@ -27,7 +27,7 @@ const ResourcesPage = ({cols = 4}:{cols?: 1 | 2 | 3 | 4 | 5;}) => {
             <Button
               href={`/resources/${id}~${slugifyName(label)}`}
               key={id}
-              className="overflow-hidden shadow-xxs h-full bg-white rounded-2xl p-4 text-base flex-col items-start justify-start text-start"
+              className="border border-primary overflow-hidden shadow-xxs h-full bg-white rounded-3xl p-4 text-base flex-col items-start justify-start text-start"
               variant="ghost"
             >
               
