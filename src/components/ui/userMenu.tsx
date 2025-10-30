@@ -51,6 +51,9 @@ export function UserMenu({textClassName, imageClassName, triggerClassName, hideI
         <DropdownMenuItem asChild>
           <Link href="/settings/account">Profile</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/my-appointments">My Appointments</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={async () => LogoutUser()}>
           Logout
