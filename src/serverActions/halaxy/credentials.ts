@@ -52,23 +52,34 @@ export async function getAccessToken(): Promise<string | null> {
 
   const data = await res.json();
   cachedToken = data.access_token;
+  console.log(cachedToken)
   cachedTokenExpiry = now + (data.expires_in - 60) * 1000; // 60s safety buffer
   return cachedToken;
 }
 
 
-export async function halaxyFetch(endpoint: string, options: { method?: string; payload?: unknown } = {}) {
+export async function halaxyFetch(endpoint: string, options: {
+  method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
+  payload?: unknown
+} = {}) {
   const token = await getAccessToken();
+  let contentType = 'application/json'
+  if (options.method == "PATCH") {
+    contentType = 'application/merge-patch+json'
+  }
+
 
   const res = await fetch(`${baseUrl}${endpoint}`, {
     method: options.method ?? "GET",
     headers: {
       Authorization: `Bearer ${token}`,
       "Accept": "application/fhir+json",
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     },
     body: options.payload ? JSON.stringify(options.payload) : undefined,
   });
+
+
 
   if (!res.ok) {
     throw new Error(`Halaxy API error: ${res.status} ${await res.text()}`);

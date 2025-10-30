@@ -61,24 +61,30 @@ function Button({
   const router = useRouter()
   const Comp = asChild ? Slot : "button"
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (props.onClick) props.onClick(e)
-    if (!e.defaultPrevented && href) {
-       if (target === "_blank") {
-      // open in new tab
+const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.stopPropagation()
+
+  if (props.onClick) props.onClick(e)
+
+  if (e.defaultPrevented) return
+
+  // Only handle href navigation if provided
+  if (href) {
+    if (target === "_blank") {
       window.open(href, "_blank", "noopener,noreferrer")
     } else {
       router.push(href)
     }
-    }
   }
+  
+}
 
   return (
     <Comp
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       disabled={isLoading || props.disabled}
-      {...(href ? { onClick: handleClick } : {})}
+      onClick={handleClick}
       {...props}
     >
       {isLoading && <Loader2 className="animate-spin" />}
