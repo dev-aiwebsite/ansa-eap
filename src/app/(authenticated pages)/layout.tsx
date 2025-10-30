@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import AppHeader from "@/components/header/appHeader";
 import AppNav from "@/components/ui/nav/AppNav";
 import { AppServiceContextProvider } from "@/context/appServiceContext";
+import { ConfirmProvider } from "@/context/ConfirmContext";
+import { HalaxyServiceContextProvider } from "@/context/HalaxyServiceContext";
 import { GalleryContextProvider } from "@/context/ImageGalleryContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
@@ -32,6 +34,8 @@ export default async function Layout({
 
   return (
     <AppServiceContextProvider data={data}>
+      <ConfirmProvider>
+      <HalaxyServiceContextProvider>
       <GalleryContextProvider>
       <PostServiceProvider>
           <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
@@ -45,6 +49,8 @@ export default async function Layout({
           </main>
       </PostServiceProvider>
     </GalleryContextProvider>
+    </HalaxyServiceContextProvider>
+    </ConfirmProvider>
     </AppServiceContextProvider>
   );
 }

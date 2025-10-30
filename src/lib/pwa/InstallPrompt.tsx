@@ -40,11 +40,13 @@ export default function InstallPrompt() {
 
     if (nextPromptDate) {
       isNeedToPrompt = today > new Date(nextPromptDate);
+      
       // isNeedToPrompt = true
     } else {
       isNeedToPrompt = true; // No record yet, so prompt the first time
     }
 
+    console.log(isNeedToPrompt, nextPromptDate, 'install prompt')
     if (!isNeedToPrompt) return;
 
     const fiveHoursFromToday = new Date(today.getTime() + 5 * 60 * 60 * 1000);

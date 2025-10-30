@@ -1,23 +1,18 @@
 "use client";
 
-import { useAppServiceContext } from "@/context/appServiceContext";
-import { getMyAppointments } from "@/serverActions/halaxy/usersData";
+import { useHalaxyServiceContext } from "@/context/HalaxyServiceContext";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
-export type Appointment = {
-  resource: {
-    id: string;
-    start: string;
-    [key: string]: unknown;
-  };
-};
+type AppointmentListProps = {
+  count?: number;
+  itemClassName?: string;
+  showCancel?: boolean;
+}
 
-export type AppointmentsResponse = {
-  entry: Appointment[];
-};
-
-const AppointmentList = ({ count }: { count?: number }) => {
+const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListProps) => {
   const dateFormatter = new Intl.DateTimeFormat("en-AU", {
     year: "numeric",
     month: "long",
@@ -27,21 +22,10 @@ const AppointmentList = ({ count }: { count?: number }) => {
     hour12: true,
   });
 
-  const { currentUser } = useAppServiceContext();
-  const [myAppointments, setMyAppointments] =
-    useState<AppointmentsResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+  const { myAppointments, cancelAppointment, rebookAppointment } = useHalaxyServiceContext()
 
-  useEffect(() => {
-    if (!currentUser?.email) return;
 
-    setLoading(true);
-    getMyAppointments(currentUser.email)
-      .then((r) => setMyAppointments(r))
-      .finally(() => setLoading(false));
-  }, [currentUser?.email]);
-
-  if (loading) {
+  if (myAppointments == null) {
     return (
       <div className="space-y-4">
         {[...Array(count ?? 1)].map((_, idx) => (
@@ -54,9 +38,9 @@ const AppointmentList = ({ count }: { count?: number }) => {
     );
   }
 
-  if (!myAppointments || myAppointments.entry.length === 0) {
+  if (myAppointments.length === 0) {
     return (
-      <div className="max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center">
+      <div className={cn("max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}>
         <div className="text-zinc-500 flex h-[38px] items-center">
           <p className="max-md:!text-sm font-medium">No upcoming appointments</p>
         </div>
@@ -66,28 +50,65 @@ const AppointmentList = ({ count }: { count?: number }) => {
 
   // 🔹 Apply `count` limit if provided
   const appointmentsToShow = count
-    ? myAppointments.entry.slice(0, count)
-    : myAppointments.entry;
+    ? myAppointments.slice(0, count)
+    : myAppointments;
+
+
 
   return (
     <div className="space-y-4">
-      {appointmentsToShow.map((i) => (
+      {appointmentsToShow.map((i) => {
+        const isCancelled = JSON.stringify(i)?.includes('"code":"cancelled","display":"cancelled"') || false
+        
+        return (
         <Link
-          key={i.resource.id}
-          className="max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center"
-          href="#"
+          key={i.id}
+          className={cn("max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}
+          href={`/my-appointments?${i.id}`}
         >
           <div className="flex-1 text-zinc-500">
-            <p className="max-md:!text-sm font-medium">Consultation</p>
+            <p className="max-md:!text-sm font-medium flex flex-row items-center gap-1">
+                Consultation{" "}
+                {isCancelled && (
+                  <Badge className="bg-red-400/80 text-[10px] px-1.5 py-0.5 h-auto leading-none">Cancelled</Badge>
+                )}
+              </p>
             <p className="muted-text">
-              {dateFormatter.format(new Date(i.resource.start))}
+              {dateFormatter.format(new Date(i.start))}
             </p>
+            <div className="space-x-2">
+            {!isCancelled && showCancel &&
+              <Button
+                variant="link"
+                className="!p-0 text-secondary cursor-not-allowed"
+                onClick={(e) => {
+                  e.preventDefault() // stop the parent <Link> navigation
+                  e.stopPropagation() // stop bubbling up
+                  // your cancel logic here
+                  cancelAppointment(i.id)
+                }}>
+                Cancel
+              </Button>
+            }
+             {isCancelled && <Button
+                variant="link"
+                className="!p-0 text-secondary"
+                onClick={(e) => {
+                  e.preventDefault() // stop the parent <Link> navigation
+                  e.stopPropagation() // stop bubbling up
+                  // your cancel logic here
+                  rebookAppointment(i.id)
+                }}>
+                Rebook
+              </Button>}
+              </div>
           </div>
           <span className="max-md:hidden text-xl font-medium line-through">
             $120
           </span>
         </Link>
-      ))}
+      )
+      })}
     </div>
   );
 };

@@ -4,6 +4,7 @@ import Alert from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { deleteCategory } from "@/serverActions/crudCategories";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type DeleteItemButtonProps = {
     itemLabel?: string;
@@ -30,7 +31,7 @@ export default function DeleteItemButton({
         router.refresh(); // fallback if no custom handler
       }
     } else {
-      alert(result.message || `Error deleting ${itemLabel}`);
+      toast.error(result.message || `Error deleting ${itemLabel}`);
     }
   };
 

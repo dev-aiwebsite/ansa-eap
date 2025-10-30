@@ -1,6 +1,16 @@
 "use server";
-
 import { halaxyFetch } from "./credentials";
+
+export type Appointment = {
+    id: string;
+    start: string;
+    [key: string]: unknown;
+};
+
+export type AppointmentsResponse = {
+  total: number;
+  entry: Appointment[];
+};
 
 
 // Example: book an appointment
@@ -88,10 +98,10 @@ export async function bookAppointment() {
 
 
 export async function getUserAppointments(patient_id: string) {
-
-  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`)
-  return res
-
+  // const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}&part-status=booked`) as AppointmentsResponse
+  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`) as AppointmentsResponse
+  if(res.total === 0) return []
+  return res.entry.map(i => i.resource) as Appointment[]
 }
 
 
@@ -122,3 +132,77 @@ export async function bookAppointment2() {
   const data = await res.json();
   return data;
 }
+
+export async function updateAppointmentStatus(
+  status: "booked" | "cancelled" | "tentative" | "accepted",
+  appointmentId: string,
+  patientId: string,
+) {
+  const res = await halaxyFetch(`/Appointment/${appointmentId}`, {
+    method: "PATCH",
+    payload: {
+      participant: [
+        {
+          actor: {
+            reference: `https://au-api.halaxy.com/main/Patient/${patientId}`,
+            type: "Patient",
+          },
+          modifierExtension: [
+            {
+              url: "https://terminology.halaxy.com/StructureDefinition/appointment-participant-status",
+              valueCoding: {
+                system: "https://au-api.halaxy.com/presets/CodeSystem/appointment-participant-status",
+                code: status,
+                display: status,
+              },
+            },
+          ],
+        },
+      ],
+      description:
+        status === "cancelled"
+          ? "Cancelled by patient"
+          : status === "booked"
+          ? "Rebooked by patient"
+          : undefined,
+    },
+  });
+
+  return res as Appointment
+}
+
+
+
+// export async function cancelAnAppointment(appointmentId: string, patientId: string) {
+//   const res = await halaxyFetch(`/Appointment/${appointmentId}`, {
+//     method: "PATCH",
+//     payload: {
+//       participant: [
+//         {
+//           actor: {
+//             reference: `https://au-api.halaxy.com/main/Patient/${patientId}`,
+//             type: "Patient",
+//           },
+//           modifierExtension: [
+//             {
+//               url: "https://terminology.halaxy.com/StructureDefinition/appointment-participant-status",
+//               valueCoding: {
+//                 system: "https://au-api.halaxy.com/presets/CodeSystem/appointment-participant-status",
+//                 code: "cancelled",
+//                 display: "cancelled",
+//               },
+//             },
+//           ],
+//         },
+//       ],
+//       description: "Cancelled by patient",
+//     },
+//   });
+
+//   if (res) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+
