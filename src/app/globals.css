@@ -241,6 +241,9 @@
     @apply ml-[1ch] text-xs translate-y-1/2 block bg-white p-[2px] w-fit;
   }
 
+  .link {
+    @apply text-secondary underline decoration-1  underline-offset-[3px];
+  }
   h1, .h1 {
     @apply text-3xl font-medium;
   }

@@ -22,6 +22,9 @@ myRecord: MyRecord;
   setMyAppointments: Dispatch<SetStateAction<Appointments>>;
   cancelAppointment: (appointmentId:string) => void;
   rebookAppointment: (appointmentId:string) => void;
+  creditLimit: number;
+  creditUsed: number;
+  remainingCredit?: number;
 };
 
 type HalaxyServiceContextProviderProps = {
@@ -122,11 +125,9 @@ export function HalaxyServiceContextProvider({
       error: "Failed to book",
     })
     }
-
-
-
-    console.log(myAppointments, 'myAppointments')
-
+    const creditLimit = currentUser.maxCredit || 0
+    const creditUsed = myAppointments?.length || 0
+    const remainingCredit = creditLimit && creditUsed ? creditLimit - creditUsed : undefined
   return (
     <HalaxyServiceContext.Provider
       value={{
@@ -134,7 +135,10 @@ export function HalaxyServiceContextProvider({
         myAppointments,
         setMyAppointments,
         cancelAppointment,
-        rebookAppointment
+        rebookAppointment,
+        creditLimit,
+        creditUsed,
+        remainingCredit,
       }}
     >
       {children}

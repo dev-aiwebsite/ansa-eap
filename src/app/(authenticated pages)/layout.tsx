@@ -6,6 +6,7 @@ import { ConfirmProvider } from "@/context/ConfirmContext";
 import { HalaxyServiceContextProvider } from "@/context/HalaxyServiceContext";
 import { GalleryContextProvider } from "@/context/ImageGalleryContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
+import { getCompanyByCode } from "@/serverActions/crudCompanies";
 import { getDailyActivities } from "@/serverActions/crudDailyActivities";
 import { getDailyCheckIns } from "@/serverActions/crudDailyCheckIns";
 import { getUserById } from "@/serverActions/crudUsers";
@@ -15,22 +16,29 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   
-  const session = await auth();
-  if(!session) return
-  const userId = session.user.id;
+const session = await auth();
+if (!session) return;
 
-  const [currentUser, dailyActivities, dailyCheckIns] = await Promise.all([
-    (await getUserById(userId)).data,
-    getDailyActivities(userId),
-    getDailyCheckIns(userId),
-  ]);
+const userId = session.user.id;
 
-  if(!currentUser) return
-  const data = {
-    currentUser,
-    dailyActivities,
-    dailyCheckIns,
-  };
+// Get user first since you need its company
+const userResult = await getUserById(userId);
+const currentUser = userResult?.data;
+if (!currentUser) return;
+
+// Now you can run the rest in parallel
+const [dailyActivities, dailyCheckIns, company] = await Promise.all([
+  getDailyActivities(userId),
+  getDailyCheckIns(userId),
+  getCompanyByCode(currentUser.company),
+]);
+
+const data = {
+  currentUser,
+  dailyActivities,
+  dailyCheckIns,
+  company: company.data,
+};
 
   return (
     <AppServiceContextProvider data={data}>
