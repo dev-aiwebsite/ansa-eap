@@ -1,4 +1,5 @@
 "use client";
+import { Company } from "@/serverActions/crudCompanies";
 import { updateDailyActivity } from "@/serverActions/crudDailyActivities";
 import {
   createDailyCheckIn
@@ -13,12 +14,16 @@ import {
   useState,
 } from "react";
 
-type AppServiceContextType = {
-  currentUser: User;
-  setCurrentUser: Dispatch<SetStateAction<User>>;
+type UserExtended = User & {
+  maxCredit?: number
+}
 
-  users: User[] | [];
-  setUsers: Dispatch<SetStateAction<User[]>>;
+type AppServiceContextType = {
+  currentUser: UserExtended;
+  setCurrentUser: Dispatch<SetStateAction<UserExtended>>;
+
+  users: UserExtended[] | [];
+  setUsers: Dispatch<SetStateAction<UserExtended[]>>;
 
   dailyActivities: DailyActivity[] | [];
   saveDailyActivities: (
@@ -38,9 +43,10 @@ type AppServiceContextProviderProps = {
   children?: React.ReactNode;
   data: {
     currentUser: User;
-    users?: User[];
+    users?: UserExtended[];
     dailyActivities?: DailyActivity[];
     dailyCheckIns?: DailyCheckIn[];
+    company?: Company
   };
 };
 
@@ -50,11 +56,9 @@ export function AppServiceContextProvider({
   children,
   data,
 }: AppServiceContextProviderProps) {
-  const [users, setUsers] = useState<User[]>(data?.users || []);
+  const [users, setUsers] = useState<UserExtended[]>(data?.users || []);
   
-  const [currentUser, setCurrentUser] = useState<User>(
-    data.currentUser 
-  );
+  const [currentUser, setCurrentUser] = useState<UserExtended>({...data.currentUser, maxCredit : data?.company?.max_booking_credits_per_user || 0});
   const [dailyActivities, setDailyActivities] = useState<DailyActivity[] | []>(
     data?.dailyActivities || []
   );
