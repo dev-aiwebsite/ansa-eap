@@ -2,6 +2,7 @@ import { getServiceById } from "@/serverActions/crudServices";
 import { Suspense } from "react";
 import { Button } from "../ui/button";
 import ImageWithFallback from "../ui/imageWithFallback";
+import BookingRemainingCredit from "./BookingRemainingCredit";
 
 export default function CounsellingCard() {
   return (
@@ -15,9 +16,7 @@ export default function CounsellingCard() {
 const Card = async () => {
     const serviceId = process.env.NODE_ENV == 'production' ? 'H_3Y4jhxE5' : '0UARbv_WYX'
   const { data } = await getServiceById(serviceId);
-
-
-  const availableCredits = 6
+  
   if (!data) return <>Service not available</>;
   return (
     <div className="card rounded-lg p-4 min-w-[200px] flex flex-row gap-5 text-sm border">
@@ -32,7 +31,7 @@ const Card = async () => {
         <p className="text-base font-semibold leading-[1.2em]">We’re here to support your well-being.</p>
         <p className="text-xs">
             You have
-            <span className="font-semibold underline"> {availableCredits} available </span> credits.
+            <span className="font-semibold underline"> <BookingRemainingCredit /> available </span> credits.
         </p>
         <div className="flex w-full mt-auto">
             <Button
