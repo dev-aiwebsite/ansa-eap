@@ -96,6 +96,16 @@ export default function InstallPrompt() {
   }
 
 
+  const handleCancel = () => {
+      const today = new Date();
+    const fiveHoursFromToday = new Date(today.getTime() + 5 * 60 * 60 * 1000);
+    localStorage.setItem(
+      "elevate-install-prompt",
+      fiveHoursFromToday.toISOString()
+    );
+    setOpen(false)
+  }
+
   
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -217,7 +227,7 @@ export default function InstallPrompt() {
           </div>
 
         <AlertDialogFooter className="flex justify-end gap-2">
-          <AlertDialogCancel onClick={() => setOpen(false)}>
+          <AlertDialogCancel onClick={handleCancel}>
             Return
           </AlertDialogCancel>
           {!isIOS && deferredPrompt && (
