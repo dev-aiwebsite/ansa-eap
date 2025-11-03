@@ -7,13 +7,17 @@ import { Button } from "../../ui/button";
 import { CopyButton } from "../../ui/copyButton";
 import DeleteItemButton from "./deleteCompanyBtn";
 
-export const CompanyColumns: ColumnDef<Company>[] = [
+type CompanyWithMembers = Company & {
+  member_count?: number;
+}
+
+export const CompanyColumns: ColumnDef<CompanyWithMembers>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "code",
     header: "Company Code",
     cell: ({ row }) => {
-      const id = row.getValue("id") as string;
-      return <CopyButton label={id} value={id} />;
+      const code = row.getValue("code") as string;
+      return <CopyButton label={code} value={code} />;
     },
   },
   {
@@ -36,7 +40,13 @@ export const CompanyColumns: ColumnDef<Company>[] = [
   },
   {
     accessorKey: "max_users",
-    header: "Max Users",
+    header: "Members",
+    cell: ({row})=> {
+      const max = row.original.max_users
+      const total = row.original.member_count ?? 0
+
+      return <span>{total} / {max}</span>
+    }
   },
   {
     accessorKey: "max_booking_credits_per_user",

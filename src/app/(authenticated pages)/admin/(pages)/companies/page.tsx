@@ -1,13 +1,15 @@
+"use client"
 import { CompanyColumns } from "@/components/dataTables/companies/companyColumn";
 import { DataTable } from "@/components/dataTables/dataTable";
 
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
-import { getCompanies } from "@/serverActions/crudCompanies";
+import { useElevateAdminContext } from "@/context/ElevateAdminContext";
 import { PlusCircle } from "lucide-react";
 
-const Page = async () => {
-  const companies = await getCompanies();
+const Page = () => {
+  const {companies} = useElevateAdminContext()
+  console.log(companies, 'companies')
   return (
     <Container className="card w-full-sidebar">
       <div className="flex flex-row">
@@ -17,7 +19,7 @@ const Page = async () => {
         </Button>
       </div>
 
-      <DataTable columns={CompanyColumns} data={companies.data || []} />
+      <DataTable columns={CompanyColumns} data={companies} />
     </Container>
   );
 };
