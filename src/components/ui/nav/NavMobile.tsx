@@ -1,6 +1,6 @@
 "use client";
 import {
-  IconContents,
+  IconDocuments,
   IconEmergency,
   IconGrid,
   IconServices,
@@ -22,7 +22,7 @@ const items = [
     textClassName: "",
     link: "/critical-response",
   },
-  { icon: IconContents, label: "Resources", link: "/resources" },
+  { icon: IconDocuments, label: "Resources", link: "/resources", iconClassName: 'stroke-[2px]'},
   { icon: UserCog, label: "Account", link: "/settings/account" },
 ];
 const NavMobile = () => {
@@ -36,7 +36,7 @@ const NavMobile = () => {
           if (label == "Account") {
             return (
               <UserMenu
-                textClassName="text-[8px]"
+                textClassName="text-[9px]"
                 imageClassName="!w-[28px] !h-[28px] block"
                 hideIcon
                 key={label}
@@ -57,7 +57,7 @@ const NavMobile = () => {
             >
               
               <Icon strokeWidth={1.2} className={cn("!w-[28px] !h-[28px] block", iconClassName)} />
-              <span className={cn("text-[8px]", textClassName)}>{label}</span>
+              <span className={cn("text-[9px]", textClassName)}>{label}</span>
             </Button>
           );
         })}

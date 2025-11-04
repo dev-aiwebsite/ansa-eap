@@ -96,6 +96,26 @@ export async function bookAppointment() {
 }
 
 
+// export async function getAppointments() {
+//   // const locationId = '1335519'
+//   // CL-1335519
+//   const locationId = '615081'
+//   const res = await halaxyFetch(`/Appointment?page=1&_count=100&pagination=false&location=https://au-api.halaxy.com/main/Location/${locationId}`) as AppointmentsResponse
+//   if(res.total === 0) return []
+//   return res.entry.map(i => i.resource) as Appointment[]
+// }
+
+// export async function getAppointments() {
+//   const practitionerRoleId = "PR-3331559"; // Elevate by ANSA role
+
+//   const res = await halaxyFetch(
+//     `/Appointment?page=1&_count=100&pagination=false&&practitioner-role=${practitionerRoleId}`
+//   ) as AppointmentsResponse;
+
+//   if (!res || res.total === 0) return [];
+//   return res.entry.map((i) => i.resource) as Appointment[];
+// }
+
 
 export async function getUserAppointments(patient_id: string) {
   // const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}&part-status=booked`) as AppointmentsResponse

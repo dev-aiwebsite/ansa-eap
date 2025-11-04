@@ -11,7 +11,7 @@ const MainHeader = () => {
       <div>
         <GlobalSearch />
       </div>
-      <div className="ml-auto w-fit flex flex-row gap-2">
+      <div className="ml-auto w-fit flex flex-row gap-2 items-center">
          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">

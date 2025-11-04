@@ -35,24 +35,21 @@ export default function InstallPrompt() {
 
   useEffect(() => {
     const nextPromptDate = localStorage.getItem("elevate-install-prompt");
-    const today = new Date();
     let isNeedToPrompt = false;
 
     if (nextPromptDate) {
-      isNeedToPrompt = today > new Date(nextPromptDate);
-      
-      // isNeedToPrompt = true
+      isNeedToPrompt = Date.now() > +new Date(nextPromptDate);
     } else {
-      isNeedToPrompt = true; // No record yet, so prompt the first time
+      isNeedToPrompt = true;
     }
 
     console.log(isNeedToPrompt, nextPromptDate, 'install prompt')
     if (!isNeedToPrompt) return;
 
-    const fiveHoursFromToday = new Date(today.getTime() + 5 * 60 * 60 * 1000);
+    const nextPromptMs = Date.now() + 5 * 60 * 60 * 1000; // 5 hours later
     localStorage.setItem(
       "elevate-install-prompt",
-      fiveHoursFromToday.toISOString()
+      String(nextPromptMs)
     );
 
     const userAgent = navigator.userAgent
@@ -97,11 +94,10 @@ export default function InstallPrompt() {
 
 
   const handleCancel = () => {
-      const today = new Date();
-    const fiveHoursFromToday = new Date(today.getTime() + 5 * 60 * 60 * 1000);
+    const nextPromptMs = Date.now() + 5 * 60 * 60 * 1000; // 5 hours later
     localStorage.setItem(
       "elevate-install-prompt",
-      fiveHoursFromToday.toISOString()
+      String(nextPromptMs)
     );
     setOpen(false)
   }

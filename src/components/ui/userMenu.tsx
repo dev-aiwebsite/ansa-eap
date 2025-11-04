@@ -39,7 +39,7 @@ export function UserMenu({textClassName, imageClassName, triggerClassName, hideI
             }
             alt=""
           />
-          <div className={textClassName}>
+          <div className={cn('space-y-[0.2em]',textClassName)}>
             <span>{currentUser?.first_name}</span>
             <span>{currentUser?.last_name}</span>
           </div>

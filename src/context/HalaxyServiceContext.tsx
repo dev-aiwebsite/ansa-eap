@@ -1,17 +1,17 @@
 "use client";
-import {
-    createContext,
-    Dispatch,
-    SetStateAction,
-    useContext,
-    useEffect,
-    useState,
-} from "react";
-import { useAppServiceContext } from "./appServiceContext";
-import { getUserPatientRecord, PatientEntry } from "@/serverActions/halaxy/patients";
 import { Appointment, getUserAppointments, updateAppointmentStatus } from "@/serverActions/halaxy/appointments";
-import { useConfirmDialog } from "./ConfirmContext";
+import { getUserPatientRecord, PatientEntry } from "@/serverActions/halaxy/patients";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { toast } from "sonner";
+import { useAppServiceContext } from "./appServiceContext";
+import { useConfirmDialog } from "./ConfirmContext";
 
 
 type MyRecord = PatientEntry | null
@@ -39,7 +39,7 @@ export function HalaxyServiceContextProvider({
     const {currentUser} = useAppServiceContext()
     const [myRecord, setMyRecord] = useState<MyRecord>(null)
     const [myAppointments, setMyAppointments] = useState<Appointments>(null);
-   const confirm = useConfirmDialog()
+    const confirm = useConfirmDialog()
    
     useEffect(()=>{
         const getRecord = async () => {
@@ -60,7 +60,6 @@ export function HalaxyServiceContextProvider({
             setMyAppointments(res)
             console.log(res)
         }
-
         getMyAppointments()
 
     },[myRecord])
