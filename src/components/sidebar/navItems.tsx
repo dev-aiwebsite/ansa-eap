@@ -1,6 +1,6 @@
 "use client";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { IconContents, IconGrid, IconServices } from "@/icons";
+import { IconDocuments, IconGrid, IconServices } from "@/icons";
 import { slugifyName } from "@/lib/helper";
 import { NavItemsType } from "@/types";
 import { ChevronRight } from "lucide-react";
@@ -31,7 +31,7 @@ export function useNavItems(): NavItemsType[] {
     {
       title: "Resources",
       link: "/resources",
-      icon: <IconContents />,
+      icon: <IconDocuments  strokeWidth={2.5}/>,
       subitems: categories
         .sort((a, b) => a.label.localeCompare(b.label))
         .map((i) => ({

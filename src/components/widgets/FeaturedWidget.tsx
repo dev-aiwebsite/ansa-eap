@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import ImageWithFallback from "../ui/imageWithFallback";
 
 const FeaturedWidget = ({ className }: { className?: string }) => {
-  const { allPosts } = usePostServiceContext();
+  const { allPosts, generatePostLink } = usePostServiceContext();
   const [featuredPosts, setFeaturedPosts] = useState<Posts | null>(null);
   
 
@@ -36,6 +36,7 @@ const FeaturedWidget = ({ className }: { className?: string }) => {
   }, [allPosts]);
 
   const featuredPost = featuredPosts ? featuredPosts[0] : null
+  
   return (
     <div className="relative h-full">
     <Crown size={30} className="z-10 bg-white/80 rounded-full p-1 right-2 top-2 absolute text-yellow-500 fill-yellow-500" />
@@ -54,7 +55,7 @@ const FeaturedWidget = ({ className }: { className?: string }) => {
       <p className="text-base font-medium">{featuredPost.title}</p>
 
       <div className="flex mt-auto">
-        <Button className="ml-auto capitalize bg-transparent !border-white !ring-white text-white" variant="outline" href={featuredPost.slug}>
+        <Button className="ml-auto capitalize bg-transparent !border-white !ring-white text-white" variant="outline" href={generatePostLink(featuredPost)}>
           view
         </Button>
       </div>
