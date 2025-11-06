@@ -1,17 +1,21 @@
 "use client";
 
+import { truncateText } from "@/lib/helper";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ReactNode } from "react";
 
 const Breadcrumb = () => {
   const pathname = usePathname();
   const paths = pathname.split("/").filter(Boolean); // remove empty ""
-
-  console.log(paths, 'paths')
+    const searchParams = useSearchParams();
+    const backLink = searchParams.get("back"); 
+    const backLabel = decodeURIComponent(searchParams.get("backlabel") || "");
+  
   return (
     <nav className="sticky top-0 breadcrumb bg-body-blend flex items-center gap-2 text-sm text-muted-foreground">
+
       {/* Home always first */}
       <BreadCrumbItem
         key="home"
@@ -35,13 +39,22 @@ const Breadcrumb = () => {
         return (
           <BreadCrumbItem
             key={href}
-            label={label}
+            label={truncateText(label, 20)}
             link={href} // full segment preserved here
             separator={!isLast && <ChevronRight className="w-4 h-4 mx-1" />}
             isLast={isLast}
           />
         );
       })}
+
+        {backLink && (
+        <Link
+          href={backLink}
+          className="bg-gray-200 text-xs py-1 px-2 rounded-md opacity-80 hover:opacity-100 flex items-center gap-1 text-foreground hover:underline mr-2"
+        >
+          Back {backLabel && <>to {backLabel}</>}
+        </Link>
+      )}
     </nav>
   );
 };
