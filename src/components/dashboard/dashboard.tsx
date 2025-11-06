@@ -67,7 +67,7 @@ const Dashboard = () => {
                 <p className="card-title">Upcoming Appointment</p>
                 <Link
                   className="text-sm text-app-purple-300 font-medium"
-                  href="/my-appointments"
+                  href="/user/appointments"
                 >
                   See all
                 </Link>

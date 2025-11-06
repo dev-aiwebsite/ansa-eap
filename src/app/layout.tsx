@@ -1,7 +1,6 @@
 import PageTransition from "@/components/ui/pageTransition";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { isMobileUA } from "@/lib/isMobileUa";
-import InstallPrompt from "@/lib/pwa/InstallPrompt";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { unstable_ViewTransition as ViewTransition } from "react";
@@ -55,7 +54,6 @@ export default async function RootLayout({
         <ViewTransition>
           <TooltipProvider>
             <Toaster position="top-right" />
-            <InstallPrompt />
             {isMobile ? <PageTransition>{children}</PageTransition> : children}
           </TooltipProvider>
         </ViewTransition>
