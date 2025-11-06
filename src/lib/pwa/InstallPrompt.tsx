@@ -38,7 +38,7 @@ export default function InstallPrompt() {
     let isNeedToPrompt = false;
 
     if (nextPromptDate) {
-      isNeedToPrompt = Date.now() > +new Date(nextPromptDate);
+      isNeedToPrompt = Date.now() > +nextPromptDate;
     } else {
       isNeedToPrompt = true;
     }
@@ -64,26 +64,27 @@ export default function InstallPrompt() {
     setIsSafari(isSafariBrowser);
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
 
+  
     // If Safari (iOS or macOS), show custom install popup
     if (isSafariBrowser || isIOSDevice) {
       setOpen(true);
     }
 
-    const handler = (e: Event) => {
+      const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       setOpen(true);
     };
-
+    
     window.addEventListener("beforeinstallprompt", handler);
     return () => window.removeEventListener("beforeinstallprompt", handler);
+    
   }, []);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    const choiceResult = await deferredPrompt.userChoice;
-    console.log("User choice:", choiceResult.outcome);
+    await deferredPrompt.userChoice;
     setDeferredPrompt(null);
     setOpen(false);
   };
@@ -104,7 +105,7 @@ export default function InstallPrompt() {
 
   
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={open}>
       <AlertDialogContent className="sm:max-w-sm space-y-4 rounded-xl z-[99999999]"
       overlayClassName="bg-black/90 z-[9999999]">
         <AlertDialogHeader>

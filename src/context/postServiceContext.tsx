@@ -14,7 +14,8 @@ import {
 } from "react";
 
 type PostServiceContextType = {
-  generatePostLink: (post:Post)=> string,
+  isFetching: boolean;
+  generatePostLink: (post:Post)=> string;
   setCategories:Dispatch<SetStateAction<Category[]>>;
   categories: Category[];
   allPosts: Posts;
@@ -42,54 +43,45 @@ export function PostServiceProvider({
   const [healthNews, setHealthNews] = useState<Posts>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [allLikes,setAllLikes] = useState<Like[]>([])
+  const [isFetching,setIsFetching] = useState(true)
   // fetch data
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        // Run both requests in parallel
-        const [newsRes, postsRes] = await Promise.all([getNews(), getPosts()]);
+useEffect(() => {
+  async function init() {
+    try {
+      setIsFetching(true)
 
-        // Format health news
-        const formattedNews = (newsRes || []).map((i) => ({
-          ...i,
-          slug: `/resources/7p2v1Ur_O4~health-news/${slugifyName(
-            i.title
-          )}`,
-        }));
+      const [newsRes, postsRes, catRes, likesRes] = await Promise.all([
+        getNews(),
+        getPosts(),
+        getCategoryByType("post"),
+        getLikes(),
+      ]);
 
-        // Get posts
-        const postsData = postsRes?.data ?? [];
+      // Format health news
+      const formattedNews = (newsRes || []).map((i) => ({
+        ...i,
+        slug: `/resources/7p2v1Ur_O4~health-news/${slugifyName(i.title)}`,
+      }));
 
-        // Update state once
-        setHealthNews(formattedNews);
-        setAllPosts([...formattedNews, ...postsData]);
-      } catch (error) {
-        console.error("Failed to fetch posts:", error);
-      }
-    }
+      // Posts
+      const postsData = postsRes?.data ?? [];
+      setHealthNews(formattedNews);
+      setAllPosts([...formattedNews, ...postsData]);
 
-    fetchPosts();
+      // Categories
+      if (catRes?.data) setCategories(catRes.data);
 
-    async function fetchCategories() {
-      const { data } = await getCategoryByType("post");
-
-      if (data) {
-        setCategories(data);
-      }
-    }
-
-    fetchCategories();
-    async function fetchLikes(){
-
-     const { data } = await getLikes();
-
-      if (data) {
-        setAllLikes(data)
+      // Likes
+      if (likesRes?.data) setAllLikes(likesRes.data);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setIsFetching(false);
     }
   }
-    fetchLikes()
 
-  }, []);
+  init();
+}, []);
 
   // derive categories once when allPosts changes
   useEffect(() => {
@@ -145,6 +137,7 @@ export function PostServiceProvider({
   return (
     <PostServiceContext.Provider
       value={{
+        isFetching,
         allLikes,
         toggleLike,
         generatePostLink,

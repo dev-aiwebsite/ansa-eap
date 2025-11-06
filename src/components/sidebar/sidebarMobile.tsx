@@ -17,7 +17,7 @@ import { UserMenu } from "../ui/userMenu";
 const items = [
   { icon: House, label: "Home", link: "/dashboard" },
     { icon: IconServices, label: "Services", link: "/health-services" },
-  { icon: IconCalendar, label: "Appointments", link: "/my-appointments" },
+  { icon: IconCalendar, label: "Appointments", link: "/user/appointments" },
   {
     icon: IconEmergency,
     label: "Emergency",

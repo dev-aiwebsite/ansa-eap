@@ -11,17 +11,17 @@ import ImageWithFallback from "@/components/ui/imageWithFallback";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { cn } from "@/lib/utils";
 import { LogoutUser } from "@/serverActions/login_logout";
-import { ChevronDown } from "lucide-react";
+import { CalendarCheck, ChevronDown, Heart, LogOut, User } from "lucide-react";
 import Link from "next/link";
 
 type UserMenuProps = {
   triggerClassName?: string;
   hideIcon?: boolean
-  imageClassName?:string;
-  textClassName?:string;
+  imageClassName?: string;
+  textClassName?: string;
 };
 
-export function UserMenu({textClassName, imageClassName, triggerClassName, hideIcon = false }: UserMenuProps) {
+export function UserMenu({ textClassName, imageClassName, triggerClassName, hideIcon = false }: UserMenuProps) {
   const { currentUser } = useAppServiceContext();
   return (
     <DropdownMenu>
@@ -39,7 +39,7 @@ export function UserMenu({textClassName, imageClassName, triggerClassName, hideI
             }
             alt=""
           />
-          <div className={cn('space-y-[0.2em]',textClassName)}>
+          <div className={cn('space-y-[0.2em]', textClassName)}>
             <span>{currentUser?.first_name}</span>
             <span>{currentUser?.last_name}</span>
           </div>
@@ -47,18 +47,40 @@ export function UserMenu({textClassName, imageClassName, triggerClassName, hideI
           {!hideIcon && <ChevronDown className="h-3 w-3" />}
         </Button>
       </DropdownMenuTrigger>
+
       <DropdownMenuContent align="end" className="z-[9999999]">
         <DropdownMenuItem asChild>
-          <Link href="/settings/account">Profile</Link>
+          <Link href="/settings/account" className="flex items-center gap-2">
+            <User className="w-4 h-4" />
+            Profile
+          </Link>
         </DropdownMenuItem>
+
         <DropdownMenuItem asChild>
-          <Link href="/my-appointments">My Appointments</Link>
+          <Link href="/user/appointments" className="flex items-center gap-2">
+            <CalendarCheck className="w-4 h-4" />
+            My Appointments
+          </Link>
         </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link href="/user/favorites" className="flex items-center gap-2">
+            <Heart className="w-4 h-4" />
+            My Favorites
+          </Link>
+        </DropdownMenuItem>
+
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={async () => LogoutUser()}>
+
+        <DropdownMenuItem
+          onClick={async () => LogoutUser()}
+          className="flex items-center gap-2 text-red-600 focus:text-red-600"
+        >
+          <LogOut className="w-4 h-4" />
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
+
     </DropdownMenu>
   );
 }

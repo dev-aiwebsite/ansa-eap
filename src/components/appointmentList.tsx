@@ -64,7 +64,7 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
         <Link
           key={i.id}
           className={cn("max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}
-          href={`/my-appointments?${i.id}`}
+          href={`/user/appointments?${i.id}`}
         >
           <div className="flex-1 text-zinc-500">
             <p className="max-md:!text-sm font-medium flex flex-row items-center gap-1">
