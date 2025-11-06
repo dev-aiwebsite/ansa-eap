@@ -22,10 +22,11 @@ export default function Page() {
             {isFetching && <FavoritesSkeleton />}
           {!isFetching &&  <div className="p-4 grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-4">
                 {filteredPosts.length > 0 && filteredPosts.map((post) => {
+
                     return <>
                         <Link
                         className="w-[380px] hover:ring-1 hover:ring-primary/80 bg-gray-50 flex flex-row flex-nowrap gap-2 p-4 rounded-lg"
-                            href={generatePostLink(post)}>
+                            href={generatePostLink(post) + '?back=/user/favorites' + `&backlabel=${encodeURIComponent('My Favorites')}`}>
                             <ImageWithFallback
                                 className="w-[40px] h-[40px] rounded"
                                 width={40}
