@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { updateUser, User } from "@/serverActions/crudUsers";
 import "@uploadcare/react-uploader/core.css";
-import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ImageWithFallback from "../ui/imageWithFallback";
+import UploadcareGalleryDialog from "../uploadcare/UploacareGalleryDialog";
 
 type FormAccountProps = {
   onSubmitSuccess?: (user: User) => void;
@@ -82,20 +82,12 @@ export default function FormAccount({
             className="w-24 h-24 rounded-full object-cover border"
           />
         
-
-        <FileUploaderRegular
-          
-          useCloudImageEditor={false}
-          sourceList="local"
-          classNameUploader="uc-light"
+          <UploadcareGalleryDialog
+          triggerClassName="w-fit bg-gray-200/80 font-[400] rounded-md !py-1.5 !px-3 border-none ring-none text-foreground h-auto !text-sm" 
           pubkey="9c35a0212e26c1a710ca"
-           multiple={false}
-          accept="image/*" // 👈 Only allow images
-          onCommonUploadSuccess={(e) => {
-            const cdnUrl = e.successEntries[0].cdnUrl;
-            setValue("profile_img", cdnUrl, { shouldDirty: true });
-          }}
-        />
+          onSelect={ (cdnUrl) => setValue("profile_img", cdnUrl)}
+          />
+     
       </div>
 
       <div className="form-item">
