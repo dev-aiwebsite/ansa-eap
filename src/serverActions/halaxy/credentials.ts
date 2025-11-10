@@ -1,4 +1,7 @@
 "use server"
+
+import { accountIndex, authTokenUrl, baseUrl } from "./config";
+
 const halaxyAccounts = [
   {
     account_name: "Test",
@@ -17,12 +20,9 @@ const halaxyAccounts = [
   },
 ];
 
-const accountIndex = 2; // select account
 const clientId = halaxyAccounts[accountIndex].client_id;
 const clientSecret = halaxyAccounts[accountIndex].client_secret;
 
-const authTokenUrl = "https://au-api.halaxy.com/main/oauth/token";
-const baseUrl = "https://au-api.halaxy.com/main";
 
 // Simple in-memory token cache
 let cachedToken: string | null = null;
@@ -64,6 +64,7 @@ export async function halaxyFetch(endpoint: string, options: {
 } = {}) {
   const token = await getAccessToken();
   let contentType = 'application/json'
+
   if (options.method == "PATCH") {
     contentType = 'application/merge-patch+json'
   }

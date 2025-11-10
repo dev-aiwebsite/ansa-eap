@@ -1,4 +1,4 @@
-export default function HalaxyBooking({link}:{link:string}) {
+export default function HalaxyBookingIframe({link}:{link:string}) {
 
   return (
     <div className="flex-1 h-full overflow-hidden rounded-lg">
