@@ -141,7 +141,7 @@ export function OtpVerification({
                   <span className="font-medium">{email || "your email"}</span>.
                 </p>
                 <p className="text-balance muted-text">
-                  <span>Check your inbox or spam folder and enter the code below.</span>
+                  <span>Check your <span className="font-semibold">inbox or spam folder</span> and enter the code below.</span>
                 </p>
               </>
             ) : (

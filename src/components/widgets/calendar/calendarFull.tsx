@@ -1,3 +1,4 @@
+"use client"
 import Container from "@/components/ui/container";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

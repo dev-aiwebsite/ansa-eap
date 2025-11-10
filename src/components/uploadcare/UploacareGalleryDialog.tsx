@@ -13,9 +13,11 @@ import UploadcareGallery from "./UploadcareGallery";
 type Props = {
   pubkey: string;
   onSelect: (url: string) => void;
+  triggerClassName?:string;
+  triggerText?:string;
 };
 
-export default function UploadcareGalleryDialog({ pubkey, onSelect }: Props) {
+export default function UploadcareGalleryDialog({ pubkey, onSelect, triggerClassName, triggerText = 'Select Image' }: Props) {
   const [open, setOpen] = useState(false);
 
   const handleSelect = (url: string) => {
@@ -26,7 +28,11 @@ export default function UploadcareGalleryDialog({ pubkey, onSelect }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
 
-        <Button onClick={() => setOpen(true)} variant="input">Select Image</Button>
+        <Button
+        onClick={() => setOpen(true)}
+        variant="input"
+        className={triggerClassName}
+        >{triggerText}</Button>
     
       <DialogContent className="max-w-4xl w-full">
         <DialogHeader>

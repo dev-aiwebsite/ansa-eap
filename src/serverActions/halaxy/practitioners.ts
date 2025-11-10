@@ -1,20 +1,83 @@
 "use server";
 
+import { elevateOrgId } from "./config";
 import { halaxyFetch } from "./credentials";
 
-interface Practitioner {
+interface FhirPractitioner {
   id: string;
   resourceType: "Practitioner";
-  name?: { given: string[]; family: string }[];
-  // add more fields as needed
+  active?: boolean;
+  name?: { use?: string; text?: string; family?: string; given?: string[] }[];
+  telecom?: { system: string; value: string; use?: string }[];
+  qualification?: {
+    code?: {
+      coding?: { system: string; code: string; display: string }[];
+      text?: string;
+    };
+  }[];
+}
+
+interface FhirPractitionerRole {
+  id: string;
+  resourceType: "PractitionerRole";
+  practitioner: { reference: string; type: string };
 }
 
 interface PractitionerListResponse {
   resourceType: "Bundle";
-  entry: { resource: Practitioner }[];
+  entry: { resource: FhirPractitioner | FhirPractitionerRole }[];
   total?: number;
 }
 
-export async function listPractitioners({ page = 1, count = 10 } = {}): Promise<PractitionerListResponse> {
-  return halaxyFetch(`/Practitioner?page=${page}&_count=${count}`);
+// Your simplified type
+export type HalaxyPractitioner = {
+  id: string;        // Practitioner ID
+  roleId: string;    // PractitionerRole ID
+  firstName: string;
+  lastName: string;
+  email: string;
+  profession: string;
+}
+
+export async function getHalaxyPractitioners(): Promise<HalaxyPractitioner[]> {
+  const res = await halaxyFetch(
+    `/PractitionerRole?page=1&_count=30&organization=${elevateOrgId}&_include=PractitionerRole%3Apractitioner`
+  ) as PractitionerListResponse;
+
+  if (res.total === 0) return [];
+
+  // Separate PractitionerRole and Practitioner
+  const roles: FhirPractitionerRole[] = [];
+  const practitioners: Record<string, FhirPractitioner> = {};
+
+  for (const entry of res.entry) {
+    if (entry.resource.resourceType === "PractitionerRole") {
+      roles.push(entry.resource as FhirPractitionerRole);
+    } else if (entry.resource.resourceType === "Practitioner") {
+      const p = entry.resource as FhirPractitioner;
+      practitioners[p.id] = p;
+    }
+  }
+
+  // Map roles to HalaxyPractitioner
+  const mapped: HalaxyPractitioner[] = roles.map(role => {
+    const practitioner = practitioners[role.practitioner.reference.split("/").pop()!];
+    if (!practitioner) return null;
+
+    const firstName = practitioner.name?.[0]?.given?.[0] || "";
+    const lastName = practitioner.name?.[0]?.family || "";
+    const email = practitioner.telecom?.find(t => t.system === "email")?.value || "";
+    const profession = practitioner.qualification?.[0]?.code?.coding?.[0]?.display || "";
+
+    return {
+      id: practitioner.id,
+      roleId: role.id,
+      firstName,
+      lastName,
+      email,
+      profession,
+    };
+  }).filter(Boolean) as HalaxyPractitioner[];
+
+  return mapped;
 }

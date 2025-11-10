@@ -31,7 +31,7 @@ export function UserMenu({ textClassName, imageClassName, triggerClassName, hide
           className={cn("flex flex-row gap-2", triggerClassName)}
         >
           <ImageWithFallback
-            className={cn("rounded-full object-fit", imageClassName)}
+            className={cn("aspect-square rounded-full object-fit", imageClassName)}
             width={30}
             height={30}
             src={
