@@ -1,6 +1,8 @@
 "use server";
 import pool from "@/lib/db";
+import { DailyActivity, DailyCheckIn } from "@/types";
 import { nanoid } from "nanoid";
+import { Company } from "./crudCompanies";
 
 export type User = {
   id: string;
@@ -15,11 +17,74 @@ export type User = {
   roles: string[];
 };
 
+export type DashboardUser = {
+  user: User;
+  company_data: Company;
+  daily_activities: DailyActivity[];
+  daily_check_ins: DailyCheckIn[];
+};
+
 type Result<T> = {
   success: boolean;
   message: string;
   data?: T;
 };
+
+
+// serverActions/crudUsers.ts
+
+export async function getUserDashboardData(userId: string): Promise<Result<DashboardUser>> {
+  try {
+    const result = await pool.query(
+      `
+      SELECT 
+        u.*, 
+        -- fetch company as a JSON object
+        (SELECT row_to_json(c)
+         FROM companies c
+         WHERE c.code = u.company
+        ) AS company_data,
+        COALESCE(json_agg(DISTINCT a.*) FILTER (WHERE a.id IS NOT NULL), '[]') AS daily_activities,
+        COALESCE(json_agg(DISTINCT d.*) FILTER (WHERE d.id IS NOT NULL), '[]') AS daily_check_ins
+      FROM users u
+      LEFT JOIN daily_activities a ON a.user_id = u.id
+      LEFT JOIN daily_check_ins d ON d.user_id = u.id
+      WHERE u.id = $1
+      GROUP BY u.id;
+      `,
+      [userId]
+    );
+
+    if (!result.rows[0]) return { success: false, message: `User: ${userId} not found` };
+
+    const row = result.rows[0];
+
+    // map result into DashboardUser
+    const dashboardData: DashboardUser = {
+      user: {
+        id: row.id,
+        first_name: row.first_name,
+        last_name: row.last_name,
+        email: row.email,
+        password: row.password,
+        company: row.company,
+        profile_img: row.profile_img,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        roles: row.roles || [],
+      },
+      company_data: row.company_data,               // already a JSON object
+      daily_activities: row.daily_activities || [], 
+      daily_check_ins: row.daily_check_ins || [],
+    };
+
+    return { success: true, message: "Dashboard data fetched successfully", data: dashboardData };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
 
 // CREATE
 export async function createUser(
