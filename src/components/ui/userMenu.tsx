@@ -19,10 +19,13 @@ type UserMenuProps = {
   hideIcon?: boolean
   imageClassName?: string;
   textClassName?: string;
+  label?: string;
 };
 
-export function UserMenu({ textClassName, imageClassName, triggerClassName, hideIcon = false }: UserMenuProps) {
+export function UserMenu({label, textClassName, imageClassName, triggerClassName, hideIcon = false }: UserMenuProps) {
   const { currentUser } = useAppServiceContext();
+  const name = `${currentUser.first_name} ${currentUser.last_name}`
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,8 +43,7 @@ export function UserMenu({ textClassName, imageClassName, triggerClassName, hide
             alt=""
           />
           <div className={cn('space-y-[0.2em]', textClassName)}>
-            <span>{currentUser?.first_name}</span>
-            <span>{currentUser?.last_name}</span>
+            <span>{label || name}</span>
           </div>
           <span className="sr-only">Toggle user menu</span>
           {!hideIcon && <ChevronDown className="h-3 w-3" />}

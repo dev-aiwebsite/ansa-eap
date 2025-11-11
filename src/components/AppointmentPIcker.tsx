@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Calendar, CalendarDayButton } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { addDays, addWeeks, format, isSameDay, startOfWeek, subWeeks, min } from "date-fns";
+import { addDays, addWeeks, format, isSameDay, min, startOfWeek, subWeeks } from "date-fns";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { Calendar as CalendarIcon, ChevronRight, ChevronLeft } from "lucide-react";
 import { ScrollArea } from "./ui/scroll-area";
 
 interface AppointmentPickerProps {
@@ -50,15 +50,15 @@ export default function AppointmentPicker({ className, availableTimestamps, onSe
         <div className={cn("bg-white p-4 rounded-md", className)}>
             {/* Navigation */}
             <div className="flex justify-between items-center mb-4 space-x-2">
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-row flex-nowrap items-center">
                     <Button variant="ghost" size="icon" onClick={prevWeek}>
                         <ChevronLeft size={16} />
                     </Button>
                     {/* Calendar picker with label and icon */}
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button variant="ghost" className="flex items-center gap-2">
-                                <CalendarIcon size={16} />     {`${format(currentWeekStart, "dd MMM")} - ${format(addDays(currentWeekStart, 6), "dd MMM")}`}
+                            <Button variant="ghost" className="max-md:!p-0 flex items-center gap-2">
+                               {`${format(currentWeekStart, "MMM dd")} - ${format(addDays(currentWeekStart, 6), "dd")}`}
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-2">
@@ -84,14 +84,15 @@ export default function AppointmentPicker({ className, availableTimestamps, onSe
                     <Button variant="ghost" size="icon" onClick={nextWeek}>
                         <ChevronRight size={16} />
                     </Button>
-                    <Button variant="outline" onClick={goToNextAvailable}>Next Available</Button>
                 </div>
-
-
+                <Button
+                className="max-md:text-xs max-md:!p-2 h-fit"
+                variant="outline"
+                onClick={goToNextAvailable}>Next Available</Button>
             </div>
 
             {/* Week grid */}
-            <div className="grid md:grid-cols-7 gap-2">
+            <div className="overflow-auto grid grid-cols-[repeat(7,minmax(100px,1fr))] gap-2">
                 {daysOfWeek.map((day) => {
                     const dayAvailableTimes = getDayAvailability(day);
                     return (
@@ -101,7 +102,7 @@ export default function AppointmentPicker({ className, availableTimestamps, onSe
                                 <br />
                                 <span>{format(day, "dd MMM")}</span>
                             </div>
-                            <ScrollArea className="h-[300px] max-h-[300px] overflow-auto ">
+                            <ScrollArea className="h-[300px] max-h-[200px] md:max-h-[300px] overflow-auto ">
                                 <div className="flex flex-col flex-nowrap gap-2">
                                     {dayAvailableTimes.length ? (
                                         dayAvailableTimes.map((ts) => (
