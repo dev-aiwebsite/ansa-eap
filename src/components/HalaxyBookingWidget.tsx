@@ -111,7 +111,7 @@ export default function HalaxyBookingWidget() {
                             setPractitioner(selected);
                         }}
                     >
-                        <SelectTrigger className="bg-white">
+                        <SelectTrigger className="bg-white whitespace-normal text-start !h-fit">
                             <SelectValue placeholder="Choose a practitioner" />
                         </SelectTrigger>
                         <SelectContent>
@@ -134,7 +134,7 @@ export default function HalaxyBookingWidget() {
                             setService(selected);
                         }}
                     >
-                        <SelectTrigger className="bg-white">
+                        <SelectTrigger className="bg-white whitespace-normal text-start !h-fit">
                             <SelectValue placeholder="Choose a service" />
                         </SelectTrigger>
                         <SelectContent>
@@ -166,7 +166,7 @@ export default function HalaxyBookingWidget() {
                     isLoading={isSubmitting}
                         onClick={handleBookAppointment}
 
-                        className="font-bold !px-4 float-right"
+                        className="font-bold !px-4 float-right max-sm:h-16 max-sm:mb-4 max-sm:w-full"
                     >
                         Book Appointment
                     </Button>

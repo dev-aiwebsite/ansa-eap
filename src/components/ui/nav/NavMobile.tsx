@@ -22,7 +22,7 @@ const items = [
     textClassName: "",
     link: "/critical-response",
   },
-  { icon: IconDocuments, label: "Resources", link: "/resources", iconClassName: 'stroke-[2px]'},
+  { icon: IconDocuments, label: "Resources", link: "/resources", iconClassName: 'stroke-[3.5px]'},
   { icon: UserCog, label: "Account", link: "/settings/account" },
 ];
 const NavMobile = () => {
@@ -36,8 +36,9 @@ const NavMobile = () => {
           if (label == "Account") {
             return (
               <UserMenu
-                textClassName="text-[9px]"
-                imageClassName="!w-[28px] !h-[28px] block"
+                label={label}
+                textClassName="text-[9px] text-[#888] font-[600]"
+                imageClassName="!w-[24px] !h-[24px] block"
                 hideIcon
                 key={label}
                 triggerClassName={`${className} ${activeClass} !p-2 text-zinc-400 rounded-xl text-base flex-col h-auto`}
@@ -49,14 +50,14 @@ const NavMobile = () => {
               href={link}
               key={label}
               className={cn(
-                "!p-2 text-zinc-400 rounded-xl text-base flex-col h-auto",
+                "!p-2 text-[#888] font-[600] rounded-xl text-base flex-col h-auto",
                 className,
                 activeClass
               )}
               variant="ghost"
             >
               
-              <Icon strokeWidth={1.2} className={cn("!w-[28px] !h-[28px] block", iconClassName)} />
+              <Icon strokeWidth={1.2} className={cn("!w-[24px] !h-[24px] block", iconClassName)} />
               <span className={cn("text-[9px]", textClassName)}>{label}</span>
             </Button>
           );

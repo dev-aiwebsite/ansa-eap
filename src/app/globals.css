@@ -71,7 +71,8 @@
 :root {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
+  /* --foreground: oklch(0.141 0.005 285.823); */
+  --foreground: oklch(0.30 0 0 / 1);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
@@ -80,6 +81,7 @@
   --sidebar-w: 240px;
   --sidebar-right-w: min(400px, 25vw);
   --breadcrumb-h: 40px;
+  --nav-mobile-h: 80px;
 
   /* ✅ Updated brand primary color */
   --primary: oklch(0.74 0.13 161.74);
@@ -197,6 +199,10 @@
   .card {
     @apply rounded-3xl p-6 bg-card text-card-foreground;
   }
+   .md\:card {
+    @apply md:rounded-3xl md:p-6 md:bg-card md:text-card-foreground;
+   }
+
   .card-title {
     @apply  sm:text-lg font-medium;
   }
@@ -289,17 +295,21 @@
   [data-slot="collapsible-trigger"][data-state="open"] .collapsible-arrow {
     @apply rotate-90;
   }
+  
 }
+
+
 
 
 .mobile-nav {
   --rad: 25px;
-  padding: 10px;
+  padding: 2px 10px 10px 10px;
   /* border-radius: var(--rad) var(--rad) 0 0; */
   position: fixed;
   bottom: 0;
   z-index: 9999999;
-  max-height: 80px;
+  height: var(--nav-mobile-h);
+  max-height: var(--nav-mobile-h);
   width: 100vw;
   background: white;
   box-shadow: 0 0px 15px #0002;
@@ -351,7 +361,6 @@ button:not(.input).shadow-btn {
 }
 .h-screen-header {
   height: calc(100vh - var(--header-h) - (var(--spacing) * 8));
-  
 }
 .w-full-sidebar {
   max-width: calc(100vw - var(--sidebar-w) - (var(--spacing) * 16));
@@ -446,6 +455,14 @@ html {
 @media (max-width: 500px){
   html {
     /* font-size: 14px; */
+  }
+
+  .h-screen-header {
+    height: calc(
+      100vh
+      - var(--header-h)
+      - var(--nav-mobile-h)
+      );
   }
 }
 
