@@ -92,7 +92,7 @@ function mapRssItem(item: RssJson["rss"]["channel"]["item"][0]): Post {
 }
 
 
-export async function getNews(): Promise<Posts> {
+export async function getRssNews(): Promise<Posts> {
   try {
   // let res = await fetch("https://watersedgecounselling.com/category/mental-health-issues-2/feed/");
   let res = await fetch("http://wellbeing.com.au/feed");
@@ -101,6 +101,7 @@ export async function getNews(): Promise<Posts> {
   if (!res.ok) {
     res = await fetch("https://online.vu.edu.au/taxonomy/term/321/all/feed");
   }
+
   if(!res.ok){
      throw new Error(`Failed to fetch RSS feed: ${res.status}`);
   }

@@ -1,6 +1,9 @@
 "use server";
 import pool from "@/lib/db";
 import { nanoid } from "nanoid";
+import { Like } from "./crudLikes";
+import { Category } from "./crudCategories";
+
 
 
 export type Post = {
@@ -22,11 +25,48 @@ export type Post = {
 
 export type Posts = Post[];
 
+export type PostServiceData = {
+  // news: Posts;
+  posts: Posts;
+  categories: Category[];
+  likes: Like[];
+};
+
+
 type Result<T> = {
   success: boolean;
   message: string;
   data?: T;
 };
+
+export async function getPostServiceData(): Promise<Result<PostServiceData>> {
+  try {
+    // (SELECT json_agg(n.*) FROM news n) AS news,
+    const result = await pool.query(`
+      SELECT
+        (SELECT json_agg(p.*) FROM posts p) AS posts,
+        (SELECT json_agg(c.*) FROM categories c WHERE c.type = 'post') AS categories,
+        (SELECT json_agg(l.*) FROM likes l) AS likes
+    `);
+
+    const row = result.rows[0];
+
+    return {
+      success: true,
+      message: "Post service data fetched successfully",
+      data: {
+        // news: row.news || [],
+        posts: row.posts || [],
+        categories: row.categories || [],
+        likes: row.likes || [],
+      } as PostServiceData,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
 
 // CREATE
 export async function createPost(data: Omit<Post, "id" | "created_at" | "updated_at">): Promise<Result<Post>> {
@@ -72,6 +112,32 @@ export async function getPosts(): Promise<Result<Post[]>> {
     return { success: false, message };
   }
 }
+
+// READ BY CATEGORY
+export async function getPostsByCategory(category: string): Promise<Result<Post[]>> {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM posts WHERE category = $1 ORDER BY created_at DESC`,
+      [category]
+    );
+
+    const posts = result.rows as Post[];
+
+    return {
+      success: posts.length > 0,
+      message: posts.length
+        ? `Posts for category: ${category} fetched successfully`
+        : `No posts found for category: ${category}`,
+      data: posts,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+
+    return { success: false, message };
+  }
+}
+
 
 // READ ONE
 export async function getPostById(id: string): Promise<Result<Post>> {

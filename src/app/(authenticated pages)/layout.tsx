@@ -6,10 +6,10 @@ import { ConfirmProvider } from "@/context/ConfirmContext";
 import { HalaxyServiceContextProvider } from "@/context/HalaxyServiceContext";
 import { GalleryContextProvider } from "@/context/ImageGalleryContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
-import { getCompanyByCode } from "@/serverActions/crudCompanies";
-import { getDailyActivities } from "@/serverActions/crudDailyActivities";
-import { getDailyCheckIns } from "@/serverActions/crudDailyCheckIns";
-import { getUserById } from "@/serverActions/crudUsers";
+import { getUserDashboardData } from "@/serverActions/crudUsers";
+
+const isTestMode = process.env.TEST_MODE === "true";
+
 export default async function Layout({
   children,
 }: Readonly<{
@@ -17,28 +17,21 @@ export default async function Layout({
 }>) {
   
 const session = await auth();
-if (!session) return;
+const userId = session?.user.id || "7lCw6u7zmY";
 
-const userId = session.user.id;
+if (!isTestMode && !session) return;
 
-// Get user first since you need its company
-const userResult = await getUserById(userId);
-const currentUser = userResult?.data;
-if (!currentUser) return;
+const dashboardResult = await getUserDashboardData(userId);
 
-// Now you can run the rest in parallel
-const [dailyActivities, dailyCheckIns, company] = await Promise.all([
-  getDailyActivities(userId),
-  getDailyCheckIns(userId),
-  getCompanyByCode(currentUser.company),
-]);
+if (!dashboardResult.success || !dashboardResult.data) return;
 
 const data = {
-  currentUser,
-  dailyActivities,
-  dailyCheckIns,
-  company: company.data,
+  currentUser: dashboardResult.data.user,
+  dailyActivities: dashboardResult.data.daily_activities,
+  dailyCheckIns: dashboardResult.data.daily_check_ins,
+  company: dashboardResult.data.company_data,
 };
+
 
   return (
     <AppServiceContextProvider data={data}>

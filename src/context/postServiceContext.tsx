@@ -1,9 +1,7 @@
 "use client";
-import { slugifyName } from "@/lib/helper";
-import { Category, getCategoryByType } from "@/serverActions/crudCategories";
-import { createLike, deleteLike, getLikes, Like } from "@/serverActions/crudLikes";
-import { getPosts, Post, Posts } from "@/serverActions/crudPosts";
-import { getNews } from "@/serverActions/RssNews";
+import { Category } from "@/serverActions/crudCategories";
+import { createLike, deleteLike, Like } from "@/serverActions/crudLikes";
+import { getPostServiceData, Post, Posts } from "@/serverActions/crudPosts";
 import {
   createContext,
   Dispatch,
@@ -50,29 +48,20 @@ useEffect(() => {
     try {
       setIsFetching(true)
 
-      const [newsRes, postsRes, catRes, likesRes] = await Promise.all([
-        getNews(),
-        getPosts(),
-        getCategoryByType("post"),
-        getLikes(),
-      ]);
-
-      // Format health news
-      const formattedNews = (newsRes || []).map((i) => ({
-        ...i,
-        slug: `/resources/7p2v1Ur_O4~health-news/${slugifyName(i.title)}`,
-      }));
-
+      const postServiceData = await getPostServiceData();
+      console.log(postServiceData, 'postServiceData')
+      if (!postServiceData.success || !postServiceData.data) return;
+      const { posts: postsRes, categories: catRes, likes: likesRes } = postServiceData.data;
+      
+      
       // Posts
-      const postsData = postsRes?.data ?? [];
-      setHealthNews(formattedNews);
-      setAllPosts([...formattedNews, ...postsData]);
-
+      const postsData = postsRes ?? [];
+      
+      setAllPosts(postsData);
       // Categories
-      if (catRes?.data) setCategories(catRes.data);
-
+      if (catRes) setCategories(catRes);
       // Likes
-      if (likesRes?.data) setAllLikes(likesRes.data);
+      if (likesRes) setAllLikes(likesRes);
     } catch (error) {
       console.error("Failed to fetch data:", error);
     } finally {
@@ -86,8 +75,9 @@ useEffect(() => {
   // derive categories once when allPosts changes
   useEffect(() => {
     if (!allPosts.length) return;
-    setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts);
+    setHealthNews(allPosts.filter((p) => p.category === "7p2v1Ur_O4") as Posts);
     setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Posts);
+    setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts);
     setVideoContents(
       allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Posts
     );
