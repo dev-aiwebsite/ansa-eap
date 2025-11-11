@@ -10,6 +10,8 @@ import { sendMail } from "@/lib/email/elasticemail";
 import { EMAIL_VERIFICATION_TEMPLATE } from "@/lib/email/email_templates/EmailVerification";
 import Link from "next/link";
 
+const isDisabled = true
+
 type OtpVerificationProps = {
   className?: string;
   inputClassName?: string;
@@ -33,7 +35,9 @@ export function OtpVerification({
   const [isSending, setIsSending] = useState(false);
   // Notify parent when confirmation changes
   useEffect(() => {
-    if (onConfirmChange) onConfirmChange(isConfirmed);
+    if (onConfirmChange) {
+      onConfirmChange(isDisabled ?? isConfirmed);
+    }
   }, [isConfirmed, onConfirmChange]);
 
   // Handle countdown timer
@@ -55,40 +59,42 @@ export function OtpVerification({
     return () => clearInterval(interval);
   }, [timeLeft]);
 
+
+
   const handleSendOtp = async () => {
     const newOtp = generateOtp();
-    
+
     setIsSending(true);
     try {
       const payload = {
         to: email,
         subject: "One-time verification code",
-        htmlBody: EMAIL_VERIFICATION_TEMPLATE({code:newOtp}),
+        htmlBody: EMAIL_VERIFICATION_TEMPLATE({ code: newOtp }),
       };
 
-      if(process.env.NODE_ENV == 'development'){
-      alert(newOtp)
+      if (process.env.NODE_ENV == 'development') {
+        alert(newOtp)
       } else {
         await sendMail(payload)
 
       }
-      
+
     } catch (err) {
       console.log(err);
       alert("something went wrong");
     }
 
-    
-    
-      setOtp(newOtp);
-      setValue("");
-      setIsExpired(false);
-      setTimeLeft(60); // 60 seconds countdown
-      setIsComplete(false);
-      setIsLoading(false);
-      setIsSending(false);
-      setIsConfirmed(false);
-    
+
+
+    setOtp(newOtp);
+    setValue("");
+    setIsExpired(false);
+    setTimeLeft(60); // 60 seconds countdown
+    setIsComplete(false);
+    setIsLoading(false);
+    setIsSending(false);
+    setIsConfirmed(false);
+
   };
 
   const handleComplete = (enteredOtp: string) => {
@@ -112,6 +118,7 @@ export function OtpVerification({
   };
 
   useEffect(() => {
+    if(isDisabled) return
     handleSendOtp();
   }, []);
 
@@ -121,6 +128,18 @@ export function OtpVerification({
     const timer = setTimeout(() => setErrorMsg(""), 3000);
     return () => clearTimeout(timer);
   }, [errorMsg]);
+
+
+ if (isDisabled) {
+    return (
+      <div className={`flex flex-col items-center justify-center p-6 space-y-4 ${className || ""}`}>
+        <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+        <p className="text-gray-500 text-center">
+          Hang tight, almost done…
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div

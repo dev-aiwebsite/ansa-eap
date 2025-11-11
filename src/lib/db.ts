@@ -6,7 +6,7 @@ const pool = new Pool({
   database: "ansa_eap",
   password: "welcometoansa2025",
   port: 5432,
-  max: 10, // Limit max connections
+  max: 30, // Limit max connections
   idleTimeoutMillis: 30000, // Close idle connections after 30s
 });
 
