@@ -2,8 +2,9 @@
 import { GlobalSearch } from "@/components/ui/globalSearch";
 import { Bell } from "lucide-react";
 import { Button } from "./button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu";
 import { UserMenu } from "./userMenu";
+import { PushNotificationToggle } from "../webpush/PushNotificationToggle";
 
 const MainHeader = () => {
   return (
@@ -20,8 +21,8 @@ const MainHeader = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-
-
+              <PushNotificationToggle />
+            <DropdownMenuSeparator/>
               <DropdownMenuItem>Notification</DropdownMenuItem>
 
             </DropdownMenuContent>

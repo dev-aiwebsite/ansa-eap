@@ -9,15 +9,17 @@ import { PostServiceProvider } from "@/context/postServiceContext";
 import { getUserDashboardData } from "@/serverActions/crudUsers";
 
 const isTestMode = process.env.TEST_MODE === "true";
-
+const isProd = process.env.NODE_ENV === "production"
 export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   
+const testUserId = isProd ? '7lCw6u7zmY ': 'JxjTgX4_Tx'
+
 const session = await auth();
-const userId = session?.user.id || "7lCw6u7zmY";
+const userId = session?.user.id || testUserId;
 
 if (!isTestMode && !session) return;
 

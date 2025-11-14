@@ -229,9 +229,7 @@ CREATE TABLE likes (
   post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
   created_at TIMESTAMP DEFAULT now(),
   UNIQUE (user_id, post_id)
-);
-
-`
+);`
 
 const createCategoriesTable = `
 CREATE TABLE categories (
@@ -243,6 +241,35 @@ CREATE TABLE categories (
   image_mobile TEXT,
   created_at TIMESTAMP DEFAULT NOW()
 );`
+
+
+const createAppNotificationsTable = `
+DROP TABLE IF EXISTS app_notifications;
+CREATE TABLE IF NOT EXISTS app_notifications (
+  id TEXT PRIMARY KEY, -- nanoid
+  user_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  url TEXT DEFAULT NULL, -- optional: where to navigate when clicked
+  read BOOLEAN DEFAULT FALSE NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+`;
+
+const createPushSubscriptionsTable = `
+DROP TABLE IF EXISTS push_subscriptions;
+CREATE TABLE push_subscriptions (
+  id TEXT PRIMARY KEY,
+  user_id TEXT UNIQUE,        
+  subscription JSONB NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+`;
+
+
   try {
     console.log("🚀 Starting migration...");
 
@@ -269,6 +296,8 @@ CREATE TABLE categories (
     await pool.query(createWho5ResponsesTable);
     await pool.query(createCategoriesTable);
     await pool.query(createLikesTable);
+    await pool.query(createAppNotificationsTable);
+    await pool.query(createPushSubscriptionsTable);
     console.log("✅ Tables created successfully.");
 
 
