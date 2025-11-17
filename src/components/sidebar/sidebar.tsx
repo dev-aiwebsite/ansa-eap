@@ -1,19 +1,13 @@
 import NavItems from "@/components/sidebar/navItems";
 import { Button } from "@/components/ui/button";
-import {
-  IconLogo,
-} from "@/icons";
 import Image from "next/image";
+import AppLogo from "../AppLogo";
 
 
 const Sidebar = () => {
   return (
     <nav className="main-sidebar flex flex-col bg-white rounded-3xl h-full w-sidebar">
-      <div className="logo-container flex flex-col items-center w-full justify-center p-5">
-        <IconLogo fill="#B92F60" width={45} />
-        <h1 className="font-medium text-lg">ELEVATE</h1>
-        <span className="text-xs">By ANSA</span>
-      </div>
+      <AppLogo />
       <NavItems />
       <div className="mt-auto p-6">
         <div className="mb-4">
