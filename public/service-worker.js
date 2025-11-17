@@ -1,23 +1,24 @@
-
 // service-worker.js
 
+let domain = '/'; // fallback domain, will be set from client
+
+// Install
 self.addEventListener('install', (event) => {
   console.log('Service Worker: Installing...');
-  // Skip waiting to activate the new service worker immediately.
   self.skipWaiting();
 });
 
+// Activate
 self.addEventListener('activate', (event) => {
   console.log('Service Worker: Activating...');
-  // Take control of all clients as soon as the service worker is activated.
   event.waitUntil(self.clients.claim());
 });
 
+// Push event (triggered by server)
 self.addEventListener('push', (event) => {
   console.log('Service Worker: Push Received.');
-  console.log(`Service Worker: Push had this data: "${event.data.text()}"`);
-
   let data;
+
   try {
     data = event.data.json();
   } catch (e) {
@@ -26,35 +27,55 @@ self.addEventListener('push', (event) => {
       body: event.data.text(),
     };
   }
-  
+
   const title = data.title || 'Push Notification';
   const options = {
     body: data.body || 'Something new happened!',
-    icon: 'https://picsum.photos/192', // Generic icon
-    badge: 'https://picsum.photos/96', // Generic badge
+    icon: 'https://picsum.photos/192',
+    badge: 'https://picsum.photos/96',
+    data: domain, // send domain to notification click
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
 });
 
-// This is a custom event listener to allow the client page to trigger a notification for testing.
-// In a real application, the 'push' event would be triggered by a push service from a server.
+// Custom message listener (triggered from client)
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
+  if (!event.data) return;
+
+  // Set domain dynamically
+  if (event.data.type === 'SET_DOMAIN') {
+    domain = event.data.payload;
+    console.log('Service Worker: Domain set to', domain);
+  }
+
+  // Show notification manually for testing
+  if (event.data.type === 'SHOW_NOTIFICATION') {
     const { title, body } = event.data.payload;
-    console.log('Service Worker: Received message to show notification.');
     self.registration.showNotification(title, {
-      body: body,
+      body,
       icon: 'https://picsum.photos/192',
       badge: 'https://picsum.photos/96',
-      data: 'https://localhost:3000',
+      data: domain,
     });
   }
 });
 
-
+// Notification click
 self.addEventListener('notificationclick', (event) => {
   console.log('Notification click received:', event.notification.data);
   event.notification.close();
-  event.waitUntil(clients.openWindow(event.notification.data || 'http://localhost:3000'));
+
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url === event.notification.data && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(event.notification.data || '/');
+      }
+    })
+  );
 });

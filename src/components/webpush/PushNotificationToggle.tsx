@@ -28,6 +28,7 @@ export function PushNotificationToggle() {
   async function registerServiceWorker() {
     try {
       const registration = await navigator.serviceWorker.register('/service-worker.js')
+      // const registration = await navigator.serviceWorker.register('/sw.js')
       const existingSub = await registration.pushManager.getSubscription()
       setSubscription(existingSub)
     } catch (err) {

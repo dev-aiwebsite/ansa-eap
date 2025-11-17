@@ -1,7 +1,7 @@
 'use server'
 
 import { createPushSubscription, deletePushSubscription, getPushSubscriptionByClientId } from '@/serverActions/crudPushNotification'
-import webpush, { WebPushSubscription } from 'web-push'
+import webpush, { PushSubscription as  WebPushSubscription } from 'web-push'
 
 webpush.setVapidDetails(
   'mailto:dev@aiwebsiteservices.com',
@@ -24,13 +24,14 @@ export async function unsubscribeUser(userId: string) {
 }
 
 // Send push using subscription from DB
-export async function sendNotification(message: string, userId: string) {
+export async function sendNotification(message: string, userId: string, url?:string) {
   const { data: subscriptionRecord } = await getPushSubscriptionByClientId(userId)
 
   if (!subscriptionRecord) throw new Error('No subscription available for this client')
   const notificationData = {
     title: 'Test Notification',
     body: message,
+    url: url || process.env.NEXT_PUBLIC_APP_DOMAIN, // pass dynamic URL here
   }
   console.log('Sending push to:', subscriptionRecord.subscription.endpoint)
   console.log(notificationData, 'notificationData')

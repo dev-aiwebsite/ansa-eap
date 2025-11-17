@@ -1,7 +1,7 @@
 "use server";
 import pool from "@/lib/db";
 import { nanoid } from "nanoid";
-import { WebPushSubscription } from "web-push";
+import { PushSubscription as WebPushSubscription } from "web-push";
 
 // --------------------
 // Types
