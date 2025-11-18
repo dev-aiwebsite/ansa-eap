@@ -10,9 +10,9 @@ import {
 import ImageWithFallback from "@/components/ui/imageWithFallback";
 import { useAppServiceContext } from "@/context/appServiceContext";
 import { cn } from "@/lib/utils";
-import { LogoutUser } from "@/serverActions/login_logout";
 import { CalendarCheck, ChevronDown, Heart, LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type UserMenuProps = {
   triggerClassName?: string;
@@ -24,6 +24,7 @@ type UserMenuProps = {
 
 export function UserMenu({label, textClassName, imageClassName, triggerClassName, hideIcon = false }: UserMenuProps) {
   const { currentUser } = useAppServiceContext();
+  const router = useRouter()
   const name = `${currentUser.first_name} ${currentUser.last_name}`
 
   return (
@@ -75,7 +76,9 @@ export function UserMenu({label, textClassName, imageClassName, triggerClassName
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={async () => LogoutUser()}
+          onClick={() => {
+            router.push('/logout')
+          }}
           className="flex items-center gap-2 text-red-600 focus:text-red-600"
         >
           <LogOut className="w-4 h-4" />
