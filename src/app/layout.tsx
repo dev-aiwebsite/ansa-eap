@@ -1,6 +1,5 @@
 import PageTransition from "@/components/ui/pageTransition";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { isMobileUA } from "@/lib/isMobileUa";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { unstable_ViewTransition as ViewTransition } from "react";
@@ -46,15 +45,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const isMobile = await isMobileUA();
-
+  
   return (
     <html lang="en">
       <body className={`${font.variable} antialiased`}>
         <ViewTransition>
           <TooltipProvider>
             <Toaster position="top-right" />
-            {isMobile ? <PageTransition>{children}</PageTransition> : children}
+            <PageTransition>{children}</PageTransition>
           </TooltipProvider>
         </ViewTransition>
       </body>

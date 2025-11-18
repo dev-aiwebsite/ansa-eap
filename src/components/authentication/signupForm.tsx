@@ -118,14 +118,13 @@ export default function SignupForm({
 
   return (
     <div className="grid md:grid-cols-2 rounded-3xl overflow-hidden bg-white">
-      <div className="bg-app-blue-600 p-5 md:p-10 items-center justify-center flex">
-        <Image
-          className="max-md:w-[120px]"
-          src="/assets/images/logo.png"
-          width={350}
-          height={200}
-          alt="logo"
-        />
+      <div className="bg-app-green-400 p-5 md:p-10 items-center justify-center flex">
+            <Image 
+            className="max-md:w-[120px]"
+            src="/assets/images/elevate-white.png"
+            width={350}
+            height={200}
+            alt="logo" />
       </div>
 
       {/* Right panel */}
