@@ -1,5 +1,2 @@
-ALTER TABLE categories
-RENAME COLUMN image TO image_mobile;
-
-ALTER TABLE categories
-ADD COLUMN image_desktop TEXT;
+ALTER TABLE users
+ADD COLUMN patient_id TEXT;

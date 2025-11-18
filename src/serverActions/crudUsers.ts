@@ -6,6 +6,7 @@ import { Company } from "./crudCompanies";
 
 export type User = {
   id: string;
+  patient_id?: string;
   first_name: string;
   last_name: string;
   profile_img: string;
@@ -63,6 +64,7 @@ export async function getUserDashboardData(userId: string): Promise<Result<Dashb
     const dashboardData: DashboardUser = {
       user: {
         id: row.id,
+        patient_id: row.patient_id,
         first_name: row.first_name,
         last_name: row.last_name,
         email: row.email,
@@ -88,7 +90,7 @@ export async function getUserDashboardData(userId: string): Promise<Result<Dashb
 
 // CREATE
 export async function createUser(
-  data: Omit<User, "id" | "created_at" | "updated_at" | "roles" | "profile_img">
+  data: Omit<User, "id" | "patient_id" | "created_at" | "updated_at" | "roles" | "profile_img">
 ): Promise<Result<User>> {
   try {
     const id = nanoid(10);

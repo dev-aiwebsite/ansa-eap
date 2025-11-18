@@ -9,9 +9,13 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useHalaxyServiceContext } from "@/context/HalaxyServiceContext";
+import { useRouter } from "next/navigation";
+import { useAppServiceContext } from "@/context/appServiceContext";
 
 export default function HalaxyBookingWidget() {
-    const { myRecord, setMyAppointments } = useHalaxyServiceContext()
+    const router = useRouter()
+    const {currentUser} = useAppServiceContext()
+    const {setMyAppointments } = useHalaxyServiceContext()
     const [practitioners, setPractitioners] = useState<HalaxyPractitioner[]>([])
     const [services, setServices] = useState<FhirHealthcareService[]>([])
     const [availableAppointments, setAvailableAppointments] = useState<FhirAppointment[]>()
@@ -59,18 +63,19 @@ export default function HalaxyBookingWidget() {
     }, [practitioner, service])
 
     const handleBookAppointment = async () => { 
+        const myPatientId = currentUser.patient_id
         if (!appointmentSched || !availableAppointments) return
         setIsSubmitting(true)
         const selectedAppointment = availableAppointments.find(appointment => +new Date(appointment.start) == +appointmentSched)
 
 
-        if (!selectedAppointment || !myRecord || !service) {
+        if (!selectedAppointment || !myPatientId || !service) {
             toast.error('Something went wrong, Contact Admin')
         } else {
             try {
                 const createdAppt = await bookAppointment({
                     appointment: selectedAppointment,
-                    patientId: myRecord.id,
+                    patientId: myPatientId,
                     serviceId: service?.id
                 })
 
@@ -82,6 +87,8 @@ export default function HalaxyBookingWidget() {
                 toast.success('Appointment booked successfully!', {
                 description: "You’ll receive a confirmation email shortly.",
                 });
+
+                router.push('/user/appointments')
 
 
             } catch (err) {
