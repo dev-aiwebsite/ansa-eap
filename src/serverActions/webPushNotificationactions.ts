@@ -1,7 +1,7 @@
 'use server'
 
 import { createPushSubscription, deletePushSubscription, getPushSubscriptionByClientId } from '@/serverActions/crudPushNotification'
-import webpush, { PushSubscription as  WebPushSubscription } from 'web-push'
+import webpush, { PushSubscription as WebPushSubscription } from 'web-push'
 import { createInboxItem } from './crudInboxItem'
 
 webpush.setVapidDetails(
@@ -25,27 +25,32 @@ export async function unsubscribeUser(userId: string) {
 }
 
 // Send push using subscription from DB
-export async function sendNotification(
+export async function sendNotification({
+  title,
+  message,
+  userId,
+  url
+}: {
   title: string,
   message: string,
   userId: string,
   url?: string
-) {
+}) {
 
- 
+
 
   const inboxRes = await createInboxItem({
     userId,
     title,
     body: message,
-    url, 
-    itemType: 'push' 
+    url,
+    itemType: 'push'
   })
 
 
   const { data: subscriptionRecords } = await getPushSubscriptionByClientId(userId);
 
-   if (!subscriptionRecords || subscriptionRecords.length === 0) {
+  if (!subscriptionRecords || subscriptionRecords.length === 0) {
     console.warn('No subscriptions found, only inbox item created')
     return { inboxCreated: inboxRes.success, results: [] }
   }

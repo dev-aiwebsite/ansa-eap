@@ -4,3 +4,14 @@ DROP CONSTRAINT IF EXISTS push_subscriptions_user_id_key;
 -- Make sure user_id is NOT NULL
 ALTER TABLE push_subscriptions
 ALTER COLUMN user_id SET NOT NULL;
+
+
+
+7lCw6u7zmY
+
+curl -X POST "https://elevate.ansahealth.com.au/api/notifications"   -H "Content-Type: application/json"   -d '{
+    "title": "Notification from updated app",
+    "userId": "7lCw6u7zmY",
+    "message": "Test push notification updated app",
+    "url": "https://elevate.ansahealth.com.au"
+  }'
