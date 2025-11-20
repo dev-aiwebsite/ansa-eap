@@ -243,29 +243,53 @@ CREATE TABLE categories (
 );`
 
 
-const createAppNotificationsTable = `
-DROP TABLE IF EXISTS app_notifications;
-CREATE TABLE IF NOT EXISTS app_notifications (
-  id TEXT PRIMARY KEY, -- nanoid
+const createInboxItemsTable = `
+-- Create enums
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'notification_status') THEN
+    CREATE TYPE notification_status AS ENUM ('unread', 'read', 'archived', 'deleted');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'inbox_item_type') THEN
+    CREATE TYPE inbox_item_type AS ENUM ('push', 'system_alert', 'system_message', 'appointment', 'reminder');
+  END IF;
+END$$;
+
+-- Create table
+CREATE TABLE IF NOT EXISTS inbox_items (
+  id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL,
+
+  -- message content
   title TEXT NOT NULL,
   body TEXT NOT NULL,
-  url TEXT DEFAULT NULL, -- optional: where to navigate when clicked
-  read BOOLEAN DEFAULT FALSE NOT NULL,
+  url TEXT DEFAULT NULL,
+
+  -- tags
+  item_type inbox_item_type NOT NULL DEFAULT 'push',
+  status notification_status NOT NULL DEFAULT 'unread',
+
+  -- tracking timestamps
+  delivered_at TIMESTAMP WITH TIME ZONE,
+  read_at TIMESTAMP WITH TIME ZONE,
+
+  -- system fields
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 `;
 
+
 const createPushSubscriptionsTable = `
 DROP TABLE IF EXISTS push_subscriptions;
 CREATE TABLE push_subscriptions (
   id TEXT PRIMARY KEY,
-  user_id TEXT UNIQUE,        
+  user_id TEXT NOT NULL,      
   subscription JSONB NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
+)
 
 `;
 
@@ -296,7 +320,7 @@ CREATE TABLE push_subscriptions (
     await pool.query(createWho5ResponsesTable);
     await pool.query(createCategoriesTable);
     await pool.query(createLikesTable);
-    await pool.query(createAppNotificationsTable);
+    await pool.query(createInboxItemsTable);
     await pool.query(createPushSubscriptionsTable);
     console.log("✅ Tables created successfully.");
 

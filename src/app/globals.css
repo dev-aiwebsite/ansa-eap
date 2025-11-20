@@ -98,7 +98,7 @@
   --accent-foreground: oklch(0.2 0.01 161.68);
 
   --muted: oklch(0.98 0 0);
-  --muted-foreground: oklch(0.67 0.02 276.27);
+  --muted-foreground: oklch(0.6 0.03 275.97);
 
   --destructive: oklch(0.577 0.245 27.325);
 
@@ -178,7 +178,7 @@
 
   }
   .nav-item {
-    @apply transition-opacity transition-colors  px-3 py-2 duration-200 ease-in-out opacity-50 hover:opacity-100 hover:bg-primary/5 hover:text-primary hover:border-primary hover:border-l-[3px] hover:ml-[-3px];
+    @apply transition-opacity transition-colors  px-3 py-2 duration-200 ease-in-out opacity-70 hover:opacity-100 hover:bg-primary/5 hover:text-primary hover:border-primary hover:border-l-[3px] hover:ml-[-3px];
   }
   .nav-item a {
     @apply flex items-center gap-3;
@@ -270,7 +270,7 @@
     @apply border-l-4 border-l-primary pl-4 text-sm bg-primary/5 p-4 rounded;
   }
 
-  button:not(.input) {
+  button:not(.input):not([role="switch"]) {
     @apply p-4 !cursor-pointer;
   }
   .calendar button:not(.input) {
@@ -285,6 +285,10 @@
 
   .text-bold {
     @apply text-shadow-[1px_0px] text-shadow-[-1px_0px] text-shadow-[0px_1px] text-shadow-[0px_-1px];
+  }
+
+  .section-title {
+    @apply text-2xl font-semibold;
   }
 
   .commandItem {
@@ -442,7 +446,7 @@ html {
 
 .main-sidebar a span,
 .main-sidebar .logo-container :not(svg) {
-  opacity: 100;
+  opacity: 1;
   max-width: 500px;
   max-height: 500px;
 }

@@ -1,7 +1,8 @@
 "use client";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "./button";
+import { ChevronLeft } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { Button } from "./button";
+import { cn } from "@/lib/utils";
 
 export default function BackButtonRouter() {
     const path = usePathname();
@@ -11,17 +12,16 @@ export default function BackButtonRouter() {
     const isDashboard = path === "/dashboard";
   return (
     <>
-      {!isDashboard && (
-        <Button
-          href={prevPage || "/dashboard"}
-          variant="ghost"
-          className="
-        absolute top-4 left-4
-        border-px border border-current text-muted-foreground rounded-full !w-[30px] !h-[30px]"
-        >
-          <ArrowLeft />
-        </Button>
-      )}
+      <Button
+        href={prevPage || "/dashboard"}
+        variant="ghost"
+        size="icon"
+        className={cn("aspect-square", isDashboard && "invisible")}
+      >
+        <ChevronLeft className="!h-5 !w-5" strokeWidth={2} />
+        
+      </Button>
+      
     </>
   );
 }

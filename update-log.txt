@@ -1,2 +1,6 @@
-ALTER TABLE users
-ADD COLUMN patient_id TEXT;
+ALTER TABLE push_subscriptions
+DROP CONSTRAINT IF EXISTS push_subscriptions_user_id_key;
+
+-- Make sure user_id is NOT NULL
+ALTER TABLE push_subscriptions
+ALTER COLUMN user_id SET NOT NULL;

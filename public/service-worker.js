@@ -15,6 +15,7 @@ self.addEventListener('activate', (event) => {
 });
 
 // Push event (triggered by server)
+// Push event (triggered by server)
 self.addEventListener('push', (event) => {
   console.log('Service Worker: Push Received.');
   let data;
@@ -33,11 +34,26 @@ self.addEventListener('push', (event) => {
     body: data.body || 'Something new happened!',
     icon: 'https://picsum.photos/192',
     badge: 'https://picsum.photos/96',
-    data: domain, // send domain to notification click
+    data: domain, // used for click navigation
   };
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  event.waitUntil(
+    (async () => {
+      // Show the system notification
+      await self.registration.showNotification(title, options);
+
+      // Notify all open clients so inbox state updates
+      const clientsList = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      clientsList.forEach(client => {
+        client.postMessage({
+          type: 'NEW_INBOX_ITEM',
+          payload: data
+        });
+      });
+    })()
+  );
 });
+
 
 // Custom message listener (triggered from client)
 self.addEventListener('message', (event) => {

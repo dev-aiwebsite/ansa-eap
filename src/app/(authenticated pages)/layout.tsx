@@ -5,7 +5,9 @@ import { AppServiceContextProvider } from "@/context/appServiceContext";
 import { ConfirmProvider } from "@/context/ConfirmContext";
 import { HalaxyServiceContextProvider } from "@/context/HalaxyServiceContext";
 import { GalleryContextProvider } from "@/context/ImageGalleryContext";
+import { InboxProvider } from "@/context/InboxContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
+import { PushNotificationProvider } from "@/context/PushNotificationContext";
 import { getUserDashboardData } from "@/serverActions/crudUsers";
 
 const isTestMode = process.env.TEST_MODE === "true";
@@ -41,15 +43,19 @@ const data = {
       <HalaxyServiceContextProvider>
       <GalleryContextProvider>
       <PostServiceProvider>
+      <PushNotificationProvider>
+        <InboxProvider>
           <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
             <div>
               <AppNav />
             </div>
             <div className="flex-1">
               <AppHeader />
-              <div className="h-screen-header overflow-auto max-sm:p-4 max-sm:pt-0">{children}</div>
+              <div className="h-screen-header overflow-auto max-sm:p-2 max-sm:pt-0">{children}</div>
             </div>
           </main>
+          </InboxProvider>
+          </PushNotificationProvider>
       </PostServiceProvider>
     </GalleryContextProvider>
     </HalaxyServiceContextProvider>
