@@ -87,8 +87,10 @@ const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       onClick={handleClick}
       {...props}
     >
+      <div className="contents">
       {isLoading && <Loader2 className="animate-spin" />}
       {children}
+      </div>
     </Comp>
   )
 }

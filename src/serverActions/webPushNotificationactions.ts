@@ -2,6 +2,7 @@
 
 import { createPushSubscription, deletePushSubscription, getPushSubscriptionByClientId } from '@/serverActions/crudPushNotification'
 import webpush, { PushSubscription as  WebPushSubscription } from 'web-push'
+import { createInboxItem } from './crudInboxItem'
 
 webpush.setVapidDetails(
   'mailto:dev@aiwebsiteservices.com',
@@ -24,30 +25,67 @@ export async function unsubscribeUser(userId: string) {
 }
 
 // Send push using subscription from DB
-export async function sendNotification(message: string, userId: string, url?:string) {
-  const { data: subscriptionRecord } = await getPushSubscriptionByClientId(userId)
+export async function sendNotification(
+  title: string,
+  message: string,
+  userId: string,
+  url?: string
+) {
 
-  if (!subscriptionRecord) throw new Error('No subscription available for this client')
+ 
+
+  const inboxRes = await createInboxItem({
+    userId,
+    title,
+    body: message,
+    url, 
+    itemType: 'push' 
+  })
+
+
+  const { data: subscriptionRecords } = await getPushSubscriptionByClientId(userId);
+
+   if (!subscriptionRecords || subscriptionRecords.length === 0) {
+    console.warn('No subscriptions found, only inbox item created')
+    return { inboxCreated: inboxRes.success, results: [] }
+  }
+
   const notificationData = {
-    title: 'Test Notification',
+    title,
     body: message,
     url: url || process.env.NEXT_PUBLIC_APP_DOMAIN, // pass dynamic URL here
-  }
-  console.log('Sending push to:', subscriptionRecord.subscription.endpoint)
-  console.log(notificationData, 'notificationData')
+  };
 
   try {
-  
-    const pushRes = await webpush.sendNotification(
-      subscriptionRecord.subscription, // JSONB from DB, already full PushSubscription
-      JSON.stringify(notificationData)
-    )
-    console.log(pushRes, 'pushRes')
-    return { success: true }
+    const results = [];
+
+    // Use for...of to await each send
+    for (const sub of subscriptionRecords) {
+      try {
+        const pushRes = await webpush.sendNotification(
+          sub.subscription, // JSONB from DB
+          JSON.stringify(notificationData)
+        );
+
+        results.push({
+          success: true,
+          status_code: pushRes.statusCode,
+        });
+      } catch (err) {
+        console.error('Push failed for one subscription:', err);
+        results.push({
+          success: false,
+          error: (err as Error).message,
+        });
+      }
+    }
+
+    return results; // array of results per device
   } catch (err) {
-    console.error('Push failed:', err)
-    return { success: false, error: 'Failed to send notification' }
+    console.error('Push failed:', err);
+    return { success: false, error: 'Failed to send notifications' };
   }
 }
+
 
 

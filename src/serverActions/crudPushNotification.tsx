@@ -25,24 +25,30 @@ export type PushSubscriptionItem = {
 // --------------------
 
 // CREATE or UPDATE (upsert)
-export async function createPushSubscription(userId: string, subscription: WebPushSubscription): Promise<Result<PushSubscriptionItem>> {
-  const id = nanoid(10);
+export async function createPushSubscription(
+  userId: string,
+  subscription: WebPushSubscription
+): Promise<Result<PushSubscriptionItem>> {
+  const id = nanoid(10); // unique id for this subscription
+
   try {
     const query = `
       INSERT INTO push_subscriptions (id, user_id, subscription)
       VALUES ($1, $2, $3)
-      ON CONFLICT (user_id) DO UPDATE
-        SET subscription = $3,
-            updated_at = NOW()
       RETURNING *;
     `;
     const values = [id, userId, subscription];
     const result = await pool.query(query, values);
+
     return { success: true, message: "Subscription saved", data: result.rows[0] };
   } catch (error: unknown) {
-    return { success: false, message: error instanceof Error ? error.message : "Unknown error" };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 }
+
 
 // READ by user
 export async function getPushSubscription(userId: string): Promise<Result<PushSubscriptionItem>> {
@@ -84,15 +90,26 @@ export async function getAllPushSubscriptions(): Promise<Result<PushSubscription
 
 
 // GET subscription by userId
-export async function getPushSubscriptionByClientId(userId: string): Promise<Result<PushSubscriptionItem>> {
+export async function getPushSubscriptionByClientId(
+  userId: string
+): Promise<Result<PushSubscriptionItem[]>> {
   try {
     const result = await pool.query(
       `SELECT * FROM push_subscriptions WHERE user_id = $1`,
       [userId]
     );
-    if (!result.rows[0]) return { success: false, message: "No subscription found for client" };
-    return { success: true, message: "Subscription fetched", data: result.rows[0] };
+
+    if (result.rows.length === 0) {
+      return { success: false, message: "No subscriptions found for client", data: [] };
+    }
+
+    return { success: true, message: "Subscriptions fetched", data: result.rows };
   } catch (error: unknown) {
-    return { success: false, message: error instanceof Error ? error.message : "Unknown error" };
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Unknown error",
+      data: [],
+    };
   }
 }
+
