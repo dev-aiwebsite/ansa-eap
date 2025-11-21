@@ -8,10 +8,11 @@ ALTER COLUMN user_id SET NOT NULL;
 
 
 7lCw6u7zmY
+1kj23lk1j2
 
 curl -X POST "https://elevate.ansahealth.com.au/api/notifications"   -H "Content-Type: application/json"   -d '{
-    "title": "Notification from updated app",
-    "userId": "7lCw6u7zmY",
-    "message": "Test push notification updated app",
-    "url": "https://elevate.ansahealth.com.au"
+    "title": "Update",
+    "userId": "1kj23lk1j2",
+    "message": "Notification ui fix",
+    "url": "https://elevate.ansahealth.com.au/inbox"
   }'
