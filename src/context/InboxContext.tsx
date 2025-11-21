@@ -3,6 +3,7 @@
 import { getInboxItems, InboxItem, markInboxItemAsRead } from "@/serverActions/crudInboxItem";
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import { useAppServiceContext } from "./appServiceContext";
+import { inboxMockData } from "@/app/demo/demoData";
 
 type InboxContextType = {
   inboxItems: InboxItem[];
@@ -11,19 +12,30 @@ type InboxContextType = {
   markAsRead: (itemId: string) => Promise<void>;
 };
 
+
+const isTest = false
 const InboxContext = createContext<InboxContextType | undefined>(undefined);
 
 export function InboxProvider({ children }: { children: ReactNode }) {
+
+
   const { currentUser } = useAppServiceContext();
   const [inboxItems, setInboxItems] = useState<InboxItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchInbox = async () => {
+    
     if (!currentUser?.id) return;
     setLoading(true);
     try {
-      const res = await getInboxItems(currentUser.id);
-      if (res.success && res.data) setInboxItems(res.data);
+      if(isTest){
+
+        setInboxItems(inboxMockData)
+      } else {
+        const res = await getInboxItems(currentUser.id);
+        if (res.success && res.data) setInboxItems(res.data);
+      }
+      
     } finally {
       setLoading(false);
     }

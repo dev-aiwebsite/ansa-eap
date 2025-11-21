@@ -1,5 +1,122 @@
 import { IconAudios, IconNews, IconQuickReads, IconShortClips, IconVideos, IconYogas } from "@/icons";
+import { InboxItem } from "@/serverActions/crudInboxItem";
 import { Webinar } from "@/serverActions/crudWebinars";
+
+
+export const inboxMockData: InboxItem[] = [
+  {
+    id: "msg_001",
+    user_id: "user_123",
+    title: "Welcome to the platform!",
+    body: "Thanks for signing up. We're glad to have you here.",
+    item_type: "system_message",
+    status: "unread",
+    created_at: "2025-01-10T09:00:00.000Z",
+    updated_at: "2025-01-10T09:00:00.000Z",
+    delivered_at: "2025-01-10T09:00:00.000Z"
+  },
+  {
+    id: "msg_002",
+    user_id: "user_123",
+    title: "Your appointment is confirmed",
+    body: "Your session with Dr. Smith is scheduled for February 1 at 10:00am.",
+    item_type: "appointment",
+    status: "read",
+    created_at: "2025-01-15T14:30:00.000Z",
+    updated_at: "2025-01-16T10:00:00.000Z",
+    delivered_at: "2025-01-15T14:30:00.000Z",
+    read_at: "2025-01-16T10:00:00.000Z",
+    url: "https://app.example.com/appointments/123"
+  },
+  {
+    id: "msg_003",
+    user_id: "user_123",
+    title: "Daily reminder",
+    body: "Don't forget to complete your daily check-in.",
+    item_type: "reminder",
+    status: "unread",
+    created_at: "2025-01-20T07:00:00.000Z",
+    updated_at: "2025-01-20T07:00:00.000Z"
+  },
+  {
+    id: "msg_004",
+    user_id: "user_456",
+    title: "System maintenance tonight",
+    body: "We will be performing maintenance from 12am to 2am.",
+    item_type: "system_alert",
+    status: "archived",
+    created_at: "2025-01-05T12:00:00.000Z",
+    updated_at: "2025-01-06T09:00:00.000Z",
+    delivered_at: "2025-01-05T12:00:00.000Z"
+  },
+  {
+    id: "msg_005",
+    user_id: "user_123",
+    title: "New message received",
+    body: "You have a new message regarding your recent appointment.",
+    item_type: "push",
+    status: "deleted",
+    created_at: "2025-01-22T13:10:00.000Z",
+    updated_at: "2025-01-23T09:00:00.000Z",
+    delivered_at: "2025-01-22T13:10:00.000Z"
+  },
+  {
+    id: "msg_006",
+    user_id: "user_456",
+    title: "Account updated",
+    body: "Your account settings were successfully updated.",
+    item_type: "system_message",
+    status: "read",
+    created_at: "2025-01-12T08:15:00.000Z",
+    updated_at: "2025-01-12T09:00:00.000Z",
+    read_at: "2025-01-12T09:00:00.000Z",
+    delivered_at: "2025-01-12T08:15:00.000Z"
+  },
+  {
+    id: "msg_007",
+    user_id: "user_123",
+    title: "Payment Reminder",
+    body: "Your subscription payment is due on Feb 5.",
+    item_type: "reminder",
+    status: "unread",
+    created_at: "2025-01-25T11:00:00.000Z",
+    updated_at: "2025-01-25T11:00:00.000Z"
+  },
+  {
+    id: "msg_008",
+    user_id: "user_789",
+    title: "New Feature Announcement",
+    body: "We just added dark mode! Check it out in your settings.",
+    item_type: "system_message",
+    status: "unread",
+    created_at: "2025-01-18T10:30:00.000Z",
+    updated_at: "2025-01-18T10:30:00.000Z",
+    delivered_at: "2025-01-18T10:30:00.000Z"
+  },
+  {
+    id: "msg_009",
+    user_id: "user_123",
+    title: "Appointment cancelled",
+    body: "Your session on February 1 has been cancelled by the clinic.",
+    item_type: "appointment",
+    status: "read",
+    created_at: "2025-01-26T16:45:00.000Z",
+    updated_at: "2025-01-27T08:00:00.000Z",
+    delivered_at: "2025-01-26T16:45:00.000Z",
+    read_at: "2025-01-27T08:00:00.000Z"
+  },
+  {
+    id: "msg_010",
+    user_id: "user_456",
+    title: "Security Alert",
+    body: "We detected a login from a new device. If this wasn't you, please secure your account.",
+    item_type: "system_alert",
+    status: "unread",
+    created_at: "2025-01-28T06:20:00.000Z",
+    updated_at: "2025-01-28T06:20:00.000Z",
+    delivered_at: "2025-01-28T06:20:00.000Z"
+  }
+];
 
 
 export const webinarsData: Webinar[] = [

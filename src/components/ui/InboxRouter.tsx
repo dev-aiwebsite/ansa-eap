@@ -17,8 +17,10 @@ export default function InboxRouter() {
       <Link href="/inbox">
         {isSubscribed ? <Bell className="!w-5 !h-5 text-gray-700" /> : <BellOff className="!w-5 !h-5 text-gray-700" />}
         {!loading && unreadCount > 0 && (
-          <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-[8px] p-1 w-[12px] aspect-square flex items-center justify-center">
-            {unreadCount}
+          <span className="absolute line-height-0 top-[4px] md:top-0 right-[9px] md:right-0 bg-red-500 text-white rounded-full text-[8px] p-1 w-[9px] md:w-[12px] aspect-square flex items-center justify-center">
+            <span className="max-sm:hidden">
+              {unreadCount}
+            </span>
           </span>
         )}
       </Link>

@@ -53,6 +53,8 @@
   --color-app-purple-400: #2d32a4;
   --color-app-green-400: #2FAAB3;
   --spacing-breadcrumb-h: var(--breadcrumb-h);
+  
+
 
 --text-shadow-medium: 
     0.2px 0px currentColor,
@@ -472,12 +474,9 @@ html {
 }
 
 @media(max-width: 780px){
-  :root {
-  --sidebar-w: 0px;
-  --header-h: 60px;
-
-    .max-h-webkit-fill.h-full.overflow-auto {
-      padding-bottom: 100px;
+    :root {
+    --sidebar-w: 0px;
+    --header-h: 60px;
     }
 
     body #chattera_chatbubble_wrapper_trigger {
@@ -499,7 +498,6 @@ html {
         right: auto !important;
     }
 
-
 }
 
 .w-full-sidebar {
@@ -514,7 +512,6 @@ body, .bg-body-blend {
     background-size: 20px;
 }
 
-}
 
 @media (min-width: 780px ) and (max-width: 900px) {
 :root {
@@ -660,4 +657,8 @@ ul.submenu {
 .shadow-xxs {
   box-shadow: 0px 20px 50px 0px #F1E0E04D;
 
+}
+
+.line-height-0 {
+    line-height: 0;
 }
