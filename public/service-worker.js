@@ -36,7 +36,22 @@ self.addEventListener('push', (event) => {
     data: domain, // send domain to notification click
   };
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  // event.waitUntil(self.registration.showNotification(title, options));
+  event.waitUntil(
+    (async () => {
+      // Show notification
+      await self.registration.showNotification(title, options);
+
+      // 🔥 Broadcast message to open tabs
+      const allClients = await clients.matchAll({ includeUncontrolled: true });
+      for (const client of allClients) {
+        client.postMessage({
+          type: 'NEW_INBOX_ITEM',
+          payload: data, // optional
+        });
+      }
+    })()
+  );
 });
 
 // Custom message listener (triggered from client)
