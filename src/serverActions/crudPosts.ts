@@ -232,3 +232,30 @@ export async function deletePost(id: string): Promise<Result<Post>> {
     return { success: false, message };
   }
 }
+
+// DELETE BY CATEGORY
+export async function deletePostsByCategory(category: string): Promise<Result<Post[]>> {
+  try {
+    const result = await pool.query(
+      `DELETE FROM posts WHERE category = $1 RETURNING *`,
+      [category]
+    );
+
+    const deleted = result.rows as Post[];
+
+    if (deleted.length === 0) {
+      return { success: false, message: `No posts found for category: ${category}` };
+    }
+
+    return {
+      success: true,
+      message: `Deleted ${deleted.length} posts for category: ${category}`,
+      data: deleted
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+
