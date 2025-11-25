@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/carousel";
 import { usePostServiceContext } from "@/context/postServiceContext";
 import { cn } from "@/lib/utils";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ImageWithFallback from "../ui/imageWithFallback";
-import { motion } from "motion/react";
 
 const DURATION = 5000; // ms
 const BAR_WIDTH = 40;
@@ -24,10 +24,10 @@ export default function HealthNewsCarousel({
   className?: string;
   maxCount?: number;
 }) {
-  const { healthNews, generatePostLink } = usePostServiceContext();
+  const { healthNews, generatePostLink, isFetching } = usePostServiceContext();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(5);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Apply maxCount to the list of items
@@ -62,32 +62,54 @@ export default function HealthNewsCarousel({
     };
   }, [api, displayedNews]);
 
+  const hasNoData = isFetching 
+  console.log(isFetching, 'isFetching')
+  console.log(hasNoData, 'hasNoData')
+  console.log(displayedNews.length, 'data length')
   return (
     <div>
+      
       <Carousel
         setApi={setApi}
         className={cn("w-full post-carousel", className)}
       >
         <CarouselContent>
-          {displayedNews.length > 0
-            ? displayedNews.map((post, index) => (
-                <CarouselItem key={post.id + index} className="basis-[80%]">
-                  <Link href={generatePostLink(post)}>
+          {!hasNoData ?
+          displayedNews.map((post, index) => (
+              <CarouselItem key={post.id + index} className="basis-[80%]">
+                <Link href={generatePostLink(post)}>
+                  <div className="overflow-hidden bg-secondary/50 rounded-sm w-full h-[167px relative">
+                    <div className="absolute bottom-0 w-full text-white font-semibold p-4 bg-black/20">
+                      <p className="line-clamp-1 ">
+                        {post.title}
+                      </p>
+                    </div>
+
                     <ImageWithFallback
                       className="img rounded-sm w-full h-[167px] object-cover object-top"
                       width={200}
-                      height={100}
+                      height={167}
                       src={post.thumbnail}
                       alt={post.title || ""}
+                      priority
                     />
-                  </Link>
-                </CarouselItem>
-              ))
+                  </div>
+                </Link>
+              </CarouselItem>
+            ))
             : Array.from({ length: count }).map((_, index) => (
-                <CarouselItem key={index} className="basis-[80%]">
-                  <div className="img rounded-sm w-full h-[167px] bg-zinc-200" />
-                </CarouselItem>
-              ))}
+              <CarouselItem key={index} className="basis-[80%]">
+                 <div className="overflow-hidden bg-secondary/50 rounded-sm w-full h-[167px] relative">
+                  {/* Skeleton for title */}
+                  <div className="absolute bottom-0 w-full p-4">
+                    <div className="h-4 w-3/4 bg-gray-300 rounded line-clamp-1 animate-pulse" />
+                  </div>
+
+                  {/* Skeleton for image */}
+                  <div className="w-full h-[167px] bg-gray-300 animate-pulse rounded-sm" />
+                </div>
+              </CarouselItem>
+            ))}
         </CarouselContent>
       </Carousel>
 

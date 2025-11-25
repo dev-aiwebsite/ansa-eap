@@ -35,10 +35,10 @@ export function PostServiceProvider({
   children: React.ReactNode;
 }) {
   const [allPosts, setAllPosts] = useState<Posts>([]);
-  const [blogs, setBlogs] = useState<Posts>([]);
-  const [yogas, setYogas] = useState<Posts>([]);
-  const [videoContents, setVideoContents] = useState<Posts>([]);
-  const [healthNews, setHealthNews] = useState<Posts>([]);
+  // const [blogs, setBlogs] = useState<Posts>([]);
+  // const [yogas, setYogas] = useState<Posts>([]);
+  // const [videoContents, setVideoContents] = useState<Posts>([]);
+  // const [healthNews, setHealthNews] = useState<Posts>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [allLikes,setAllLikes] = useState<Like[]>([])
   const [isFetching,setIsFetching] = useState(true)
@@ -73,15 +73,22 @@ useEffect(() => {
 }, []);
 
   // derive categories once when allPosts changes
-  useEffect(() => {
-    if (!allPosts.length) return;
-    setHealthNews(allPosts.filter((p) => p.category === "7p2v1Ur_O4") as Posts);
-    setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Posts);
-    setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts);
-    setVideoContents(
-      allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Posts
-    );
-  }, [allPosts]);
+  // useEffect(() => {
+  //   if (!allPosts.length) return;
+  //   setHealthNews(allPosts.filter((p) => p.category === "7p2v1Ur_O4") as Posts);
+  //   setYogas(allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Posts);
+  //   setBlogs(allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts);
+  //   setVideoContents(
+  //     allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Posts
+  //   );
+  // }, [allPosts]);
+
+
+  const healthNews = allPosts.filter((p) => p.category === "7p2v1Ur_O4") as Posts;
+  const yogas = allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Posts;
+  const blogs = allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts;
+  const videoContents = allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Posts;
+
 
   const latestPosts = [
     yogas.at(-1) ?? null,
