@@ -19,19 +19,24 @@ const CIRCLE_SIZE = 8;
 
 export default function HealthNewsCarousel({
   className,
+  maxCount,
 }: {
   className?: string;
+  maxCount?: number;
 }) {
   const { healthNews, generatePostLink } = usePostServiceContext();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(5);
+  const [count, setCount] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Apply maxCount to the list of items
+  const displayedNews = maxCount ? healthNews.slice(0, maxCount) : healthNews;
 
   useEffect(() => {
     if (!api) return;
 
-    const total = api.scrollSnapList().length;
+    const total = displayedNews.length;
     setCount(total);
     setCurrent(api.selectedScrollSnap() + 1);
 
@@ -43,11 +48,11 @@ export default function HealthNewsCarousel({
     if (intervalRef.current) clearInterval(intervalRef.current);
 
     // Only autoplay if we have real content
-    if (healthNews.length > 0) {
+    if (displayedNews.length > 0) {
       intervalRef.current = setInterval(() => {
         if (!api) return;
         const nextIndex = (api.selectedScrollSnap() + 1) % total;
-        api.scrollTo(nextIndex); // triggers on("select")
+        api.scrollTo(nextIndex);
       }, DURATION);
     }
 
@@ -55,7 +60,7 @@ export default function HealthNewsCarousel({
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [api, healthNews]);
+  }, [api, displayedNews]);
 
   return (
     <div>
@@ -64,8 +69,8 @@ export default function HealthNewsCarousel({
         className={cn("w-full post-carousel", className)}
       >
         <CarouselContent>
-          {healthNews.length > 0
-            ? healthNews.map((post, index) => (
+          {displayedNews.length > 0
+            ? displayedNews.map((post, index) => (
                 <CarouselItem key={post.id + index} className="basis-[80%]">
                   <Link href={generatePostLink(post)}>
                     <ImageWithFallback
@@ -78,13 +83,11 @@ export default function HealthNewsCarousel({
                   </Link>
                 </CarouselItem>
               ))
-            : Array.from({ length: count }).map((_, index) => {
-                return (
-                  <CarouselItem key={index} className="basis-[80%]">
-                    <div className="img rounded-sm w-full h-[167px] bg-zinc-200" />
-                  </CarouselItem>
-                );
-              })}
+            : Array.from({ length: count }).map((_, index) => (
+                <CarouselItem key={index} className="basis-[80%]">
+                  <div className="img rounded-sm w-full h-[167px] bg-zinc-200" />
+                </CarouselItem>
+              ))}
         </CarouselContent>
       </Carousel>
 
@@ -115,7 +118,7 @@ export default function HealthNewsCarousel({
                 border: "none",
               }}
             >
-              {healthNews.length > 0 && isActive && (
+              {displayedNews.length > 0 && isActive && (
                 <motion.div
                   key={`progress-${index}-${current}`}
                   initial={{ width: 0 }}
