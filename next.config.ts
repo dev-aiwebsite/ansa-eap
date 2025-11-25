@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "**.squarespace-cdn.com" },
       { protocol: "https", hostname: "watersedgecounselling.com" },
       { protocol: "https", hostname: "online.vu.edu.au" },
+      { protocol: "https", hostname: "**.theconversation.com" },
     ],
   },
 
