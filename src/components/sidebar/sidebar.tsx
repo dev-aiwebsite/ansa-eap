@@ -22,7 +22,7 @@ const Sidebar = () => {
           </span>
         </div>
         <Button href="/critical-response" variant="default" className="w-full shadow-btn">
-          <span>Critical Response</span>
+          <span>Phone Support</span>
         </Button>
       </div>
     </nav>
