@@ -55,7 +55,7 @@ const PostSingle = ({id, data }: PostSingle) => {
               
             ) : (
               <Video
-                className="aspect-[16/9] video-shadow"
+                className="aspect-[16/9]"
                 src={postData.video}
                 title={postData.title ?? ""}
                 thumbnail={postData.thumbnail}

@@ -108,7 +108,7 @@ const WeeklyBites = ({ hideTitle = false }: { hideTitle?: boolean }) => {
               value="news"
               className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
-              Allied Health News
+              Health Blog
             </TabsTrigger>
           </TabsList>
         </div>
