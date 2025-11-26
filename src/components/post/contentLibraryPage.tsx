@@ -15,7 +15,7 @@ type Section = {
   actionText: ActionText;
 };
 const sections: Section[] = [
-  { id: "healthNews", title: "Allied Health News", key: "healthNews", "actionText": "view" },
+  { id: "healthNews", title: "Health Blog", key: "healthNews", "actionText": "view" },
   { id: "yoga", title: "Yoga", key: "yoga", "actionText": "view" },
   { id: "video", title: "Videos", key: "video", "actionText": "view" },
   { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute", "actionText": "view" },
