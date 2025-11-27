@@ -5,14 +5,14 @@ import PostFilter from "@/components/post/postFilter";
 import { Button } from "@/components/ui/button";
 import ImageWithFallback from "@/components/ui/imageWithFallback";
 import { htmlToPlainText, truncateText } from "@/lib/helper";
-import { getPartnerss, Partners } from "@/serverActions/crudPartners";
+import { getPartners, Partner } from "@/serverActions/crudPartners";
 import { useEffect, useState } from "react";
 import { CalendarDays, Clock, MapPin } from "lucide-react"; // for icons
 import Container from "@/components/ui/container";
 
-export default function PartnersPage() {
-  const [data, setData] = useState<Partners[] | null>(null);
-  const [sortedData, setSortedData] = useState<Partners[] | null>(data);
+export default function PartnerPage() {
+  const [data, setData] = useState<Partner[] | null>(null);
+  const [sortedData, setSortedData] = useState<Partner[] | null>(data);
 
   // keep sortedData in sync when base data changes
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function PartnersPage() {
   }, [data]);
 
   useEffect(() => {
-    getPartnerss().then((res) => setData(res.data || []));
+    getPartners().then((res) => setData(res.data || []));
   }, []);
 
   return (
@@ -47,7 +47,7 @@ export default function PartnersPage() {
   );
 }
 
-function Card({ item }: { item: Partners }) {
+function Card({ item }: { item: Partner }) {
   return (
     <div className="card rounded-lg p-4 min-w-[200px] flex flex-col gap-4 text-sm border">
       <ImageWithFallback

@@ -8,11 +8,11 @@ import {
   updatePublicEvent,
 } from "@/serverActions/crudPublicEvents";
 import "@uploadcare/react-uploader/core.css";
-import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import ImageWithFallback from "../ui/imageWithFallback";
 import { DatePicker } from "../ui/datePicker";
+import ImageWithFallback from "../ui/imageWithFallback";
+import UploadcareGalleryDialog from "../uploadcare/UploacareGalleryDialog";
 
 type PublicEventFormProps = {
   event?: PublicEvent;
@@ -32,7 +32,6 @@ export default function PublicEventForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    setValue,
     watch,
     control,
   } = useForm<PublicEvent>({
@@ -81,25 +80,26 @@ export default function PublicEventForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Image Preview */}
-      <div className="form-item flex flex-col items-center gap-3">
+      <div className="form-item w-fit">
+        <label className="form-item-label">Image</label>
         <ImageWithFallback
           src={image}
           alt="Event"
-          className="w-[300px] h-[300px] rounded object-cover border"
-          width={300}
-          height={300}
+          className="w-[150px] h-[150px] rounded object-cover border"
+          width={150}
+          height={150}
         />
 
-        <FileUploaderRegular
-          useCloudImageEditor={false}
-          sourceList="local"
-          classNameUploader="uc-light"
-          pubkey="9c35a0212e26c1a710ca"
-          multiple={false}
-          onCommonUploadSuccess={(e) => {
-            const cdnUrl = e.successEntries[0].cdnUrl;
-            setValue("image", cdnUrl, { shouldDirty: true });
-          }}
+
+        <Controller
+          name="image"
+          control={control}
+          render={({ field }) => (
+            <UploadcareGalleryDialog
+              pubkey="9c35a0212e26c1a710ca"
+              onSelect={(url) => field.onChange(url)}
+            />
+          )}
         />
       </div>
 

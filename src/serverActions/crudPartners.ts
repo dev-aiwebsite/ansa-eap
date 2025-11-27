@@ -3,7 +3,7 @@
 import pool from "@/lib/db";
 import { nanoid } from "nanoid";
 
-export type Partners = {
+export type Partner = {
   id: string;
   title: string;
   description: string;
@@ -23,9 +23,9 @@ type Result<T> = {
 };
 
 // CREATE
-export async function createPartners(
-  data: Omit<Partners, "id" | "created_at" | "updated_at">
-): Promise<Result<Partners>> {
+export async function createPartner(
+  data: Omit<Partner, "id" | "created_at" | "updated_at">
+): Promise<Result<Partner>> {
   try {
     const id = nanoid(10);
     const query = `
@@ -45,7 +45,7 @@ export async function createPartners(
       data.date, // include date
     ];
     const result = await pool.query(query, values);
-    return { success: true, message: "Partners created successfully", data: result.rows[0] as Partners };
+    return { success: true, message: "Partner created successfully", data: result.rows[0] as Partner };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
@@ -54,7 +54,7 @@ export async function createPartners(
 }
 
 // READ ALL
-type GetPartnerssParams = {
+type GetPartnersParams = {
   limit?: number;
   offset?: number;
   orderBy?: "created_at" | "date" | "title";
@@ -63,7 +63,7 @@ type GetPartnerssParams = {
   title?: string; // filter by title, optional
 };
 
-export async function getPartnerss(params: GetPartnerssParams = {}): Promise<Result<Partners[]>> {
+export async function getPartners(params: GetPartnersParams = {}): Promise<Result<Partner[]>> {
   try {
     const conditions: string[] = [];
     const values: unknown[] = [];
@@ -105,7 +105,7 @@ export async function getPartnerss(params: GetPartnerssParams = {}): Promise<Res
     }
 
     const result = await pool.query(query, values);
-    return { success: true, message: "Partnerss fetched successfully", data: result.rows as Partners[] };
+    return { success: true, message: "Partners fetched successfully", data: result.rows as Partner[] };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
@@ -115,11 +115,11 @@ export async function getPartnerss(params: GetPartnerssParams = {}): Promise<Res
 
 
 // READ ONE
-export async function getPartnersById(id: string): Promise<Result<Partners>> {
+export async function getPartnerById(id: string): Promise<Result<Partner>> {
   try {
     const result = await pool.query(`SELECT * FROM partners WHERE id = $1`, [id]);
     if (!result.rows[0]) return { success: false, message: "Partners not found" };
-    return { success: true, message: "Partners fetched successfully", data: result.rows[0] as Partners };
+    return { success: true, message: "Partners fetched successfully", data: result.rows[0] as Partner };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
@@ -127,11 +127,11 @@ export async function getPartnersById(id: string): Promise<Result<Partners>> {
   }
 }
 
-export async function getPartnersByTitle(title: string): Promise<Result<Partners>> {
+export async function getPartnerByTitle(title: string): Promise<Result<Partner>> {
   try {
     const result = await pool.query(`SELECT * FROM partners WHERE title = $1`, [title]);
     if (!result.rows[0]) return { success: false, message: `Partners: ${title} not found` };
-    return { success: true, message: `Partners: ${title} fetched successfully`, data: result.rows[0] as Partners };
+    return { success: true, message: `Partners: ${title} fetched successfully`, data: result.rows[0] as Partner };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
@@ -140,10 +140,10 @@ export async function getPartnersByTitle(title: string): Promise<Result<Partners
 }
 
 // UPDATE
-export async function updatePartners(
+export async function updatePartner(
   id: string,
-  data: Partial<Omit<Partners, "id" | "created_at">>
-): Promise<Result<Partners>> {
+  data: Partial<Omit<Partner, "id" | "created_at">>
+): Promise<Result<Partner>> {
   try {
     const fields: string[] = [];
     const values: unknown[] = [];
@@ -164,8 +164,8 @@ export async function updatePartners(
     `;
 
     const result = await pool.query(query, values);
-    if (!result.rows[0]) return { success: false, message: `Partners: ${id} not found` };
-    return { success: true, message: `Partners: ${id} updated successfully`, data: result.rows[0] as Partners };
+    if (!result.rows[0]) return { success: false, message: `Partner: ${id} not found` };
+    return { success: true, message: `Partner: ${id} updated successfully`, data: result.rows[0] as Partner };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
@@ -174,11 +174,11 @@ export async function updatePartners(
 }
 
 // DELETE
-export async function deletePartners(id: string): Promise<Result<Partners>> {
+export async function deletePartner(id: string): Promise<Result<Partner>> {
   try {
     const result = await pool.query(`DELETE FROM partners WHERE id = $1 RETURNING *`, [id]);
-    if (!result.rows[0]) return { success: false, message: "Partners not found" };
-    return { success: true, message: `Partners: ${id} deleted successfully`, data: result.rows[0] as Partners };
+    if (!result.rows[0]) return { success: false, message: "Partner not found" };
+    return { success: true, message: `Partner: ${id} deleted successfully`, data: result.rows[0] as Partner };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;
