@@ -185,6 +185,34 @@ CREATE TABLE public_events (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 `
+const createMarliTable = `
+CREATE TABLE marli (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+);
+`
+const createPartnersTable = `
+CREATE TABLE partners (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
+);
+`
 
 const createCompaniesTable = `CREATE TABLE companies (
   id TEXT PRIMARY KEY,
@@ -322,6 +350,8 @@ CREATE TABLE push_subscriptions (
     await pool.query(createLikesTable);
     await pool.query(createInboxItemsTable);
     await pool.query(createPushSubscriptionsTable);
+    await pool.query(createMarliTable);
+    await pool.query(createPartnersTable);
     console.log("✅ Tables created successfully.");
 
 

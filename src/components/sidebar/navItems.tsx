@@ -52,10 +52,6 @@ export function useNavItems(): NavItemsType[] {
           title: 'Marli',
           link: `/short-courses/marli`,
         },
-        {
-          title: 'Critical Incident Response',
-          link: `/short-courses/critical-incident-response`,
-        },
       ],
     },
   ];
