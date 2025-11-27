@@ -1,3 +1,4 @@
+import DialogFormCriticalIncidentResponse from "@/components/dialogs/DialogFormCriticalIncidentResponse";
 import Container from "@/components/ui/container";
 import ImageWithFallback from "@/components/ui/imageWithFallback";
 import NumberDropdown from "@/components/ui/phoneNumbersDropdown";
@@ -40,6 +41,22 @@ const CriticalResponsePage = () => {
     <Container>
       <div className="space-y-2">
         <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5 gap-y-10 w-full-sidebar">
+        <div className="flex flex-col space-y-5 card min-h-[200px]">
+              <ImageWithFallback
+                className="w-full rounded-lg"
+                alt="critical incident response"
+                width={200}
+                height={100}
+                src='/assets/images/lifeline.jpg'
+              />
+              <div className="flex flex-col gap-2 h-full">
+                <p className="card-title font-medium">Critical Incident Response</p>
+                <p className="text-sm text-muted-foreground"></p>
+                <div className="mt-auto">
+                  <DialogFormCriticalIncidentResponse />
+                </div>
+              </div>
+            </div>
           {supportServices.map((service) => (
             <div key={service.name} className="flex flex-col space-y-5 card min-h-[200px]">
               <ImageWithFallback
