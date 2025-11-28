@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import OtpVerification from "../OtpVerification";
+import { Checkbox } from "../ui/checkbox";
 
 export function LoginForm({
   className,
@@ -19,50 +20,50 @@ export function LoginForm({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [useremail,setUserEmail] = useState("")
+  const [useremail, setUserEmail] = useState("")
   const [userpass, setUserpass] = useState("")
   const [otpConfirmed, setOtpConfirmed] = useState(false)
-    const router = useRouter();
+  const router = useRouter();
 
 
-  useEffect(()=>{
-    if(!otpConfirmed) return
+  useEffect(() => {
+    if (!otpConfirmed) return
 
     const credentials = {
-      useremail,userpass
+      useremail, userpass
     }
-    async function login(){
+    async function login() {
       const authRes = await AuthenticateUser(credentials, false)
       router.push(authRes?.redirectUrl)
     }
     login()
 
-  },[otpConfirmed])
+  }, [otpConfirmed])
 
-  
+
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setIsLoading(true)
     setError("")
-    
+
     const credentials = {
-      useremail,userpass
+      useremail, userpass
     }
-    
+
 
     try {
-        const res = await login(credentials)
-        console.log(res, 'AuthenticateUser res')
-        if(!res){
-          setError("Wrong credentials")
-          return false
-        }
-        setSuccess(true)
+      const res = await login(credentials)
+      console.log(res, 'AuthenticateUser res')
+      if (!res) {
+        setError("Wrong credentials")
+        return false
+      }
+      setSuccess(true)
     } catch (error) {
       const typedError = error as Error;
       setError(typedError?.message || 'Something went wrong');
-      
+
     } finally {
       setIsLoading(false)
     }
@@ -73,12 +74,12 @@ export function LoginForm({
   return (
     <div className="md:min-h-[500px] grid md:grid-cols-2 rounded-3xl overflow-hidden bg-white">
       <div className="bg-app-green-400 p-5 md:p-10 items-center justify-center flex">
-        <Image 
-        className="max-md:w-[120px]"
-        src="/assets/images/elevate-white.png"
-        width={350}
-        height={200}
-        alt="logo" />
+        <Image
+          className="max-md:w-[120px]"
+          src="/assets/images/elevate-white.png"
+          width={350}
+          height={200}
+          alt="logo" />
       </div>
       {!success &&
         <div className={cn("flex justify-center flex-col gap-6 p-10", className)} {...props}>
@@ -94,7 +95,7 @@ export function LoginForm({
                 <h3 className="font-bold">Login</h3>
                 <div className="muted-text">
                   Don&apos;t have an account?{" "}
-                  <Link href="/signup" className="underline underline-offset-4">
+                  <Link href="/signup" className="hover:text-foreground underline underline-offset-4">
                     Sign up
                   </Link>
                 </div>
@@ -108,7 +109,7 @@ export function LoginForm({
                     type="email"
                     name="useremail"
                     value={useremail}
-                    onChange={(e)=> setUserEmail(e.target.value)}
+                    onChange={(e) => setUserEmail(e.target.value)}
                     placeholder="m@example.com"
                     required
                   />
@@ -116,9 +117,21 @@ export function LoginForm({
                 <div className="grid gap-2">
                   <Label htmlFor="password">Password</Label>
                   <Input
-                  value={userpass}
-                  onChange={(e)=> setUserpass(e.target.value)}
-                  id="password" type="password" name="userpass" required />
+                    value={userpass}
+                    onChange={(e) => setUserpass(e.target.value)}
+                    id="password" type="password" name="userpass" required />
+                </div>
+                <div className="muted-text flex justify-between items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <Checkbox id="remember_me" />
+                    <label htmlFor="remember_me">Remember me</label>
+                  </div>
+                  <Link
+                    className="hover:underline hover:text-foreground underline-offset-4"
+                    href="/password-reset"
+                  >
+                    Forgot password?
+                  </Link>
                 </div>
                 <Button
                   isLoading={isLoading}
@@ -145,7 +158,7 @@ export function LoginForm({
       }
 
       {success &&
-        <OtpVerification className="mx-auto px-10 py-20" email={useremail} onConfirmChange={(v)=> setOtpConfirmed(v)} />
+        <OtpVerification className="mx-auto px-10 py-20" email={useremail} onConfirmChange={(v) => setOtpConfirmed(v)} />
       }
 
     </div>
