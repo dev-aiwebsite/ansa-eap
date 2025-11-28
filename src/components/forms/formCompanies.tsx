@@ -35,6 +35,7 @@ export default function CompanyForm({
     defaultValues: company
       ? {
           id: company.id ?? "",
+          code: company.code || "",
           name: company.name,
           logo_url: company.logo_url,
           max_users: company.max_users,
@@ -42,6 +43,7 @@ export default function CompanyForm({
         }
       : {
           name: "",
+          code: "",
           logo_url: null,
           max_users: 0,
           max_booking_credits_per_user: 0,
@@ -54,6 +56,7 @@ export default function CompanyForm({
       company
         ? {
             id: company.id,
+            code: company.code,
             name: company.name,
             logo_url: company.logo_url,
             max_users: company.max_users,
@@ -61,6 +64,7 @@ export default function CompanyForm({
           }
         : {
             name: "",
+            code: "",
             logo_url: null,
             max_users: 0,
             max_booking_credits_per_user: 0,
@@ -138,6 +142,17 @@ export default function CompanyForm({
       placeholder="Acme Inc."
     />
     {errors.name && <p className="text-xs text-red-400">{errors.name.message}</p>}
+  </div>
+
+  {/* Company Code */}
+  <div className="space-y-2">
+    <Label htmlFor="code">Company Code</Label>
+    <Input
+      id="code"
+      {...register("code", { required: "Company Code is required" })}
+      placeholder=""
+    />
+    {errors.code && <p className="text-xs text-red-400">{errors.code.message}</p>}
   </div>
 
   {/* Max Users */}

@@ -6,6 +6,33 @@
     used BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
+CREATE TABLE partners (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE marli (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
     CONSTRAINT fk_user
       FOREIGN KEY (user_id)
         REFERENCES users(id)
@@ -14,10 +41,11 @@
   
 
 7lCw6u7zmY
+1kj23lk1j2
 
 curl -X POST "https://elevate.ansahealth.com.au/api/notifications"   -H "Content-Type: application/json"   -d '{
-    "title": "Notification from updated app",
-    "userId": "7lCw6u7zmY",
-    "message": "Test push notification updated app",
-    "url": "https://elevate.ansahealth.com.au"
+    "title": "Update",
+    "userId": "1kj23lk1j2",
+    "message": "Notification ui fix",
+    "url": "https://elevate.ansahealth.com.au/inbox"
   }'

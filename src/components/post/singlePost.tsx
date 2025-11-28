@@ -42,7 +42,7 @@ const PostSingle = ({id, data }: PostSingle) => {
 
   return (<>
     <div className="card flex-1 overflow-hidden">
-      <div className="rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
+      <div className="rounded-xl flex-1 max-h-webkit-fill overflow-auto">
         {postData ? (
           <>
             {postData.audio ? (
@@ -55,7 +55,7 @@ const PostSingle = ({id, data }: PostSingle) => {
               
             ) : (
               <Video
-                className="aspect-[16/9] video-shadow"
+                className="aspect-[16/9]"
                 src={postData.video}
                 title={postData.title ?? ""}
                 thumbnail={postData.thumbnail}

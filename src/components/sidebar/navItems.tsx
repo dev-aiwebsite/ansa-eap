@@ -1,6 +1,6 @@
 "use client";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { IconDocuments, IconGrid, IconServices } from "@/icons";
+import { IconCourses, IconDocuments, IconGrid, IconServices } from "@/icons";
 import { slugifyName } from "@/lib/helper";
 import { NavItemsType } from "@/types";
 import { ChevronRight } from "lucide-react";
@@ -38,6 +38,21 @@ export function useNavItems(): NavItemsType[] {
           title: i.label,
           link: `/resources/${i.id}~${slugifyName(i.label)}`,
         })),
+    },
+    {
+      title: "Short Courses",
+      link: "/short-courses",
+      icon: <IconCourses  strokeWidth={2.5}/>,
+      subitems: [
+        {
+          title: 'Partners',
+          link: `/short-courses/partners`,
+        },
+        {
+          title: 'Marli',
+          link: `/short-courses/marli`,
+        },
+      ],
     },
   ];
   return navItems;

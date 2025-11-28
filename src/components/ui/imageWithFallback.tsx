@@ -10,6 +10,7 @@ type Props = {
   height?: number;
   className?: string;
   iconSize?: number;
+  priority? : boolean
 };
 
 export default function ImageWithFallback({
@@ -18,7 +19,8 @@ export default function ImageWithFallback({
   width = 300,
   height = 200,
   className = "rounded-md object-cover",
-  iconSize = 40
+  iconSize = 40,
+  priority
 }: Props) {
   const isDefault = typeof(src) == 'string' ? src?.includes('default') : src
 
@@ -40,6 +42,7 @@ export default function ImageWithFallback({
       width={width}
       height={height}
       className={cn(className, isDefault && "bg-gray-200 p-1")}
+      priority={priority}
     />
   );
 }

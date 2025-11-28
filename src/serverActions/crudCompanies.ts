@@ -27,12 +27,13 @@ export async function createCompany(
   try {
     const id = nanoid(10);
     const query = `
-      INSERT INTO companies (id, name, logo_url, max_users, max_booking_credits_per_user)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO companies (id, code, name, logo_url, max_users, max_booking_credits_per_user)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
     `;
     const values = [
       id,
+      data.code,
       data.name,
       data.logo_url ?? null,
       data.max_users ?? 10,

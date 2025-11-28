@@ -65,7 +65,7 @@ const Dashboard = () => {
 
             <div className="space-y-2">
               <div className="flex flex-row justify-between items-center">
-                <p className="card-title">Upcoming Appointment</p>
+                <p className="card-title">My Appointments</p>
                 <Link
                   className="text-sm text-app-purple-300 font-medium"
                   href="/user/appointments"

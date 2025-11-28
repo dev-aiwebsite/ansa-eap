@@ -15,7 +15,7 @@ type Section = {
   actionText: ActionText;
 };
 const sections: Section[] = [
-  { id: "healthNews", title: "Allied Health News", key: "healthNews", "actionText": "view" },
+  { id: "healthNews", title: "Health Blog", key: "healthNews", "actionText": "view" },
   { id: "yoga", title: "Yoga", key: "yoga", "actionText": "view" },
   { id: "video", title: "Videos", key: "video", "actionText": "view" },
   { id: "threeMinute", title: "3-Minute Reads", key: "threeMinute", "actionText": "view" },
@@ -79,7 +79,7 @@ const ContentLibraryPage = () => {
 
   return (
     <div className="card flex-1 px-0 h-full bg-transparent overflow-hidden">
-      <div className="w-full-sidebar snap-y snap-proximity scrollContainer pb-[300px] rounded-xl flex-1 mx-h-webkit-fill overflow-auto">
+      <div className="w-full-sidebar snap-y snap-proximity scrollContainer pb-[300px] rounded-xl flex-1 max-h-webkit-fill overflow-auto">
         {/* Sticky Tabs */}
         <div className="stickyNav max-md:rounded card sticky top-0 bg-white px-6 py-4 flex space-x-6 z-[10]">
           {sections.map((s) => (

@@ -184,8 +184,35 @@ export async function updateAppointmentStatus(
 
 
 export async function getAvailableAppointments({practitionerRole,start,end,duration}: {practitionerRole: string, start: string, end: string, duration: number}) {
-    const res = await halaxyFetch(`/Appointment/$find?start=${start}&end=${end}&practitioner-role=${practitionerRole}&duration=${duration}`) as AppointmentsResponse
-    if(res.total === 0) return []
-    return res.entry.map(i => i.resource)
+
+      const bookedAppointments = await halaxyFetch(
+        `/Appointment?page=1&_count=100&part-status=booked&practitioner-role=${practitionerRole}&_sort=date`
+      ) as AppointmentsResponse;
+
+  
+      const slots = await halaxyFetch(
+    `/Appointment/$find?start=${start}&end=${end}&practitioner-role=${practitionerRole}` +
+    `&duration=${duration}` +
+    `&apply-buffer-time=true` +
+    `&include-overbooked=false`
+  ) as AppointmentsResponse;
+  
+    if(slots.total === 0) return []
+
+  const availableSlots = slots.entry.filter(slot => {
+    const slotResource = slot.resource
+    return !bookedAppointments.entry.some(appt => {
+      const apptResource = appt.resource
+      return (
+        new Date(slotResource.start) < new Date(apptResource.end) &&
+        new Date(slotResource.end) > new Date(apptResource.start)
+      )
+    }
+    )
+  }
+  );
+
+
+    return availableSlots.map(i => i.resource)
     
 }

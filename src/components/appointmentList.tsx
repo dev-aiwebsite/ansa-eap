@@ -40,9 +40,9 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
 
   if (myAppointments.length === 0) {
     return (
-      <div className={cn("max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}>
+      <div className={cn("rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}>
         <div className="text-zinc-500 flex h-[38px] items-center">
-          <p className="max-md:!text-sm font-medium">No upcoming appointments</p>
+          <p className="font-medium">No upcoming appointments</p>
         </div>
       </div>
     );
@@ -63,11 +63,11 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
         return (
         <Link
           key={i.id}
-          className={cn("max-md:!bg-[#70958517] rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}
+          className={cn("rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}
           href={`/user/appointments?${i.id}`}
         >
           <div className="flex-1 text-zinc-500">
-            <p className="max-md:!text-sm font-medium flex flex-row items-center gap-1">
+            <p className="font-medium flex flex-row items-center gap-1">
                 Consultation{" "}
                 {isCancelled && (
                   <Badge className="bg-red-400/80 text-[10px] px-1.5 py-0.5 h-auto leading-none">Cancelled</Badge>
@@ -104,7 +104,7 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
               </div>
           </div>
           <span className="max-md:hidden text-xl font-medium line-through">
-            $120
+            $200
           </span>
         </Link>
       )
