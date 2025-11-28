@@ -17,20 +17,20 @@ export default function Page() {
     return (
         <Container className="card">
             <div className="flex flex-row items-center gap-4">
-                <h3 className="section-title">My Favorites</h3>                
+                <h3 className="section-title pb-4">My Favorites</h3>                
             </div>
             {isFetching && <FavoritesSkeleton />}
-          {!isFetching &&  <div className="p-4 grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-4">
+          {!isFetching &&  <div className="md:p-4 grid md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-4">
                 {filteredPosts.length > 0 && filteredPosts.map((post) => {
 
                     return <>
                         <Link
-                        className="w-[380px] hover:ring-1 hover:ring-primary/80 bg-gray-50 flex flex-row flex-nowrap gap-2 p-4 rounded-lg"
+                        className="w-[380px] hover:ring-1 hover:ring-primary/80 bg-gray-50 flex flex-row flex-nowrap gap-4 p-4 rounded-lg"
                             href={generatePostLink(post) + '?back=/user/favorites' + `&backlabel=${encodeURIComponent('My Favorites')}`}>
                             <ImageWithFallback
-                                className="w-[40px] h-[40px] rounded"
-                                width={40}
-                                height={40}
+                                className="!block w-[70px] h-[64px] rounded object-cover"
+                                width={70}
+                                height={64}
                                 alt={post.title}
                                 src={post.thumbnail}
                             />
@@ -50,15 +50,15 @@ export default function Page() {
 
 function FavoritesSkeleton() {
   return (
-      <div className="p-4 grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-4">
+      <div className="grid md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-4">
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="w-[380px] bg-gray-100 dark:bg-gray-800 flex flex-row flex-nowrap gap-2 p-4 rounded-lg animate-pulse"
+            className="w-[380px] bg-gray-100 dark:bg-gray-800 flex flex-row flex-nowrap gap-4 p-4 rounded-lg animate-pulse"
           >
-            <div className="w-[40px] h-[40px] rounded bg-gray-300 dark:bg-gray-700" />
+            <div className="w-[70px] h-[64px] rounded bg-gray-300 dark:bg-gray-700" />
             <div className="flex flex-col gap-2 flex-1">
-              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-3/4" />
+              <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-3/4" />
               <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded w-1/2" />
             </div>
           </div>

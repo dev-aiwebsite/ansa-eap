@@ -104,7 +104,7 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
               </div>
           </div>
           <span className="max-md:hidden text-xl font-medium line-through">
-            $120
+            $200
           </span>
         </Link>
       )
