@@ -97,8 +97,6 @@ export default function HalaxyBookingWidget() {
                 toast.error('Something went wrong, Contact Admin')
             }
 
-
-
         }
 
         setIsSubmitting(false)
