@@ -167,6 +167,9 @@
 }
 
 @layer base {
+  button[type="submit"]{
+    @apply !font-semibold;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -558,7 +561,7 @@ body, .bg-body-blend {
 
 }
 
-button[role="radio"] {
+button:where([role="radio"],[role="checkbox"]) {
   padding: 10px;
 }
 

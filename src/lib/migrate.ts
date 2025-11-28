@@ -22,6 +22,23 @@ async function migrate() {
   );
 `;
 
+const createPasswordResetTokensTable = `
+  CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    token TEXT UNIQUE NOT NULL,
+    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+    CONSTRAINT fk_user
+      FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+  );
+`;
+
+
   const createDailyActivitiesTable = `
   CREATE TABLE daily_activities (
   id TEXT PRIMARY KEY, -- nanoid
@@ -322,6 +339,8 @@ CREATE TABLE push_subscriptions (
     await pool.query(createLikesTable);
     await pool.query(createInboxItemsTable);
     await pool.query(createPushSubscriptionsTable);
+    await pool.query(createPasswordResetTokensTable);
+
     console.log("✅ Tables created successfully.");
 
 

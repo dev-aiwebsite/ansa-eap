@@ -1,11 +1,17 @@
-ALTER TABLE push_subscriptions
-DROP CONSTRAINT IF EXISTS push_subscriptions_user_id_key;
+ CREATE TABLE IF NOT EXISTS password_reset_tokens (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    token TEXT UNIQUE NOT NULL,
+    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
--- Make sure user_id is NOT NULL
-ALTER TABLE push_subscriptions
-ALTER COLUMN user_id SET NOT NULL;
-
-
+    CONSTRAINT fk_user
+      FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+  );
+  
 
 7lCw6u7zmY
 
