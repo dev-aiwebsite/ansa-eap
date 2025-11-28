@@ -1,9 +1,28 @@
-ALTER TABLE push_subscriptions
-DROP CONSTRAINT IF EXISTS push_subscriptions_user_id_key;
+CREATE TABLE partners (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
 
--- Make sure user_id is NOT NULL
-ALTER TABLE push_subscriptions
-ALTER COLUMN user_id SET NOT NULL;
+CREATE TABLE marli (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  time TEXT NOT NULL,
+  location TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  date DATE NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
 
 
 
