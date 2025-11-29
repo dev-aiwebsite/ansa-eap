@@ -63,9 +63,6 @@ export default function HealthNewsCarousel({
   }, [api, displayedNews]);
 
   const hasNoData = isFetching 
-  console.log(isFetching, 'isFetching')
-  console.log(hasNoData, 'hasNoData')
-  console.log(displayedNews.length, 'data length')
   return (
     <div>
       

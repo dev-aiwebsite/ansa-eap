@@ -19,12 +19,10 @@ export default function BlogAddNew() {
   } = useForm<Blog>();
 
   const onSubmit = async (data: Blog) => {
-    console.log("Form data:", data);
     const slug = `${pathName.slice(0, -3)}${slugifyName(data.title)}`;
 
     try {
-      const result = await createBlog({ ...data, slug });
-      console.log(result);
+      await createBlog({ ...data, slug });
       reset();
     } catch (error) {
       console.log(error);

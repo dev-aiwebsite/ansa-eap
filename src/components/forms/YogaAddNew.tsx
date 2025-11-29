@@ -19,11 +19,9 @@ export default function YogaAddNew() {
   } = useForm<Yoga>();
 
   const onSubmit = async (data: Yoga) => {
-    console.log("Form data:", data);
     const slug = `${pathName.slice(0, -3)}${slugifyName(data.title)}`;
     try {
-      const result = await createYoga({ ...data, slug });
-      console.log(result, "query result");
+      await createYoga({ ...data, slug });
       reset();
     } catch (error) {
       console.log(error);

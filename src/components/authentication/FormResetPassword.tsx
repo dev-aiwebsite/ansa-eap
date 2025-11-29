@@ -36,8 +36,6 @@ export function FormResetPassword({ email, token, className, ...props }: FormRes
                 ]);
 
                 // Now you have both user and token data
-                console.log(user, passwordResetToken);
-
 
                 // Optional: validate token
                 if (!passwordResetToken || !user) {

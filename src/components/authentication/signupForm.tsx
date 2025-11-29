@@ -60,7 +60,6 @@ export default function SignupForm({
     try {
       // 1️⃣ Validate company exists
       const { data: company } = await getCompanyByCode(data.company);
-      console.log(company, "company");
       if (!company) {
         setError("company", {
           type: "manual",

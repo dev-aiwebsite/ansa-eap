@@ -27,7 +27,6 @@ export default function DailyCheckIn({
   );
 
   const entryToday = getEntryToday(dailyCheckIns);
-  console.log(dailyCheckIns, "dailyCheckIns");
 
   const handleSliderChange = (value: number[]) => {
     const updated = [...answers];
@@ -102,7 +101,6 @@ export default function DailyCheckIn({
     }
   }, [entryToday, focusOnChange]);
 
-  console.log(entryToday, "entryToday");
   const todayOverall = entryToday
     ? getDailyCheckinsOverall(entryToday.responses)
     : null;

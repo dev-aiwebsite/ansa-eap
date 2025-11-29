@@ -19,12 +19,10 @@ export default function WebinarAddNew() {
   } = useForm<Webinar>();
 
   const onSubmit = async (data: Webinar) => {
-    console.log("Form data:", data);
     const slug = `${pathName.slice(0, -3)}${slugifyName(data.title)}`;
 
     try {
-      const result = await createWebinar({ ...data, slug });
-      console.log(result);
+      await createWebinar({ ...data, slug });
       reset();
     } catch (error) {
       console.log(error);

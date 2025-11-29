@@ -11,10 +11,7 @@ export default function Intro() {
     
   return (
     <Dialog open onOpenChange={async (e)=> {
-        console.log(e)
         if(!e){
-            console.log('routing to dashboard')
-
       const credentials = {
       useremail: currentUser.email,userpass: currentUser.password
     }

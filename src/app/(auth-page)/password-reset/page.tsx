@@ -3,7 +3,8 @@ import {FormSendResetLink } from "@/components/authentication/FormSendResetLink"
 import { useSearchParams } from "next/navigation";
 import Image from "next/image"
 import { FormResetPassword } from "@/components/authentication/FormResetPassword";
-export default function LoginPage() {
+
+export default function Page() {
   const params = useSearchParams();
   const email = params.get("email") || "";
   const token = params.get("token") || "";

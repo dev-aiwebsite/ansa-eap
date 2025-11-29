@@ -36,7 +36,6 @@ const WillFocused = ({ children, className, focusedClassName}: WillFocusedProps)
 
   const focusOnChange = (value: boolean) => {
     setFocused(value)
-    console.log('Willfocuse component', value)
   };
 
 

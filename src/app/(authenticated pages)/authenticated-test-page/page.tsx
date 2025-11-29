@@ -13,7 +13,6 @@ const Page = () => {
     const getNews = async () => {
         const res = await getRssNews()
         setData(res)
-        console.log(res)
 
     }
 

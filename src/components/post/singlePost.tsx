@@ -33,8 +33,7 @@ const PostSingle = ({id, data }: PostSingle) => {
   const handleLikeToggle = async () => {
     const userId = currentUser.id
     setLoading(true);
-    const res = await toggleLike(postData.id, userId)
-    console.log(res)
+    toggleLike(postData.id, userId)
     setLoading(false);
   };
 

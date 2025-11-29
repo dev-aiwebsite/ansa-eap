@@ -58,8 +58,6 @@ export function GlobalSearch() {
     content: [],
   }
 
-
-  console.log(categories, 'categories')
   allPosts.forEach((item) => {
     const categoryId = item.category
     const isAnsaContent = categoryId != '7p2v1Ur_O4'

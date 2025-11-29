@@ -6,7 +6,6 @@ import HalaxyBookingIframe from "./ui/HalaxyBookingIframe";
 
 const BookingWidget = ({link}:{link:string}) => {
   const [agreed, setAgreed] = useState(true);
-  console.log(link, 'bookingwidget')
   return (
     <>
       {agreed ? (

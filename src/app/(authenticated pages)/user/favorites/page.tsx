@@ -13,7 +13,6 @@ export default function Page() {
     const likedPosts = allLikes.filter(l => l.user_id == currentUser.id).map(i => i.post_id)
     const filteredPosts = allPosts.filter(p => likedPosts.includes(p.id))
 
-    console.log(likedPosts, 'likedPosts')
     return (
         <Container className="card">
             <div className="flex flex-row items-center gap-4">

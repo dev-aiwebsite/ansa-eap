@@ -54,7 +54,6 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
     const cat = categories.find((c) => c.id == categoryId);
     if (cat) {
       reset(cat);
-      console.log(cat);
     }
   }, [categories, categoryId, reset]);
 

@@ -7,7 +7,6 @@ import { Loader2 } from "lucide-react";
 
 export default function Page() {
   const { remainingCredit } = useHalaxyServiceContext();
-  console.log(remainingCredit)
   return (
     <Container className="md:card">
         <div className="h-full space-y-4">

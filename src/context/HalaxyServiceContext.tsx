@@ -154,8 +154,6 @@ useEffect(() => {
   const creditUsed = myAppointments?.length ?? 0
   const remainingCredit = myAppointments ? creditLimit - creditUsed : undefined
 
-
-  console.log(currentUser, 'currentUser')
   return (
     <HalaxyServiceContext.Provider
       value={{

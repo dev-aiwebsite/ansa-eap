@@ -7,7 +7,6 @@ export async function getMyAppointments(patientId: string) {
     return null
   }
   const res = await getUserAppointments(patientId);
-  console.log(res, "res");
   return res;
 }
 

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Container from "../../components/ui/container";
 
 export default function Layout({
@@ -7,7 +8,11 @@ export default function Layout({
 }>) {
   return (
     <div className="h-screen">
-      <Container>{children}</Container>
+      <Container>
+        <Suspense fallback={<p>Loading...</p>}>
+          {children}
+        </Suspense>
+        </Container>
     </div>
   );
 }

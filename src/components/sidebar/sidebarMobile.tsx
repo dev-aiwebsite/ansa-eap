@@ -37,7 +37,6 @@ export default SidebarMobile;
 
 function DrawerStyle() {
   const path = usePathname()
-  console.log(path)
   return (
     <>
       <Drawer>
