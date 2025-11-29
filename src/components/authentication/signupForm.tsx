@@ -20,6 +20,7 @@ type SignupFormData = {
   last_name: string;
   company: string;
   email: string;
+  phone: string;
   password: string;
 };
 
@@ -88,6 +89,7 @@ export default function SignupForm({
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
+        phone: data.phone,
         password: data.password,
         company: data.company,
       });
@@ -151,15 +153,11 @@ export default function SignupForm({
                 <Input
                   id="first_name"
                   placeholder="John"
+                  required
                   {...register("first_name", {
                     required: "First name is required",
                   })}
                 />
-                {errors.first_name && (
-                  <span className="text-xs text-red-400">
-                    {errors.first_name.message}
-                  </span>
-                )}
               </div>
 
               {/* Last Name */}
@@ -168,31 +166,24 @@ export default function SignupForm({
                 <Input
                   id="last_name"
                   placeholder="Doe"
+                  required
                   {...register("last_name", {
                     required: "Last name is required",
                   })}
                 />
-                {errors.last_name && (
-                  <span className="text-xs text-red-400">
-                    {errors.last_name.message}
-                  </span>
-                )}
               </div>
             </div>
 
-            {/* Company */}
+            {/* Phone */}
             <div className="grid gap-2">
-              <Label htmlFor="company">Company Code</Label>
+              <Label htmlFor="phone">Phone</Label>
               <Input
-                id="company"
-                placeholder="Code"
-                {...register("company", { required: "Company is required" })}
+                id="phone"
+                type="tel"
+                placeholder="eg. 61012345678"
+                required
+                {...register("phone", { required: "Phone number is required" })}
               />
-              {errors.company && (
-                <span className="text-xs text-red-400">
-                  {errors.company.message}
-                </span>
-              )}
             </div>
 
             {/* Email */}
@@ -202,13 +193,20 @@ export default function SignupForm({
                 id="email"
                 type="email"
                 placeholder="m@example.com"
+                required
                 {...register("email", { required: "Email is required" })}
               />
-              {errors.email && (
-                <span className="text-xs text-red-400">
-                  {errors.email.message}
-                </span>
-              )}
+            </div>
+
+             {/* Company */}
+            <div className="grid gap-2">
+              <Label htmlFor="company">Company Code</Label>
+              <Input
+                id="company"
+                placeholder="Code"
+                required
+                {...register("company", { required: "Company is required" })}
+              />
             </div>
 
             {/* Password */}
@@ -217,6 +215,7 @@ export default function SignupForm({
               <Input
                 id="password"
                 type="password"
+                required
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -255,8 +254,7 @@ export default function SignupForm({
         <OtpVerification
         method="sms"
           className="mx-auto px-10 py-20"
-          phoneNumber="61438011762"
-          // email={getValues("email")}
+          phoneNumber={getValues().phone}
           onConfirmChange={(v) => setOtpConfirmed(v)}
         />
       )}

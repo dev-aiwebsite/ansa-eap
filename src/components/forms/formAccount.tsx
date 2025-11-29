@@ -23,6 +23,7 @@ export default function FormAccount({
 }: FormAccountProps) {
   const { currentUser, setCurrentUser } = useAppServiceContext();
 
+  console.log(currentUser, 'currentUser')
   const {
     register,
     handleSubmit,
@@ -35,6 +36,7 @@ export default function FormAccount({
       first_name: currentUser?.first_name || "",
       last_name: currentUser?.last_name || "",
       email: currentUser?.email || "",
+      phone: currentUser?.phone || "",
       profile_img: currentUser?.profile_img || "",
       company: currentUser?.company || "",
     },
@@ -56,6 +58,7 @@ export default function FormAccount({
           first_name: result.data.first_name || "",
           last_name: result.data.last_name || "",
           email: result.data.email || "",
+          phone: result.data.phone || "",
           profile_img: result.data.profile_img || "",
         });
       }
@@ -109,6 +112,18 @@ export default function FormAccount({
         />
         {errors.last_name && (
           <p className="text-red-500 text-sm">{errors.last_name.message}</p>
+        )}
+      </div>
+
+      <div className="form-item">
+        <label className="form-item-label">Phone</label>
+        <Input
+        required
+          placeholder="Phone"
+          {...register("phone", { required: "Phone is required" })}
+        />
+        {errors.phone && (
+          <p className="text-red-500 text-sm">{errors.phone.message}</p>
         )}
       </div>
 

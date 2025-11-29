@@ -12,17 +12,19 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import OtpVerification from "../OtpVerification";
 import { Checkbox } from "../ui/checkbox";
+import { User } from "@/serverActions/crudUsers";
+
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [useremail, setUserEmail] = useState("")
   const [userpass, setUserpass] = useState("")
   const [otpConfirmed, setOtpConfirmed] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
   const router = useRouter();
 
 
@@ -58,7 +60,7 @@ export function LoginForm({
         setError("Wrong credentials")
         return false
       }
-      setSuccess(true)
+      setUser(res)
     } catch (error) {
       const typedError = error as Error;
       setError(typedError?.message || 'Something went wrong');
@@ -80,7 +82,7 @@ export function LoginForm({
           height={200}
           alt="logo" />
       </div>
-      {!success &&
+      {!user &&
         <div className={cn("flex justify-center flex-col gap-6 p-10", className)} {...props}>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
@@ -137,7 +139,7 @@ export function LoginForm({
                   type="submit"
                   className={cn("w-full")}
                 >
-                  {success ? (
+                  {user ? (
                     <>
                       <Check />
                       Success
@@ -156,10 +158,11 @@ export function LoginForm({
         </div>
       }
 
-      {success &&
+      {user &&
         <OtpVerification className="mx-auto px-10 py-20"
           method="sms"
-          phoneNumber="61438011762"
+          // phoneNumber="61438011762"
+          phoneNumber={user.phone}
           onConfirmChange={(v) => setOtpConfirmed(v)} />
       }
 
