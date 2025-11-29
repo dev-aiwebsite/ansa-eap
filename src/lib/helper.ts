@@ -98,3 +98,13 @@ export function urlBase64ToUint8Array(base64String: string) {
   const rawData = window.atob(base64)
   return new Uint8Array([...rawData].map((char) => char.charCodeAt(0)))
 }
+
+
+
+export type NonEmptyString = string & { __nonEmpty: true };
+export function asNonEmptyString(value: string): NonEmptyString {
+  if (!value.trim()) {
+    throw new Error("phoneNumber cannot be empty");
+  }
+  return value as NonEmptyString;
+}

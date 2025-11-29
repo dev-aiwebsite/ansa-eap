@@ -9,21 +9,33 @@ import { useState, useEffect } from "react";
 import { sendMail } from "@/lib/email/elasticemail";
 import { EMAIL_VERIFICATION_TEMPLATE } from "@/lib/email/email_templates/EmailVerification";
 import Link from "next/link";
+import { sendSms } from "@/lib/sms/touchSms";
 
-const isDisabled = true
+const isDisabled = false
+
+
+type OtpViaSms = {
+  method: "sms";
+  phoneNumber: string;
+}
+
+type OtpViaEmail = {
+  method: "email",
+  email: string;
+}
 
 type OtpVerificationProps = {
   className?: string;
+  phoneNumber?: string;
+  email?: string;
   inputClassName?: string;
-  email: string;
   onConfirmChange?: (confirmed: boolean) => void;
-};
+} & (OtpViaSms | OtpViaEmail);
 
-export function OtpVerification({
-  className,
-  email,
-  onConfirmChange,
-}: OtpVerificationProps) {
+export function OtpVerification(props: OtpVerificationProps) {
+  const { className, method, email, phoneNumber, onConfirmChange } = props;
+  console.log(phoneNumber)
+
   const [otp, setOtp] = useState("");
   const [value, setValue] = useState("");
   const [isComplete, setIsComplete] = useState(false);
@@ -65,17 +77,32 @@ export function OtpVerification({
     const newOtp = generateOtp();
 
     setIsSending(true);
-    try {
-      const payload = {
-        to: email,
-        subject: "One-time verification code",
-        htmlBody: EMAIL_VERIFICATION_TEMPLATE({ code: newOtp }),
-      };
 
-      if (process.env.NODE_ENV == 'development') {
+
+    try {
+
+      // if (process.env.NODE_ENV == 'development') {
+      if (false) { // test on local development
         alert(newOtp)
       } else {
-        await sendMail(payload)
+
+        if (method == 'email') {
+          const payload = {
+            to: email,
+            subject: "One-time verification code",
+            htmlBody: EMAIL_VERIFICATION_TEMPLATE({ code: newOtp }),
+          };
+          await sendMail(payload)
+        } else if (method == 'sms') {
+          const payload = {
+            to: phoneNumber,
+            body: `Elevate | Ansa Health: Your verification code is ${newOtp}. Expires in 1 minute.`
+
+          }
+
+          const sendSmsRes = await sendSms(payload)
+          console.log('sendSmsRes: ', sendSmsRes)
+        }
 
       }
 
@@ -118,7 +145,7 @@ export function OtpVerification({
   };
 
   useEffect(() => {
-    if(isDisabled) return
+    if (isDisabled) return
     handleSendOtp();
   }, []);
 
@@ -130,7 +157,7 @@ export function OtpVerification({
   }, [errorMsg]);
 
 
- if (isDisabled) {
+  if (isDisabled) {
     return (
       <div className={`flex flex-col items-center justify-center p-6 space-y-4 ${className || ""}`}>
         <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
@@ -149,19 +176,32 @@ export function OtpVerification({
       )}
     >
       <div className="text-center space-y-2">
-        <h3 className="font-bold">Verify with Email</h3>
+        <h3 className="font-bold">Verify with {method == "email" ? "Email" : "Sms"}</h3>
         {!otp && <Loader2 className="muted-text mx-auto animate-spin" />}
         {otp && (
           <>
             {!isExpired ? (
               <>
+               { method == "email" ? <>
                 <p className="text-balance muted-text">
-                  A verification code was sent to{" "}
-                  <span className="font-medium">{email || "your email"}</span>.
-                </p>
+                    A verification code was sent to your email:{" "}
+                    <span className="font-medium">{email}</span>.
+                  </p>
+                  <p className="text-balance muted-text">
+                    <span>Check your <span className="font-semibold">inbox or spam folder</span> and enter the code below.</span>
+                  </p>
+                </>
+                : 
+                <>
                 <p className="text-balance muted-text">
-                  <span>Check your <span className="font-semibold">inbox or spam folder</span> and enter the code below.</span>
-                </p>
+                    We’ve sent a verification code to your mobile number:{" "}
+                    <span className="font-medium">{phoneNumber}</span>.
+                  </p>
+                  <p className="text-balance muted-text">
+                    <span>Enter the code below to continue.</span>
+                  </p>
+                </>
+                  }
               </>
             ) : (
               <>

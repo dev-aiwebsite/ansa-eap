@@ -157,7 +157,10 @@ export function LoginForm({
       }
 
       {success &&
-        <OtpVerification className="mx-auto px-10 py-20" email={useremail} onConfirmChange={(v) => setOtpConfirmed(v)} />
+        <OtpVerification className="mx-auto px-10 py-20"
+          method="sms"
+          phoneNumber="61438011762"
+          onConfirmChange={(v) => setOtpConfirmed(v)} />
       }
 
     </div>
