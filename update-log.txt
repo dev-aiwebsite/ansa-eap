@@ -1,17 +1,10 @@
- CREATE TABLE IF NOT EXISTS password_reset_tokens (
-    id TEXT PRIMARY KEY,
-    user_id TEXT NOT NULL,
-    token TEXT UNIQUE NOT NULL,
-    expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    used BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+// require phone number on registration
 
-    CONSTRAINT fk_user
-      FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
-  );
-  
+ALTER TABLE users
+ADD COLUMN phone TEXT;
+
+
+
 
 7lCw6u7zmY
 1kj23lk1j2

@@ -11,6 +11,7 @@ export type User = {
   last_name: string;
   profile_img: string;
   email: string;
+  phone: string;
   password: string;
   company: string;
   created_at: string;
@@ -68,6 +69,7 @@ export async function getUserDashboardData(userId: string): Promise<Result<Dashb
         first_name: row.first_name,
         last_name: row.last_name,
         email: row.email,
+        phone: row.phone,
         password: row.password,
         company: row.company,
         profile_img: row.profile_img,
@@ -96,14 +98,15 @@ export async function createUser(
     const id = nanoid(10);
 
     const query = `
-      INSERT INTO users (id, email, password, company, first_name, last_name, profile_img)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO users (id, email, phone, password, company, first_name, last_name, profile_img)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING *;
     `;
 
     const values = [
       id,
       data.email,
+      data.phone,
       data.password,
       data.company ?? null,
       data.first_name ?? null,

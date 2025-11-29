@@ -17,7 +17,7 @@ export const EMAIL_VERIFICATION_TEMPLATE = (
           ${code || "------"}
         </div>
         <p style="margin:16px 0 0;line-height:1.6;font-size:14px;color:#555;">
-          This code will expire in 1 minute. If you didn’t request this, you can safely ignore this email.
+          This code will expire in 2 minutes. If you didn’t request this, you can safely ignore this email.
         </p>
       </div>
       <div style="border-top:1px solid #e5e7eb;text-align:center;padding:20px;font-size:13px;color:#6b7280;background:#fafafa;">
