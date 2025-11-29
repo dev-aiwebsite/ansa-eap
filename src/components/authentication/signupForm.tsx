@@ -253,8 +253,10 @@ export default function SignupForm({
       )}
       {success && (
         <OtpVerification
+        method="sms"
           className="mx-auto px-10 py-20"
-          email={getValues("email")}
+          phoneNumber="61438011762"
+          // email={getValues("email")}
           onConfirmChange={(v) => setOtpConfirmed(v)}
         />
       )}

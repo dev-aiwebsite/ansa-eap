@@ -10,7 +10,7 @@ import { PostServiceProvider } from "@/context/postServiceContext";
 import { PushNotificationProvider } from "@/context/PushNotificationContext";
 import { getUserDashboardData } from "@/serverActions/crudUsers";
 
-const isTestMode = process.env.TEST_MODE === "true";
+const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
 const isProd = process.env.NODE_ENV === "production"
 export default async function Layout({
   children,
