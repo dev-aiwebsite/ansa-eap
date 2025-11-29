@@ -109,7 +109,7 @@ const Audio = ({
   return (
     <div
       className={cn(
-        "bg-white rounded-xl shadow-md w-full rounded-lg overflow-hidden p-4",
+        "bg-white rounded-xl w-full rounded-lg overflow-hidden p-4",
         className
       )}
     >
