@@ -60,6 +60,8 @@ export default function HalaxyBookingWidget() {
         getAvailableAppointments(data)
             .then(res => setAvailableAppointments(res))
             .catch(err => console.log(err))
+
+
     }, [practitioner, service])
 
     const handleBookAppointment = async () => { 
@@ -102,6 +104,8 @@ export default function HalaxyBookingWidget() {
         setIsSubmitting(false)
     }
 
+
+    console.log(availableAppointments, 'available Appointments')
     return (
         <div className="w-full h-full">
             <div className="space-y-4 p-4">

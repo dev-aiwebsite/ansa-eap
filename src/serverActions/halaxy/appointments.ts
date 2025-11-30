@@ -1,28 +1,49 @@
 "use server";
 import { halaxyFetch } from "./credentials";
 
-export type Appointment = {
-    id: string;
-    start: string;
-    [key: string]: unknown;
+export type ParticipantStatus = "booked" | "cancelled" | "attended" | "tentative" | "accepted";
+
+export type AppointmentParticipant = {
+  type?: {
+    coding?: {
+      system: string;
+      code: string;
+      display: string;
+    }[];
+  }[];
+  actor: {
+    reference: string; // e.g., "https://au-api.halaxy.com/main/PractitionerRole/PR-3331559"
+    type: "PractitionerRole" | "Patient";
+  };
+  modifierExtension?: {
+    url: string;
+    valueCoding: {
+      system: string;
+      code: ParticipantStatus;
+      display: string;
+    };
+  }[];
 };
 
+export type AppointmentSupportingInfo = {
+  reference: string; // e.g., "https://au-api.halaxy.com/main/HealthcareService/557057"
+  type: "HealthcareService";
+};
 
 export type FhirAppointment = {
-        "start": string,
-        "end": string,
-        "minutesDuration": number,
-        // "participant": [
-        //   {
-        //     "actor": {
-        //       "reference": string,
-        //       "type": "PractitionerRole"
-        //     }
-        //   }
-        // ],
-        "id": string,
-        "resourceType": "Appointment"
-      }
+  resourceType: "Appointment";
+  id: string;
+  start: string; // ISO string
+  end: string; // ISO string
+  minutesDuration: number;
+  created: string;
+  participant: AppointmentParticipant[];
+  supportingInformation?: AppointmentSupportingInfo[];
+  meta: {
+    lastUpdated: string;
+  };
+};
+
 
 export type AppointmentsResponse = {
   total: number;
@@ -179,7 +200,21 @@ export async function updateAppointmentStatus(
     },
   });
 
-  return res as Appointment
+  return res as FhirAppointment
+}
+
+export async function isSlotAvailable({
+  practitionerRole,
+  start,
+}: {
+  practitionerRole: string;
+  start: string;
+}): Promise<boolean> {
+  const availableSlots = await halaxyFetch(
+    `/Appointment?page=1&_count=30&date=${encodeURIComponent(start)}&part-status=booked&practitioner-role=${practitionerRole}`
+  ) as AppointmentsResponse;
+
+  return availableSlots.total === 0 ? true : false;
 }
 
 
