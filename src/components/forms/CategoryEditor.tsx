@@ -176,7 +176,7 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
             control={control}
             render={({ field }) => (
               <UploadcareGalleryDialog
-              pubkey="9c35a0212e26c1a710ca"
+              pubkey="927d7568bad196ef7d60"
               onSelect={(url) => field.onChange(url)}
                />
             )}
@@ -201,7 +201,7 @@ export default function CategoryEditor({ categoryId }: CategoryEditorProps) {
             control={control}
             render={({ field }) => (
               <UploadcareGalleryDialog
-              pubkey="9c35a0212e26c1a710ca"
+              pubkey="927d7568bad196ef7d60"
               onSelect={(url) => field.onChange(url)}
                />
             )}

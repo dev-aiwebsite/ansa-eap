@@ -137,7 +137,7 @@ export default function ServiceForm({
           useCloudImageEditor={false}
           sourceList="local"
           classNameUploader="uc-light"
-          pubkey="9c35a0212e26c1a710ca"
+          pubkey="927d7568bad196ef7d60"
           multiple={false}
           onCommonUploadSuccess={(e) => {
             const cdnUrl = e.successEntries[0].cdnUrl;
