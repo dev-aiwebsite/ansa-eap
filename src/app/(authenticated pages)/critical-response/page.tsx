@@ -47,16 +47,19 @@ const CriticalResponsePage = () => {
                 alt="critical incident response"
                 width={200}
                 height={100}
-                src='/assets/images/lifeline.jpg'
+                src='https://ucarecdn.com/d07e0412-37f4-43c6-a47c-0a5fa00621cf/sundaynightanxiety.png'
               />
               <div className="flex flex-col gap-2 h-full">
                 <p className="card-title font-medium">Critical Incident Response</p>
-                <p className="text-sm text-muted-foreground"></p>
+                <p className="text-sm text-muted-foreground">
+                  Use this form to notify our team of urgent incidents or critical issues requiring immediate attention. Please provide detailed information so we can respond promptly and effectively
+                </p>
                 <div className="mt-auto">
                   <DialogFormCriticalIncidentResponse />
                 </div>
               </div>
             </div>
+
           {supportServices.map((service) => (
             <div key={service.name} className="flex flex-col space-y-5 card min-h-[200px]">
               <ImageWithFallback

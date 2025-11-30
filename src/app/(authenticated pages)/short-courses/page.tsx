@@ -3,7 +3,7 @@ import ImageWithFallback from "@/components/ui/imageWithFallback";
 
 export default function Page() {
     return (
-        <div className="grid grid-cols-4 gap-6 pt-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-10">
                  <Button
                           href={`/short-courses/partners`}
                           className="border border-primary overflow-hidden shadow-xxs h-full bg-white rounded-3xl p-4 text-base flex-col items-start justify-start text-start"
@@ -12,7 +12,7 @@ export default function Page() {
                           
                           <ImageWithFallback
                           className="!w-full rounded-lg !h-auto aspect-[296/193] object-cover object-[center_30%] block border-b border-gray-200"
-                          src="/assets/images/img2.jpg"
+                          src="https://ucarecdn.com/764be359-8774-4c7e-b4bf-64e7d51024c8/Deepbreathing.png"
                           alt="partners"
                           />
             
@@ -32,7 +32,7 @@ export default function Page() {
                           
                           <ImageWithFallback
                           className="!w-full rounded-lg !h-auto aspect-[296/193] object-cover object-[center_30%] block border-b border-gray-200"
-                          src="/assets/images/img4.png"
+                          src="https://ucarecdn.com/6107324c-b506-40e8-975f-9bcd094eef07/Slide16_95.png"
                           alt="partners"
                           />
             

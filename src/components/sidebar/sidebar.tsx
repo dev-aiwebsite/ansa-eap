@@ -1,7 +1,7 @@
 import NavItems from "@/components/sidebar/navItems";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import AppLogo from "../AppLogo";
+import ElevateOnMobile from "../ElevateOnMobile";
 
 
 const Sidebar = () => {
@@ -11,15 +11,7 @@ const Sidebar = () => {
       <NavItems />
       <div className="mt-auto p-6">
         <div className="mb-4">
-          <Image
-          className="w-[150px] mx-auto"
-          width={200}
-          height={300}
-          alt="available on mobile"
-          src="/assets/images/mobileavailable.png" />
-          <span className="text-xs text-muted-foreground">
-            Elevate is available on <span className="text-app-purple-300">Mobile</span>
-          </span>
+          <ElevateOnMobile />
         </div>
         <Button href="/critical-response" variant="default" className="w-full shadow-btn">
           <span>Phone Support</span>
