@@ -135,7 +135,6 @@ export function HalaxyServiceContextProvider({
     if (selectedAppointment) {
       const practitionerRole = selectedAppointment.participant.find(p => p.actor.type == "PractitionerRole")?.actor?.reference?.split('/')?.at(-1)
       if (practitionerRole) {
-        console.log(selectedAppointment.start, 'selectedAppointment.start')
         const isSlotNotTaken = await isSlotAvailable({ practitionerRole, start: selectedAppointment.start })
         if (isSlotNotTaken) {
           isStillAvailable = true
@@ -191,7 +190,8 @@ export function HalaxyServiceContextProvider({
 
   }
   const creditLimit = currentUser.maxCredit ?? 0
-  const creditUsed = myAppointments?.length ?? 0
+  const creditedAppointments = myAppointments?.filter(apt => !JSON.stringify(apt).includes('"code":"booked"'))
+  const creditUsed = creditedAppointments?.length ?? 0
   const remainingCredit = myAppointments ? creditLimit - creditUsed : undefined
 
   return (
