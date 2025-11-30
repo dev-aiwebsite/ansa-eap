@@ -103,7 +103,7 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
                     Cannot cancel – appointment is soon or already started
                   </span>
                 )}
-                {isCancelled && (
+                {!hasPassed && isCancelled && (
                   <Button
                     variant="link"
                     className="!p-0 text-secondary"
