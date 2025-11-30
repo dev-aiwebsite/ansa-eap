@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OtpVerification from "../OtpVerification";
+import { sendMail } from "@/lib/email/elasticemail";
+import { EMAIL_WELCOME_TEMPLATE } from "@/lib/email/email_templates/EmailWelcome";
 
 type SignupFormData = {
   first_name: string;
@@ -108,7 +110,14 @@ export default function SignupForm({
         return;
       }
 
+      await sendMail({
+        to: getValues().email,
+        subject: "Welcome to Elevate",
+        htmlBody: EMAIL_WELCOME_TEMPLATE()
+      })
+
       setSuccess(true);
+      
     } catch (err) {
       const typedError = err as Error;
       setError("root", { type: "manual", message: typedError.message });
