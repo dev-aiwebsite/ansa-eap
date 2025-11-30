@@ -6,7 +6,7 @@ import ElevateOnMobile from "../ElevateOnMobile";
 
 const Sidebar = () => {
   return (
-    <nav className="main-sidebar flex flex-col bg-white rounded-3xl h-full w-sidebar">
+    <nav className="overflow-auto main-sidebar flex flex-col bg-white rounded-3xl h-full w-sidebar">
       <AppLogo />
       <NavItems />
       <div className="mt-auto p-6">
