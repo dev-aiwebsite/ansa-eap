@@ -1,8 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -10,8 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "../ui/input";
+import * as React from "react";
 
 type ConsentFormProps = {
   checked?: boolean;
@@ -20,8 +18,10 @@ type ConsentFormProps = {
 };
 
 export function ConsentForm({ checked, onChange, onSubmit }: ConsentFormProps) {
-  // If parent controls it, use that. Otherwise fallback to local state.
   const [internalChecked, setInternalChecked] = React.useState(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [scrollEndReached, setScrollEndReached] = React.useState(false);
+
   const isControlled = checked !== undefined;
   const agreed = isControlled ? checked : internalChecked;
 
@@ -39,34 +39,56 @@ export function ConsentForm({ checked, onChange, onSubmit }: ConsentFormProps) {
     onSubmit?.(agreed);
   }
 
+  // When user scrolls inside dialog content
+function handleScroll(e: React.UIEvent<HTMLDivElement>) {
+  const target = e.currentTarget;
+
+  const atBottom =
+    target.scrollHeight - target.scrollTop - target.clientHeight < 2;
+
+  if (atBottom) {
+    console.log("BOTTOM!");
+    setScrollEndReached(true);
+  }
+}
+
+
+  function confirmAgreement() {
+    handleCheck(true);
+    setDialogOpen(false);
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="form-item">
-        <label className="form-item-label">Full name</label>
-        <Input placeholder="John Doe" required />
-      </div>
-      <div className="flex items-start space-x-2">
+      <div className="flex items-center space-x-2">
         <Checkbox
           id="consent"
           checked={agreed}
+          disabled={!scrollEndReached} // disable until scrolled fully
           onCheckedChange={(val) => handleCheck(!!val)}
         />
+
         <label
           htmlFor="consent"
           className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           I agree to the{" "}
-          <Dialog>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="link" className="px-1 text-sm">
+              <Button variant="link" className="font-semibold px-1 text-sm">
                 Consent Form
               </Button>
             </DialogTrigger>
+
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Consent Form</DialogTitle>
               </DialogHeader>
-              <ScrollArea className="h-[400px] pr-4">
+
+              <div
+                className="h-[70vh] pr-4 overflow-auto"
+                onScroll={handleScroll}
+              >
                 <div className="space-y-4 text-sm leading-relaxed">
                   <p>
                     <strong>Elevate by ANSA</strong> provides confidential
@@ -205,7 +227,17 @@ export function ConsentForm({ checked, onChange, onSubmit }: ConsentFormProps) {
                     ............................
                   </p>
                 </div>
-              </ScrollArea>
+              </div>
+
+              <div className="flex justify-end mt-4">
+                <Button
+                  disabled={!scrollEndReached}
+                  onClick={confirmAgreement}
+                  type="button"
+                >
+                  I have read and agree
+                </Button>
+              </div>
             </DialogContent>
           </Dialog>
         </label>
