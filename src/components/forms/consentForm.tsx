@@ -80,13 +80,13 @@ function handleScroll(e: React.UIEvent<HTMLDivElement>) {
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-sm:translate-y-0 top-[10vh] md:max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Consent Form</DialogTitle>
               </DialogHeader>
 
               <div
-                className="h-[70vh] pr-4 overflow-auto"
+                className="h-[50vh] md:h-[70vh] pr-4 overflow-auto"
                 onScroll={handleScroll}
               >
                 <div className="space-y-4 text-sm leading-relaxed">
@@ -214,8 +214,8 @@ function handleScroll(e: React.UIEvent<HTMLDivElement>) {
                     withdrawn at any time.
                   </p>
 
-                  <h4 className="font-semibold">Agreement</h4>
-                  <p>
+                  {/* <h4 className="font-semibold">Agreement</h4> */}
+                  {/* <p>
                     I, (print) ..................................., have read
                     and understood this Consent Form. I consent to receive
                     services under Elevate by ANSA and agree to the conditions
@@ -225,7 +225,7 @@ function handleScroll(e: React.UIEvent<HTMLDivElement>) {
                     Signature
                     .................................................... Date
                     ............................
-                  </p>
+                  </p> */}
                 </div>
               </div>
 
