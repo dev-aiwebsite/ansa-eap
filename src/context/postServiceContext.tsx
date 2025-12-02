@@ -87,7 +87,7 @@ useEffect(() => {
   const healthNews = allPosts.filter((p) => p.category === "7p2v1Ur_O4") as Posts;
   const yogas = allPosts.filter((p) => p.category === "7p2v1Ur_O5") as Posts;
   const blogs = allPosts.filter((p) => p.category === "7p2v1Ur_O6") as Posts;
-  const videoContents = allPosts.filter((p) => p.category === "7p2v1Ur_O1") as Posts;
+  const videoContents = allPosts.filter(p => !!p.video) as Posts;
 
 
   const latestPosts = [
