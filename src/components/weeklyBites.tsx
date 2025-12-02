@@ -96,13 +96,13 @@ const WeeklyBites = ({ hideTitle = false }: { hideTitle?: boolean }) => {
               value="clips"
               className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
-              Clips
+              Videos
             </TabsTrigger>
             <TabsTrigger
               value="blogs"
               className="data-[state=active]:text-primary data-[state=active]:text-shadow-medium !py-1 !px-2 !ring-0 !shadow-none"
             >
-              Blogs
+              Bites
             </TabsTrigger>
             <TabsTrigger
               value="news"
