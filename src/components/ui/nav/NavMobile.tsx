@@ -74,12 +74,17 @@ const NavMobile = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/short-courses/partners" className="flex items-center gap-2">
+                  <Link href="/short-courses" className="flex items-center gap-2">
+                    Short Courses
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/partners" className="flex items-center gap-2">
                     Partners
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/short-courses/marli" className="flex items-center gap-2">
+                  <Link href="/marli" className="flex items-center gap-2">
                     Marli
                   </Link>
                 </DropdownMenuItem>
