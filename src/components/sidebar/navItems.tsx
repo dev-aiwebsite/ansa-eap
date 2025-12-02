@@ -1,6 +1,6 @@
 "use client";
 import { usePostServiceContext } from "@/context/postServiceContext";
-import { IconCourses, IconDocuments, IconGrid, IconServices } from "@/icons";
+import { IconCourses, IconDocuments, IconGrid, IconMarli, IconPartners, IconServices } from "@/icons";
 import { slugifyName } from "@/lib/helper";
 import { NavItemsType } from "@/types";
 import { ChevronRight } from "lucide-react";
@@ -43,17 +43,27 @@ export function useNavItems(): NavItemsType[] {
       title: "Short Courses",
       link: "/short-courses",
       icon: <IconCourses  strokeWidth={2.5}/>,
-      subitems: [
-        {
-          title: 'Partners',
-          link: `/short-courses/partners`,
-        },
-        {
-          title: 'Marli',
-          link: `/short-courses/marli`,
-        },
-      ],
     },
+    {
+      title: "Partners",
+      link: "/partners",
+      icon: <IconPartners strokeWidth={2.5}/>,
+    },
+    {
+      title: "Marli",
+      link: "/marli",
+      icon: <IconMarli className="px-[2px]" strokeWidth={1}/>,
+    },
+    // {
+    //   title: "Critical Incident Response",
+    //   link: "/critical-incident-response",
+    //   icon: <IconCriticalResponse/>,
+    // },
+    // {
+    //   title: "Admin",
+    //   link: "/company-admin",
+    //   icon: <IconAdmin strokeWidth={2.5}/>,
+    // },
   ];
   return navItems;
 }

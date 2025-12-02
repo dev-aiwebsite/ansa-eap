@@ -231,6 +231,17 @@ CREATE TABLE partners (
   updated_at TIMESTAMP DEFAULT NOW(),
 );
 `
+const createShortCoursesTable = `
+CREATE TABLE short_courses (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  image TEXT NOT NULL,
+  link TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+`
 
 const createCompaniesTable = `CREATE TABLE companies (
   id TEXT PRIMARY KEY,
@@ -371,6 +382,8 @@ CREATE TABLE push_subscriptions (
     await pool.query(createPasswordResetTokensTable);
     await pool.query(createMarliTable);
     await pool.query(createPartnersTable);
+    await pool.query(createShortCoursesTable);
+    
     console.log("✅ Tables created successfully.");
 
 
