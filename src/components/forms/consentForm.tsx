@@ -80,7 +80,7 @@ function handleScroll(e: React.UIEvent<HTMLDivElement>) {
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-sm:translate-y-0 top-[10vh] md:max-w-2xl">
+            <DialogContent className="max-sm:translate-y-0 max-sm:top-[10vh] md:max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Consent Form</DialogTitle>
               </DialogHeader>
