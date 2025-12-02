@@ -1,12 +1,12 @@
 "use client";
 
-import { Partner } from "@/serverActions/crudPartners";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../../ui/button";
-import DeleteItemButton from "../action-buttons/ButtonDeletePartner";
 import ImageWithFallback from "@/components/ui/imageWithFallback";
+import { ShortCourse } from "@/serverActions/crudShortCourses";
+import DeleteItemButton from "../action-buttons/ButtonDeleteShortCourse";
 
-export const PartnersColumns: ColumnDef<Partner>[] = [
+export const ColumnShortCourse: ColumnDef<ShortCourse>[] = [
     {
           accessorKey: "image",
           header: "Image",
@@ -23,23 +23,16 @@ export const PartnersColumns: ColumnDef<Partner>[] = [
       accessorKey: "description",
       header: "Description",
     },
-    {
-      accessorKey: "time",
-      header: "Time",
-    },
-    {
-      accessorKey: "location",
-      header: "Location",
-    },
+    
     {
       accessorKey: "link",
       header: "Link",
     },
     {
-      accessorKey: "date",
-      header: "Date",
+      accessorKey: "created_at",
+      header: "Created",
       cell: ({ row }) => {
-        const date = new Date(row.getValue("date"));
+        const date = new Date(row.getValue("created_at"));
         return <span>{date.toLocaleDateString()}</span>;
       },
     },
@@ -50,10 +43,10 @@ export const PartnersColumns: ColumnDef<Partner>[] = [
       const item = row.original;
       return (
         <div className="space-x-2">
-        <Button href={`/admin/partners/${item.id}`} size="sm" variant="outline">
+        <Button href={`/admin/short-courses/${item.id}`} size="sm" variant="outline">
           Edit
         </Button>
-           <DeleteItemButton itemLabel="Partner" itemId={item.id} itemName={item.title} />
+           <DeleteItemButton itemLabel="Short Course" itemId={item.id} itemName={item.title} />
       </div>
       );
     },

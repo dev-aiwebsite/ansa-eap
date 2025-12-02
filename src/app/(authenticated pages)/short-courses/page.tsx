@@ -1,49 +1,92 @@
-import { Button } from "@/components/ui/button";
-import ImageWithFallback from "@/components/ui/imageWithFallback";
+"use client";
 
-export default function Page() {
-    return (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-10">
-                 <Button
-                          href={`/short-courses/partners`}
-                          className="border border-primary overflow-hidden shadow-xxs h-full bg-white rounded-3xl p-4 text-base flex-col items-start justify-start text-start"
-                          variant="ghost"
-                        >
-                          
-                          <ImageWithFallback
-                          className="!w-full rounded-lg !h-auto aspect-[296/193] object-cover object-[center_30%] block border-b border-gray-200"
-                          src="https://ucarecdn.com/764be359-8774-4c7e-b4bf-64e7d51024c8/Deepbreathing.png"
-                          alt="partners"
-                          />
-            
-                          <span className="text-sm capitalize whitespace-normal">
-                            Partners
-                            {/* <span className="block text-xs muted-text">{count} Resources</span> */}
-                          </span>
-                          <div className="mt-auto flex w-full justify-end items-center">
-                            <span className="block -mr-4 -mb-4 py-2 px-6 text-sm text-white bg-primary cursor-pointer">View</span>
-                          </div>
-                        </Button>
-                 <Button
-                          href={`/short-courses/marli`}
-                          className="border border-primary overflow-hidden shadow-xxs h-full bg-white rounded-3xl p-4 text-base flex-col items-start justify-start text-start"
-                          variant="ghost"
-                        >
-                          
-                          <ImageWithFallback
-                          className="!w-full rounded-lg !h-auto aspect-[296/193] object-cover object-[center_30%] block border-b border-gray-200"
-                          src="https://ucarecdn.com/6107324c-b506-40e8-975f-9bcd094eef07/Slide16_95.png"
-                          alt="partners"
-                          />
-            
-                          <span className="text-sm capitalize whitespace-normal">
-                            Marli
-                            {/* <span className="block text-xs muted-text">{count} Resources</span> */}
-                          </span>
-                          <div className="mt-auto flex w-full justify-end items-center">
-                            <span className="block -mr-4 -mb-4 py-2 px-6 text-sm text-white bg-primary cursor-pointer">View</span>
-                          </div>
-                        </Button>
+import PostCardSkeleton from "@/components/post/postCardSkeleton";
+import PostFilter from "@/components/post/postFilter";
+import { Button } from "@/components/ui/button";
+import Container from "@/components/ui/container";
+import ImageWithFallback from "@/components/ui/imageWithFallback";
+import { htmlToPlainText, truncateText } from "@/lib/helper";
+import { getShortCourses, ShortCourse } from "@/serverActions/crudShortCourses";
+import { useEffect, useState } from "react";
+
+export default function ShortCoursePage() {
+  const [data, setData] = useState<ShortCourse[] | null>(null);
+  const [sortedData, setSortedData] = useState<ShortCourse[] | null>(data);
+
+  // keep sortedData in sync when base data changes
+  useEffect(() => {
+    setSortedData(data);
+  }, [data]);
+
+  useEffect(() => {
+    getShortCourses().then((res) => setData(res.data || []));
+  }, []);
+
+  return (
+    <Container className="space-y-2">
+      <div className="sticky top-0 bg-body-blend p-1">
+        <PostFilter data={data || []} onChange={setSortedData} />
+      </div>
+        {sortedData == null && <SkeletonGrid />}
+
+      {sortedData != null && sortedData.length === 0 ? (
+        <div className="text-center text-muted-foreground py-10">
+          No data available
         </div>
-    );
+      ) : (
+        <div className="grid">
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-y-10 w-full-sidebar">
+            {sortedData != null &&  sortedData.map((i) => (
+              <Card key={i.id} item={i} />
+            ))}
+          </div>
+        </div>
+      )}
+    </Container>
+  );
+}
+
+function Card({ item }: { item: ShortCourse }) {
+  return (
+    <div className="card rounded-lg p-4 min-w-[200px] flex flex-col gap-4 text-sm border">
+      <ImageWithFallback
+        className="rounded-sm w-full h-[140px] object-cover"
+        width={200}
+        height={100}
+        src={item.image}
+        alt={item.title}
+      />
+
+      {/* Title */}
+      <p className="text-base font-medium">{item.title}</p>
+      {/* Description */}
+      <p className="text-muted-foreground text-xs">
+        {truncateText(htmlToPlainText(item.description), 150)}
+      </p>
+
+      {/* Button */}
+      <div className="flex">
+        <Button
+          target="_blank"
+          href={item.link}
+          className="ml-auto"
+          variant="outline"
+        >
+          View
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+
+// 🔹 Skeleton Loader for the grid
+function SkeletonGrid() {
+  return (
+    <div className="grid md:grid-cols-3 lg:grid-cols-4 flex-wrap gap-5 gap-6 w-full-sidebar">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <PostCardSkeleton key={i} />
+      ))}
+    </div>
+  );
 }
