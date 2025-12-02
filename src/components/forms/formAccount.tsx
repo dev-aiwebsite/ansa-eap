@@ -89,7 +89,7 @@ export default function FormAccount({
             useCloudImageEditor={false}
             sourceList="local"
             classNameUploader="uc-light"
-            pubkey="927d7568bad196ef7d60"
+            pubkey="3960269a62f10ac5448a"
             multiple={false}
             onCommonUploadSuccess={(e) => {
               const cdnUrl = e.successEntries[0].cdnUrl;
