@@ -26,7 +26,7 @@ export async function createShortCourse(
   try {
     const id = nanoid(10);
     const query = `
-      INSERT INTO partners
+      INSERT INTO short_courses
       (id, title, description, image, link)
       VALUES ($1,$2,$3,$4,$5)
       RETURNING *;
@@ -71,7 +71,7 @@ export async function getShortCourses(params: GetShortCoursesParams = {}): Promi
     }
 
     // Base query
-    let query = `SELECT * FROM partners`;
+    let query = `SELECT * FROM short_courses`;
 
     // Add WHERE if any conditions
     if (conditions.length > 0) {
@@ -107,7 +107,7 @@ export async function getShortCourses(params: GetShortCoursesParams = {}): Promi
 // READ ONE
 export async function getShortCourseById(id: string): Promise<Result<ShortCourse>> {
   try {
-    const result = await pool.query(`SELECT * FROM partners WHERE id = $1`, [id]);
+    const result = await pool.query(`SELECT * FROM short_courses WHERE id = $1`, [id]);
     if (!result.rows[0]) return { success: false, message: "ShortCourses not found" };
     return { success: true, message: "ShortCourses fetched successfully", data: result.rows[0] as ShortCourse };
   } catch (error: unknown) {
@@ -119,7 +119,7 @@ export async function getShortCourseById(id: string): Promise<Result<ShortCourse
 
 export async function getShortCourseByTitle(title: string): Promise<Result<ShortCourse>> {
   try {
-    const result = await pool.query(`SELECT * FROM partners WHERE title = $1`, [title]);
+    const result = await pool.query(`SELECT * FROM short_courses WHERE title = $1`, [title]);
     if (!result.rows[0]) return { success: false, message: `ShortCourses: ${title} not found` };
     return { success: true, message: `ShortCourses: ${title} fetched successfully`, data: result.rows[0] as ShortCourse };
   } catch (error: unknown) {
@@ -147,7 +147,7 @@ export async function updateShortCourse(
     values.push(id);
 
     const query = `
-      UPDATE partners
+      UPDATE short_courses
       SET ${fields.join(", ")}, updated_at = NOW()
       WHERE id = $${i}
       RETURNING *;
@@ -166,7 +166,7 @@ export async function updateShortCourse(
 // DELETE
 export async function deleteShortCourse(id: string): Promise<Result<ShortCourse>> {
   try {
-    const result = await pool.query(`DELETE FROM partners WHERE id = $1 RETURNING *`, [id]);
+    const result = await pool.query(`DELETE FROM short_courses WHERE id = $1 RETURNING *`, [id]);
     if (!result.rows[0]) return { success: false, message: "ShortCourse not found" };
     return { success: true, message: `ShortCourse: ${id} deleted successfully`, data: result.rows[0] as ShortCourse };
   } catch (error: unknown) {
