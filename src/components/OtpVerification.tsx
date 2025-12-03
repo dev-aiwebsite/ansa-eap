@@ -11,7 +11,7 @@ import { EMAIL_VERIFICATION_TEMPLATE } from "@/lib/email/email_templates/EmailVe
 import Link from "next/link";
 import { sendSms } from "@/lib/sms/touchSms";
 
-const isDisabled = false
+const isDisabled = true
 
 type OtpViaSms = {
   method: "sms";
@@ -78,7 +78,7 @@ export function OtpVerification(props: OtpVerificationProps) {
 
     try {
 
-      if (phoneNumber == "09850317040" || phoneNumber || "09289847923") {
+      if (phoneNumber == "098503170401" || phoneNumber == "092898479231") {
         alert(newOtp)
       } else {
 
