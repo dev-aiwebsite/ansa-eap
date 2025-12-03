@@ -97,7 +97,7 @@ export default function NavItems() {
                 {navitem.subitems && (
                   <CollapsibleTrigger asChild>
                     <Button
-                    className="ml-auto"
+                    className="ml-auto -mr-3"
                      size="icon" variant="ghost">
                       <ChevronRight className="collapsible-arrow h-4 w-4" />
                     </Button>
