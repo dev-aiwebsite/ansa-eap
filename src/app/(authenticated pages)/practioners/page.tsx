@@ -1,10 +1,9 @@
 "use client"
+import PractitionerCard from "@/components/PractitionerCard";
 import { Button } from "@/components/ui/button";
-import ImageWithFallback from "@/components/ui/imageWithFallback";
 import { useAppServiceContext } from "@/context/appServiceContext";
-import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
 import { getPractitioners, Practitioner } from "@/serverActions/crudPractitioners";
-import { CalendarPlus, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 
@@ -30,52 +29,6 @@ const Practitioners = () => {
 };
 
 export default Practitioners;
-
-function PractitionerCard({
-  item,
-}: {
-  item: Practitioner;
-}) {
-
-  const professionalName = (`${item.title} ${item.first_name} ${item.last_name}`).trim()
-  return (<>
-    <div className="card p-0 items-center flex flex-row overflow-hidden relative">
-      <div className="space-y-4 p-10 pr-0 w-2/3">
-        <div className="flex flex-row gap-2 items-center">
-          <h3 className="text-xl font-bold">{professionalName}</h3>
-          <span className="capitalize underline decoration-muted-foreground decoration-[1px]">
-            {item.profession}
-          </span>
-        </div>
-        <p className="text-xs">{item.description &&
-                  truncateText(htmlToPlainText(item.description), 100)}</p>
-        <div className="flex">
-          <div className="flex flex-row items-center gap-2">
-            <Button
-            href={`/practioners/${item.id}~${slugifyName(professionalName)}`}
-              variant="outline"
-              className="ring-muted border-muted rounded-full !py-5 text-muted-foreground hover:border-primary"
-            >
-              <CalendarPlus />
-              Book Now
-            </Button>
-          </div>
-        </div>
-      </div>
-      <div className="grid mr-[-20px] mt-auto">
-        <ImageWithFallback
-        className="mt-auto object-cover rounded-tl-3xl w-[200px] h-[125px] object-top bg-gray-100"
-         width={300}
-          height={100}
-          src={item.profile_img}
-          alt={professionalName}
-         />
-      </div>
-    </div>
-    </>
-  );
-}
-
 
 function Content(){
 

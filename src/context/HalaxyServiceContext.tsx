@@ -190,7 +190,7 @@ export function HalaxyServiceContextProvider({
 
   }
   const creditLimit = currentUser.maxCredit ?? 0
-  const creditedAppointments = myAppointments?.filter(apt => !JSON.stringify(apt).includes('"code":"booked"'))
+  const creditedAppointments = myAppointments?.filter(apt => JSON.stringify(apt).includes('"code":"booked"'))
   const creditUsed = creditedAppointments?.length ?? 0
   const remainingCredit = myAppointments ? creditLimit - creditUsed : undefined
 
