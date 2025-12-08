@@ -78,7 +78,7 @@ export function OtpVerification(props: OtpVerificationProps) {
 
     try {
 
-      if (phoneNumber == "09850317040" || phoneNumber == "09289847923") {
+      if (phoneNumber && phoneNumber == "09850317040" || phoneNumber == "09289847923") {
         alert(newOtp)
       } else {
 

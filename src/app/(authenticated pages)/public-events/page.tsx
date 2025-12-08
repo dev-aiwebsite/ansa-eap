@@ -97,7 +97,7 @@ function Card({ item }: { item: PublicEvent }) {
           className="ml-auto"
           variant="outline"
         >
-          View
+          Join
         </Button>
       </div>
     </div>
