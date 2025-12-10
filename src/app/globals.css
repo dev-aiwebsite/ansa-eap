@@ -504,11 +504,13 @@ html {
         right: auto !important;
     }
 
+    .w-full-sidebar {
+      max-width: 100%;
+    }
+
 }
 
-.w-full-sidebar {
-  max-width: 100%;
-}
+
 
 body, .bg-body-blend {
     background: radial-gradient(circle at top left, #D6FCF9 0%, transparent 50%), radial-gradient(circle at top center, #FFECFD 0%, transparent 50%), radial-gradient(circle at top right, #ECFFE8 0%, transparent 50%), radial-gradient(circle at bottom right, #E5E7FF 0%, transparent 50%), radial-gradient(circle at bottom center, #FFFEEF 0%, transparent 50%), radial-gradient(circle at bottom left, #F7E1E0 0%, transparent 50%);

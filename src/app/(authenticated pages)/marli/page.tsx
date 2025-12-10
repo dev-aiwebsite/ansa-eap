@@ -3,12 +3,11 @@
 import PostCardSkeleton from "@/components/post/postCardSkeleton";
 import PostFilter from "@/components/post/postFilter";
 import { Button } from "@/components/ui/button";
+import Container from "@/components/ui/container";
 import ImageWithFallback from "@/components/ui/imageWithFallback";
 import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { getMarlis, Marli } from "@/serverActions/crudMarli";
 import { useEffect, useState } from "react";
-import { CalendarDays, Clock, MapPin } from "lucide-react"; // for icons
-import Container from "@/components/ui/container";
 
 export default function MarliPage() {
   const [data, setData] = useState<Marli[] | null>(null);
@@ -61,28 +60,6 @@ function Card({ item }: { item: Marli }) {
       {/* Title */}
       <p className="text-base font-medium">{item.title}</p>
 
-      {/* Date & Time */}
-      <div className="flex flex-col gap-1 text-xs text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <CalendarDays className="w-4 h-4" />
-          <span>
-            {new Date(item.date).toLocaleDateString(undefined, {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4" />
-          <span>{item.time}</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4" />
-          <span>{item.location}</span>
-        </div>
-      </div>
 
       {/* Description */}
       <p className="text-muted-foreground text-xs">

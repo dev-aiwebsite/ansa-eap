@@ -452,11 +452,11 @@ const MultiSelect = React.forwardRef<MultiSelectRef, MultiSelectProps>(
           }}
         >
           <div className="relative flex flex-wrap gap-1">
-            {selected.map((option) => {
+            {selected.map((option, indx) => {
               return (
                 <Badge
                 variant="secondary"
-                  key={option.value}
+                  key={option.value + indx}
                   className={cn(
                     'h-[3em] data-[disabled]:bg-muted-foreground data-[disabled]:text-muted data-[disabled]:hover:bg-muted-foreground',
                     'data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground',

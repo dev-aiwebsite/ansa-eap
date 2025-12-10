@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 export default function AppBookingWidget() {
-    const [selected, setSelected] = useState("inperson"); // always one selected
+    const [selected, setSelected] = useState("online"); // always one selected
 
     const [practitioners, setPractitioners] = useState<Practitioner[]>([])
     useEffect(() => {
@@ -28,6 +28,16 @@ export default function AppBookingWidget() {
                     onValueChange={(value) => value && setSelected(value)} // prevent deselect
                     className="inline-flex w-full md:max-w-md border-2 border-primary/50 overflow-hidden"
                 >
+                <ToggleGroupItem
+                        value="online"
+                        aria-label="Online (Telehealth)"
+                        className="flex-1 text-center px-4 py-2 font-semibold text-primary 
+                     data-[state=on]:bg-primary 
+                     data-[state=on]:text-white
+                     !rounded-none"
+                    >
+                        Online (Telehealth)
+                    </ToggleGroupItem>
                     <ToggleGroupItem
                         value="inperson"
                         aria-label="In-Person"
@@ -38,20 +48,11 @@ export default function AppBookingWidget() {
                     >
                         In-Person
                     </ToggleGroupItem>
-                    <ToggleGroupItem
-                        value="online"
-                        aria-label="Online (Telehealth)"
-                        className="flex-1 text-center px-4 py-2 font-semibold text-primary 
-                     data-[state=on]:bg-primary 
-                     data-[state=on]:text-white
-                     !rounded-none"
-                    >
-                        Online (Telehealth)
-                    </ToggleGroupItem>
+               
 
 
                 </ToggleGroup>
-                {selected == "online" &&
+                {selected == "inperson" &&
                     <Select>
                         <SelectTrigger className="w-[180px] !px-4 !py-2 !h-auto">
                             <SelectValue placeholder="Select a location" />
@@ -66,8 +67,8 @@ export default function AppBookingWidget() {
                     </Select>
                 }
             </div>
+            
             {/* practitioners  */}
-
             <div>
                 <div className="grid gap-5 gap-y-10 grid-cols-[repeat(auto-fit,minmax(400px,1fr))]">
                     {practitioners?.map((item) => (

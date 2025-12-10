@@ -19,6 +19,7 @@ import {
   EXPERTISE_OPTIONS,
   IDENTIFICATION_OPTIONS,
   LANGUAGE_OPTIONS,
+  LOCATIONS_OPTIONS,
   MODALITY_OPTIONS,
   OTHER_SERVICES_OPTIONS,
   PATIENT_FOCUS_OPTIONS,
@@ -79,7 +80,7 @@ export default function FormPractitioner({
       profile_img: "",
       description: "",
       profession: "",
-      location: "",
+      locations: [],
       clinic: "",
       booking_link: "",
       expertise: [],
@@ -104,6 +105,7 @@ export default function FormPractitioner({
         expertise: stringsToOptions(practitioner.expertise, EXPERTISE_OPTIONS) as unknown as string[],
         languages: stringsToOptions(practitioner.languages, LANGUAGE_OPTIONS) as unknown as string[],
         modalities: stringsToOptions(practitioner.modalities, MODALITY_OPTIONS) as unknown as string[],
+        locations: stringsToOptions(practitioner.locations, LOCATIONS_OPTIONS) as unknown as string[],
         patient_focus: stringsToOptions(practitioner.patient_focus, PATIENT_FOCUS_OPTIONS) as unknown as string[],
         other_services: stringsToOptions(practitioner.other_services, OTHER_SERVICES_OPTIONS) as unknown as string[],
       });
@@ -116,18 +118,25 @@ export default function FormPractitioner({
       ...data,
       expertise: optionsToStrings(data.expertise as unknown as Option[]),
       languages: optionsToStrings(data.languages as unknown as Option[]),
+      locations: optionsToStrings(data.locations as unknown as Option[]),
       modalities: optionsToStrings(data.modalities as unknown as Option[]),
       patient_focus: optionsToStrings(data.patient_focus as unknown as Option[]),
       other_services: optionsToStrings(data.other_services as unknown as Option[]),
     };
 
+
+    
     try {
       let result;
       if (practitioner?.id) {
+        console.log('updating practitioner data')
         result = await updatePractitioner(practitioner.id, formatted);
       } else {
+        console.log('creating practitioner')
         result = await createPractitioner(formatted);
       }
+
+      console.log(result)
 
       if (result.success && result.data) {
         onSubmitSuccess?.(result.data);
@@ -138,6 +147,7 @@ export default function FormPractitioner({
             expertise: stringsToOptions(result.data.expertise, EXPERTISE_OPTIONS) as unknown as string[],
             languages: stringsToOptions(result.data.languages, LANGUAGE_OPTIONS) as unknown as string[],
             modalities: stringsToOptions(result.data.modalities, MODALITY_OPTIONS) as unknown as string[],
+            locations: stringsToOptions(result.data.locations, LOCATIONS_OPTIONS) as unknown as string[],
             patient_focus: stringsToOptions(result.data.patient_focus, PATIENT_FOCUS_OPTIONS) as unknown as string[],
             other_services: stringsToOptions(result.data.other_services, OTHER_SERVICES_OPTIONS) as unknown as string[],
           });
@@ -290,8 +300,25 @@ export default function FormPractitioner({
       {/* Other Clinical Credentials */}
       <FieldGroup label="Other Clinical Credentials & Preferences">
         <Input placeholder="Clinic" {...register("clinic")} />
-        <Input placeholder="Location" {...register("location")} />
         <Input placeholder="Booking Link" {...register("booking_link")} />
+          
+        <div className="space-y-2">
+          <label className="form-item-label">Locations</label>
+          <Controller
+            control={control}
+            name="locations"
+            render={({ field }) => (
+              <MultiSelect
+                placeholder="Select locations"
+                options={LOCATIONS_OPTIONS}
+                value={(field.value as unknown as Option[]) || []}
+                onChange={field.onChange}
+              />
+            )}
+          />
+        </div>
+
+
 
         <div className="space-y-2">
           <label className="form-item-label">Modalities</label>
