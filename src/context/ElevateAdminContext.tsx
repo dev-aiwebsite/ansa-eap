@@ -5,7 +5,7 @@ import { getUsers, User } from "@/serverActions/crudUsers";
 import { createContext, useContext, useEffect, useState } from "react";
 type ElevateAdminContextProps = {
     users: User[] | [];
-    companies: CompaniesWithMemberCount[] | []
+    companies: CompaniesWithMemberCount[] | null
 
 }
 
@@ -13,7 +13,7 @@ type ElevateAdminContextProvider = {
     children?: React.ReactNode;
 }
 
-type CompaniesWithMemberCount = Company & {
+export type CompaniesWithMemberCount = Company & {
     member_count?: number;
 }
 
@@ -21,7 +21,8 @@ const ElevateAdminContext = createContext<ElevateAdminContextProps | null>(null)
 
 export const ElevateAdminContextProvider = ({children}:ElevateAdminContextProvider) => {
     const [users, setUsers] = useState<User[]>([])
-    const [companies, setCompanies] = useState<CompaniesWithMemberCount[] | []>([])
+    const [companies, setCompanies] = useState<CompaniesWithMemberCount[] | null>(null)
+
 useEffect(() => {
   async function fetchData() {
     try {
