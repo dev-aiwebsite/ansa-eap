@@ -1,12 +1,11 @@
 "use client";
-import { Option } from "@/components/multiSelect";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm, Controller } from "react-hook-form";
-import { useEffect, useState } from "react";
-import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
 import "@uploadcare/react-uploader/core.css";
+import { FileUploaderRegular } from "@uploadcare/react-uploader/next";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 import {
   Practitioner,
@@ -14,7 +13,6 @@ import {
   updatePractitioner,
 } from "@/serverActions/crudPractitioners";
 
-import MultiSelect from "../multiSelect";
 import {
   EXPERTISE_OPTIONS,
   IDENTIFICATION_OPTIONS,
@@ -25,28 +23,14 @@ import {
   PATIENT_FOCUS_OPTIONS,
   PROFESSIONAL_REGISTRATION_OPTIONS,
 } from "@/lib/const";
+import { optionsToStrings, stringsToOptions } from "@/lib/helper";
+import { MultiSelectOption } from "@/types";
 import Image from "next/image";
-import KeyValueInput from "../ui/keyValueInput";
-import FormDynamicFields from "../ui/formDynamicFields";
+import MultiSelect from "../multiSelect";
 import FieldGroup from "../ui/fieldGroup";
+import FormDynamicFields from "../ui/formDynamicFields";
+import KeyValueInput from "../ui/keyValueInput";
 
-//
-// 🔹 Mapper helpers
-//
-function stringsToOptions(
-  values: string[] | null | undefined,
-  allOptions: Option[]
-): Option[] {
-  if (!values) return [];
-  return values
-    .map((v) => allOptions.find((opt) => opt.value === v))
-    .filter((opt): opt is Option => !!opt);
-}
-
-function optionsToStrings(options: Option[] | null | undefined): string[] {
-  if (!options) return [];
-  return options.map((opt) => opt.value);
-}
 
 type FormPractitionerProps = {
   practitioner?: Practitioner; // ✅ pass data directly
@@ -116,12 +100,12 @@ export default function FormPractitioner({
   const onSubmit = async (data: Practitioner) => {
     const formatted = {
       ...data,
-      expertise: optionsToStrings(data.expertise as unknown as Option[]),
-      languages: optionsToStrings(data.languages as unknown as Option[]),
-      locations: optionsToStrings(data.locations as unknown as Option[]),
-      modalities: optionsToStrings(data.modalities as unknown as Option[]),
-      patient_focus: optionsToStrings(data.patient_focus as unknown as Option[]),
-      other_services: optionsToStrings(data.other_services as unknown as Option[]),
+      expertise: optionsToStrings(data.expertise as unknown as MultiSelectOption[]),
+      languages: optionsToStrings(data.languages as unknown as MultiSelectOption[]),
+      locations: optionsToStrings(data.locations as unknown as MultiSelectOption[]),
+      modalities: optionsToStrings(data.modalities as unknown as MultiSelectOption[]),
+      patient_focus: optionsToStrings(data.patient_focus as unknown as MultiSelectOption[]),
+      other_services: optionsToStrings(data.other_services as unknown as MultiSelectOption[]),
     };
 
 
@@ -275,7 +259,7 @@ export default function FormPractitioner({
               <MultiSelect
                 placeholder="Expertise"
                 options={EXPERTISE_OPTIONS}
-                value={(field.value as unknown as Option[]) || []}
+                value={(field.value as unknown as MultiSelectOption[]) || []}
                 onChange={field.onChange}
               />
             )}
@@ -289,7 +273,7 @@ export default function FormPractitioner({
               <MultiSelect
                 placeholder="Select languages"
                 options={LANGUAGE_OPTIONS}
-                value={(field.value as unknown as Option[]) || []}
+                value={(field.value as unknown as MultiSelectOption[]) || []}
                 onChange={field.onChange}
               />
             )}
@@ -311,7 +295,7 @@ export default function FormPractitioner({
               <MultiSelect
                 placeholder="Select locations"
                 options={LOCATIONS_OPTIONS}
-                value={(field.value as unknown as Option[]) || []}
+                value={(field.value as unknown as MultiSelectOption[]) || []}
                 onChange={field.onChange}
               />
             )}
@@ -329,7 +313,7 @@ export default function FormPractitioner({
               <MultiSelect
                 placeholder="Select modalities"
                 options={MODALITY_OPTIONS}
-                value={(field.value as unknown as Option[]) || []}
+                value={(field.value as unknown as MultiSelectOption[]) || []}
                 onChange={field.onChange}
               />
             )}
@@ -345,7 +329,7 @@ export default function FormPractitioner({
               <MultiSelect
                 placeholder="Select from list"
                 options={PATIENT_FOCUS_OPTIONS}
-                value={(field.value as unknown as Option[]) || []}
+                value={(field.value as unknown as MultiSelectOption[]) || []}
                 onChange={field.onChange}
               />
             )}
@@ -361,7 +345,7 @@ export default function FormPractitioner({
               <MultiSelect
                 placeholder="Select from list"
                 options={OTHER_SERVICES_OPTIONS}
-                value={(field.value as unknown as Option[]) || []}
+                value={(field.value as unknown as MultiSelectOption[]) || []}
                 onChange={field.onChange}
               />
             )}
