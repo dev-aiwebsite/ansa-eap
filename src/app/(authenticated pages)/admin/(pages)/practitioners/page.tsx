@@ -1,12 +1,35 @@
+"use client"
 import { DataTable } from "@/components/dataTables/dataTable";
 import { PractitionerColumn } from "@/components/dataTables/practitioners/practitionerColumn";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
-import { getPractitioners } from "@/serverActions/crudPractitioners";
+import { getPractitioners, Practitioner } from "@/serverActions/crudPractitioners";
 import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const Page = async () => {
-    const res = await getPractitioners()
+const Page = () => {
+    
+      const [data, setData] = useState<Practitioner[]>([]);
+      const [isFetching, setIsFetching] = useState(true)
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            setIsFetching(true);
+    
+            const res = await getPractitioners();
+    
+            setData(res.data || []);
+          } catch (error) {
+            console.error("Failed to fetch practitioners:", error);
+          } finally {
+            setIsFetching(false);
+          }
+        };
+    
+        fetchData();
+      }, []);
+      
     return (
        <Container className="card w-full-sidebar">
               <div className="flex flex-row">
@@ -15,7 +38,7 @@ const Page = async () => {
                   <PlusCircle /> Add Practitioner
                 </Button>
               </div>
-              <DataTable className="flex-1" columns={PractitionerColumn} data={res.data || []}/>
+              <DataTable className="flex-1" columns={PractitionerColumn} isLoading={isFetching} data={data}/>
         </Container>
     );
 }
