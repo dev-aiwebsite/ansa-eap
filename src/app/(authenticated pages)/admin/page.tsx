@@ -13,6 +13,7 @@ const Page = () => {
           <Button href="/admin/practitioners" variant="outline">Practitioners</Button>   
           <Button href="/admin/categories" variant="outline">Categories</Button>
           <Button href="/admin/public-events" variant="outline">Public Events</Button>
+          <Button href="/admin/short-courses" variant="outline">Short Courses</Button>
           <Button href="/admin/partners" variant="outline">Partners</Button>
           <Button href="/admin/marli" variant="outline">Marli</Button>
       </div>
