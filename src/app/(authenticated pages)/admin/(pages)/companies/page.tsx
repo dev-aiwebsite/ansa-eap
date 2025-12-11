@@ -8,8 +8,8 @@ import { useElevateAdminContext } from "@/context/ElevateAdminContext";
 import { PlusCircle } from "lucide-react";
 
 const Page = () => {
-  const {companies} = useElevateAdminContext()
-  console.log(companies, 'companies')
+  const {companies, isFetching} = useElevateAdminContext()
+  
   return (
     <Container className="card w-full-sidebar">
       <div className="flex flex-row">
@@ -19,7 +19,7 @@ const Page = () => {
         </Button>
       </div>
 
-      <DataTable columns={CompanyColumns} data={companies} />
+      <DataTable columns={CompanyColumns} isLoading={isFetching} data={companies} />
     </Container>
   );
 };

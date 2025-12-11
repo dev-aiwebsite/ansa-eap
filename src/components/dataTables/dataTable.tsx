@@ -1,12 +1,6 @@
 "use client";
 
 import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  ColumnDef,
-} from "@tanstack/react-table";
-import {
   Table,
   TableBody,
   TableCell,
@@ -15,18 +9,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { FileX, Loader2 } from "lucide-react";
 
 
 interface DataTableProps<TData, TValue> {
-  className?:string;
+  className?: string;
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
   className,
   columns,
   data,
+  isLoading = false,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -45,9 +48,9 @@ export function DataTable<TData, TValue>({
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
                 </TableHead>
               ))}
             </TableRow>
@@ -73,7 +76,17 @@ export function DataTable<TData, TValue>({
                 colSpan={columns.length}
                 className="h-24 text-center"
               >
-                No entries found
+                {isLoading ? (
+                  <div className="w-full-sidebar justify-center flex items-center gap-2 text-sm text-muted-foreground">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Fetching data…</span>
+                  </div>
+                ) : (
+                  <div className="flex w-full-sidebar justify-center items-center gap-2 text-sm text-muted-foreground">
+                    <FileX className="h-4 w-4" />
+                    <span>No entries found</span>
+                  </div>
+                )}
               </TableCell>
             </TableRow>
           )}

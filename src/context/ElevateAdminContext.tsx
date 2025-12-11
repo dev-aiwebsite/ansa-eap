@@ -5,7 +5,8 @@ import { getUsers, User } from "@/serverActions/crudUsers";
 import { createContext, useContext, useEffect, useState } from "react";
 type ElevateAdminContextProps = {
     users: User[] | [];
-    companies: CompaniesWithMemberCount[] | []
+    companies: CompaniesWithMemberCount[] | [];
+    isFetching: boolean;
 
 }
 
@@ -22,8 +23,10 @@ const ElevateAdminContext = createContext<ElevateAdminContextProps | null>(null)
 export const ElevateAdminContextProvider = ({children}:ElevateAdminContextProvider) => {
     const [users, setUsers] = useState<User[]>([])
     const [companies, setCompanies] = useState<CompaniesWithMemberCount[] | []>([])
+    const [isFetching, setIsFetching] = useState(true)
 useEffect(() => {
   async function fetchData() {
+    setIsFetching(true)
     try {
       // Fetch users
       const { data: usersData } = await getUsers()
@@ -42,6 +45,8 @@ useEffect(() => {
       }
     } catch (err) {
       console.error(err)
+    } finally {
+      setIsFetching(false)
     }
   }
 
@@ -52,7 +57,8 @@ useEffect(() => {
     return <ElevateAdminContext.Provider
     value = {{
         users,
-        companies
+        companies,
+        isFetching
     }
     }>
     {children}
