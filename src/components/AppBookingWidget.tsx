@@ -1,8 +1,6 @@
 "use client";
 
-import { useAppServiceContext } from "@/context/appServiceContext";
-import { Company, getCompanyByCode } from "@/serverActions/crudCompanies";
-import { getPractitioners, Practitioner } from "@/serverActions/crudPractitioners";
+import { useHalaxyBookingServiceContext } from "@/context/HalaxyBookingServiceContext";
 import { useEffect, useState } from "react";
 import PractitionerCard from "./PractitionerCard";
 import {
@@ -15,49 +13,30 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 export default function AppBookingWidget() {
-    const [selected, setSelected] = useState<"online" | "inperson">("online");
-    const [selectedLocation, setSelectedLocation] = useState<string | undefined>(undefined);
 
-    const [company, setCompany] = useState<Company | undefined>(undefined);
-    const [practitioners, setPractitioners] = useState<Practitioner[] | undefined>(undefined);
+    const orgIds = {
+        online: 'CL-1335519',
 
-    const { currentUser } = useAppServiceContext();
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const [companyRes, practitionersRes] = await Promise.all([
-                    getCompanyByCode(currentUser.company),
-                    getPractitioners(),
-                ]);
-
-                if (companyRes.success) setCompany(companyRes.data);
-                if (practitionersRes.success) setPractitioners(practitionersRes.data || []);
-            } catch (err) {
-                console.error("Error fetching data:", err);
-            }
-        }
-
-        fetchData();
-    }, [currentUser]);
-
-    /** Practitioners belonging to this company */
-    const companyPractitioners = practitioners?.filter((p) =>
-        company?.practitioners.includes(p.id)
-    );
-
-    /** Apply location filter only if in-person */
-    let filteredPractitioners = companyPractitioners
-
-    if (selected === "inperson" && selectedLocation) {
-        filteredPractitioners = companyPractitioners?.filter((p) => p.locations?.includes(selectedLocation))
-    } else if (selected === "inperson" && !selectedLocation) {
-        filteredPractitioners = undefined
     }
+    type OrgKeys = keyof typeof orgIds;
+
+    const [appointmentType, setAppointmentType] = useState<"online" | "inperson">("online");
+    const [selectedLocation, setSelectedLocation] = useState<string | undefined>(undefined);
+    const {practitioners, orgId, setOrgid} = useHalaxyBookingServiceContext()
 
 
-    const hasAvailable = filteredPractitioners?.length ?? 0;
 
+    const hasAvailable = practitioners?.length ?? 0;
+
+    console.log('selected orgId:', orgId)
+    console.log('practitioners', practitioners)
+
+    useEffect(()=>{
+        const selectedLocationKeys = selectedLocation as OrgKeys
+        const selectedOrgId = appointmentType == 'online' ? orgIds['online'] : selectedLocationKeys ? orgIds[selectedLocationKeys] : ""
+        setOrgid(selectedOrgId)
+
+    },[appointmentType,selectedLocation])
 
     return (
         <div className="w-full-sidebar space-y-10">
@@ -67,8 +46,8 @@ export default function AppBookingWidget() {
                 {/* Toggle Online / In-person */}
                 <ToggleGroup
                     type="single"
-                    value={selected}
-                    onValueChange={(value) => value && setSelected(value as "online" | "inperson")}
+                    value={appointmentType}
+                    onValueChange={(value) => value && setAppointmentType(value as "online" | "inperson")}
                     className="inline-flex w-full md:max-w-md border-2 border-primary/50 overflow-hidden"
                 >
                     <ToggleGroupItem
@@ -95,7 +74,7 @@ export default function AppBookingWidget() {
                 </ToggleGroup>
 
                 {/* Location dropdown (only for in-person) */}
-                {selected === "inperson" && (
+                {appointmentType === "inperson" && (
                     <Select
                         value={selectedLocation}
                         onValueChange={setSelectedLocation}>
@@ -129,12 +108,14 @@ export default function AppBookingWidget() {
 
                     {hasAvailable > 0 && (
                         <>
-                            {filteredPractitioners?.map((item) => (
-                                <PractitionerCard key={item.id} item={item} />
-                            ))}
+                            {practitioners?.map((practitioner) => {
+
+                                return <PractitionerCard key={practitioner.id} item={practitioner} />
+
+                            })}
 
                             {/* Filler grid cells to keep layout aligned */}
-                            {filteredPractitioners!.length < 3 && (
+                            {practitioners!.length < 3 && (
                                 <>
                                     <div></div>
                                     <div></div>

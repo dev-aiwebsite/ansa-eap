@@ -39,9 +39,9 @@ export type HalaxyPractitioner = {
   profession: string;
 }
 
-export async function getHalaxyPractitioners(): Promise<HalaxyPractitioner[]> {
+export async function getHalaxyPractitioners(orgId = elevateOrgId): Promise<HalaxyPractitioner[]> {
   const res = await halaxyFetch(
-    `/PractitionerRole?page=1&_count=30&organization=${elevateOrgId}&_include=PractitionerRole%3Apractitioner`
+    `/PractitionerRole?page=1&_count=30&organization=${orgId}&_include=PractitionerRole%3Apractitioner`
   ) as PractitionerListResponse;
 
   if (res.total === 0) return [];

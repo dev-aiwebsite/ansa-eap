@@ -1,4 +1,4 @@
-import { htmlToPlainText, slugifyName, truncateText } from "@/lib/helper";
+import { htmlToPlainText, truncateText } from "@/lib/helper";
 import { Practitioner } from "@/serverActions/crudPractitioners";
 import { CalendarPlus } from "lucide-react";
 import Link from "next/link";
@@ -32,7 +32,7 @@ export default function PractitionerCard({
                         >
                             <Link
                             className="flex flex-row gap-2 flex-nowrap"
-                                href={`/practioners/${item.id}~${slugifyName(professionalName)}`}
+                                href={item.booking_link ?? '#'}
                             >
                                 <CalendarPlus />
                                 Book Now
