@@ -41,7 +41,7 @@ export default function AppBookingWidget() {
     return (
         <div className="w-full-sidebar space-y-10">
             {/* MODE + LOCATION FILTER */}
-            <div className="flex w-full gap-4">
+            <div className="max-sm:flex-col flex w-full gap-4">
 
                 {/* Toggle Online / In-person */}
                 <ToggleGroup
@@ -53,7 +53,7 @@ export default function AppBookingWidget() {
                     <ToggleGroupItem
                         value="online"
                         aria-label="Online (Telehealth)"
-                        className="flex-1 text-center px-4 py-2 font-semibold text-primary 
+                        className="bg-white flex-1 text-center px-4 py-2 font-semibold text-primary 
                             data-[state=on]:bg-primary 
                             data-[state=on]:text-white
                             !rounded-none"
@@ -64,7 +64,7 @@ export default function AppBookingWidget() {
                     <ToggleGroupItem
                         value="inperson"
                         aria-label="In-Person"
-                        className="flex-1 text-center px-4 py-2 font-semibold text-primary 
+                        className="bg-white flex-1 text-center px-4 py-2 font-semibold text-primary 
                             data-[state=on]:bg-primary 
                             data-[state=on]:text-white
                             !rounded-none"
@@ -78,7 +78,7 @@ export default function AppBookingWidget() {
                     <Select
                         value={selectedLocation}
                         onValueChange={setSelectedLocation}>
-                        <SelectTrigger className="w-[180px] !px-4 !py-2 !h-auto">
+                        <SelectTrigger className="bg-white w-full md:w-[180px] !px-4 !py-2 !h-auto">
                             <SelectValue placeholder="Select a location" />
                         </SelectTrigger>
                         <SelectContent>
@@ -94,7 +94,7 @@ export default function AppBookingWidget() {
 
             {/* PRACTITIONER LIST */}
             <div>
-                <div className="grid gap-5 gap-y-10 grid-cols-[repeat(auto-fit,minmax(400px,1fr))]">
+                <div className="grid gap-5 gap-y-10 md:grid-cols-[repeat(auto-fit,minmax(400px,1fr))]">
 
                     {hasAvailable === 0 &&
                         <>

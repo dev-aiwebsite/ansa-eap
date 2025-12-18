@@ -13,11 +13,11 @@ export default function PractitionerCard({
 
     const professionalName = (`${item.title} ${item.first_name} ${item.last_name}`).trim()
     return (<>
-        <div className="border-1 rounded-3xl p-3 overflow-hidden gap-6 flex flex-row relative min-w-[400px]">
+        <div className="bg-white border-1 rounded-3xl p-3 overflow-hidden gap-6 flex flex-row relative md:min-w-[400px]">
             <div className="flex gap-4 flex-col p-2 w-[50%]">
                 <div className="flex flex-col gap-2 justify-center">
-                    <h3 className="text-lg font-bold">{professionalName}</h3>
-                    <span className="capitalize underline text-sm decoration-muted-foreground decoration-[1px]">
+                    <h3 className="md:text-lg font-bold">{professionalName}</h3>
+                    <span className="capitalize underline text-xs md:text-sm decoration-muted-foreground decoration-[1px]">
                         {item.profession}
                     </span>
                 </div>
