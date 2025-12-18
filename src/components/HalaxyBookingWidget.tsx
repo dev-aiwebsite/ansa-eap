@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import ImageWithFallback from "./ui/imageWithFallback";
+import { ChevronLeft } from "lucide-react";
 
 
 type HalaxyBookingWidgetProps = {
@@ -112,13 +113,21 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
     console.log(availableAppointments, 'available Appointments')
     const selectedPractitioner = practitioners?.find(p => p.booking_link?.includes(practitioner_role))
     return (
+        <>
+          <Button
+          className="max-sm:hidden"
+              href="/health-services/booking/"
+              size="sm"
+                variant="ghost">
+                    <ChevronLeft />
+                    Back
+                </Button>
         <div className="w-full h-full">
-            <div className="space-y-4 p-4">
-
+            <div className="space-y-4 md:p-4">
                 {/* Practitioner Select */}
                 <div>
                     <label className="block text-sm font-medium mb-1">Practitioner</label>
-                    <div className="rounded-lg border border-border w-fit p-3 gap-2 flex flex-row flex-nowrap">
+                    <div className="max-sm:w-full rounded-lg border border-border w-fit p-3 gap-2 flex flex-row flex-nowrap">
                         <div>
                             <ImageWithFallback
                             className="rounded-full h-[50px] w-[50px] object-cover object-top"
@@ -130,7 +139,7 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
                         </div>
                         <div>
                             <p className="font-medium">{selectedPractitioner?.first_name} {selectedPractitioner?.last_name}</p>
-                            <p className="muted-text">{selectedPractitioner?.profession}</p>
+                            <p className="muted-text max-sm:text-xs">{selectedPractitioner?.profession}</p>
                         </div>
 
                     </div>
@@ -185,5 +194,6 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
                 }
             </div>
         </div>
+        </>
     );
 }

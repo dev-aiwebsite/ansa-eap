@@ -18,6 +18,8 @@ type TypeOrgId = string | null
 type HalaxyBookingServiceContextType = {
     orgId: TypeOrgId;
     setOrgid: Dispatch<SetStateAction<string | null>>;
+    setConsentAgreed: Dispatch<SetStateAction<boolean>>;
+    consentAgreed: boolean;
     halaxyPractitioners: HalaxyPractitioner[] | null;
     practitioners: Practitioner[] | null;
 };
@@ -35,6 +37,7 @@ export function HalaxyBookingServiceContextProvider({
     const [halaxyPractitioners, setHalaxyPractitioners] = useState<HalaxyPractitioner[] | null>(null)
     const [orgId, setOrgid] = useState<TypeOrgId>(null)
     const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
+    const [consentAgreed, setConsentAgreed] = useState(false);
 
 
     useEffect(() => {
@@ -120,7 +123,9 @@ export function HalaxyBookingServiceContextProvider({
                 orgId,
                 setOrgid,
                 halaxyPractitioners,
-                practitioners
+                practitioners,
+                consentAgreed,
+                setConsentAgreed
                 
             }}
         >

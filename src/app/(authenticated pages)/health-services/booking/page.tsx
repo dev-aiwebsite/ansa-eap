@@ -3,17 +3,17 @@ import AppBookingWidget from "@/components/AppBookingWidget";
 import { ConsentForm } from "@/components/forms/consentForm";
 import BookingRemainingCredit from "@/components/services/BookingRemainingCredit";
 import Container from "@/components/ui/container";
+import { useHalaxyBookingServiceContext } from "@/context/HalaxyBookingServiceContext";
 import { useHalaxyServiceContext } from "@/context/HalaxyServiceContext";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
 
 export default function Page() {
   const { remainingCredit } = useHalaxyServiceContext();
-  const [agreed, setAgreed] = useState(false);
+  const {consentAgreed, setConsentAgreed} = useHalaxyBookingServiceContext()
   return (
     <Container className="md:card">
       <div className="h-full space-y-4">
-        {agreed ?
+        {consentAgreed ?
           // <div className="bg-[#e9ecef] flex-1 rounded-lg w-full flex items-center justify-center">
           <div>
             {remainingCredit != undefined ?
@@ -52,7 +52,7 @@ export default function Page() {
             </div>
             <div className="card">
               <h2 className="mb-5">Please read and agree to consent form to proceed with booking</h2>
-              <ConsentForm onSubmit={(v) => setAgreed(v)} />
+              <ConsentForm onSubmit={(v) => setConsentAgreed(v)} />
             </div>
           </>
         }

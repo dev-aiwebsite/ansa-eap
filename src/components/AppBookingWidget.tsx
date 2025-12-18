@@ -62,6 +62,7 @@ export default function AppBookingWidget() {
                     </ToggleGroupItem>
 
                     <ToggleGroupItem
+                    disabled
                         value="inperson"
                         aria-label="In-Person"
                         className="bg-white flex-1 text-center px-4 py-2 font-semibold text-primary 

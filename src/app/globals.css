@@ -206,7 +206,7 @@
   }
 
   .card {
-    @apply rounded-3xl p-6 bg-card text-card-foreground;
+    @apply rounded-3xl p-4 md:p-6 bg-card text-card-foreground;
   }
    .md\:card {
     @apply md:rounded-3xl md:p-6 md:bg-card md:text-card-foreground;
