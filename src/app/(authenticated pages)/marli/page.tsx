@@ -60,7 +60,6 @@ function Card({ item }: { item: Marli }) {
       {/* Title */}
       <p className="text-base font-medium">{item.title}</p>
 
-
       {/* Description */}
       <p className="text-muted-foreground text-xs">
         {truncateText(htmlToPlainText(item.description), 150)}

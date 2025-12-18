@@ -7,7 +7,7 @@ import Container from "@/components/ui/container";
 import { useCategoryColumns } from "@/components/dataTables/categories/CategoriesColumn";
 
 const Page = () => {
-    const {categories} = usePostServiceContext()
+    const {categories, isFetching} = usePostServiceContext()
     return (
        <Container className="card w-full-sidebar">
               <div className="flex flex-row">
@@ -16,7 +16,7 @@ const Page = () => {
                   <PlusCircle /> Add Category
                 </Button>
               </div>
-                <DataTable columns={useCategoryColumns()} data={categories}/>              
+                <DataTable columns={useCategoryColumns()} isLoading={isFetching} data={categories}/>              
         </Container>
     );
 }
