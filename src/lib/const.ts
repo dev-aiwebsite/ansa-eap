@@ -36,6 +36,14 @@ export const MODALITY_OPTIONS: Option[] = [
   { value: "dbt", label: "Dialectical Behavior Therapy" },
   { value: "sft", label: "Solution-Focused Therapy" },
 ];
+export const LOCATIONS_OPTIONS: Option[] = [
+  { value: "ballarat", label: "Ballarat" },
+  { value: "bacchus_marsh", label: "Bacchus Marsh" },
+  { value: "geelong", label: "Geelong" },
+  { value: "melton", label: "Melton" },
+  { value: "melbourne", label: "Melbourne" },
+];
+
 
 export const PROFESSIONAL_REGISTRATION_OPTIONS: Option[] = [
     { value: "ahpra", label: "AHPRA" },

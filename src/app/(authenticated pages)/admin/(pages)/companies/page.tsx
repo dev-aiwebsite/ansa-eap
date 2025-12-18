@@ -4,8 +4,10 @@ import { DataTable } from "@/components/dataTables/dataTable";
 
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
-import { useElevateAdminContext } from "@/context/ElevateAdminContext";
+import { CompaniesWithMemberCount, useElevateAdminContext } from "@/context/ElevateAdminContext";
+import { getPractitioners, Practitioner } from "@/serverActions/crudPractitioners";
 import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Page = () => {
   const {companies, isFetching} = useElevateAdminContext()

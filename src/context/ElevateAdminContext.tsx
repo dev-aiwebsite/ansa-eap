@@ -14,7 +14,7 @@ type ElevateAdminContextProvider = {
     children?: React.ReactNode;
 }
 
-type CompaniesWithMemberCount = Company & {
+export type CompaniesWithMemberCount = Company & {
     member_count?: number;
 }
 

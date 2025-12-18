@@ -9,6 +9,7 @@ export type Company = {
   logo_url: string | null;
   max_users: number;
   max_booking_credits_per_user: number;
+  practitioners: string[];
   created_at: string;
   updated_at: string;
 };
@@ -27,8 +28,8 @@ export async function createCompany(
   try {
     const id = nanoid(10);
     const query = `
-      INSERT INTO companies (id, code, name, logo_url, max_users, max_booking_credits_per_user)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO companies (id, code, name, logo_url, max_users, max_booking_credits_per_user, practitioners)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
     const values = [
@@ -38,6 +39,7 @@ export async function createCompany(
       data.logo_url ?? null,
       data.max_users ?? 10,
       data.max_booking_credits_per_user ?? 5,
+      data.practitioners ?? [],
     ];
 
     const result = await pool.query(query, values);
@@ -130,6 +132,7 @@ export async function updateCompany(
     let i = 1;
 
     for (const [key, value] of Object.entries(data)) {
+      if (key === "id" || key === "created_at" || key === "updated_at") continue;
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }

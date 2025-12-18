@@ -1,15 +1,3 @@
-CREATE TABLE short_courses (
-  id TEXT PRIMARY KEY,
-  title TEXT NOT NULL,
-  description TEXT NOT NULL,
-  image TEXT NOT NULL,
-  link TEXT NOT NULL,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
-);
-
-
-
 
 
 7lCw6u7zmY

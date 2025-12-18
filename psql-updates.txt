@@ -1,0 +1,12 @@
+ALTER TABLE practitioners
+RENAME COLUMN location TO locations;
+
+ALTER TABLE practitioners
+ALTER COLUMN locations SET DEFAULT '{}';
+
+ALTER TABLE practitioners
+ALTER COLUMN locations TYPE text[]
+USING ARRAY[locations];
+
+ALTER TABLE companies
+ADD COLUMN practitioners text[] DEFAULT '{}';

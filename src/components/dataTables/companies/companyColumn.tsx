@@ -39,6 +39,15 @@ export const CompanyColumns: ColumnDef<CompanyWithMembers>[] = [
     ),
   },
   {
+    accessorKey: "practitioners",
+    header: "Practitioners",
+    cell: ({row})=> {
+
+
+      return <span>{row.original.practitioners}</span>
+    }
+  },
+  {
     accessorKey: "max_users",
     header: "Members",
     cell: ({row})=> {
