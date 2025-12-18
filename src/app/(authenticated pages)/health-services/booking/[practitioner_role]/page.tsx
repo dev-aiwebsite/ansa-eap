@@ -1,6 +1,6 @@
 "use client"
 
-import HalaxyBookingWidget from "@/components/HalaxyBookingWIdget";
+import HalaxyBookingWidget from "@/components/HalaxyBookingWidget";
 import Container from "@/components/ui/container";
 import { useParams } from "next/navigation";
 

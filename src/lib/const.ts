@@ -1,4 +1,5 @@
-import {Option} from"@/components/multiSelect"
+import { MultiSelectOption } from "@/types";
+
 export const LANGUAGES = [
   "Afrikaans", "Akan", "Albanian", "Algerian", "Amharic", "Auslan", "Anuak", "Arabic",
   "Armenian", "Ashanti", "Assyrian", "Azerbaijani", "Badini", "Bajuni", "Bambara",
@@ -28,15 +29,15 @@ export const LANGUAGES = [
   "Quebec Sign Language", "Kutchi", "SEE", "Ojibway"
 ];
 
-export const LANGUAGE_OPTIONS: Option[] = LANGUAGES.map((lang) => ({ label: lang, value: lang }));
+export const LANGUAGE_OPTIONS: MultiSelectOption[] = LANGUAGES.map((lang) => ({ label: lang, value: lang }));
 
-export const MODALITY_OPTIONS: Option[] = [
+export const MODALITY_OPTIONS: MultiSelectOption[] = [
   { value: "act", label: "Acceptance and Commitment Therapy (ACT)" },
   { value: "cbt", label: "Cognitive-Behavioral Therapy (CBT)" },
   { value: "dbt", label: "Dialectical Behavior Therapy" },
   { value: "sft", label: "Solution-Focused Therapy" },
 ];
-export const LOCATIONS_OPTIONS: Option[] = [
+export const LOCATIONS_OPTIONS: MultiSelectOption[] = [
   { value: "ballarat", label: "Ballarat" },
   { value: "bacchus_marsh", label: "Bacchus Marsh" },
   { value: "geelong", label: "Geelong" },
@@ -45,11 +46,11 @@ export const LOCATIONS_OPTIONS: Option[] = [
 ];
 
 
-export const PROFESSIONAL_REGISTRATION_OPTIONS: Option[] = [
+export const PROFESSIONAL_REGISTRATION_OPTIONS: MultiSelectOption[] = [
     { value: "ahpra", label: "AHPRA" },
     { value: "apa", label: "Australian Physiotherapy Association" },
 ]
-export const IDENTIFICATION_OPTIONS: Option[] = [
+export const IDENTIFICATION_OPTIONS: MultiSelectOption[] = [
     { value: "pbs", label: "PBS Prescriber Number" },
 ]
 
