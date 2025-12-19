@@ -1,6 +1,7 @@
 "use server";
 import pool from "@/lib/db";
 import { nanoid } from "nanoid";
+import { Practitioner } from "./crudPractitioners";
 
 export type Company = {
   id: string;
@@ -155,6 +156,44 @@ export async function updateCompany(
       success: true,
       message: `Company: ${id} updated successfully`,
       data: result.rows[0] as Company,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+
+export async function getCompanyPractitioners(
+  companyId: string
+): Promise<Result<Practitioner[]>> {
+  try {
+    // 1. Fetch the company
+    const companyRes = await pool.query(
+      `SELECT * FROM companies WHERE id = $1;`,
+      [companyId]
+    );
+
+    const company = companyRes.rows[0] as Company | undefined;
+    if (!company) {
+      return { success: false, message: `Company with id: ${companyId} not found` };
+    }
+
+    const practitionerIds = company.practitioners ?? [];
+    if (practitionerIds.length === 0) {
+      return { success: true, message: "No practitioners found", data: [] };
+    }
+
+    // 2. Fetch full practitioner details from practitioners table
+    const practitionersRes = await pool.query(
+      `SELECT * FROM practitioners WHERE id = ANY($1)`,
+      [practitionerIds]
+    );
+
+    return {
+      success: true,
+      message: "Practitioners fetched successfully",
+      data: practitionersRes.rows as Practitioner[],
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";

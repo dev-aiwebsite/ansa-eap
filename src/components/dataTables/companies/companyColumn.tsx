@@ -44,7 +44,7 @@ export const CompanyColumns: ColumnDef<CompanyWithMembers>[] = [
     cell: ({row})=> {
 
 
-      return <span>{row.original.practitioners}</span>
+      return <span>{row.original.practitioners.join(", ")}</span>
     }
   },
   {
