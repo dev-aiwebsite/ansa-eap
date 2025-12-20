@@ -4,21 +4,25 @@ import { createPushSubscription, deletePushSubscription, getPushSubscriptionByCl
 import webpush, { PushSubscription as WebPushSubscription } from 'web-push'
 import { createInboxItem } from './crudInboxItem'
 
-webpush.setVapidDetails(
-  'mailto:dev@aiwebsiteservices.com',
-  process.env.VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-)
+// Initialize VAPID keys at runtime
+function initWebPush() {
+  webpush.setVapidDetails(
+    process.env.VAPID_SUBJECT!,
+    process.env.VAPID_PUBLIC_KEY!,
+    process.env.VAPID_PRIVATE_KEY!
+  )
+}
 
 // Subscribe and save to DB
 export async function subscribeUser(sub: WebPushSubscription, userId: string) {
-  // Save subscription to DB (upsert)
+  initWebPush()
   const res = await createPushSubscription(userId, sub)
   return { success: res.success }
 }
 
 // Unsubscribe and remove from DB
 export async function unsubscribeUser(userId: string) {
+  initWebPush()
   await deletePushSubscription(userId)
   console.log('Unsubscribed:', userId)
   return { success: true }
@@ -36,8 +40,7 @@ export async function sendNotification({
   userId: string,
   url?: string
 }) {
-
-
+  initWebPush() // always call at runtime
 
   const inboxRes = await createInboxItem({
     userId,
@@ -47,8 +50,7 @@ export async function sendNotification({
     itemType: 'push'
   })
 
-
-  const { data: subscriptionRecords } = await getPushSubscriptionByClientId(userId);
+  const { data: subscriptionRecords } = await getPushSubscriptionByClientId(userId)
 
   if (!subscriptionRecords || subscriptionRecords.length === 0) {
     console.warn('No subscriptions found, only inbox item created')
@@ -58,39 +60,30 @@ export async function sendNotification({
   const notificationData = {
     title,
     body: message,
-    url: url || process.env.NEXT_PUBLIC_APP_DOMAIN, // pass dynamic URL here
-  };
-
-  try {
-    const results = [];
-
-    // Use for...of to await each send
-    for (const sub of subscriptionRecords) {
-      try {
-        const pushRes = await webpush.sendNotification(
-          sub.subscription, // JSONB from DB
-          JSON.stringify(notificationData)
-        );
-
-        results.push({
-          success: true,
-          status_code: pushRes.statusCode,
-        });
-      } catch (err) {
-        console.error('Push failed for one subscription:', err);
-        results.push({
-          success: false,
-          error: (err as Error).message,
-        });
-      }
-    }
-
-    return results; // array of results per device
-  } catch (err) {
-    console.error('Push failed:', err);
-    return { success: false, error: 'Failed to send notifications' };
+    url: url || process.env.NEXT_PUBLIC_APP_DOMAIN,
   }
+
+  const results = []
+
+  for (const sub of subscriptionRecords) {
+    try {
+      const pushRes = await webpush.sendNotification(
+        sub.subscription,
+        JSON.stringify(notificationData)
+      )
+
+      results.push({
+        success: true,
+        status_code: pushRes.statusCode,
+      })
+    } catch (err) {
+      console.error('Push failed for one subscription:', err)
+      results.push({
+        success: false,
+        error: (err as Error).message,
+      })
+    }
+  }
+
+  return results
 }
-
-
-
