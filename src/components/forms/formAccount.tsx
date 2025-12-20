@@ -23,7 +23,6 @@ export default function FormAccount({
 }: FormAccountProps) {
   const { currentUser, setCurrentUser } = useAppServiceContext();
 
-  console.log(currentUser, 'currentUser')
   const {
     register,
     handleSubmit,

@@ -2,7 +2,6 @@ import PageTransition from "@/components/ui/pageTransition";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
-import { unstable_ViewTransition as ViewTransition } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -49,12 +48,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.variable} antialiased`}>
-        <ViewTransition>
+        
           <TooltipProvider>
             <Toaster position="top-right" />
             <PageTransition>{children}</PageTransition>
           </TooltipProvider>
-        </ViewTransition>
+        
       </body>
     </html>
   );
