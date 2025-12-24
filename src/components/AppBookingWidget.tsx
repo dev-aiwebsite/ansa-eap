@@ -11,33 +11,35 @@ import {
     SelectValue,
 } from "./ui/select";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { Loader2 } from "lucide-react";
 
 export default function AppBookingWidget() {
 
     const orgIds = {
         online: 'CL-1335519',
-
+        bacchus_marsh: 'CL-615081',
+        geelong: 'CL-1334751',
     }
     type OrgKeys = keyof typeof orgIds;
 
+    
     const [appointmentType, setAppointmentType] = useState<"online" | "inperson">("online");
     const [selectedLocation, setSelectedLocation] = useState<string | undefined>(undefined);
-    const {practitioners, orgId, setOrgid} = useHalaxyBookingServiceContext()
+    const {practitioners, setOrgid, isFetching} = useHalaxyBookingServiceContext()
 
 
 
     const hasAvailable = practitioners?.length ?? 0;
 
-    console.log('selected orgId:', orgId)
-    console.log('practitioners', practitioners)
-
     useEffect(()=>{
         const selectedLocationKeys = selectedLocation as OrgKeys
         const selectedOrgId = appointmentType == 'online' ? orgIds['online'] : selectedLocationKeys ? orgIds[selectedLocationKeys] : ""
+        
         setOrgid(selectedOrgId)
 
-    },[appointmentType,selectedLocation])
+    },[appointmentType, selectedLocation])
 
+    
     return (
         <div className="w-full-sidebar space-y-10">
             {/* MODE + LOCATION FILTER */}
@@ -62,7 +64,6 @@ export default function AppBookingWidget() {
                     </ToggleGroupItem>
 
                     <ToggleGroupItem
-                    disabled
                         value="inperson"
                         aria-label="In-Person"
                         className="bg-white flex-1 text-center px-4 py-2 font-semibold text-primary 
@@ -83,11 +84,10 @@ export default function AppBookingWidget() {
                             <SelectValue placeholder="Select a location" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="ballarat">Ballarat</SelectItem>
                             <SelectItem value="bacchus_marsh">Bacchus Marsh</SelectItem>
                             <SelectItem value="geelong">Geelong</SelectItem>
-                            <SelectItem value="melton">Melton</SelectItem>
-                            <SelectItem value="melbourne">Melbourne</SelectItem>
+                            <SelectItem disabled value="ballarat">Ballarat</SelectItem>
+                            <SelectItem disabled value="melton">Melton</SelectItem>
                         </SelectContent>
                     </Select>
                 )}
@@ -96,8 +96,13 @@ export default function AppBookingWidget() {
             {/* PRACTITIONER LIST */}
             <div>
                 <div className="grid gap-5 gap-y-10 md:grid-cols-[repeat(auto-fit,minmax(400px,1fr))]">
+                    {isFetching && <div className="flex flex-row flex-nowrap items-center">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span className="ml-2">Gathering data...</span>
+                    
+                    </div>}
 
-                    {hasAvailable === 0 &&
+                    {!isFetching && hasAvailable === 0 &&
                         <>
                             {selectedLocation ?
                                 <span>No Practitioner available</span>
@@ -107,7 +112,7 @@ export default function AppBookingWidget() {
                         </>
                     }
 
-                    {hasAvailable > 0 && (
+                    {!isFetching && hasAvailable > 0 && (
                         <>
                             {practitioners?.map((practitioner) => {
 

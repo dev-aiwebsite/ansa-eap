@@ -13,7 +13,7 @@ export default function PractitionerCard({
 
     const professionalName = (`${item.title} ${item.first_name} ${item.last_name}`).trim()
     return (<>
-        <div className="bg-white border-1 rounded-3xl p-3 overflow-hidden gap-6 flex flex-row relative md:min-w-[400px]">
+        <div className="max-lg:max-w-[400px] bg-white border-1 rounded-3xl p-3 overflow-hidden gap-6 flex flex-row relative lg:min-w-[400px]">
             <div className="justify-center flex gap-4 flex-col p-2 w-[50%]">
                 <div className="flex flex-col gap-2 justify-center">
                     <h3 className="md:text-lg font-bold">{professionalName}</h3>
