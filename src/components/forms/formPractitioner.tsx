@@ -182,6 +182,18 @@ export default function FormPractitioner({
         />
       </div>
 
+      {/* Halaxy Details */}
+      <FieldGroup label="Halaxy Details">
+        <div className="space-y-8">
+          <div className="flex flex-row w-full gap-2">
+            <Input
+              placeholder="Halaxy Id"
+              {...register("halaxy_id", { required: true })}
+            />
+          </div>
+        </div>
+      </FieldGroup>
+      
       {/* Personal Details */}
       <FieldGroup label="Personal Details">
         <div className="space-y-8">

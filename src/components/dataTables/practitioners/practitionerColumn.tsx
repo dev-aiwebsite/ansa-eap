@@ -9,6 +9,10 @@ import { Button } from "@/components/ui/button";
 import DeleteItemButton from "./deletePractitionerBtn";
 
 export const PractitionerColumn: ColumnDef<Practitioner>[] = [
+    {
+    accessorKey: "halaxy_id",
+    header: "Halaxy Id",
+  },
   {
     accessorKey: "profile_img",
     header: "Profile",
@@ -19,7 +23,7 @@ export const PractitionerColumn: ColumnDef<Practitioner>[] = [
           alt={`${row.original.first_name} ${row.original.last_name}`}
           width={40}
           height={40}
-          className="rounded-full"
+          className="rounded-full aspect-square object-cover object-top"
         />
       ) : (
         <span>-</span>

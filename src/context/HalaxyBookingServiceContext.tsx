@@ -100,11 +100,18 @@ export function HalaxyBookingServiceContextProvider({
                 setIsFetching(true)
                 const halaxyPracitionersRes = await getHalaxyPractitioners(orgId)
                 setHalaxyPractitioners(halaxyPracitionersRes);
-
+                console.log(orgId, 'orgId')
+                console.log(halaxyPracitionersRes, 'halaxyPracitionersRes')
 
                 const filteredPracs: Practitioner[] = companyPractitioners
                     ?.map(p => {
-                        const halaxyPractitioner = halaxyPracitionersRes.find(hp => hp.email === p.email)
+                        const halaxyPractitioner = halaxyPracitionersRes.find(hp => {
+                            if(hp.email){
+                                return hp.email === p.email
+                            } else {
+                                return hp.id === p.halaxy_id
+                            }
+                        })
                         if (!halaxyPractitioner) return null // skip if not found
 
                         return {
