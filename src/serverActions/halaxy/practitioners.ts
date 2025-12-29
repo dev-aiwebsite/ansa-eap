@@ -62,15 +62,16 @@ export async function getHalaxyPractitioners(orgId = elevateOrgId): Promise<Hala
   // Map roles to HalaxyPractitioner
   const mapped: HalaxyPractitioner[] = roles.map(role => {
     const practitioner = practitioners[role.practitioner.reference.split("/").pop()!];
-    if (!practitioner) return null;
+    const practitionerFromPractitionerRole = role.practitioner;
 
-    const firstName = practitioner.name?.[0]?.given?.[0] || "";
-    const lastName = practitioner.name?.[0]?.family || "";
-    const email = practitioner.telecom?.find(t => t.system === "email")?.value || "";
-    const profession = practitioner.qualification?.[0]?.code?.coding?.[0]?.display || "";
+    const practitionerId = practitionerFromPractitionerRole.reference.split("/").pop()?.split('-').pop() || "";
+    const firstName = practitioner?.name?.[0]?.given?.[0] || "";
+    const lastName = practitioner?.name?.[0]?.family || "";
+    const email = practitioner?.telecom?.find(t => t.system === "email")?.value || "";
+    const profession = practitioner?.qualification?.[0]?.code?.coding?.[0]?.display || "";
 
     return {
-      id: practitioner.id,
+      id: practitionerId,
       roleId: role.id,
       firstName,
       lastName,
@@ -81,3 +82,5 @@ export async function getHalaxyPractitioners(orgId = elevateOrgId): Promise<Hala
 
   return mapped;
 }
+
+

@@ -203,6 +203,7 @@ export async function getPractitionerByHalaxyId(
   }
 }
 
+
 // DELETE
 export async function deletePractitioner(
   id: string
