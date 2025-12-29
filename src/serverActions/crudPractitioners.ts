@@ -4,6 +4,7 @@ import { nanoid } from "nanoid";
 
 export type Practitioner = {
   id: string;
+  halaxy_id:string;
   first_name: string;
   last_name: string;
   email: string;
@@ -46,15 +47,16 @@ export async function createPractitioner(
     const id = nanoid(10);
     const query = `
       INSERT INTO practitioners
-      (id, first_name, last_name, email, profile_img, description, profession, locations, clinic, booking_link, title,
+      (id, halaxy_id, first_name, last_name, email, profile_img, description, profession, locations, clinic, booking_link, title,
        expertise, languages, modalities, patient_focus, services, qualifications, accreditations, certifications, other_services,
        registrations, identifications)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,
-              $13,$14,$15,$16,$17,$18,$19,$20,$21,$22)
+              $13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)
       RETURNING *;
     `;
     const values = [
       id,
+      data.halaxy_id,
       data.first_name,
       data.last_name,
       data.email,
@@ -179,7 +181,27 @@ export async function getPractitionerById(
     return { success: false, message };
   }
 }
-
+export async function getPractitionerByHalaxyId(
+  halaxy_id: string
+): Promise<Result<Practitioner>> {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM practitioners WHERE halaxy_id = $1`,
+      [halaxy_id]
+    );
+    if (!result.rows[0])
+      return { success: false, message: "Practitioner not found" };
+    return {
+      success: true,
+      message: "Practitioner fetched successfully",
+      data: result.rows[0] as Practitioner,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
 
 // DELETE
 export async function deletePractitioner(
