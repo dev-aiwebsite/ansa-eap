@@ -14,7 +14,7 @@ export default function PublicEventsList({count = 2,className}:{count?:number, c
     getPublicEvents({
       limit: count,
       orderBy: 'date',
-      order: 'DESC'
+      order: 'ASC'
     }).then((res) => setEvents(res.data || []));
   }, [count]);
 

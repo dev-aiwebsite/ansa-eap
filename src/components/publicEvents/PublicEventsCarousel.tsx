@@ -36,7 +36,7 @@ export default function PublicEventsCarousel({
     getPublicEvents({
       limit: maxCount,
       orderBy: "date",
-      order: "DESC",
+      order: "ASC",
     }).then((res) => {
         setEvents(res.data || [])
     });
