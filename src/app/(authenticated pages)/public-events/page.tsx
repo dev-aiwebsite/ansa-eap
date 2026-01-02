@@ -14,13 +14,16 @@ export default function PublicEventsPage() {
   const [data, setData] = useState<PublicEvent[] | null>(null);
   const [sortedData, setSortedData] = useState<PublicEvent[] | null>(data);
 
-  // keep sortedData in sync when base data changes
   useEffect(() => {
-    setSortedData(data);
-  }, [data]);
+    getPublicEvents({
+      orderBy: 'date',
+      order: 'ASC'
+    }).then((res) => {
+      setData(res.data || [])
+      setSortedData(res.data || [])
+    });
 
-  useEffect(() => {
-    getPublicEvents().then((res) => setData(res.data || []));
+
   }, []);
 
   return (
