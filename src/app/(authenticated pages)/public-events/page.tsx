@@ -26,10 +26,11 @@ export default function PublicEventsPage() {
     });
   }, []);
 
+  console.log(data)
   return (
     <Container className="space-y-2">
       <div className="sticky top-0 bg-body-blend p-1">
-        <PostFilter data={data || []} onChange={setSortedData} />
+        <PostFilter defaultOrder="asc" data={data || []} onChange={setSortedData} />
       </div>
         {isLoading && <SkeletonGrid />}
 
