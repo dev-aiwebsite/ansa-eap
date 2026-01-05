@@ -1,10 +1,9 @@
 "use client";
-import { login } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { AuthenticateUser } from "@/serverActions/login_logout";
+import { LoginUser } from "@/serverActions/login_logout";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +12,7 @@ import { FormEvent, useEffect, useState } from "react";
 import OtpVerification from "../OtpVerification";
 import { Checkbox } from "../ui/checkbox";
 import { User } from "@/serverActions/crudUsers";
+import { AuthenticateUser } from "@/serverActions/authentication/authenticateUser";
 
 
 export function LoginForm({
@@ -35,7 +35,7 @@ export function LoginForm({
       useremail, userpass
     }
     async function login() {
-      const authRes = await AuthenticateUser(credentials, false)
+      const authRes = await LoginUser(credentials, false)
       router.push(authRes?.redirectUrl)
     }
     login()
@@ -55,7 +55,7 @@ export function LoginForm({
 
 
     try {
-      const res = await login(credentials)
+      const res = await AuthenticateUser(credentials)
       if (!res) {
         setError("Wrong credentials")
         return false
