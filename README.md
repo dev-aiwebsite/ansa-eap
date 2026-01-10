@@ -1,36 +1,166 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ANSA EAP
 
-## Getting Started
+ANSA EAP is a web application built with **Next.js** and **PostgreSQL**.
 
-First, run the development server:
+This repository contains the application code and the database schema required to run the project locally or in a fresh environment.
+
+---
+
+## Tech Stack
+
+- **Frontend / Backend**: Next.js  
+- **Database**: PostgreSQL  
+- **Language**: TypeScript  
+- **Deployment**: Vercel (recommended)
+
+---
+
+## Prerequisites
+
+Make sure you have the following installed:
+
+- Node.js 18+  
+- PostgreSQL 14+  
+- npm / pnpm / yarn  
+- `psql` and `pg_dump` available in your PATH  
+
+---
+
+### Third-Party Services
+
+This project integrates with several third-party services to provide additional functionality:
+
+- **Uploadcare** — used for handling file uploads and media management.  
+- **Elastic Email** — used for sending transactional and notification emails.  
+
+Make sure to configure the necessary environment variables for these services in your `.env` file, such as `UPLOADCARE_SECRET_KEY` for Uploadcare and `ELASTIC_API_KEY` for Elastic Email.
+
+---
+
+## Project Setup
+
+### 1. Get the project files
+
+Download the project ZIP file and extract it to a preferred location.  
+Navigate to the project folder in your terminal:
+
+```bash
+cd ansa-eap
+
+### 2. Install dependencies
+
+Install the required Node.js packages:
+
+```bash
+npm install
+
+or
+
+```bash
+pnpm install
+
+### 3. Database Setup
+
+The database schema is provided as a **schema-only SQL file**.
+
+#### a. Create the PostgreSQL user (if not exists)
+
+If the user `ansaadmin` does not exist yet, run:
+
+```bash
+psql -U postgres
+
+Inside the psql prompt:
+
+```sql
+-- Create the user
+CREATE USER ansaadmin WITH PASSWORD 'welcometoansa2025';  -- ### If you replace the password, make sure to also update the DATABASE_URL inside .env file
+
+-- Allow the user to create databases
+ALTER USER ansaadmin CREATEDB;
+
+-- Optional: for local development, allow superuser (be careful in production)
+-- ALTER USER ansaadmin WITH SUPERUSER;
+
+-- Exit psql
+\q
+
+#### b. Create the database
+
+Create the database owned by `ansaadmin`:
+
+```bash
+createdb -U ansaadmin ansa_eap
+
+> If you need to specify host or port:
+
+```bash
+createdb -h localhost -p 5432 -U ansaadmin ansa_eap
+
+#### c. Install the schema
+
+Run the schema SQL file to create tables, enums, constraints, and indexes:
+
+```bash
+psql -U ansaadmin -d ansa_eap -f db/schema.sql
+
+> No data is inserted during this step.
+
+#### d. Verify the installation
+
+Connect to the database:
+
+```bash
+psql -U ansaadmin -d ansa_eap
+
+Inside `psql`, list all tables:
+
+```sql
+\dt
+
+---
+
+## Environment Variables
+
+```env
+DATABASE_URL=postgresql://ansaadmin:welcometoansa2025@localhost:5432/ansa_eap
+
+Adjust the values according to your local setup.
+
+---
+
+## Running the Application
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+The app will be available at:
+
 ```
+http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database Schema Management
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The database schema is maintained in `db/schema.sql`.
 
-## Learn More
+To regenerate the schema from an existing database:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pg_dump --schema-only --no-owner --no-privileges ansa_eap > db/schema.sql
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Notes
+- The production environment is already in the project folder as .env.production. Use only this file for production — do not use .env.local.
 
-## Deploy on Vercel
+- This setup installs schema only (no seed data).
+- Schema changes should be documented and committed.
+- Avoid committing real database credentials.
+- PostgreSQL must be running before setup.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---

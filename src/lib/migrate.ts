@@ -2,12 +2,12 @@ import pool from "./db";
 
 async function migrate() {
 
-  const resetDatabase = `
-    DROP SCHEMA public CASCADE;
-    CREATE SCHEMA public;
-    GRANT ALL ON SCHEMA public TO ansaadmin;
-    GRANT ALL ON SCHEMA public TO public;
-  `;
+  // const resetDatabase = `
+  //   DROP SCHEMA public CASCADE;
+  //   CREATE SCHEMA public;
+  //   GRANT ALL ON SCHEMA public TO ansaadmin;
+  //   GRANT ALL ON SCHEMA public TO public;
+  // `;
 
   const createUsersTable = `
   CREATE TABLE IF NOT EXISTS users (
@@ -353,9 +353,9 @@ CREATE TABLE push_subscriptions (
 
   try {
     console.log("🚀 Starting migration...");
+    // Uncomment this line and resetDatabase function above if you want to reset the database
+    // await pool.query(resetDatabase);
 
-    // Uncomment this line if you want to reset the database
-    await pool.query(resetDatabase);
     console.log("✅ Database schema reset (if uncommented).");
 
     console.log("✅ Dropping existing triggers if they exist...");
