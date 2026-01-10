@@ -2,7 +2,7 @@
 
 import { signIn, signOut } from "@/auth";
 
-export const AuthenticateUser = async (credentials: {useremail:string,userpass:string}, redirect: boolean = false) => {
+export const LoginUser = async (credentials: {useremail:string,userpass:string}, redirect: boolean = false) => {
     const { useremail, userpass } = credentials;
     try {
         const redirectUrl = await signIn('credentials', { useremail, userpass, redirectTo:"/dashboard", redirect: redirect });
@@ -11,7 +11,7 @@ export const AuthenticateUser = async (credentials: {useremail:string,userpass:s
         }
 
     } catch (error) {
-        console.log(`${error}`, 'Error from AuthenticateUser')
+        console.log(`${error}`, 'Error from LoginUser')
     }
 };
 

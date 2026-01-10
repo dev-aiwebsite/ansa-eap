@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppServiceContext } from "@/context/appServiceContext";
-import { AuthenticateUser } from "@/serverActions/login_logout";
+import { LoginUser } from "@/serverActions/login_logout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useRouter } from "next/navigation";
 
@@ -16,7 +16,7 @@ export default function Intro() {
       useremail: currentUser.email,userpass: currentUser.password
     }
     
-            await AuthenticateUser(credentials)
+            await LoginUser(credentials)
             router.push('/dashboard')
     
         }
