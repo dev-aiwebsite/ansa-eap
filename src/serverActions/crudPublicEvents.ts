@@ -142,14 +142,16 @@ export async function getPublicEventByTitle(title: string): Promise<Result<Publi
 // UPDATE
 export async function updatePublicEvent(
   id: string,
-  data: Partial<Omit<PublicEvent, "id" | "created_at">>
+  data: Partial<Omit<PublicEvent, "id" | "created_at" | "updated_at">>
 ): Promise<Result<PublicEvent>> {
   try {
     const fields: string[] = [];
     const values: unknown[] = [];
     let i = 1;
 
+
     for (const [key, value] of Object.entries(data)) {
+      if (key === "id" || key === "created_at" || key === "updated_at") continue;
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }
