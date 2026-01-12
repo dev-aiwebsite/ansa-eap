@@ -3,9 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { sendMail } from "@/lib/email/elasticemail";
+import { EMAIL_WELCOME_TEMPLATE } from "@/lib/email/email_templates/EmailWelcome";
 import { cn } from "@/lib/utils";
 import { getCompanyByCode } from "@/serverActions/crudCompanies";
 import { createUser, getUsersByCompany } from "@/serverActions/crudUsers";
+import { hashPassword } from "@/serverActions/hashAllPasswords";
 import { LoginUser } from "@/serverActions/login_logout";
 import { Check } from "lucide-react";
 import Image from "next/image";
@@ -14,9 +17,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OtpVerification from "../OtpVerification";
-import { sendMail } from "@/lib/email/elasticemail";
-import { EMAIL_WELCOME_TEMPLATE } from "@/lib/email/email_templates/EmailWelcome";
-import bcrypt from "bcrypt";
 
 type SignupFormData = {
   first_name: string;
@@ -88,8 +88,7 @@ export default function SignupForm({
         return;
       }
       
-      const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+      const hashedPassword = await hashPassword(data.password);
       
       const res = await createUser({
         first_name: data.first_name,

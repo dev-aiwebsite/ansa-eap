@@ -26,3 +26,7 @@ export async function hashAllUserPasswords(): Promise<{ success: boolean; messag
     return { success: false, message };
   }
 }
+
+export async function hashPassword(password: string): Promise<string> {
+  return await bcrypt.hash(password, 10);
+}
