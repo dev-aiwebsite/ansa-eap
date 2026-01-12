@@ -142,7 +142,7 @@ export async function updateCategory(
     let i = 1;
 
     for (const [key, value] of Object.entries(data)) {
-      if (["id", "created_at"].includes(key)) continue;
+      if (key === "id" || key === "created_at" || key === "updated_at") continue;
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }
