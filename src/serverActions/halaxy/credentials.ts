@@ -1,25 +1,7 @@
 "use server"
 
 import { authTokenUrl, baseUrl } from "./config";
-
-const halaxyAccounts = [
-  {
-    account_name: "Realworld Psychology",
-    client_id: "7c06ce128f43f8f18395664f8ef62636",
-    client_secret: "4fe1540ac6ad2132d28aa9ff38854d9e0e95462eaecea7905146b41939f2180ceed6a0de84995c4b442fae5d67e3e8fe3ef3c6e89240a6063a707f8555c588a5",
-  },
-  {
-    account_name: "Ballarat Psychology Clinic",
-    client_id: "5e048d8260281c14a17bc4801a4ab424",
-    client_secret: "e750aed87f9d6e4819b01524bb82ae67a2f72b287b09665463fe6d9dc26ffc3852fc56c97ba98f6156973c7f1a2d809983c24c9e32e5bfa432554e79ca6c2546",
-  },
-  {
-    account_name: "Melton Psychology Clinic",
-    client_id: "",
-    client_secret: "",
-  },
-];
-
+import { halaxyAccounts } from "./const";
 
 
 // Simple in-memory token cache

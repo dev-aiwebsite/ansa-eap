@@ -40,6 +40,10 @@ export type HalaxyPractitioner = {
 }
 
 export async function getHalaxyPractitioners(orgId = elevateOrgId): Promise<HalaxyPractitioner[]> {
+  // todos
+  // add checking orgId account index
+  // use orgId account index to halaxyFetch third parameter
+
   const res = await halaxyFetch(
     `/PractitionerRole?page=1&_count=100&organization=${orgId}&_include=PractitionerRole%3Apractitioner`
   ) as PractitionerListResponse;
