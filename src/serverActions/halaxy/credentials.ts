@@ -4,14 +4,23 @@ import { authTokenUrl, baseUrl } from "./config";
 import { halaxyAccounts } from "./const";
 
 
-// Simple in-memory token cache
-let cachedToken: string | null = null;
-let cachedTokenExpiry: number | null = null;
+type Token = {
+  cachedToken: string | null;
+  cachedTokenExpiry: number | null;
+}
+
+const tokens: Record<number, Token> = {
+  0:{cachedToken: null, cachedTokenExpiry: null},
+  1:{cachedToken: null, cachedTokenExpiry: null},
+  2:{cachedToken: null, cachedTokenExpiry: null},
+}
 
 export async function getAccessToken(accountIndex: number): Promise<string | null> {
   const now = Date.now();
-
+  const {cachedToken, cachedTokenExpiry} = tokens[accountIndex];
+  
   if (cachedToken && cachedTokenExpiry && now < cachedTokenExpiry) {
+    console.log(cachedToken)
     return cachedToken;
   }
 
@@ -34,10 +43,10 @@ export async function getAccessToken(accountIndex: number): Promise<string | nul
   }
 
   const data = await res.json();
-  cachedToken = data.access_token;
-  console.log(cachedToken)
-  cachedTokenExpiry = now + (data.expires_in - 60) * 1000;
-  return cachedToken;
+  tokens[accountIndex].cachedToken = data.access_token;
+  console.log(data.access_token)
+  tokens[accountIndex].cachedTokenExpiry = now + (data.expires_in - 60) * 1000;
+  return data.access_token;
 }
 
 

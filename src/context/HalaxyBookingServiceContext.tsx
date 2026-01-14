@@ -42,7 +42,7 @@ export function HalaxyBookingServiceContextProvider({
     const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
     const [consentAgreed, setConsentAgreed] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
-
+    console.log(companyPractitioners)
 
     useEffect(() => {
         async function fetchData() {
@@ -100,17 +100,12 @@ export function HalaxyBookingServiceContextProvider({
                 setIsFetching(true)
                 const halaxyPracitionersRes = await getHalaxyPractitioners(orgId)
                 setHalaxyPractitioners(halaxyPracitionersRes);
-                console.log(orgId, 'orgId')
-                console.log(halaxyPracitionersRes, 'halaxyPracitionersRes')
 
                 const filteredPracs: Practitioner[] = companyPractitioners
                     ?.map(p => {
+                        console.log(halaxyPracitionersRes, 'halaxyPracitionersRes')
                         const halaxyPractitioner = halaxyPracitionersRes.find(hp => {
-                            if(hp.email){
-                                return hp.email === p.email
-                            } else {
-                                return hp.id === p.halaxy_id
-                            }
+                            return hp.id === p.halaxy_id
                         })
                         if (!halaxyPractitioner) return null // skip if not found
 
@@ -129,8 +124,6 @@ export function HalaxyBookingServiceContextProvider({
                 setIsFetching(false)
             }
         }
-
-
 
         fetchData();
 

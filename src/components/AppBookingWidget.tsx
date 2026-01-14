@@ -16,9 +16,6 @@ import { orgIds, OrgKeys } from "@/serverActions/halaxy/const";
 
 export default function AppBookingWidget() {
 
-  
-    
-
     
     const [appointmentType, setAppointmentType] = useState<"online" | "inperson">("online");
     const [selectedLocation, setSelectedLocation] = useState<string | undefined>(undefined);
@@ -82,8 +79,8 @@ export default function AppBookingWidget() {
                         <SelectContent>
                             <SelectItem value="bacchus_marsh">Bacchus Marsh</SelectItem>
                             <SelectItem value="geelong">Geelong</SelectItem>
-                            <SelectItem disabled value="ballarat">Ballarat</SelectItem>
-                            <SelectItem disabled value="melton">Melton</SelectItem>
+                            <SelectItem value="ballarat">Ballarat</SelectItem>
+                            <SelectItem value="melton">Melton</SelectItem>
                         </SelectContent>
                     </Select>
                 )}

@@ -1,6 +1,7 @@
 "use server";
 
 import { elevateOrgId } from "./config";
+import { halaxyAccounts } from "./const";
 import { halaxyFetch } from "./credentials";
 
 interface FhirPractitioner {
@@ -43,10 +44,11 @@ export async function getHalaxyPractitioners(orgId = elevateOrgId): Promise<Hala
   // todos
   // add checking orgId account index
   // use orgId account index to halaxyFetch third parameter
+  const accountIndex = orgId ? halaxyAccounts.findIndex(a => JSON.stringify(a.orgIds).includes(orgId)) : 0;
 
   const res = await halaxyFetch(
     `/PractitionerRole?page=1&_count=100&organization=${orgId}&_include=PractitionerRole%3Apractitioner`
-  ) as PractitionerListResponse;
+  ,{},accountIndex) as PractitionerListResponse;
 
   if (res.total === 0) return [];
 
