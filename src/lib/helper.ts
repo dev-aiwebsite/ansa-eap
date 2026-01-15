@@ -1,4 +1,4 @@
-import { DailyCheckinQA } from "@/types";
+import { DailyCheckinQA, MultiSelectOption } from "@/types";
 
 export function slugifyName(name: string): string {
     return name
@@ -107,4 +107,19 @@ export function asNonEmptyString(value: string): NonEmptyString {
     throw new Error("phoneNumber cannot be empty");
   }
   return value as NonEmptyString;
+}
+
+export function stringsToOptions(
+  values: string[] | null | undefined,
+  allOptions: MultiSelectOption[]
+): MultiSelectOption[] {
+  if (!values) return [];
+  return values
+    .map((v) => allOptions.find((opt) => opt.value === v))
+    .filter((opt): opt is MultiSelectOption => !!opt);
+}
+
+export function optionsToStrings(options: MultiSelectOption[] | null | undefined): string[] {
+  if (!options) return [];
+  return options.map((opt) => opt.value);
 }

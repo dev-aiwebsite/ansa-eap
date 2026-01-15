@@ -1,6 +1,7 @@
 "use server";
 import pool from "@/lib/db";
 import { nanoid } from "nanoid";
+import { Practitioner } from "./crudPractitioners";
 
 export type Company = {
   id: string;
@@ -9,6 +10,7 @@ export type Company = {
   logo_url: string | null;
   max_users: number;
   max_booking_credits_per_user: number;
+  practitioners: string[];
   created_at: string;
   updated_at: string;
 };
@@ -27,8 +29,8 @@ export async function createCompany(
   try {
     const id = nanoid(10);
     const query = `
-      INSERT INTO companies (id, code, name, logo_url, max_users, max_booking_credits_per_user)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO companies (id, code, name, logo_url, max_users, max_booking_credits_per_user, practitioners)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *;
     `;
     const values = [
@@ -38,6 +40,7 @@ export async function createCompany(
       data.logo_url ?? null,
       data.max_users ?? 10,
       data.max_booking_credits_per_user ?? 5,
+      data.practitioners ?? [],
     ];
 
     const result = await pool.query(query, values);
@@ -130,6 +133,7 @@ export async function updateCompany(
     let i = 1;
 
     for (const [key, value] of Object.entries(data)) {
+      if (key === "id" || key === "created_at" || key === "updated_at") continue;
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }
@@ -152,6 +156,44 @@ export async function updateCompany(
       success: true,
       message: `Company: ${id} updated successfully`,
       data: result.rows[0] as Company,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+
+export async function getCompanyPractitioners(
+  companyId: string
+): Promise<Result<Practitioner[]>> {
+  try {
+    // 1. Fetch the company
+    const companyRes = await pool.query(
+      `SELECT * FROM companies WHERE id = $1;`,
+      [companyId]
+    );
+
+    const company = companyRes.rows[0] as Company | undefined;
+    if (!company) {
+      return { success: false, message: `Company with id: ${companyId} not found` };
+    }
+
+    const practitionerIds = company.practitioners ?? [];
+    if (practitionerIds.length === 0) {
+      return { success: true, message: "No practitioners found", data: [] };
+    }
+
+    // 2. Fetch full practitioner details from practitioners table
+    const practitionersRes = await pool.query(
+      `SELECT * FROM practitioners WHERE id = ANY($1)`,
+      [practitionerIds]
+    );
+
+    return {
+      success: true,
+      message: "Practitioners fetched successfully",
+      data: practitionersRes.rows as Practitioner[],
     };
   } catch (error: unknown) {
     let message = "An unknown error occurred";

@@ -263,7 +263,7 @@ export async function updateUser(
     let i = 1;
 
     for (const [key, value] of Object.entries(data)) {
-      if (key === "roles") continue; // handled separately
+      if (key === "id" || key === "created_at" || key === "updated_at" || key === "roles") continue;
       fields.push(`${key} = $${i++}`);
       values.push(value);
     }

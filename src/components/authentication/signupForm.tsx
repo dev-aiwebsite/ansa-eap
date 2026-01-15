@@ -3,10 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { sendMail } from "@/lib/email/elasticemail";
+import { EMAIL_WELCOME_TEMPLATE } from "@/lib/email/email_templates/EmailWelcome";
 import { cn } from "@/lib/utils";
 import { getCompanyByCode } from "@/serverActions/crudCompanies";
 import { createUser, getUsersByCompany } from "@/serverActions/crudUsers";
-import { AuthenticateUser } from "@/serverActions/login_logout";
+import { hashPassword } from "@/serverActions/hashAllPasswords";
+import { LoginUser } from "@/serverActions/login_logout";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,8 +17,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import OtpVerification from "../OtpVerification";
-import { sendMail } from "@/lib/email/elasticemail";
-import { EMAIL_WELCOME_TEMPLATE } from "@/lib/email/email_templates/EmailWelcome";
 
 type SignupFormData = {
   first_name: string;
@@ -51,7 +52,7 @@ export default function SignupForm({
       userpass: password,
     };
     async function login() {
-      const authRes = await AuthenticateUser(credentials, false);
+      const authRes = await LoginUser(credentials, false);
       router.push(authRes?.redirectUrl);
     }
     login();
@@ -86,13 +87,15 @@ export default function SignupForm({
         setIsLoading(false);
         return;
       }
-      // 4️⃣ Create user
+      
+      const hashedPassword = await hashPassword(data.password);
+      
       const res = await createUser({
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
         phone: data.phone,
-        password: data.password,
+        password: hashedPassword,
         company: data.company,
       });
 

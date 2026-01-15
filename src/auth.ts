@@ -1,30 +1,8 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
-// import bcrypt from 'bcrypt';
 import { authConfig } from "./authConfig";
-import { getUserByEmail, User } from "./serverActions/crudUsers";
 import { getWHO5ResponsesByUser } from "./serverActions/crudWho5";
-
-export const login = async (credentials: { useremail: string; userpass: string; viaadmin?: boolean }): Promise<User & {who5Completed: boolean} | null> => {
-  try {
-    const { data: user } = await getUserByEmail(credentials?.useremail);
-    if (!user) return null;
-
-    const viaAdmin = credentials?.viaadmin || false;
-    if (!viaAdmin) {
-      const isPasswordCorrect = credentials.userpass === user.password;
-      if (!isPasswordCorrect) return null;
-    }
-
-        // Add missing field
-    const res = await getWHO5ResponsesByUser(user.id);
-    const who5Completed = res.success && res.data && res.data.length > 0 || false;
-
-    return { ...user, who5Completed };
-  } catch {
-    return null;
-  }
-};
+import { AuthenticateUser } from "./serverActions/authentication/authenticateUser";
 
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -37,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
 
-        const user = await login(credentials as {
+        const user = await AuthenticateUser(credentials as {
           useremail: string;
           userpass: string;
           viaadmin?: boolean;

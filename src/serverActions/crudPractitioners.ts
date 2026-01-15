@@ -4,13 +4,14 @@ import { nanoid } from "nanoid";
 
 export type Practitioner = {
   id: string;
+  halaxy_id:string;
   first_name: string;
   last_name: string;
   email: string;
   profile_img?: string;
   description?: string;
   profession?: string;
-  location?: string;
+  locations?: string[];
   clinic?: string;
   booking_link?: string;
   title?: string;
@@ -46,22 +47,23 @@ export async function createPractitioner(
     const id = nanoid(10);
     const query = `
       INSERT INTO practitioners
-      (id, first_name, last_name, email, profile_img, description, profession, location, clinic, booking_link, title,
+      (id, halaxy_id, first_name, last_name, email, profile_img, description, profession, locations, clinic, booking_link, title,
        expertise, languages, modalities, patient_focus, services, qualifications, accreditations, certifications, other_services,
        registrations, identifications)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,
-              $13,$14,$15,$16,$17,$18,$19,$20,$21,$22)
+              $13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23)
       RETURNING *;
     `;
     const values = [
       id,
+      data.halaxy_id,
       data.first_name,
       data.last_name,
       data.email,
       data.profile_img ?? null,
       data.description ?? null,
       data.profession ?? null,
-      data.location ?? null,
+      data.locations ?? [],
       data.clinic ?? null,
       data.booking_link ?? null,
       data.title ?? null,
@@ -96,7 +98,7 @@ export async function createPractitioner(
 // UPDATE
 export async function updatePractitioner(
   id: string,
-  data: Partial<Omit<Practitioner, "id" | "created_at">>
+  data: Partial<Omit<Practitioner, "id" | "created_at | updated_at">>
 ): Promise<Result<Practitioner>> {
   try {
     const fields: string[] = [];
@@ -105,6 +107,7 @@ export async function updatePractitioner(
 
     for (const [key, value] of Object.entries(data)) {
       // JSON fields
+       if (key === "id" || key === "created_at" || key === "updated_at") continue;
       if (key === "registrations" || key === "identifications") {
         fields.push(`${key} = $${i++}`);
         values.push(JSON.stringify(value ?? []));
@@ -164,6 +167,27 @@ export async function getPractitionerById(
     const result = await pool.query(
       `SELECT * FROM practitioners WHERE id = $1`,
       [id]
+    );
+    if (!result.rows[0])
+      return { success: false, message: "Practitioner not found" };
+    return {
+      success: true,
+      message: "Practitioner fetched successfully",
+      data: result.rows[0] as Practitioner,
+    };
+  } catch (error: unknown) {
+    let message = "An unknown error occurred";
+    if (error instanceof Error) message = error.message;
+    return { success: false, message };
+  }
+}
+export async function getPractitionerByHalaxyId(
+  halaxy_id: string
+): Promise<Result<Practitioner>> {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM practitioners WHERE halaxy_id = $1`,
+      [halaxy_id]
     );
     if (!result.rows[0])
       return { success: false, message: "Practitioner not found" };

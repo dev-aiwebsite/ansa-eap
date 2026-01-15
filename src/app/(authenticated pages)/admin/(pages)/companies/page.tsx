@@ -5,10 +5,42 @@ import { DataTable } from "@/components/dataTables/dataTable";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import { useElevateAdminContext } from "@/context/ElevateAdminContext";
+import { getPractitioners, Practitioner } from "@/serverActions/crudPractitioners";
 import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Page = () => {
   const {companies, isFetching} = useElevateAdminContext()
+  const [isFetchingPractitioners, setIsFetchingPractitioners] = useState(true)
+  const [practitioners, setPractitioners] = useState<Practitioner[]>([])
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            setIsFetchingPractitioners(true);
+    
+            const res = await getPractitioners();
+    
+            setPractitioners(res.data || []);
+          } catch (error) {
+            console.error("Failed to fetch practitioners:", error);
+          } finally {
+            setIsFetchingPractitioners(false);
+          }
+        };
+    
+        fetchData();
+      }, []);
+
+const mutatedCompanies = companies.map(c => {
+  return {
+    ...c,
+    practitioners: c.practitioners.map(pid => {
+      const practitioner = practitioners.find(p => p.id == pid)
+      return `${practitioner?.first_name} ${practitioner?.last_name}`
+    })
+  }
+})
   
   return (
     <Container className="card w-full-sidebar">
@@ -19,7 +51,7 @@ const Page = () => {
         </Button>
       </div>
 
-      <DataTable columns={CompanyColumns} isLoading={isFetching} data={companies} />
+      <DataTable columns={CompanyColumns} isLoading={isFetching || isFetchingPractitioners} data={mutatedCompanies} />
     </Container>
   );
 };

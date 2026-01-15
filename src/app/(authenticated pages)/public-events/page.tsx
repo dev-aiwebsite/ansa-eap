@@ -11,26 +11,30 @@ import { CalendarDays, Clock, MapPin } from "lucide-react"; // for icons
 import Container from "@/components/ui/container";
 
 export default function PublicEventsPage() {
-  const [data, setData] = useState<PublicEvent[] | null>(null);
-  const [sortedData, setSortedData] = useState<PublicEvent[] | null>(data);
-
-  // keep sortedData in sync when base data changes
-  useEffect(() => {
-    setSortedData(data);
-  }, [data]);
+  const [data, setData] = useState<PublicEvent[]>([]);
+  const [sortedData, setSortedData] = useState<PublicEvent[]>([]);
+   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    getPublicEvents().then((res) => setData(res.data || []));
+    getPublicEvents({
+      orderBy: 'date',
+      order: 'ASC'
+    }).then((res) => {
+      setData(res.data || [])
+      setSortedData(res.data || [])
+      setIsLoading(false)
+    });
   }, []);
 
+  console.log(data)
   return (
     <Container className="space-y-2">
       <div className="sticky top-0 bg-body-blend p-1">
-        <PostFilter data={data || []} onChange={setSortedData} />
+        <PostFilter defaultOrder="asc" data={data || []} onChange={setSortedData} />
       </div>
-        {sortedData == null && <SkeletonGrid />}
+        {isLoading && <SkeletonGrid />}
 
-      {sortedData != null && sortedData.length === 0 ? (
+      {isLoading && sortedData.length === 0 ? (
         <div className="text-center text-muted-foreground py-10">
           No data available
         </div>

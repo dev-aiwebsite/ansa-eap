@@ -14,7 +14,7 @@ type ElevateAdminContextProvider = {
     children?: React.ReactNode;
 }
 
-type CompaniesWithMemberCount = Company & {
+export type CompaniesWithMemberCount = Company & {
     member_count?: number;
 }
 
@@ -28,21 +28,17 @@ useEffect(() => {
   async function fetchData() {
     setIsFetching(true)
     try {
-      // Fetch users
-      const { data: usersData } = await getUsers()
-      if (usersData) {
-        setUsers(usersData)
-      }
+      const [usersRes, companiesRes] = await Promise.all([getUsers(), getCompanies()])
+      const usersData = usersRes.data ?? []
+      const companiesData = companiesRes.data ?? []
 
-      // Fetch companies
-      const { data: companiesData } = await getCompanies()
-      if (companiesData) {
-        const dataWithMemberCount = companiesData.map(c => {
-          const members = usersData?.filter(u => u.company === c.code) ?? []
-          return { ...c, member_count: members.length }
-        })
-        setCompanies(dataWithMemberCount)
-      }
+      setUsers(usersData)
+
+      const dataWithMemberCount = companiesData.map(c => {
+        const members = usersData.filter(u => u.company === c.code)
+        return { ...c, member_count: members.length }
+      })
+      setCompanies(dataWithMemberCount)
     } catch (err) {
       console.error(err)
     } finally {
@@ -52,6 +48,7 @@ useEffect(() => {
 
   fetchData()
 }, [])
+
 
 
     return <ElevateAdminContext.Provider

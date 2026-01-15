@@ -12,8 +12,9 @@ import {
   FeaturedContent,
   updateFeaturedContent,
 } from "@/serverActions/crudFeaturedContent";
-import MultiSelect, { Option } from "../multiSelect";
+import MultiSelect from "../multiSelect";
 import { Badge } from "../ui/badge";
+import { MultiSelectOption } from "@/types";
 
 type FeaturedContentFormValues = {
   id?: string; // optional, for update
@@ -63,7 +64,7 @@ export default function FeaturedContentForm({
   }
 
   // Convert posts → options
-  const postOptions: Option[] = allPosts.map((post) => ({
+  const postOptions: MultiSelectOption[] = allPosts.map((post) => ({
     value: post.id,
     label: post.title,
   }));
@@ -100,7 +101,7 @@ export default function FeaturedContentForm({
                   field.value.includes(opt.value)
                 )}
                 onChange={(selected) =>
-                  field.onChange(selected.map((opt: Option) => opt.value))
+                  field.onChange(selected.map((opt: MultiSelectOption) => opt.value))
                 }
               />
             )}
