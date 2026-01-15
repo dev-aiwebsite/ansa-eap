@@ -6,13 +6,14 @@ import { useAppServiceContext } from "@/context/appServiceContext";
 import { useHalaxyBookingServiceContext } from "@/context/HalaxyBookingServiceContext";
 import { useHalaxyServiceContext } from "@/context/HalaxyServiceContext";
 import { bookAppointment, FhirAppointment, getAvailableAppointments } from "@/serverActions/halaxy/appointments";
-import { FhirHealthcareService, getHalaxyServices } from "@/serverActions/halaxy/services";
+import { getHalaxyServices } from "@/serverActions/halaxy/services";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import ImageWithFallback from "./ui/imageWithFallback";
 import { ChevronLeft } from "lucide-react";
+import { FhirHealthcareService } from "@/serverActions/halaxy/types";
 
 
 type HalaxyBookingWidgetProps = {
@@ -20,11 +21,10 @@ type HalaxyBookingWidgetProps = {
 }
 
 export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBookingWidgetProps) {
-    console.log(practitioner_role)
     const router = useRouter()
     const { currentUser } = useAppServiceContext()
     const { setMyAppointments } = useHalaxyServiceContext()
-    const { practitioners } = useHalaxyBookingServiceContext()
+    const { practitioners,orgId } = useHalaxyBookingServiceContext()
 
     const [services, setServices] = useState<FhirHealthcareService[]>([])
     const [availableAppointments, setAvailableAppointments] = useState<FhirAppointment[]>()
@@ -40,7 +40,7 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
     useEffect(() => {
         async function fetchData() {
             const [halaxyServices] = await Promise.all([
-                getHalaxyServices(),
+                getHalaxyServices(orgId),
             ]);
             setServices(halaxyServices)
         }
@@ -62,7 +62,7 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
             duration: service.extension[0].valueQuantity?.value ?? 50,
         }
 
-        getAvailableAppointments(data)
+        getAvailableAppointments(data,orgId)
             .then(res => setAvailableAppointments(res))
             .catch(err => console.log(err))
 
@@ -84,7 +84,7 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
                     appointment: selectedAppointment,
                     patientId: myPatientId,
                     serviceId: service?.id
-                })
+                },orgId)
 
                 if (createdAppt.resourceType == "Appointment") {
                     setMyAppointments((prev) => {

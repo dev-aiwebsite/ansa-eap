@@ -1,3 +1,5 @@
+import { OrgId } from "./types";
+
 export type OrgKeys = keyof typeof orgIds;
 export type OrgIds = {
     online: string;
@@ -41,3 +43,9 @@ export const halaxyAccounts = [
 export const orgIds:OrgIds = halaxyAccounts.filter(account =>
     account.orgIds && Object.keys(account.orgIds).length > 0
 ).reduce((acc, account) => ({ ...acc, ...account.orgIds }), {} as OrgIds)
+
+
+export function getAccountIndexByOrgId(orgId:OrgId) {
+    if (!orgId) return 0
+    return halaxyAccounts.findIndex(account => JSON.stringify(account.orgIds).includes(orgId)) || 0
+}

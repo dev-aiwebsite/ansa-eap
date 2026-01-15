@@ -12,12 +12,11 @@ import {
     useState
 } from "react";
 import { useAppServiceContext } from "./appServiceContext";
+import { OrgId } from "@/serverActions/halaxy/types";
 
-
-type TypeOrgId = string | null
 type HalaxyBookingServiceContextType = {
-    orgId: TypeOrgId;
-    setOrgid: Dispatch<SetStateAction<string | null>>;
+    orgId: OrgId;
+    setOrgid: Dispatch<SetStateAction<OrgId>>;
     setConsentAgreed: Dispatch<SetStateAction<boolean>>;
     consentAgreed: boolean;
     halaxyPractitioners: HalaxyPractitioner[] | null;
@@ -37,7 +36,7 @@ export function HalaxyBookingServiceContextProvider({
 }: HalaxyBookingServiceContextProviderProps) {
     const { currentUser } = useAppServiceContext();
     const [halaxyPractitioners, setHalaxyPractitioners] = useState<HalaxyPractitioner[] | null>(null)
-    const [orgId, setOrgid] = useState<TypeOrgId>(null)
+    const [orgId, setOrgid] = useState<OrgId>(null)
     const [companyPractitioners, setCompanyPractitioners] = useState<Practitioner[] | null>(null)
     const [practitioners, setPractitioners] = useState<Practitioner[] | null>(null);
     const [consentAgreed, setConsentAgreed] = useState(false);
@@ -103,9 +102,10 @@ export function HalaxyBookingServiceContextProvider({
 
                 const filteredPracs: Practitioner[] = companyPractitioners
                     ?.map(p => {
-                        console.log(halaxyPracitionersRes, 'halaxyPracitionersRes')
+
                         const halaxyPractitioner = halaxyPracitionersRes.find(hp => {
-                            return hp.id === p.halaxy_id
+                            // todos - need to udpate since practitioners have different ids on every halaxy group/account
+                           return hp.email === p.email || hp.id === p.halaxy_id;
                         })
                         if (!halaxyPractitioner) return null // skip if not found
 
