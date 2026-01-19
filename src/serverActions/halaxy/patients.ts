@@ -37,15 +37,14 @@ type HalaxyCreatePatientProps = {
   
 }
 
-export async function createPatient({givenName, familyName, email }: HalaxyCreatePatientProps) {
-
+export async function createPatient({givenName, familyName, email }: HalaxyCreatePatientProps, accountId?:string) {
   const createPatientRes = await halaxyFetch('/Patient', {
     method: 'POST',
     payload: {
       name: [{ given: [`${givenName}`], family: familyName, use: 'official' }],
       telecom: [{ system: 'email', value: email, use: 'home' }]
     }
-  })
+  },accountId)
 
   return createPatientRes
 

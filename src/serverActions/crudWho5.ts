@@ -54,10 +54,10 @@ export async function createWHO5Response(data: {
 }
 
 // READ ALL responses for a user
-export async function getWHO5ResponsesByUser(user_id: string): Promise<Result<WHO5Response[]>> {
+export async function getWHO5ResponsesByUser(user_id: string): Promise<Result<WHO5Response>> {
   try {
     const result = await pool.query(`SELECT * FROM who5_responses WHERE user_id = $1 ORDER BY created_at DESC`, [user_id]);
-    return { success: true, message: "Responses fetched", data: result.rows as WHO5Response[] };
+    return { success: true, message: "Responses fetched", data: result.rows[0] as WHO5Response };
   } catch (error: unknown) {
     let message = "An unknown error occurred";
     if (error instanceof Error) message = error.message;

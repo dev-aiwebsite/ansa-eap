@@ -1,10 +1,10 @@
 "use client";
-
+import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppServiceContext } from "@/context/appServiceContext";
-import { createWHO5Response } from "@/serverActions/crudWho5";
-import { useState } from "react";
+import { createWHO5Response, getWHO5ResponsesByUser } from "@/serverActions/crudWho5";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Intro from "../intro/Intro";
 
@@ -36,8 +36,9 @@ const responseScale = [
 export default function WHO5FormComponent() {
   const { currentUser } = useAppServiceContext();
   const [isComplete, setIsComplete] = useState(false)
+  const { update } = useSession();
   const CURRENT_USER_ID = currentUser?.id;
-  
+
   const {
     handleSubmit,
     control,
@@ -45,7 +46,28 @@ export default function WHO5FormComponent() {
     setError,
     clearErrors,
     formState: { isSubmitting, errors },
-  } = useForm<WHO5Form>();
+  } = useForm<WHO5Form>()
+
+useEffect(() => {
+  const fetchData = async () => {
+    if (!CURRENT_USER_ID) return;
+    const whoFiveRes = await getWHO5ResponsesByUser(CURRENT_USER_ID);
+    const data = whoFiveRes.data || null;
+    if (data) {
+      // Pre-fill form
+      reset({
+        q1: data.q1,
+        q2: data.q2,
+        q3: data.q3,
+        q4: data.q4,
+        q5: data.q5,
+      });
+    }
+  };
+
+  fetchData();
+}, [CURRENT_USER_ID, reset]);
+
 
   const onSubmit = async (data: WHO5Form) => {
     if (!CURRENT_USER_ID) return;
@@ -73,19 +95,13 @@ export default function WHO5FormComponent() {
       q5: data.q5,
     });
 
-    
-
-    const total = Object.values(data).reduce((sum, val) => sum + Number(val), 0);
-    console.log("Raw score:", total, "Percentage score:", total * 4);
-    console.log(res)
     if(res.success){
+      await update({ who5Completed: true });
       reset();
       setIsComplete(true)
     }
     
-     
   };
-
 
   
   return (<>

@@ -9,6 +9,7 @@ export type OrgIds = {
 
 export const halaxyAccounts = [
     {
+        account_id: "7c06ce128f",
         account_name: "Realworld Psychology",
         client_id: "7c06ce128f43f8f18395664f8ef62636",
         client_secret: "4fe1540ac6ad2132d28aa9ff38854d9e0e95462eaecea7905146b41939f2180ceed6a0de84995c4b442fae5d67e3e8fe3ef3c6e89240a6063a707f8555c588a5",
@@ -19,6 +20,7 @@ export const halaxyAccounts = [
         }
     },
     {
+        account_id: "5e048d8260",
         account_name: "Ballarat Psychology Clinic",
         client_id: "5e048d8260281c14a17bc4801a4ab424",
         client_secret: "e750aed87f9d6e4819b01524bb82ae67a2f72b287b09665463fe6d9dc26ffc3852fc56c97ba98f6156973c7f1a2d809983c24c9e32e5bfa432554e79ca6c2546",
@@ -29,6 +31,7 @@ export const halaxyAccounts = [
         }
     },
     {
+        account_id: "8740909025",
         account_name: "Melton Psychology Clinic",
         client_id: "874090902549dc3373ed80f6a8c2e253",
         client_secret: "2f841c8780eccd592a33b7ffb12309d16470c970486f1f63d6c6fbdee844fa443e7eaa730a187acad797d3849ae969d81f42d264eb77c4c96f767d2cd6ff5447",
@@ -48,4 +51,8 @@ export const orgIds:OrgIds = halaxyAccounts.filter(account =>
 export function getAccountIndexByOrgId(orgId:OrgId) {
     if (!orgId) return 0
     return halaxyAccounts.findIndex(account => JSON.stringify(account.orgIds).includes(orgId)) || 0
+}
+export function getHalaxyAccountIdByOrgId(orgId:OrgId) {
+    if (!orgId) return undefined
+    return halaxyAccounts.find(account => JSON.stringify(account.orgIds).includes(orgId))?.account_id
 }

@@ -1,7 +1,6 @@
-import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import { authConfig } from "./authConfig";
-import { getWHO5ResponsesByUser } from "./serverActions/crudWho5";
 import { AuthenticateUser } from "./serverActions/authentication/authenticateUser";
 
 
@@ -29,7 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ], callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
       
         token.first_name = user.first_name;
@@ -45,13 +44,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.user_id = user.id;
 
         // Default to false until checked
-        token.who5Completed = false;
+        token.who5Completed = user?.who5Completed;
       }
 
-      // Always refresh WHO5 flag if user_id exists
-      if (token.user_id) {
-        const res = await getWHO5ResponsesByUser(token.user_id as string);
-        token.who5Completed = res.success && res.data && res.data.length > 0 || false;
+     if (trigger === "update" && session) { 
+        if (session.who5Completed !== undefined) token.who5Completed = session.who5Completed;
       }
 
       return token;

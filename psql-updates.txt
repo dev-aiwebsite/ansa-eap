@@ -1,1 +1,23 @@
-ALTER TABLE practitioners ADD COLUMN halaxy_id text;
+alter users
+patient_id?:string into 
+patient_id: [
+    {
+        account_id: string;
+        patient_id: string;
+    }
+]
+
+
+ALTER TABLE users
+ALTER COLUMN patient_id
+TYPE JSONB
+USING
+CASE
+  WHEN patient_id IS NULL THEN '[]'::jsonb
+  ELSE jsonb_build_array(
+    jsonb_build_object(
+      'account_id', '7c06ce128f',
+      'patient_id', patient_id
+    )
+  )
+END;

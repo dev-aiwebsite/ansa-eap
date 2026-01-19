@@ -1,25 +1,16 @@
 "use client";
 
-import { useAppServiceContext } from "@/context/appServiceContext";
-import { LoginUser } from "@/serverActions/login_logout";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 
 export default function Intro() {
-    const router = useRouter()
-    const {currentUser} = useAppServiceContext()
-    
+  const router = useRouter()
   return (
-    <Dialog open onOpenChange={async (e)=> {
-        if(!e){
-      const credentials = {
-      useremail: currentUser.email,userpass: currentUser.password
-    }
-    
-            await LoginUser(credentials)
-            router.push('/dashboard')
-    
-        }
+    <Dialog open onOpenChange={async (e) => {
+      if (!e) {
+        router.push('/dashboard')
+
+      }
     }}>
       <DialogContent overlayClassName="bg-black/90" className="!max-w-[1200px] bg-transparent text-white border-none max-w-3xl">
         <DialogHeader className="flex justify-between items-center">

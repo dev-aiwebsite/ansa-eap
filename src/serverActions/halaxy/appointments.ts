@@ -1,5 +1,5 @@
 "use server";
-import { getAccountIndexByOrgId } from "./const";
+import { getHalaxyAccountIdByOrgId } from "./const";
 import { halaxyFetch } from "./credentials";
 import { OrgId } from "./types";
 
@@ -63,7 +63,7 @@ patientId,
 serviceId
 }:BookAppointmentProps,orgid:OrgId) {
 
-  const accountIndex = getAccountIndexByOrgId(orgid)
+  const accountId = getHalaxyAccountIdByOrgId(orgid)
   return await halaxyFetch("/Appointment/$book", {
     method: "POST",
     payload: {
@@ -104,15 +104,15 @@ serviceId
       // },
     ],
   },
-  },accountIndex);
+  },accountId);
 
 
 }
 
 export async function getUserAppointments(patient_id: string,orgid:OrgId) {
 
-  const accountIndex = getAccountIndexByOrgId(orgid)
-  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`,{},accountIndex) as AppointmentsResponse
+  const accountId = getHalaxyAccountIdByOrgId(orgid)
+  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`,{},accountId) as AppointmentsResponse
   if(res.total === 0) return []
   return res.entry.map(i => i.resource)
 }
@@ -125,7 +125,7 @@ export async function updateAppointmentStatus(
   orgid:OrgId
 ) {
 
-  const accountIndex = getAccountIndexByOrgId(orgid)
+  const accountId = getHalaxyAccountIdByOrgId(orgid)
   const res = await halaxyFetch(`/Appointment/${appointmentId}`, {
     method: "PATCH",
     payload: {
@@ -154,7 +154,7 @@ export async function updateAppointmentStatus(
           ? "Rebooked by patient"
           : undefined,
     },
-  },accountIndex);
+  },accountId);
 
   return res as FhirAppointment
 }
@@ -167,11 +167,11 @@ export async function isSlotAvailable({
   start: string;
 },orgid:OrgId): Promise<boolean> {
 
-  const accountIndex = getAccountIndexByOrgId(orgid)
+  const accountId = getHalaxyAccountIdByOrgId(orgid)
   const availableSlots = await halaxyFetch(
     `/Appointment?page=1&_count=30&date=${encodeURIComponent(start)}&part-status=booked&practitioner-role=${practitionerRole}`,
     {},
-    accountIndex
+    accountId
   ) as AppointmentsResponse;
 
   return availableSlots.total === 0 ? true : false;
@@ -179,11 +179,11 @@ export async function isSlotAvailable({
 
 
 export async function getAvailableAppointments({practitionerRole,start,end,duration}:{practitionerRole: string, start: string, end: string, duration: number}, orgId:OrgId) {
-      const accountIndex = getAccountIndexByOrgId(orgId)
+      const accountId = getHalaxyAccountIdByOrgId(orgId)
       const bookedAppointments = await halaxyFetch(
         `/Appointment?page=1&_count=100&part-status=booked&practitioner-role=${practitionerRole}&_sort=date`,
         {},
-        accountIndex
+        accountId
       ) as AppointmentsResponse;
 
   
@@ -193,7 +193,7 @@ export async function getAvailableAppointments({practitionerRole,start,end,durat
     `&apply-buffer-time=true` +
     `&include-overbooked=false`,
     {},
-    accountIndex
+    accountId
   ) as AppointmentsResponse;
   
     if(slots.total === 0) return []

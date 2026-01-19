@@ -3,10 +3,13 @@ import pool from "@/lib/db";
 import { DailyActivity, DailyCheckIn } from "@/types";
 import { nanoid } from "nanoid";
 import { Company } from "./crudCompanies";
-
+type PatientIdObj = {
+  account_id: string;
+  patient_id: string;
+};
 export type User = {
   id: string;
-  patient_id?: string;
+  patient_id: PatientIdObj[];
   first_name: string;
   last_name: string;
   profile_img: string;
@@ -253,19 +256,102 @@ export async function getUserByEmail(email: string): Promise<Result<User>> {
 }
 
 // UPDATE
+// export async function updateUser(
+//   id: string,
+//   data: Partial<Omit<User, "id" | "created_at">>
+// ): Promise<Result<User>> {
+//   try {
+//     const fields = [];
+//     const values = [];
+//     let i = 1;
+
+//     for (const [key, value] of Object.entries(data)) {
+//       if (key === "id" || key === "created_at" || key === "updated_at" || key === "roles") continue;
+//       fields.push(`${key} = $${i++}`);
+//       values.push(value);
+//     }
+
+//     values.push(id);
+
+//     const query = `
+//       UPDATE users
+//       SET ${fields.join(", ")}, updated_at = NOW()
+//       WHERE id = $${i}
+//       RETURNING *;
+//     `;
+
+//     const result = await pool.query(query, values);
+//     if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
+
+//     const user = result.rows[0] as User;
+
+//     // ✅ If roles provided, update them
+//     if (data.roles) {
+//       await pool.query(`DELETE FROM user_roles WHERE user_id = $1`, [id]);
+
+//       for (const role of data.roles) {
+//         await pool.query(
+//           `INSERT INTO user_roles (user_id, role_id)
+//            VALUES ($1, (SELECT id FROM roles WHERE name = $2))
+//            ON CONFLICT DO NOTHING;`,
+//           [id, role]
+//         );
+//       }
+
+//       const rolesRes = await pool.query(
+//         `SELECT r.name FROM roles r
+//          JOIN user_roles ur ON r.id = ur.role_id
+//          WHERE ur.user_id = $1;`,
+//         [id]
+//       );
+
+//       user.roles = rolesRes.rows.map((r) => r.name);
+//     }
+
+//     return {
+//       success: true,
+//       message: `User: ${id} updated successfully`,
+//       data: user,
+//     };
+//   } catch (error: unknown) {
+//     let message = "An unknown error occurred";
+//     if (error instanceof Error) message = error.message;
+//     return { success: false, message };
+//   }
+// }
+
+
+
 export async function updateUser(
   id: string,
   data: Partial<Omit<User, "id" | "created_at">>
 ): Promise<Result<User>> {
   try {
-    const fields = [];
-    const values = [];
+    const fields: string[] = [];
+    const values: (string | number | boolean | null)[] = [];
     let i = 1;
 
+    const currentUserRes = await pool.query(`SELECT * FROM users WHERE id = $1`, [id]);
+    const currentUser = currentUserRes.rows[0] as User;
+
     for (const [key, value] of Object.entries(data)) {
-      if (key === "id" || key === "created_at" || key === "updated_at" || key === "roles") continue;
+      if (key === "id" || key === "created_at" || key === "updated_at") continue;
+
+      if (key === "patient_id" && value) {
+        const newPatientIds = value as PatientIdObj[];
+
+        const merged: PatientIdObj[] = [
+          ...(currentUser.patient_id ?? []),
+          ...newPatientIds,
+        ];
+
+        fields.push(`${key} = $${i++}`);
+        values.push(JSON.stringify(merged));
+        continue;
+      }
+
       fields.push(`${key} = $${i++}`);
-      values.push(value);
+      values.push(value as string | number | boolean | null);
     }
 
     values.push(id);
@@ -278,11 +364,13 @@ export async function updateUser(
     `;
 
     const result = await pool.query(query, values);
-    if (!result.rows[0]) return { success: false, message: `User: ${id} not found` };
+
+    if (!result.rows[0]) {
+      return { success: false, message: `User: ${id} not found` };
+    }
 
     const user = result.rows[0] as User;
 
-    // ✅ If roles provided, update them
     if (data.roles) {
       await pool.query(`DELETE FROM user_roles WHERE user_id = $1`, [id]);
 
