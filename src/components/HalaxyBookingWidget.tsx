@@ -77,6 +77,8 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
         setIsSubmitting(true)
 
         const halaxyAccountId = getHalaxyAccountIdByOrgId(orgId)
+        if(!halaxyAccountId) return
+        
         let myPatientId = currentUser.patient_id.find(p => p.account_id == halaxyAccountId)?.patient_id
         if (!myPatientId) {
             try {
@@ -130,12 +132,10 @@ export default function HalaxyBookingWidget({ practitioner_role }: HalaxyBooking
                     appointment: selectedAppointment,
                     patientId: myPatientId,
                     serviceId: service?.id
-                }, orgId)
+                }, halaxyAccountId)
 
                 if (createdAppt.resourceType == "Appointment") {
-                    setMyAppointments((prev) => {
-                        return prev ? [...prev, createdAppt] : [createdAppt]
-                    })
+                    setMyAppointments([{account_id: halaxyAccountId, appointments: [createdAppt]}])
                 }
                 toast.success('Appointment booked successfully!', {
                     description: "You’ll receive a confirmation email shortly.",

@@ -19,6 +19,12 @@ Implementing multiple halaxy account
   - - move Create the patient if not exist on the booking process instead of creating patient on load if user doesn't have patient_id (because now we use multiple account)
   - update halaxy createPatient accordingly
 
-  todos
+- update HalaxyServiceContext appointments accordingly
+- - update getUserAppointments
+- - update cancelAppointment
+- update rebookAppointment
 - loads all user appointments on all halaxy accounts
+
+  todos
+- fix issue after booking
 - add location to appointment card to know appointment location at glance

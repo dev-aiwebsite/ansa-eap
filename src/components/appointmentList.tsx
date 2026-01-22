@@ -23,7 +23,9 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
   });
 
   const { myAppointments, cancelAppointment, rebookAppointment } = useHalaxyServiceContext();
-  console.log(myAppointments, 'my appointments')
+
+  const allAppointments = myAppointments ? myAppointments.flatMap(a => a.appointments) : []
+console.log(myAppointments, 'myAppointments')
   if (myAppointments == null) {
     return (
       <div className="space-y-4">
@@ -37,7 +39,7 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
     );
   }
 
-  if (myAppointments.length === 0) {
+  if (allAppointments.length === 0) {
     return (
       <div className={cn("rounded-xl p-4 flex flex-row justify-between items-center", itemClassName)}>
         <div className="text-zinc-500 flex h-[38px] items-center">
@@ -48,14 +50,16 @@ const AppointmentList = ({ count, itemClassName, showCancel }: AppointmentListPr
   }
 
   const appointmentsToShow = count
-    ? myAppointments.slice(0, count)
-    : myAppointments;
+    ? allAppointments.slice(0, count)
+    : allAppointments;
 
   const now = new Date();
 
+console.log(appointmentsToShow, 'appointmentToShow')
   return (
     <div className="space-y-4">
       {appointmentsToShow.map((i) => {
+        console.log(i, 'appointmentToshow i')
         const startDate = new Date(i.start);
         const isCancelled = JSON.stringify(i)?.includes('"code":"cancelled","display":"cancelled"') || false;
         const hasPassed = startDate < now; // appointment has passed

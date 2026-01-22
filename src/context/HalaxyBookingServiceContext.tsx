@@ -104,7 +104,6 @@ export function HalaxyBookingServiceContextProvider({
                     ?.map(p => {
 
                         const halaxyPractitioner = halaxyPracitionersRes.find(hp => {
-                            // todos - need to udpate since practitioners have different ids on every halaxy group/account
                            return hp.email === p.email || hp.id === p.halaxy_id;
                         })
                         if (!halaxyPractitioner) return null // skip if not found

@@ -3,7 +3,7 @@ import pool from "@/lib/db";
 import { DailyActivity, DailyCheckIn } from "@/types";
 import { nanoid } from "nanoid";
 import { Company } from "./crudCompanies";
-type PatientIdObj = {
+export type PatientIdObj = {
   account_id: string;
   patient_id: string;
 };
