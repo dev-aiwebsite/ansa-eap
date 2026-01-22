@@ -12,15 +12,9 @@ import {
 } from "./ui/select";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Loader2 } from "lucide-react";
+import { orgIds, OrgKeys } from "@/serverActions/halaxy/const";
 
 export default function AppBookingWidget() {
-
-    const orgIds = {
-        online: 'CL-1335519',
-        bacchus_marsh: 'CL-615081',
-        geelong: 'CL-1334751',
-    }
-    type OrgKeys = keyof typeof orgIds;
 
     
     const [appointmentType, setAppointmentType] = useState<"online" | "inperson">("online");
@@ -34,7 +28,6 @@ export default function AppBookingWidget() {
     useEffect(()=>{
         const selectedLocationKeys = selectedLocation as OrgKeys
         const selectedOrgId = appointmentType == 'online' ? orgIds['online'] : selectedLocationKeys ? orgIds[selectedLocationKeys] : ""
-        
         setOrgid(selectedOrgId)
 
     },[appointmentType, selectedLocation])
@@ -86,8 +79,8 @@ export default function AppBookingWidget() {
                         <SelectContent>
                             <SelectItem value="bacchus_marsh">Bacchus Marsh</SelectItem>
                             <SelectItem value="geelong">Geelong</SelectItem>
-                            <SelectItem disabled value="ballarat">Ballarat</SelectItem>
-                            <SelectItem disabled value="melton">Melton</SelectItem>
+                            <SelectItem value="ballarat">Ballarat</SelectItem>
+                            <SelectItem value="melton">Melton</SelectItem>
                         </SelectContent>
                     </Select>
                 )}

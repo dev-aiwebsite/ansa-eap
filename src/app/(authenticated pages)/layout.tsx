@@ -9,6 +9,7 @@ import { InboxProvider } from "@/context/InboxContext";
 import { PostServiceProvider } from "@/context/postServiceContext";
 import { PushNotificationProvider } from "@/context/PushNotificationContext";
 import { getUserDashboardData } from "@/serverActions/crudUsers";
+import { SessionProvider } from "next-auth/react";
 
 
 const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === "true";
@@ -19,49 +20,51 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
 
-  
-const testUserId = isProd ? '7lCw6u7zmY ': 'JxjTgX4_Tx'
 
-const session = await auth();
-const userId = session?.user.id || testUserId;
+  const testUserId = isProd ? '7lCw6u7zmY ' : 'JxjTgX4_Tx'
 
-if (!isTestMode && !session) return;
+  const session = await auth();
+  const userId = session?.user.id || testUserId;
 
-const dashboardResult = await getUserDashboardData(userId);
+  if (!isTestMode && !session) return;
 
-if (!dashboardResult.success || !dashboardResult.data) return;
+  const dashboardResult = await getUserDashboardData(userId);
 
-const data = {
-  currentUser: dashboardResult.data.user,
-  dailyActivities: dashboardResult.data.daily_activities,
-  dailyCheckIns: dashboardResult.data.daily_check_ins,
-  company: dashboardResult.data.company_data,
-};
+  if (!dashboardResult.success || !dashboardResult.data) return;
+
+  const data = {
+    currentUser: dashboardResult.data.user,
+    dailyActivities: dashboardResult.data.daily_activities,
+    dailyCheckIns: dashboardResult.data.daily_check_ins,
+    company: dashboardResult.data.company_data,
+  };
 
 
   return (
-    <AppServiceContextProvider data={data}>
-      <ConfirmProvider>
-      <HalaxyServiceContextProvider>
-      <GalleryContextProvider>
-      <PostServiceProvider>
-      <PushNotificationProvider>
-        <InboxProvider>
-          <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
-            <div>
-              <AppNav />
-            </div>
-            <div className="flex-1">
-              <AppHeader />
-              <div className="h-screen-header overflow-auto max-sm:p-2 max-sm:pt-0">{children}</div>
-            </div>
-          </main>
-          </InboxProvider>
-          </PushNotificationProvider>
-      </PostServiceProvider>
-    </GalleryContextProvider>
-    </HalaxyServiceContextProvider>
-    </ConfirmProvider>
-    </AppServiceContextProvider>
+    <SessionProvider>
+      <AppServiceContextProvider data={data}>
+        <ConfirmProvider>
+          <HalaxyServiceContextProvider>
+            <GalleryContextProvider>
+              <PostServiceProvider>
+                <PushNotificationProvider>
+                  <InboxProvider>
+                    <main className="flex flex-col md:flex-row flex-nowrap h-screen w-screen md:p-4 md:space-x-6">
+                      <div>
+                        <AppNav />
+                      </div>
+                      <div className="flex-1">
+                        <AppHeader />
+                        <div className="h-screen-header overflow-auto max-sm:p-2 max-sm:pt-0">{children}</div>
+                      </div>
+                    </main>
+                  </InboxProvider>
+                </PushNotificationProvider>
+              </PostServiceProvider>
+            </GalleryContextProvider>
+          </HalaxyServiceContextProvider>
+        </ConfirmProvider>
+      </AppServiceContextProvider>
+    </SessionProvider>
   );
 }

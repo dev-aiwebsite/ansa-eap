@@ -1,39 +1,34 @@
 "use server"
 
-import { accountIndex, authTokenUrl, baseUrl } from "./config";
-
-const halaxyAccounts = [
-  {
-    account_name: "Test",
-    client_id: "ccfcf063f384dc4fa68225a79be3627b",
-    client_secret: "20233c126287a5ed5d378964045a881f921ad85437c93b593b0d1df0e22915da4a11620667d92a74bb6d2177f56145ed01580da657b4ed9593af15ff31c25c65",
-  },
-  {
-    account_name: "Elevate Psychology",
-    client_id: "39a221b207a478d3a47e969aa00dd177",
-    client_secret: "737eb4f9e5fc518333087032466f262e953f3f7ff62c8471e5e6bb582b6a056a136881454c07ac3cce7c6db9072fcbe324931ce73ffd1bc7098a29cbb7b5b404",
-  },
-  {
-    account_name: "Realworld Psychology",
-    client_id: "7c06ce128f43f8f18395664f8ef62636",
-    client_secret: "4fe1540ac6ad2132d28aa9ff38854d9e0e95462eaecea7905146b41939f2180ceed6a0de84995c4b442fae5d67e3e8fe3ef3c6e89240a6063a707f8555c588a5",
-  },
-];
-
-const clientId = halaxyAccounts[accountIndex].client_id;
-const clientSecret = halaxyAccounts[accountIndex].client_secret;
+import { authTokenUrl, baseUrl } from "./config";
+import { halaxyAccounts } from "./const";
 
 
-// Simple in-memory token cache
-let cachedToken: string | null = null;
-let cachedTokenExpiry: number | null = null;
+type Token = {
+  account_id: string;
+  cachedToken: string | null;
+  cachedTokenExpiry: number | null;
+}
 
-export async function getAccessToken(): Promise<string | null> {
+const tokens: Token[] = []
+
+
+export async function getAccessToken(account_id: string = "7c06ce128f"): Promise<string | null> {
+  const halaxyAccount = halaxyAccounts.find(account => account.account_id === account_id);
+  if(!halaxyAccount) return null
+
   const now = Date.now();
-
+  const token = tokens.find(t => t.account_id === account_id);
+  const cachedToken = token?.cachedToken;
+  const cachedTokenExpiry = token?.cachedTokenExpiry;
+  
   if (cachedToken && cachedTokenExpiry && now < cachedTokenExpiry) {
+    console.log(cachedToken)
     return cachedToken;
   }
+
+  const clientId = halaxyAccount.client_id;
+  const clientSecret = halaxyAccount.client_secret;
 
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
@@ -51,18 +46,22 @@ export async function getAccessToken(): Promise<string | null> {
   }
 
   const data = await res.json();
-  cachedToken = data.access_token;
-  console.log(cachedToken)
-  cachedTokenExpiry = now + (data.expires_in - 60) * 1000; // 60s safety buffer
-  return cachedToken;
+  const tokenIndex = tokens.findIndex(t => t.account_id === account_id);
+  if (tokenIndex === -1) {
+    tokens.push({ account_id, cachedToken: null, cachedTokenExpiry: null });
+  } else {
+    tokens[tokenIndex].cachedToken = data.access_token;
+    tokens[tokenIndex].cachedTokenExpiry = now + (data.expires_in - 60) * 1000;
+  }  
+  return data.access_token;
 }
 
 
 export async function halaxyFetch(endpoint: string, options: {
   method?: "GET" | "POST" | "PATCH" | "PUT" | "DELETE";
   payload?: unknown
-} = {}) {
-  const token = await getAccessToken();
+} = {}, account_id?:string) {
+  const token = await getAccessToken(account_id);
   let contentType = 'application/json'
 
   if (options.method == "PATCH") {

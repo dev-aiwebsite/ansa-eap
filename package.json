@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "type-check": "tsc --noEmit",
-    "dev": "next dev --turbopack",
+    "dev": "kill -9 $(lsof -ti :3000) || true && next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "dev:clean": "kill -9 $(lsof -ti :3000) || true && next dev --turbopack"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.9",

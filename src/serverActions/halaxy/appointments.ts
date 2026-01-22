@@ -1,5 +1,7 @@
 "use server";
+import { getHalaxyAccountIdByOrgId } from "./const";
 import { halaxyFetch } from "./credentials";
+import { OrgId } from "./types";
 
 export type ParticipantStatus = "booked" | "cancelled" | "attended" | "tentative" | "accepted";
 
@@ -50,56 +52,6 @@ export type AppointmentsResponse = {
   entry: {resource:FhirAppointment}[];
 };
 
-
-// Example: book an appointment parameter
-// parameter: [
-//       {
-//         name: "appt-resource",
-//         resource: {
-//           start: "2025-11-15T15:00:00+10:00",
-//           end: "2025-11-15T16:00:00+10:00",
-//           minutesDuration: 60,
-//           resourceType: "Appointment",
-//           participant: [
-//             {
-//               actor: {
-//                 reference: "https://au-api.halaxy.com/main/PractitionerRole/PR-3331559", // elevate adam 
-//                 type: "PractitionerRole",
-//               },
-//             },
-//           ],
-//         },
-//       },
-//       {
-//         name: "patient-id",
-//         valueReference: {
-//           reference: "https://au-api.halaxy.com/main/Patient/150899633", //allaine@aiwebsiteservices.com
-//           type: "Patient",
-//         },
-//       },
-//       {
-//         name: "healthcare-service-id",
-//         valueReference: {
-//           reference: "https://au-api.halaxy.com/main/HealthcareService/557057", //Elevate by ANSA Appointment
-//           type: "HealthcareService",
-//         },
-//       },
-//       {
-//         name: "location-type",
-//         valueCode: "clinic",
-//       },
-//       {
-//         name: "status",
-//         valueCode: "booked",
-//       },
-//       // {
-//       //   name: "charge-item-definition-id",
-//       //   valueReference: {
-//       //     reference: "https://au-api.halaxy.com/main/ChargeItemDefinition/123456",
-//       //     type: "ChargeItemDefinition",
-//       //   },
-//       // },
-//     ],
 type BookAppointmentProps = {
   appointment: FhirAppointment;
   patientId: string;
@@ -109,7 +61,7 @@ export async function bookAppointment({
 appointment,
 patientId,
 serviceId
-}:BookAppointmentProps) {
+}:BookAppointmentProps,accountId:string):Promise<FhirAppointment> {
 
   return await halaxyFetch("/Appointment/$book", {
     method: "POST",
@@ -151,15 +103,13 @@ serviceId
       // },
     ],
   },
-  });
+  },accountId)
 
 
 }
 
-
-export async function getUserAppointments(patient_id: string) {
-  // const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}&part-status=booked`) as AppointmentsResponse
-  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`) as AppointmentsResponse
+export async function getUserAppointments(patient_id: string, accountId:string) {
+  const res = await halaxyFetch(`/Appointment?page=1&_count=30&patient=${patient_id}`,{},accountId) as AppointmentsResponse
   if(res.total === 0) return []
   return res.entry.map(i => i.resource)
 }
@@ -169,7 +119,9 @@ export async function updateAppointmentStatus(
   status: "booked" | "cancelled" | "tentative" | "accepted",
   appointmentId: string,
   patientId: string,
+  accountId:string
 ) {
+
   const res = await halaxyFetch(`/Appointment/${appointmentId}`, {
     method: "PATCH",
     payload: {
@@ -198,7 +150,7 @@ export async function updateAppointmentStatus(
           ? "Rebooked by patient"
           : undefined,
     },
-  });
+  },accountId);
 
   return res as FhirAppointment
 }
@@ -209,19 +161,24 @@ export async function isSlotAvailable({
 }: {
   practitionerRole: string;
   start: string;
-}): Promise<boolean> {
+},accountId:string): Promise<boolean> {
+
   const availableSlots = await halaxyFetch(
-    `/Appointment?page=1&_count=30&date=${encodeURIComponent(start)}&part-status=booked&practitioner-role=${practitionerRole}`
+    `/Appointment?page=1&_count=30&date=${encodeURIComponent(start)}&part-status=booked&practitioner-role=${practitionerRole}`,
+    {},
+    accountId
   ) as AppointmentsResponse;
 
   return availableSlots.total === 0 ? true : false;
 }
 
 
-export async function getAvailableAppointments({practitionerRole,start,end,duration}: {practitionerRole: string, start: string, end: string, duration: number}) {
-
+export async function getAvailableAppointments({practitionerRole,start,end,duration}:{practitionerRole: string, start: string, end: string, duration: number}, orgId:OrgId) {
+      const accountId = getHalaxyAccountIdByOrgId(orgId)
       const bookedAppointments = await halaxyFetch(
-        `/Appointment?page=1&_count=100&part-status=booked&practitioner-role=${practitionerRole}&_sort=date`
+        `/Appointment?page=1&_count=100&part-status=booked&practitioner-role=${practitionerRole}&_sort=date`,
+        {},
+        accountId
       ) as AppointmentsResponse;
 
   
@@ -229,7 +186,9 @@ export async function getAvailableAppointments({practitionerRole,start,end,durat
     `/Appointment/$find?start=${start}&end=${end}&practitioner-role=${practitionerRole}` +
     `&duration=${duration}` +
     `&apply-buffer-time=true` +
-    `&include-overbooked=false`
+    `&include-overbooked=false`,
+    {},
+    accountId
   ) as AppointmentsResponse;
   
     if(slots.total === 0) return []

@@ -18,7 +18,7 @@ export const AuthenticateUser = async (credentials: { useremail: string; userpas
 
         // Add missing field
     const res = await getWHO5ResponsesByUser(user.id);
-    const who5Completed = res.success && res.data && res.data.length > 0 || false;
+    const who5Completed = res.success && !!res.data
 
     return { ...user, who5Completed };
   } catch {

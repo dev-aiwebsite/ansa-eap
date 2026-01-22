@@ -3,8 +3,6 @@ import { FhirAppointment, getUserAppointments, isSlotAvailable, updateAppointmen
 import { createPatient } from "@/serverActions/halaxy/patients";
 import {
   createContext,
-  Dispatch,
-  SetStateAction,
   useContext,
   useEffect,
   useRef,
@@ -16,11 +14,11 @@ import { useConfirmDialog } from "./ConfirmContext";
 import { updateUser } from "@/serverActions/crudUsers";
 import { useRouter } from "next/navigation";
 
+type Appointments = { account_id: string; appointments: FhirAppointment[] }[] | null
 
-type Appointments = FhirAppointment[] | null
 type HalaxyServiceContextType = {
   myAppointments: Appointments;
-  setMyAppointments: Dispatch<SetStateAction<Appointments>>;
+  setMyAppointments: (appointments:Appointments) => void;
   cancelAppointment: (appointmentId: string) => void;
   rebookAppointment: (appointmentId: string) => void;
   creditLimit: number;
@@ -39,7 +37,7 @@ export function HalaxyServiceContextProvider({
 }: HalaxyServiceContextProviderProps) {
   const router = useRouter()
   const { currentUser, setCurrentUser } = useAppServiceContext()
-  const [myAppointments, setMyAppointments] = useState<Appointments>(null);
+  const [myAppointments, setMyAppointmentsState] = useState<Appointments>(null);
   const confirm = useConfirmDialog()
   const patientCreatedRef = useRef(false);
 
@@ -73,13 +71,23 @@ export function HalaxyServiceContextProvider({
   }, [currentUser]);
 
   useEffect(() => {
-    const patientId = currentUser?.patient_id;
-    if (!patientId) return;
+    if (!currentUser?.patient_id?.length) return;
 
     const fetchAppointments = async () => {
       try {
-        const res = await getUserAppointments(patientId);
-        setMyAppointments(res);
+        const results = await Promise.all(
+          currentUser.patient_id.map(p =>
+            getUserAppointments(p.patient_id, p.account_id)
+          )
+        );
+
+
+        const allAppointments = currentUser.patient_id.map((p, idx) => ({
+          account_id: p.account_id,
+          appointments: results[idx],
+        }));
+
+        setMyAppointmentsState(allAppointments);
       } catch (err) {
         console.error("Error fetching appointments:", err);
       }
@@ -91,9 +99,58 @@ export function HalaxyServiceContextProvider({
 
 
 
+  // async function cancelAppointment(appointmentId: string) {
+  //   const appointmentAccount = myAppointments?.find(ma =>
+  //     ma.appointments.some(a => a.id === appointmentId)
+  //   );
+  //   if (!appointmentAccount) return
+  //   const accountId = appointmentAccount.account_id
+  //   const myPatientId = currentUser.patient_id.find(p => p.account_id === accountId)?.patient_id
+  //   if (!myPatientId) return
+
+  //   const ok = await confirm({
+  //     title: "Cancel appointment?",
+  //     description: "Are you sure you want to cancel this appointment?",
+  //     okText: "Yes",
+  //     cancelText: "No",
+  //   })
+
+  //   if (!ok) return
+  //   toast.promise(updateAppointmentStatus('cancelled', appointmentId, myPatientId, accountId)
+  //     .then(
+  //       (updatedAppt) => {
+  //         const newAppointments = myAppointments ? [...myAppointments] : []
+  //         const toUpdateAppointmentIndex = newAppointments.findIndex(ma => ma.account_id == appointmentAccount.account_id)
+
+  //         if (toUpdateAppointmentIndex !== -1) {
+  //           newAppointments[toUpdateAppointmentIndex] = {
+  //             ...newAppointments[toUpdateAppointmentIndex],
+  //             appointments: newAppointments[toUpdateAppointmentIndex].appointments.map(a =>
+  //               a.id === updatedAppt.id ? updatedAppt : a
+  //             ),
+  //           };
+  //         }
+
+  //         setMyAppointmentsState(newAppointments);
+  //         return updatedAppt;
+  //       }
+  //     ), {
+  //     loading: "Cancelling appointment...",
+  //     success: "Appointment cancelled",
+  //     error: "Failed to cancel",
+  //   })
+  // }
+
+
   async function cancelAppointment(appointmentId: string) {
-    const myPatientId = currentUser.patient_id
+    const appointmentAccount = myAppointments?.find(ma =>
+      ma.appointments.some(a => a.id === appointmentId)
+    );
+    if (!appointmentAccount) return
+    const accountId = appointmentAccount.account_id
+    const myPatientId = currentUser.patient_id.find(p => p.account_id === accountId)?.patient_id
     if (!myPatientId) return
+
     const ok = await confirm({
       title: "Cancel appointment?",
       description: "Are you sure you want to cancel this appointment?",
@@ -102,17 +159,12 @@ export function HalaxyServiceContextProvider({
     })
 
     if (!ok) return
-    toast.promise(updateAppointmentStatus('cancelled', appointmentId, myPatientId)
+    toast.promise(updateAppointmentStatus('cancelled', appointmentId, myPatientId, accountId)
       .then(
         (updatedAppt) => {
-          // ✅ Merge the updated appointment into local state
-          setMyAppointments((prev) =>
-            prev
-              ? prev.map((appt) =>
-                appt.id === appointmentId ? updatedAppt : appt
-              )
-              : [updatedAppt]
-          );
+        
+          setMyAppointments([{account_id: accountId, appointments:[updatedAppt]}])
+       
           return updatedAppt;
         }
       ), {
@@ -123,19 +175,25 @@ export function HalaxyServiceContextProvider({
   }
 
   async function rebookAppointment(appointmentId: string) {
-    const myPatientId = currentUser.patient_id
-    if (!myPatientId || !myAppointments) return
-    const selectedAppointment = myAppointments.find(a => a.id == appointmentId)
+    const appointmentAccount = myAppointments?.find(ma =>
+      ma.appointments.some(a => a.id === appointmentId)
+    );
+
+    if (!appointmentAccount) return
+
+    const accountId = appointmentAccount.account_id
+    const myPatientId = currentUser.patient_id.find(p => p.account_id === accountId)?.patient_id
+    if (!myPatientId) return
+
+    const selectedAppointment = appointmentAccount.appointments.find(a => a.id == appointmentId)
 
     let isStillAvailable = false
-
-
-
+    // todos
 
     if (selectedAppointment) {
       const practitionerRole = selectedAppointment.participant.find(p => p.actor.type == "PractitionerRole")?.actor?.reference?.split('/')?.at(-1)
       if (practitionerRole) {
-        const isSlotNotTaken = await isSlotAvailable({ practitionerRole, start: selectedAppointment.start })
+        const isSlotNotTaken = await isSlotAvailable({ practitionerRole, start: selectedAppointment.start }, accountId)
         if (isSlotNotTaken) {
           isStillAvailable = true
         }
@@ -152,17 +210,10 @@ export function HalaxyServiceContextProvider({
       })
 
       if (!ok) return
-      toast.promise(updateAppointmentStatus('booked', appointmentId, myPatientId)
+      toast.promise(updateAppointmentStatus('booked', appointmentId, myPatientId, accountId)
         .then(
           (updatedAppt) => {
-            // ✅ Merge the updated appointment into local state
-            setMyAppointments((prev) =>
-              prev
-                ? prev.map((appt) =>
-                  appt.id === appointmentId ? updatedAppt : appt
-                )
-                : [updatedAppt]
-            );
+            setMyAppointments([{account_id: accountId, appointments:[updatedAppt]}])
             return updatedAppt;
           }
         ), {
@@ -189,10 +240,48 @@ export function HalaxyServiceContextProvider({
     }
 
   }
+
+function setMyAppointments(appointments: Appointments) {
+  if (!appointments || !appointments.length) return
+
+  const newAppointments = myAppointments ? [...myAppointments] : []
+
+  appointments.forEach(aptAccount => {
+    const aptAccountIndex = newAppointments.findIndex(
+      ma => ma.account_id == aptAccount.account_id
+    )
+
+    if (aptAccountIndex === -1) {
+      newAppointments.push(aptAccount)
+      return
+    }
+
+    const existingMap = new Map(
+      newAppointments[aptAccountIndex].appointments.map(a => [a.id, a])
+    )
+
+    aptAccount.appointments.forEach(newApt => {
+      const existing = existingMap.get(newApt.id)
+
+      if (existing) {
+        Object.assign(existing, newApt)
+      } else {
+        newAppointments[aptAccountIndex].appointments.push(newApt)
+      }
+    })
+  })
+
+  setMyAppointmentsState(newAppointments)
+}
+
+
+
   const creditLimit = currentUser.maxCredit ?? 0
   const creditedAppointments = myAppointments?.filter(apt => JSON.stringify(apt).includes('"code":"booked"'))
   const creditUsed = creditedAppointments?.length ?? 0
   const remainingCredit = myAppointments ? creditLimit - creditUsed : undefined
+
+
 
   return (
     <HalaxyServiceContext.Provider
